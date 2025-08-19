@@ -42,8 +42,12 @@ export const Navigation = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Teamsmiths.ai
+            <Link to="/" className="flex items-center">
+              <img 
+                src="/lovable-uploads/3d9c4cdc-7ba2-4bf6-b47d-5db419081ab7.png" 
+                alt="Teamsmiths AI Logo" 
+                className="h-8 w-auto"
+              />
             </Link>
           </div>
 
