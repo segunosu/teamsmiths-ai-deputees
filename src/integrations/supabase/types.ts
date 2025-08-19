@@ -14,6 +14,324 @@ export type Database = {
   }
   public: {
     Tables: {
+      agencies: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string
+          website: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          website?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agencies_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      agency_members: {
+        Row: {
+          agency_id: string
+          created_at: string | null
+          role: string
+          user_id: string
+        }
+        Insert: {
+          agency_id: string
+          created_at?: string | null
+          role: string
+          user_id: string
+        }
+        Update: {
+          agency_id?: string
+          created_at?: string | null
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_members_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      agency_payout_splits: {
+        Row: {
+          agency_id: string | null
+          id: string
+          member_user_id: string | null
+          milestone_id: string | null
+          percentage: number | null
+        }
+        Insert: {
+          agency_id?: string | null
+          id?: string
+          member_user_id?: string | null
+          milestone_id?: string | null
+          percentage?: number | null
+        }
+        Update: {
+          agency_id?: string | null
+          id?: string
+          member_user_id?: string | null
+          milestone_id?: string | null
+          percentage?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_payout_splits_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_payout_splits_member_user_id_fkey"
+            columns: ["member_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "agency_payout_splits_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      change_orders: {
+        Row: {
+          amount_delta: number
+          created_at: string | null
+          description: string | null
+          id: string
+          project_id: string | null
+          status: string | null
+        }
+        Insert: {
+          amount_delta: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          project_id?: string | null
+          status?: string | null
+        }
+        Update: {
+          amount_delta?: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          project_id?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "change_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deliverable_versions: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          deliverable_id: string | null
+          id: string
+          notes: string | null
+          storage_path: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          deliverable_id?: string | null
+          id?: string
+          notes?: string | null
+          storage_path: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          deliverable_id?: string | null
+          id?: string
+          notes?: string | null
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deliverable_versions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "deliverable_versions_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
+            referencedRelation: "deliverables"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deliverables: {
+        Row: {
+          created_at: string | null
+          id: string
+          milestone_id: string | null
+          project_id: string | null
+          status: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+          status?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+          status?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deliverables_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deliverables_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      document_chunks: {
+        Row: {
+          chunk: string
+          document_id: string | null
+          embedding: string
+          id: string
+        }
+        Insert: {
+          chunk: string
+          document_id?: string | null
+          embedding: string
+          id?: string
+        }
+        Update: {
+          chunk?: string
+          document_id?: string | null
+          embedding?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_chunks_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          created_at: string | null
+          id: string
+          project_id: string | null
+          source: string | null
+          storage_path: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          project_id?: string | null
+          source?: string | null
+          storage_path?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          project_id?: string | null
+          source?: string | null
+          storage_path?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           ci_assessment: Json | null
@@ -56,6 +374,605 @@ export type Database = {
         }
         Relationships: []
       }
+      milestones: {
+        Row: {
+          amount: number
+          created_at: string | null
+          description: string | null
+          due_date: string | null
+          id: string
+          project_id: string | null
+          status: string | null
+          title: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          project_id?: string | null
+          status?: string | null
+          title: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          project_id?: string | null
+          status?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      org_members: {
+        Row: {
+          created_at: string | null
+          org_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          org_id: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          org_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "org_members_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "orgs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "org_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      orgs: {
+        Row: {
+          billing_email: string | null
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          billing_email?: string | null
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          billing_email?: string | null
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      payment_intents: {
+        Row: {
+          created_at: string | null
+          id: string
+          milestone_id: string | null
+          project_id: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_intents_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_intents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_snapshots: {
+        Row: {
+          created_at: string | null
+          id: string
+          product_id: string | null
+          snapshot: Json
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          product_id?: string | null
+          snapshot: Json
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          product_id?: string | null
+          snapshot?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_snapshots_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          base_price: number
+          category_id: string | null
+          created_at: string | null
+          deliverables: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          is_fixed_scope: boolean | null
+          subcategory_id: string | null
+          tags: string[] | null
+          timeline: string | null
+          title: string
+        }
+        Insert: {
+          base_price: number
+          category_id?: string | null
+          created_at?: string | null
+          deliverables?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_fixed_scope?: boolean | null
+          subcategory_id?: string | null
+          tags?: string[] | null
+          timeline?: string | null
+          title: string
+        }
+        Update: {
+          base_price?: number
+          category_id?: string | null
+          created_at?: string | null
+          deliverables?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_fixed_scope?: boolean | null
+          subcategory_id?: string | null
+          tags?: string[] | null
+          timeline?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "subcategories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          is_admin: boolean | null
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          is_admin?: boolean | null
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          is_admin?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      project_files: {
+        Row: {
+          created_at: string | null
+          deliverable_id: string | null
+          id: string
+          milestone_id: string | null
+          project_id: string | null
+          storage_path: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          deliverable_id?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+          storage_path: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          deliverable_id?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string | null
+          storage_path?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_files_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
+            referencedRelation: "deliverables"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_files_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_files_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_files_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      project_messages: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string | null
+          project_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message?: string | null
+          project_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string | null
+          project_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_messages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_messages_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      project_participants: {
+        Row: {
+          project_id: string
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          project_id: string
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          project_id?: string
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_participants_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          agency_id: string | null
+          created_at: string | null
+          currency: string | null
+          id: string
+          is_custom: boolean | null
+          org_id: string | null
+          product_snapshot_id: string | null
+          status: string | null
+          teamsmith_user_id: string | null
+          title: string
+          total_price: number | null
+        }
+        Insert: {
+          agency_id?: string | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          is_custom?: boolean | null
+          org_id?: string | null
+          product_snapshot_id?: string | null
+          status?: string | null
+          teamsmith_user_id?: string | null
+          title: string
+          total_price?: number | null
+        }
+        Update: {
+          agency_id?: string | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          is_custom?: boolean | null
+          org_id?: string | null
+          product_snapshot_id?: string | null
+          status?: string | null
+          teamsmith_user_id?: string | null
+          title?: string
+          total_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "orgs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_product_snapshot_id_fkey"
+            columns: ["product_snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "product_snapshots"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_teamsmith_user_id_fkey"
+            columns: ["teamsmith_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      qa_reviews: {
+        Row: {
+          comments: string | null
+          created_at: string | null
+          decision: string
+          deliverable_id: string | null
+          id: string
+          reviewer_user_id: string | null
+        }
+        Insert: {
+          comments?: string | null
+          created_at?: string | null
+          decision: string
+          deliverable_id?: string | null
+          id?: string
+          reviewer_user_id?: string | null
+        }
+        Update: {
+          comments?: string | null
+          created_at?: string | null
+          decision?: string
+          deliverable_id?: string | null
+          id?: string
+          reviewer_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qa_reviews_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
+            referencedRelation: "deliverables"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qa_reviews_reviewer_user_id_fkey"
+            columns: ["reviewer_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      subcategories: {
+        Row: {
+          category_id: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          category_id?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          category_id?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teamsmiths: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          hourly_rate: number | null
+          skills: string[] | null
+          user_id: string
+          vetted: boolean | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          hourly_rate?: number | null
+          skills?: string[] | null
+          user_id: string
+          vetted?: boolean | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          hourly_rate?: number | null
+          skills?: string[] | null
+          user_id?: string
+          vetted?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teamsmiths_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      transcripts: {
+        Row: {
+          created_at: string | null
+          id: string
+          json: Json | null
+          project_id: string | null
+          provider_id: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          json?: Json | null
+          project_id?: string | null
+          provider_id?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          json?: Json | null
+          project_id?: string | null
+          provider_id?: string | null
+          source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transcripts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       zapier_fallback: {
         Row: {
           created_at: string | null
@@ -79,7 +996,98 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      binary_quantize: {
+        Args: { "": string } | { "": unknown }
+        Returns: unknown
+      }
+      halfvec_avg: {
+        Args: { "": number[] }
+        Returns: unknown
+      }
+      halfvec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      halfvec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      halfvec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
+      hnsw_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_sparsevec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnswhandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflat_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflat_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflathandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      l2_norm: {
+        Args: { "": unknown } | { "": unknown }
+        Returns: number
+      }
+      l2_normalize: {
+        Args: { "": string } | { "": unknown } | { "": unknown }
+        Returns: string
+      }
+      sparsevec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      sparsevec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      sparsevec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
+      vector_avg: {
+        Args: { "": number[] }
+        Returns: string
+      }
+      vector_dims: {
+        Args: { "": string } | { "": unknown }
+        Returns: number
+      }
+      vector_norm: {
+        Args: { "": string }
+        Returns: number
+      }
+      vector_out: {
+        Args: { "": string }
+        Returns: unknown
+      }
+      vector_send: {
+        Args: { "": string }
+        Returns: string
+      }
+      vector_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
