@@ -13,6 +13,8 @@ import ForFreelancers from "./pages/ForFreelancers";
 import ForAgencies from "./pages/ForAgencies";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCanceled from "./pages/PaymentCanceled";
+import Dashboard from "./pages/Dashboard";
+import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +33,8 @@ const App = () => (
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/catalog" element={<Catalog />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/project/:id" element={<ProjectDetail />} />
                 <Route path="/for-clients" element={<ForClients />} />
                 <Route path="/for-freelancers" element={<ForFreelancers />} />
                 <Route path="/for-agencies" element={<ForAgencies />} />

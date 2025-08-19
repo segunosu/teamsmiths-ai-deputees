@@ -25,6 +25,10 @@ export const Navigation = () => {
     { label: 'For Agencies', path: '/for-agencies' },
   ];
 
+  if (user) {
+    navItems.push({ label: 'Dashboard', path: '/dashboard' });
+  }
+
   const isActive = (path: string) => {
     if (path === '/') {
       return location.pathname === '/';
@@ -76,9 +80,11 @@ export const Navigation = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end">
-                  <DropdownMenuItem>
-                    <User className="mr-2 h-4 w-4" />
-                    Profile
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="w-full">
+                      <User className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => signOut()}>
                     <LogOut className="mr-2 h-4 w-4" />
