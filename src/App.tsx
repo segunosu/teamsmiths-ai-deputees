@@ -8,6 +8,7 @@ import { Navigation } from "@/components/ui/navigation";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
+import ProductDetail from "./pages/ProductDetail";
 import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
 import ForAgencies from "./pages/ForAgencies";
@@ -33,6 +34,7 @@ const App = () => (
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/catalog" element={<Catalog />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/project/:id" element={<ProjectDetail />} />
                 <Route path="/for-clients" element={<ForClients />} />
