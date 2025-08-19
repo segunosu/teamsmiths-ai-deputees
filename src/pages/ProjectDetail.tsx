@@ -9,6 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
 import { ArrowLeft, MessageCircle, FileText, Clock, Users, Send } from 'lucide-react';
+import AIChat from '@/components/AIChat';
+import ProjectInsights from '@/components/ProjectInsights';
 
 interface Project {
   id: string;
@@ -407,7 +409,15 @@ const ProjectDetail = () => {
             </div>
           </TabsContent>
         </Tabs>
+        
+        {/* AI Insights */}
+        <div className="mt-8">
+          <ProjectInsights projectId={id!} />
+        </div>
       </div>
+      
+      {/* AI Chat Interface */}
+      <AIChat projectId={id!} />
     </div>
   );
 };
