@@ -40,6 +40,7 @@ const Catalog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,6 +86,30 @@ const Catalog = () => {
 
     fetchData();
   }, [toast]);
+
+  const handleCheckout = async (product: Product) => {
+    try {
+      setLoadingProductId(product.id);
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: { product_id: product.id },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        // Open Stripe checkout in a new tab
+        window.open(data.url, '_blank');
+      } else {
+        throw new Error('Failed to create checkout session');
+      }
+    } catch (err: any) {
+      toast({
+        title: 'Checkout failed',
+        description: err.message || 'Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoadingProductId(null);
+    }
+  };
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -202,13 +227,19 @@ const Catalog = () => {
 
                 <Separator className="my-4" />
                 
-                <div className="mt-auto space-y-2">
-                  <Button asChild className="w-full">
-                    <Link to={`/product/${product.id}`}>
-                      Buy Pack
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
+                  <div className="mt-auto space-y-2">
+                    <Button
+                      className="w-full"
+                      onClick={() => handleCheckout(product)}
+                      disabled={loadingProductId === product.id}
+                    >
+                      {loadingProductId === product.id ? 'Processing...' : (
+                        <>
+                          Buy Pack
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </>
+                      )}
+                    </Button>
                   <Button asChild variant="outline" className="w-full">
                     <Link to={`/product/${product.id}`}>
                       View Details
