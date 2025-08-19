@@ -1000,6 +1000,18 @@ export type Database = {
         Args: { "": string } | { "": unknown }
         Returns: unknown
       }
+      get_project_id_from_deliverable: {
+        Args: { _deliverable_id: string }
+        Returns: string
+      }
+      get_project_id_from_document: {
+        Args: { _document_id: string }
+        Returns: string
+      }
+      get_project_id_from_milestone: {
+        Args: { _milestone_id: string }
+        Returns: string
+      }
       halfvec_avg: {
         Args: { "": number[] }
         Returns: unknown
@@ -1031,6 +1043,14 @@ export type Database = {
       hnswhandler: {
         Args: { "": unknown }
         Returns: unknown
+      }
+      is_admin: {
+        Args: { _uid: string }
+        Returns: boolean
+      }
+      is_project_participant: {
+        Args: { _project_id: string; _uid: string }
+        Returns: boolean
       }
       ivfflat_bit_support: {
         Args: { "": unknown }
