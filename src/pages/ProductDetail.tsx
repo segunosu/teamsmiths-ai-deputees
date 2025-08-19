@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { ArrowRight, ArrowLeft, Clock, Package, Tag, Check } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Product {
   id: string;
@@ -35,6 +36,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -77,6 +79,17 @@ const ProductDetail = () => {
 
   const handleCheckout = async () => {
     if (!product) return;
+
+    // Check if user is authenticated
+    if (!user) {
+      toast({
+        title: 'Authentication required',
+        description: 'Please sign in to purchase this pack.',
+        variant: 'destructive',
+      });
+      navigate('/auth');
+      return;
+    }
 
     try {
       setCheckoutLoading(true);
