@@ -68,12 +68,9 @@ const Dashboard = () => {
     
     const fetchData = async () => {
       try {
-        // Fetch user's projects
+        // Fetch user's projects using secure RPC to prevent parsing issues
         const { data: projectsData, error: projectsError } = await supabase
-          .from('projects')
-          .select('*')
-          .or(`teamsmith_user_id.eq.${user.id},project_participants.user_id.eq.${user.id}`)
-          .order('created_at', { ascending: false });
+          .rpc('get_projects_for_user', { _uid: user.id });
 
         if (projectsError) throw projectsError;
 

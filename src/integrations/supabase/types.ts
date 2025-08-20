@@ -1599,6 +1599,22 @@ export type Database = {
         Args: { _milestone_id: string }
         Returns: string
       }
+      get_projects_for_user: {
+        Args: { _uid: string }
+        Returns: {
+          agency_id: string | null
+          created_at: string | null
+          currency: string | null
+          id: string
+          is_custom: boolean | null
+          org_id: string | null
+          product_snapshot_id: string | null
+          status: string | null
+          teamsmith_user_id: string | null
+          title: string
+          total_price: number | null
+        }[]
+      }
       is_admin: {
         Args: { _uid: string }
         Returns: boolean
