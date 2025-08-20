@@ -77,8 +77,6 @@ const Compliance = () => {
             </p>
             <ul className="list-disc pl-6 mb-4">
               <li>Annual compliance reviews</li>
-              <li>Continuous monitoring and assessment</li>
-              <li>Employee training and awareness programs</li>
               <li>Regular policy updates and improvements</li>
             </ul>
           </section>

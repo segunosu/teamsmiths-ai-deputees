@@ -249,7 +249,7 @@ const ForClients = () => {
                   <div className="w-6 h-6 rounded-full bg-destructive/20 flex items-center justify-center">
                     <span className="text-destructive text-sm">✗</span>
                   </div>
-                  <span>Junior staff doing the work</span>
+                  <span>Inexperienced talent on your project</span>
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <div className="w-6 h-6 rounded-full bg-destructive/20 flex items-center justify-center">

@@ -535,8 +535,8 @@ const AdminDashboard = () => {
                       }
                       className="w-32"
                     />
-                    <Button onClick={updateThreshold}>
-                      Update
+                    <Button onClick={updateSettings}>
+                      Update Settings
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground">

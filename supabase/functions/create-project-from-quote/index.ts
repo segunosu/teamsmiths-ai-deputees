@@ -55,6 +55,38 @@ serve(async (req) => {
       );
     }
 
+    // Check if quote amount is above approval threshold
+    const { data: thresholdSetting } = await supabaseService
+      .from('admin_settings')
+      .select('setting_value')
+      .eq('setting_key', 'quote_approval_threshold')
+      .single();
+
+    const threshold = thresholdSetting?.setting_value?.amount || 5000;
+    const quoteAmountInPounds = quote.total_amount / 100;
+
+    // If above threshold, require admin approval first
+    if (quoteAmountInPounds >= threshold && quote.status !== 'sent') {
+      // Update quote status to pending admin review
+      await supabaseService
+        .from('custom_quotes')
+        .update({ status: 'pending_admin_review' })
+        .eq('id', quoteId);
+      
+      console.log("Quote requires admin approval", { 
+        amount: quoteAmountInPounds, 
+        threshold: threshold 
+      });
+      
+      return new Response(JSON.stringify({ 
+        success: false,
+        message: "Quote amount exceeds approval threshold and requires admin review" 
+      }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      });
+    }
+
     // Create the project
     const { data: project, error: projectError } = await supabaseService
       .from('projects')

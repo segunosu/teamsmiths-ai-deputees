@@ -60,7 +60,7 @@ const CustomizationRequest = () => {
         .eq('setting_key', 'allow_custom_request_without_login')
         .single();
       
-      setAllowUnauthRequests(data?.setting_value || false);
+      setAllowUnauthRequests(Boolean(data?.setting_value) || false);
     } catch (error) {
       console.error('Error checking auth settings:', error);
     }
