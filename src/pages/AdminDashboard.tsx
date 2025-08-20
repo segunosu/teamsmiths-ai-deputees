@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -313,12 +314,20 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
-          <Shield className="h-8 w-8 text-primary" />
-          <div>
-            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-            <p className="text-muted-foreground">Platform oversight and compliance management</p>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <Shield className="h-8 w-8 text-primary" />
+            <div>
+              <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+              <p className="text-muted-foreground">Platform oversight and compliance management</p>
+            </div>
           </div>
+          <Button asChild>
+            <Link to="/admin/reports" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Go to Reports
+            </Link>
+          </Button>
         </div>
 
         {/* Stats Overview */}

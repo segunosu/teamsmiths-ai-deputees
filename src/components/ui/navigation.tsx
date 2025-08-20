@@ -112,12 +112,20 @@ export const Navigation = () => {
                       </Link>
                     </DropdownMenuItem>
                     {isAdmin && (
-                      <DropdownMenuItem asChild>
-                        <Link to="/admin" className="w-full">
-                          <Shield className="mr-2 h-4 w-4" />
-                          Admin Panel
-                        </Link>
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin" className="w-full">
+                            <Shield className="mr-2 h-4 w-4" />
+                            Admin Panel
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin/reports" className="w-full">
+                            <Shield className="mr-2 h-4 w-4" />
+                            Admin Reports
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
                     )}
                     <DropdownMenuItem onClick={() => signOut()}>
                       <LogOut className="mr-2 h-4 w-4" />
@@ -181,12 +189,20 @@ export const Navigation = () => {
                       {user.email}
                     </div>
                     {isAdmin && (
-                      <Button asChild variant="ghost" className="w-full justify-start">
-                        <Link to="/admin" onClick={() => setMobileMenuOpen(false)}>
-                          <Shield className="mr-2 h-4 w-4" />
-                          Admin Panel
-                        </Link>
-                      </Button>
+                      <>
+                        <Button asChild variant="ghost" className="w-full justify-start">
+                          <Link to="/admin" onClick={() => setMobileMenuOpen(false)}>
+                            <Shield className="mr-2 h-4 w-4" />
+                            Admin Panel
+                          </Link>
+                        </Button>
+                        <Button asChild variant="ghost" className="w-full justify-start">
+                          <Link to="/admin/reports" onClick={() => setMobileMenuOpen(false)}>
+                            <Shield className="mr-2 h-4 w-4" />
+                            Admin Reports
+                          </Link>
+                        </Button>
+                      </>
                     )}
                     <Button
                       variant="ghost"
