@@ -687,6 +687,98 @@ export type Database = {
           },
         ]
       }
+      freelancer_profiles: {
+        Row: {
+          availability_weekly_hours: number | null
+          certifications: string[] | null
+          connected_calendar: boolean | null
+          created_at: string | null
+          id: string
+          industries: string[] | null
+          locales: string[] | null
+          outcome_history: Json | null
+          price_band_max: number | null
+          price_band_min: number | null
+          pto_ranges: Json | null
+          skills: string[] | null
+          tools: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          availability_weekly_hours?: number | null
+          certifications?: string[] | null
+          connected_calendar?: boolean | null
+          created_at?: string | null
+          id?: string
+          industries?: string[] | null
+          locales?: string[] | null
+          outcome_history?: Json | null
+          price_band_max?: number | null
+          price_band_min?: number | null
+          pto_ranges?: Json | null
+          skills?: string[] | null
+          tools?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          availability_weekly_hours?: number | null
+          certifications?: string[] | null
+          connected_calendar?: boolean | null
+          created_at?: string | null
+          id?: string
+          industries?: string[] | null
+          locales?: string[] | null
+          outcome_history?: Json | null
+          price_band_max?: number | null
+          price_band_min?: number | null
+          pto_ranges?: Json | null
+          skills?: string[] | null
+          tools?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      invite_status: {
+        Row: {
+          expires_at: string
+          id: string
+          invited_at: string | null
+          request_id: string
+          responded_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          expires_at: string
+          id?: string
+          invited_at?: string | null
+          request_id: string
+          responded_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          expires_at?: string
+          id?: string
+          invited_at?: string | null
+          request_id?: string
+          responded_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_status_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "customization_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           ci_assessment: Json | null
@@ -731,6 +823,41 @@ export type Database = {
           roi_output?: Json | null
         }
         Relationships: []
+      }
+      matching_snapshots: {
+        Row: {
+          candidates: Json
+          created_at: string | null
+          id: string
+          matching_weights: Json
+          request_id: string
+          shortlist_size: number | null
+        }
+        Insert: {
+          candidates?: Json
+          created_at?: string | null
+          id?: string
+          matching_weights?: Json
+          request_id: string
+          shortlist_size?: number | null
+        }
+        Update: {
+          candidates?: Json
+          created_at?: string | null
+          id?: string
+          matching_weights?: Json
+          request_id?: string
+          shortlist_size?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matching_snapshots_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "customization_requests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       milestones: {
         Row: {
@@ -1451,6 +1578,65 @@ export type Database = {
             columns: ["quote_id"]
             isOneToOne: false
             referencedRelation: "custom_quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      standardized_quotes: {
+        Row: {
+          assumptions: string | null
+          created_at: string | null
+          currency: string | null
+          freelancer_id: string
+          id: string
+          milestones: Json
+          portfolio_highlights: string[] | null
+          qa_guarantees: string | null
+          request_id: string
+          status: string | null
+          timeline_weeks: number | null
+          total_price: number
+          updated_at: string | null
+          validity_until: string | null
+        }
+        Insert: {
+          assumptions?: string | null
+          created_at?: string | null
+          currency?: string | null
+          freelancer_id: string
+          id?: string
+          milestones?: Json
+          portfolio_highlights?: string[] | null
+          qa_guarantees?: string | null
+          request_id: string
+          status?: string | null
+          timeline_weeks?: number | null
+          total_price: number
+          updated_at?: string | null
+          validity_until?: string | null
+        }
+        Update: {
+          assumptions?: string | null
+          created_at?: string | null
+          currency?: string | null
+          freelancer_id?: string
+          id?: string
+          milestones?: Json
+          portfolio_highlights?: string[] | null
+          qa_guarantees?: string | null
+          request_id?: string
+          status?: string | null
+          timeline_weeks?: number | null
+          total_price?: number
+          updated_at?: string | null
+          validity_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "standardized_quotes_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "customization_requests"
             referencedColumns: ["id"]
           },
         ]
