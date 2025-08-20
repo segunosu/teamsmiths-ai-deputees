@@ -83,6 +83,7 @@ serve(async (req) => {
       ],
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/payment-canceled`,
+      allow_promotion_codes: true,
       metadata: {
         product_id: product.id,
         product_title: product.title,

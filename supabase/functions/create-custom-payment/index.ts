@@ -133,6 +133,7 @@ serve(async (req) => {
       mode: "payment",
       success_url: `${req.headers.get("origin")}/payment-success?milestone=${milestone_id}`,
       cancel_url: `${req.headers.get("origin")}/dashboard?tab=projects`,
+      allow_promotion_codes: true,
       metadata: {
         milestone_id: milestone_id,
         project_id: milestone.project?.id || '',
