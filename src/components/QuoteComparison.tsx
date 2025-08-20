@@ -75,10 +75,10 @@ const QuoteComparison: React.FC<QuoteComparisonProps> = ({ requestId }) => {
 
       const formattedQuotes = (data || []).map(quote => ({
         ...quote,
-        milestones: Array.isArray(quote.milestones) ? quote.milestones : [],
-        freelancer_profile: quote.profiles ? {
-          full_name: quote.profiles.full_name,
-          email: quote.profiles.email,
+        milestones: Array.isArray(quote.milestones) ? quote.milestones as any[] : [],
+        freelancer_profile: (quote as any).profiles ? {
+          full_name: (quote as any).profiles.full_name,
+          email: (quote as any).profiles.email,
           outcome_history: {}
         } : undefined
       }));

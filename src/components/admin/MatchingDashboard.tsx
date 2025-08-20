@@ -89,7 +89,7 @@ const MatchingDashboard = () => {
         .single();
 
       if (configError) throw configError;
-      setConfig(adminSettings.setting_value as MatchingConfig);
+      setConfig(adminSettings.setting_value as unknown as MatchingConfig);
 
       // Load recent customization requests
       const { data: requestsData, error: requestsError } = await supabase
@@ -175,7 +175,7 @@ const MatchingDashboard = () => {
       if (error && error.code !== 'PGRST116') throw error;
       setMatchingSnapshot(data ? {
         ...data,
-        candidates: Array.isArray(data.candidates) ? data.candidates : []
+        candidates: Array.isArray(data.candidates) ? data.candidates as any[] : []
       } : null);
     } catch (error: any) {
       console.error('Error loading snapshot:', error);

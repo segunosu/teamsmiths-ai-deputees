@@ -106,7 +106,13 @@ const FreelancerProfile = () => {
           price_band_min: data.price_band_min || null,
           price_band_max: data.price_band_max || null,
           pto_ranges: Array.isArray(data.pto_ranges) ? data.pto_ranges : [],
-          outcome_history: typeof data.outcome_history === 'object' ? data.outcome_history : {}
+          outcome_history: (data.outcome_history as any) || {
+            csat_score: null,
+            on_time_rate: null,
+            revision_rate: null,
+            pass_at_qa_rate: null,
+            dispute_rate: null
+          }
         });
       }
     } catch (error: any) {
