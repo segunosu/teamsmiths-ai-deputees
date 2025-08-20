@@ -142,10 +142,10 @@ const Catalog = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-            Outcome Packs
+            Solution Templates
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Fixed-scope deliverables with guaranteed outcomes. Human QA included. Pay by milestone.
+            Start with proven templates, then customize to your exact needs. Human QA included. Pay by milestone.
           </p>
         </div>
 
@@ -232,20 +232,25 @@ const Catalog = () => {
 
                 <Separator className="my-4" />
                 
-                  <div className="mt-auto space-y-2">
+                <div className="mt-auto space-y-2">
+                  <div className="flex gap-2">
                     <Button
-                      className="w-full"
+                      className="flex-1"
                       onClick={() => handleCheckout(product)}
                       disabled={loadingProductId === product.id}
                     >
                       {loadingProductId === product.id ? 'Processing...' : (
                         <>
-                          Buy Pack
+                          Buy Template
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                       )}
                     </Button>
-                  <Button asChild variant="outline" className="w-full">
+                    <Button asChild variant="outline" className="flex-1">
+                      <Link to="/auth">Customize</Link>
+                    </Button>
+                  </div>
+                  <Button asChild variant="ghost" className="w-full text-xs">
                     <Link to={`/product/${product.id}`}>
                       View Details
                     </Link>
@@ -268,13 +273,18 @@ const Catalog = () => {
 
         {/* Bottom CTA */}
         <div className="text-center mt-16 p-8 bg-muted/50 rounded-lg">
-          <h3 className="text-2xl font-bold mb-4">Need something custom?</h3>
+          <h3 className="text-2xl font-bold mb-4">Need full customization?</h3>
           <p className="text-muted-foreground mb-6">
-            Our Teamsmiths can create bespoke solutions tailored to your specific requirements.
+            Every template can be fully customized. Our Teamsmiths will tailor any solution to your specific requirements.
           </p>
-          <Button asChild size="lg">
-            <Link to="/auth">Book Consultation</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg">
+              <Link to="/auth">Discuss Customization</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link to="/auth">Book Consultation</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
