@@ -859,6 +859,73 @@ export type Database = {
           },
         ]
       }
+      meetings: {
+        Row: {
+          created_at: string | null
+          ends_at: string | null
+          external_event_id: string | null
+          id: string
+          join_url: string
+          milestone_id: string | null
+          organizer_user_id: string | null
+          project_id: string | null
+          provider: string
+          recording_consent: boolean | null
+          starts_at: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          ends_at?: string | null
+          external_event_id?: string | null
+          id?: string
+          join_url: string
+          milestone_id?: string | null
+          organizer_user_id?: string | null
+          project_id?: string | null
+          provider: string
+          recording_consent?: boolean | null
+          starts_at?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          ends_at?: string | null
+          external_event_id?: string | null
+          id?: string
+          join_url?: string
+          milestone_id?: string | null
+          organizer_user_id?: string | null
+          project_id?: string | null
+          provider?: string
+          recording_consent?: boolean | null
+          starts_at?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meetings_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "meetings_organizer_user_id_fkey"
+            columns: ["organizer_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "meetings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       milestones: {
         Row: {
           amount: number

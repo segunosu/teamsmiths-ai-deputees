@@ -9,8 +9,10 @@ import { Progress } from '@/components/ui/progress';
 import DeliverableManagement from '@/components/DeliverableManagement';
 import ProjectInsights from '@/components/ProjectInsights';
 import AIChat from '@/components/AIChat';
+import ProjectChat from '@/components/ProjectChat';
+import ProjectMeetings from '@/components/ProjectMeetings';
 import { toast } from 'sonner';
-import { Users, Calendar, DollarSign, FileText, MessageSquare, TrendingUp } from 'lucide-react';
+import { Users, Calendar, DollarSign, FileText, MessageSquare, TrendingUp, VideoIcon } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -259,7 +261,7 @@ const ProjectDetail = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="deliverables" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="deliverables" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Deliverables
@@ -268,11 +270,19 @@ const ProjectDetail = () => {
               <Calendar className="h-4 w-4" />
               Milestones
             </TabsTrigger>
+            <TabsTrigger value="chat" className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" />
+              Chat
+            </TabsTrigger>
+            <TabsTrigger value="meetings" className="flex items-center gap-2">
+              <VideoIcon className="h-4 w-4" />
+              Meetings
+            </TabsTrigger>
             <TabsTrigger value="insights" className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
               Insights
             </TabsTrigger>
-            <TabsTrigger value="chat" className="flex items-center gap-2">
+            <TabsTrigger value="ai-chat" className="flex items-center gap-2">
               <MessageSquare className="h-4 w-4" />
               AI Assistant
             </TabsTrigger>
@@ -346,11 +356,19 @@ const ProjectDetail = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="chat">
+            <ProjectChat projectId={project.id} />
+          </TabsContent>
+
+          <TabsContent value="meetings">
+            <ProjectMeetings projectId={project.id} />
+          </TabsContent>
+
           <TabsContent value="insights">
             <ProjectInsights projectId={project.id} />
           </TabsContent>
 
-          <TabsContent value="chat">
+          <TabsContent value="ai-chat">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">

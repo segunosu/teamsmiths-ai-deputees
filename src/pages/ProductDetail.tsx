@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ArrowRight, ArrowLeft, Clock, Package, Tag, Check } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import WhatHappensNext from '@/components/WhatHappensNext';
 
 interface Product {
   id: string;
@@ -276,6 +277,8 @@ const ProductDetail = () => {
                 </div>
               </CardContent>
             </Card>
+
+            <WhatHappensNext />
           </div>
         </div>
 

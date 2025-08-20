@@ -12,6 +12,8 @@ import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign, Target } 
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import MatchingDashboard from '@/components/admin/MatchingDashboard';
+import AdminMeetingsSettings from '@/components/AdminMeetingsSettings';
+import AdminIntakeSettings from '@/components/AdminIntakeSettings';
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };
@@ -523,35 +525,8 @@ const AdminDashboard = () => {
 
           <TabsContent value="settings">
             <div className="space-y-6">
-              {/* Intake & Access Section */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Intake & Access</CardTitle>
-                  <CardDescription>
-                    Configure how clients can submit customization requests
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="allow-without-login">Allow customization request without login</Label>
-                      <p className="text-sm text-muted-foreground">
-                        When ON, visitors can submit a brief with email and receive a magic-link to claim their request. When OFF, login is required before submitting.
-                      </p>
-                    </div>
-                    <Switch
-                      id="allow-without-login"
-                      checked={settings.allow_custom_request_without_login?.enabled || true}
-                      onCheckedChange={(checked) => 
-                        setSettings({
-                          ...settings,
-                          allow_custom_request_without_login: { enabled: checked }
-                        })
-                      }
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+              <AdminIntakeSettings />
+              <AdminMeetingsSettings />
 
               {/* Quote Settings */}
               <Card>
