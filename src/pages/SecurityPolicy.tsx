@@ -10,34 +10,43 @@ const SecurityPolicy = () => {
           </p>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Our Commitment to Security</h2>
-            <p>
-              At Teamsmiths AI Deputees, we take data security seriously. We implement 
-              industry-standard security measures to protect your information and maintain 
-              the integrity of our services.
+            <h2 className="text-2xl font-semibold text-foreground mb-4">Production-Ready Security</h2>
+            <p className="text-lg mb-6">
+              Your data is protected with professional-grade safeguards designed to maintain 
+              the highest standards of security and privacy.
             </p>
+            
+            <div className="bg-muted/30 p-6 rounded-lg mb-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center">
+                <span className="mr-3">🛡️</span>
+                Professional Data Protection
+              </h3>
+              <p className="text-base text-muted-foreground">
+                Enterprise-class security implementation without the enterprise complexity
+              </p>
+            </div>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Data Protection Measures</h2>
-            <ul className="list-disc pl-6 mb-4">
-              <li>End-to-end encryption for data in transit and at rest</li>
-              <li>Multi-factor authentication for account access</li>
-              <li>Regular security audits and penetration testing</li>
-              <li>Secure cloud infrastructure with enterprise-grade security</li>
-              <li>Employee background checks and security training</li>
-              <li>Regular backup and disaster recovery procedures</li>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">Security Implementation</h2>
+            <ul className="list-disc pl-6 mb-4 space-y-2">
+              <li><strong>Encrypted data transmission</strong> with SSL/TLS security protocols</li>
+              <li><strong>Row-level access controls</strong> ensuring complete data isolation</li>
+              <li><strong>Role-based permissions</strong> with admin/user separation</li>
+              <li><strong>Secure authentication</strong> with session management and configurable multi-factor options</li>
+              <li><strong>Automated security enforcement</strong> preventing unauthorized data access</li>
+              <li><strong>Database-level security policies</strong> with real-time access validation</li>
             </ul>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Compliance Standards</h2>
-            <p>We adhere to major compliance frameworks including:</p>
-            <ul className="list-disc pl-6 mb-4">
-              <li>GDPR (General Data Protection Regulation)</li>
-              <li>SOC 2 Type II</li>
-              <li>ISO 27001 standards</li>
-              <li>Industry-specific compliance requirements</li>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">Privacy & Compliance</h2>
+            <p>We implement privacy-first security measures including:</p>
+            <ul className="list-disc pl-6 mb-4 space-y-2">
+              <li><strong>GDPR-ready data policies</strong> with proper access controls and user consent management</li>
+              <li><strong>Data ownership controls</strong> ensuring users can only access their own information</li>
+              <li><strong>Secure data processing</strong> with encrypted storage and transmission</li>
+              <li><strong>Transparent data practices</strong> with clear privacy policies</li>
             </ul>
           </section>
 
