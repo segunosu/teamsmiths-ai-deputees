@@ -232,7 +232,7 @@ const ProductDetail = () => {
                   <div className="text-3xl font-bold text-primary mb-2">
                     {formatPrice(product.base_price)}
                   </div>
-                  <p className="text-sm text-muted-foreground">Fixed-scope pricing</p>
+                  <p className="text-sm text-muted-foreground">Template starting price</p>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -244,10 +244,14 @@ const ProductDetail = () => {
                 >
                   {checkoutLoading ? 'Processing...' : (
                     <>
-                      Buy This Pack
+                      Buy Template
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </>
                   )}
+                </Button>
+                
+                <Button asChild variant="outline" className="w-full" size="lg">
+                  <Link to="/auth">Customize This</Link>
                 </Button>
                 
                 <Separator />
@@ -255,7 +259,11 @@ const ProductDetail = () => {
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-green-500" />
-                    <span>Fixed-scope deliverables</span>
+                    <span>Proven template foundation</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span>Fully customizable scope</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-green-500" />
@@ -265,25 +273,26 @@ const ProductDetail = () => {
                     <Check className="h-4 w-4 text-green-500" />
                     <span>Pay by milestone</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-green-500" />
-                    <span>Guaranteed outcomes</span>
-                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* Bottom CTA */}
+        {/* Customization CTA */}
         <div className="text-center mt-16 p-8 bg-muted/50 rounded-lg">
-          <h3 className="text-2xl font-bold mb-4">Need something custom?</h3>
+          <h3 className="text-2xl font-bold mb-4">Want to customize this template?</h3>
           <p className="text-muted-foreground mb-6">
-            Our Teamsmiths can create bespoke solutions tailored to your specific requirements.
+            Every template can be fully tailored to your needs. Discuss modifications, additions, or complete customizations with our Teamsmiths.
           </p>
-          <Button asChild size="lg" variant="outline">
-            <Link to="/auth">Book Consultation</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg">
+              <Link to="/auth">Discuss Customization</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link to="/auth">Book Consultation</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

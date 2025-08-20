@@ -49,7 +49,7 @@ const Home = () => {
     "Escrow payments by milestone",
     "Your data stays yours (scoped RAG)",
     "Mandatory QA on every deliverable",
-    "Fixed-scope outcome packs",
+    "Template starting points",
     "Vetted leaders only"
   ];
 
@@ -68,7 +68,7 @@ const Home = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Button asChild size="lg" className="text-lg px-8 py-6">
-                <Link to="/catalog">View Packs</Link>
+                <Link to="/catalog">View Templates</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
                 <Link to="/auth">Book 15-min Intro</Link>
@@ -167,13 +167,13 @@ const Home = () => {
             Ready to Get Started?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Browse our outcome packs or book a quick intro call to discuss your specific needs.
+            Browse our solution templates or book a quick intro call to discuss your customization needs.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8 py-6">
               <Link to="/catalog">
-                Browse Packs
+                Browse Templates
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
