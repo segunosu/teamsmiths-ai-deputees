@@ -247,7 +247,7 @@ const Catalog = () => {
                       )}
                     </Button>
                     <Button asChild variant="outline" className="flex-1">
-                      <Link to="/auth">Customize</Link>
+                      <Link to={`/customize/${product.id}`}>Customize</Link>
                     </Button>
                   </div>
                   <Button asChild variant="ghost" className="w-full text-xs">
@@ -279,7 +279,7 @@ const Catalog = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link to="/auth">Discuss Customization</Link>
+              <Link to="/customize">Discuss Customization</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <Link to="/auth">Book Consultation</Link>

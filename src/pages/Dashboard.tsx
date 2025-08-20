@@ -27,11 +27,23 @@ interface Order {
   created_at: string;
 }
 
+interface CustomizationRequest {
+  id: string;
+  project_title: string;
+  base_template: string;
+  custom_requirements: string;
+  budget_range: string;
+  timeline_preference: string;
+  status: string;
+  created_at: string;
+}
+
 const Dashboard = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [projects, setProjects] = useState<Project[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [customizationRequests, setCustomizationRequests] = useState<CustomizationRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -63,8 +75,18 @@ const Dashboard = () => {
 
         if (ordersError) throw ordersError;
 
+        // Fetch user's customization requests
+        const { data: customizationData, error: customizationError } = await supabase
+          .from('customization_requests')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (customizationError) throw customizationError;
+
         setProjects(projectsData || []);
         setOrders(ordersData || []);
+        setCustomizationRequests(customizationData || []);
       } catch (error: any) {
         toast({
           title: 'Error loading dashboard',
@@ -81,12 +103,19 @@ const Dashboard = () => {
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
+      // Project statuses
       draft: 'bg-muted text-muted-foreground',
       active: 'bg-primary text-primary-foreground',
       completed: 'bg-success text-success-foreground',
       cancelled: 'bg-destructive text-destructive-foreground',
+      // Customization request statuses
+      new: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+      reviewed: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+      quoted: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+      approved: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+      in_progress: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
     };
-    return <Badge className={colors[status] || colors.draft}>{status}</Badge>;
+    return <Badge className={colors[status] || colors.draft}>{status.replace('_', ' ')}</Badge>;
   };
 
   const formatPrice = (amount: number, currency = 'gbp') => {
@@ -155,13 +184,11 @@ const Dashboard = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Quick Action</CardTitle>
-              <Plus className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Customization Requests</CardTitle>
+              <AlertCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <Button asChild className="w-full">
-                <Link to="/catalog">Browse Packs</Link>
-              </Button>
+              <div className="text-2xl font-bold">{customizationRequests.length}</div>
             </CardContent>
           </Card>
         </div>
@@ -171,6 +198,7 @@ const Dashboard = () => {
           <TabsList>
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="customizations">Customizations</TabsTrigger>
           </TabsList>
 
           <TabsContent value="projects" className="space-y-4">
@@ -269,6 +297,71 @@ const Dashboard = () => {
                             {order.status || 'completed'}
                           </Badge>
                         </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="customizations" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold">Customization Requests</h2>
+              <Button asChild>
+                <Link to="/customize">
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Request
+                </Link>
+              </Button>
+            </div>
+
+            {customizationRequests.length === 0 ? (
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-center py-8">
+                    <AlertCircle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium mb-2">No customization requests yet</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Request custom modifications to any template or create something from scratch.
+                    </p>
+                    <Button asChild>
+                      <Link to="/customize">Submit Request</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid gap-4">
+                {customizationRequests.map((request) => (
+                  <Card key={request.id}>
+                    <CardHeader>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <CardTitle className="text-lg">{request.project_title}</CardTitle>
+                          <CardDescription>
+                            Based on: {request.base_template || 'Custom from scratch'}
+                          </CardDescription>
+                          <CardDescription>
+                            Submitted {new Date(request.created_at).toLocaleDateString()}
+                          </CardDescription>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {getStatusBadge(request.status)}
+                          {request.budget_range && (
+                            <Badge variant="outline">{request.budget_range}</Badge>
+                          )}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                        {request.custom_requirements}
+                      </p>
+                      <div className="flex gap-2 text-xs text-muted-foreground">
+                        {request.timeline_preference && (
+                          <span>Timeline: {request.timeline_preference}</span>
+                        )}
                       </div>
                     </CardContent>
                   </Card>

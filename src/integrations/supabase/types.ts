@@ -254,6 +254,71 @@ export type Database = {
           },
         ]
       }
+      customization_requests: {
+        Row: {
+          additional_context: string | null
+          base_template: string | null
+          budget_range: string | null
+          company_name: string | null
+          contact_email: string
+          contact_phone: string | null
+          created_at: string
+          custom_requirements: string
+          id: string
+          product_id: string | null
+          project_title: string
+          status: string | null
+          timeline_preference: string | null
+          updated_at: string
+          urgency_level: string | null
+          user_id: string | null
+        }
+        Insert: {
+          additional_context?: string | null
+          base_template?: string | null
+          budget_range?: string | null
+          company_name?: string | null
+          contact_email: string
+          contact_phone?: string | null
+          created_at?: string
+          custom_requirements: string
+          id?: string
+          product_id?: string | null
+          project_title: string
+          status?: string | null
+          timeline_preference?: string | null
+          updated_at?: string
+          urgency_level?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          additional_context?: string | null
+          base_template?: string | null
+          budget_range?: string | null
+          company_name?: string | null
+          contact_email?: string
+          contact_phone?: string | null
+          created_at?: string
+          custom_requirements?: string
+          id?: string
+          product_id?: string | null
+          project_title?: string
+          status?: string | null
+          timeline_preference?: string | null
+          updated_at?: string
+          urgency_level?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customization_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       deliverable_versions: {
         Row: {
           created_at: string | null

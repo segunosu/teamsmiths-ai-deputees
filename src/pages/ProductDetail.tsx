@@ -251,7 +251,7 @@ const ProductDetail = () => {
                 </Button>
                 
                 <Button asChild variant="outline" className="w-full" size="lg">
-                  <Link to="/auth">Customize This</Link>
+                  <Link to={`/customize/${product.id}`}>Customize This</Link>
                 </Button>
                 
                 <Separator />
@@ -287,7 +287,7 @@ const ProductDetail = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link to="/auth">Discuss Customization</Link>
+              <Link to="/customize">Discuss Customization</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link to="/auth">Book Consultation</Link>
