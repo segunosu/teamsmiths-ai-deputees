@@ -58,14 +58,29 @@ export const Footer = () => {
         {/* Partners Section */}
         <div className="mb-8">
           <h3 className="font-semibold text-foreground mb-6 text-center">Our Partners</h3>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-8">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-12">
             <div className="text-center">
-              <div className="text-sm text-muted-foreground mb-2">Member of</div>
-              <div className="font-medium text-foreground">Surrey Chambers of Commerce</div>
+              <div className="text-sm text-muted-foreground mb-3">Member of</div>
+              <img 
+                src="/lovable-uploads/40ee8d8f-7bd2-4504-a87b-8c0974a9e7a0.png" 
+                alt="Surrey Chambers of Commerce" 
+                className="h-12 mx-auto opacity-70 hover:opacity-100 transition-opacity"
+              />
             </div>
             <div className="text-center">
-              <div className="text-sm text-muted-foreground mb-2">Supported by</div>
-              <div className="font-medium text-foreground">Microsoft Founders Hub</div>
+              <div className="text-sm text-muted-foreground mb-3">Supported by</div>
+              <img 
+                src="/lovable-uploads/fb74cdcc-cb23-4eed-b8b0-2b3c4533467e.png" 
+                alt="Microsoft Founders Hub" 
+                className="h-12 mx-auto opacity-70 hover:opacity-100 transition-opacity"
+              />
+            </div>
+            <div className="text-center">
+              <img 
+                src="/lovable-uploads/437462b4-16c8-40a3-8a92-c97583238537.png" 
+                alt="Partner Logo" 
+                className="h-12 mx-auto opacity-70 hover:opacity-100 transition-opacity"
+              />
             </div>
           </div>
         </div>
