@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
 import CustomizationRequest from "./pages/CustomizationRequest";
+import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
 import ForAgencies from "./pages/ForAgencies";
@@ -47,6 +48,7 @@ const App = () => (
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/customize" element={<CustomizationRequest />} />
                 <Route path="/customize/:id" element={<CustomizationRequest />} />
+                <Route path="/quote/:id" element={<QuoteDetail />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/project/:id" element={<ProjectDetail />} />
                 <Route path="/for-clients" element={<ForClients />} />

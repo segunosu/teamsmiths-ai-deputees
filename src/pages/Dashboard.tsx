@@ -38,12 +38,23 @@ interface CustomizationRequest {
   created_at: string;
 }
 
+interface CustomQuote {
+  id: string;
+  quote_number: string;
+  project_title: string;
+  total_amount: number;
+  status: string;
+  expires_at: string;
+  created_at: string;
+}
+
 const Dashboard = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [projects, setProjects] = useState<Project[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [customizationRequests, setCustomizationRequests] = useState<CustomizationRequest[]>([]);
+  const [customQuotes, setCustomQuotes] = useState<CustomQuote[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -84,9 +95,19 @@ const Dashboard = () => {
 
         if (customizationError) throw customizationError;
 
+        // Fetch user's custom quotes
+        const { data: quotesData, error: quotesError } = await supabase
+          .from('custom_quotes')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (quotesError) throw quotesError;
+
         setProjects(projectsData || []);
         setOrders(ordersData || []);
         setCustomizationRequests(customizationData || []);
+        setCustomQuotes(quotesData || []);
       } catch (error: any) {
         toast({
           title: 'Error loading dashboard',
@@ -184,11 +205,11 @@ const Dashboard = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Customization Requests</CardTitle>
+              <CardTitle className="text-sm font-medium">Custom Quotes</CardTitle>
               <AlertCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{customizationRequests.length}</div>
+              <div className="text-2xl font-bold">{customQuotes.length}</div>
             </CardContent>
           </Card>
         </div>
@@ -198,7 +219,8 @@ const Dashboard = () => {
           <TabsList>
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
-            <TabsTrigger value="customizations">Customizations</TabsTrigger>
+            <TabsTrigger value="quotes">Quotes</TabsTrigger>
+            <TabsTrigger value="customizations">Requests</TabsTrigger>
           </TabsList>
 
           <TabsContent value="projects" className="space-y-4">
@@ -301,6 +323,73 @@ const Dashboard = () => {
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="quotes" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold">Custom Quotes</h2>
+            </div>
+
+            {customQuotes.length === 0 ? (
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="text-center py-8">
+                    <AlertCircle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium mb-2">No quotes yet</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Custom quotes will appear here after we review your customization requests.
+                    </p>
+                    <Button asChild>
+                      <Link to="/customize">Submit Request</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid gap-4">
+                {customQuotes.map((quote) => {
+                  const isExpired = new Date(quote.expires_at) < new Date();
+                  return (
+                    <Card key={quote.id}>
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <CardTitle className="text-lg">{quote.project_title}</CardTitle>
+                            <CardDescription>
+                              Quote #{quote.quote_number}
+                            </CardDescription>
+                            <CardDescription>
+                              Created {new Date(quote.created_at).toLocaleDateString()}
+                            </CardDescription>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-2xl font-bold text-primary mb-2">
+                              £{(quote.total_amount / 100).toLocaleString()}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {getStatusBadge(quote.status)}
+                              {isExpired && <Badge variant="destructive">EXPIRED</Badge>}
+                            </div>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex justify-between items-center">
+                          <div className="text-sm text-muted-foreground">
+                            Expires: {new Date(quote.expires_at).toLocaleDateString()}
+                          </div>
+                          <Button asChild>
+                            <Link to={`/quote/${quote.id}`}>
+                              {quote.status === 'sent' ? 'Review Quote' : 'View Details'}
+                            </Link>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </TabsContent>

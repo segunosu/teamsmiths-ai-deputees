@@ -254,6 +254,155 @@ export type Database = {
           },
         ]
       }
+      custom_project_milestones: {
+        Row: {
+          amount: number
+          created_at: string
+          deliverables: Json | null
+          description: string | null
+          due_date: string | null
+          id: string
+          milestone_number: number
+          paid_at: string | null
+          project_id: string | null
+          quote_id: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          deliverables?: Json | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          milestone_number: number
+          paid_at?: string | null
+          project_id?: string | null
+          quote_id?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          deliverables?: Json | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          milestone_number?: number
+          paid_at?: string | null
+          project_id?: string | null
+          quote_id?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_project_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "custom_project_milestones_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "custom_quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      custom_quotes: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          client_notes: string | null
+          created_at: string
+          created_by: string | null
+          currency: string | null
+          customization_request_id: string | null
+          deliverables: Json
+          estimated_duration: string | null
+          estimated_start_date: string | null
+          expires_at: string | null
+          id: string
+          internal_notes: string | null
+          milestones: Json
+          payment_structure: string | null
+          project_title: string
+          quote_number: string
+          scope_description: string
+          status: string | null
+          total_amount: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          client_notes?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string | null
+          customization_request_id?: string | null
+          deliverables?: Json
+          estimated_duration?: string | null
+          estimated_start_date?: string | null
+          expires_at?: string | null
+          id?: string
+          internal_notes?: string | null
+          milestones?: Json
+          payment_structure?: string | null
+          project_title: string
+          quote_number?: string
+          scope_description: string
+          status?: string | null
+          total_amount: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          client_notes?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string | null
+          customization_request_id?: string | null
+          deliverables?: Json
+          estimated_duration?: string | null
+          estimated_start_date?: string | null
+          expires_at?: string | null
+          id?: string
+          internal_notes?: string | null
+          milestones?: Json
+          payment_structure?: string | null
+          project_title?: string
+          quote_number?: string
+          scope_description?: string
+          status?: string | null
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_quotes_customization_request_id_fkey"
+            columns: ["customization_request_id"]
+            isOneToOne: false
+            referencedRelation: "customization_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customization_requests: {
         Row: {
           additional_context: string | null
@@ -1089,6 +1238,50 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      quote_revisions: {
+        Row: {
+          changes_requested: string
+          created_at: string
+          id: string
+          quote_id: string | null
+          requested_by: string | null
+          revised_amount: number | null
+          revised_scope: string | null
+          revised_timeline: string | null
+          revision_number: number
+        }
+        Insert: {
+          changes_requested: string
+          created_at?: string
+          id?: string
+          quote_id?: string | null
+          requested_by?: string | null
+          revised_amount?: number | null
+          revised_scope?: string | null
+          revised_timeline?: string | null
+          revision_number: number
+        }
+        Update: {
+          changes_requested?: string
+          created_at?: string
+          id?: string
+          quote_id?: string | null
+          requested_by?: string | null
+          revised_amount?: number | null
+          revised_scope?: string | null
+          revised_timeline?: string | null
+          revision_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_revisions_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "custom_quotes"
+            referencedColumns: ["id"]
           },
         ]
       }
