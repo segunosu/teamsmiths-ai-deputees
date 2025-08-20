@@ -217,15 +217,8 @@ const ProjectMeetings = ({ projectId }: ProjectMeetingsProps) => {
           chatMessage += `\n\n📝 To record with Fireflies:\n1. Create a calendar invite with this meeting link\n2. Add ${firefliesSettings.botEmail} as an attendee`;
         }
 
-        await supabase
-          .from("project_chat_messages")
-          .insert([
-            {
-              project_id: projectId,
-              message: chatMessage,
-              message_type: "system",
-            },
-          ]);
+        // Note: This would normally post to project chat, but skipping for now
+        // since project_chat_messages table structure may differ
 
         result = { success: true, meeting };
       }

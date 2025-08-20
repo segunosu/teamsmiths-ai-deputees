@@ -74,20 +74,23 @@ const ForFreelancers = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-background via-background to-muted py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6">
+      <section className="bg-gradient-to-br from-background via-accent/5 to-primary/10 py-32 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto text-center">
+          <h1 className="text-5xl sm:text-7xl font-bold bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent mb-8 leading-tight">
             For Freelancers
           </h1>
-          <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Become a Teamsmith: Command AI Deputees and deliver premium outcomes
+          <p className="text-2xl sm:text-3xl text-muted-foreground mb-6 max-w-4xl mx-auto font-light leading-relaxed">
+            <span className="text-foreground font-medium">Become a Teamsmith:</span>
+          </p>
+          <p className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
+            Command AI Deputees and deliver premium outcomes while focusing on strategy and client success
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button asChild size="lg" className="text-lg px-8 py-6">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+            <Button asChild size="lg" className="text-xl px-12 py-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
               <Link to="/auth">Apply to Join</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+            <Button asChild variant="outline" size="lg" className="text-xl px-12 py-8 rounded-xl border-2 hover:bg-accent/5 transition-all duration-300">
               <Link to="/auth">Learn More</Link>
             </Button>
           </div>
