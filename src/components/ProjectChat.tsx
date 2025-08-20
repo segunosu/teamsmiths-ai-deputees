@@ -5,6 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { MessageSquare, Send, VideoIcon, Link } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
@@ -30,6 +34,14 @@ const ProjectChat: React.FC<ProjectChatProps> = ({ projectId }) => {
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
+  const [showCreateMeetingDialog, setShowCreateMeetingDialog] = useState(false);
+  const [meetingFormData, setMeetingFormData] = useState({
+    title: '',
+    join_url: '',
+    starts_at: '',
+    ends_at: '',
+    recording_consent: false,
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -137,6 +149,67 @@ const ProjectChat: React.FC<ProjectChatProps> = ({ projectId }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const createMeeting = async () => {
+    if (!meetingFormData.title.trim() || !meetingFormData.join_url.trim()) {
+      toast.error('Please fill in the required fields');
+      return;
+    }
+
+    try {
+      // Create meeting record
+      const { data: meeting, error: meetingError } = await supabase
+        .from('meetings')
+        .insert({
+          project_id: projectId,
+          title: meetingFormData.title,
+          provider: 'manual',
+          join_url: meetingFormData.join_url,
+          starts_at: meetingFormData.starts_at || null,
+          ends_at: meetingFormData.ends_at || null,
+          recording_consent: meetingFormData.recording_consent,
+          organizer_user_id: user?.id,
+        })
+        .select()
+        .single();
+
+      if (meetingError) throw meetingError;
+
+      // Post message to chat
+      const { error: messageError } = await supabase
+        .from('project_messages')
+        .insert({
+          project_id: projectId,
+          user_id: user?.id,
+          message: `📅 Meeting created: "${meetingFormData.title}"\n🔗 Join: ${meetingFormData.join_url}${
+            meetingFormData.starts_at ? `\n⏰ Starts: ${new Date(meetingFormData.starts_at).toLocaleString()}` : ''
+          }${
+            meetingFormData.recording_consent ? '\n🎥 Recording consent obtained' : ''
+          }`,
+        });
+
+      if (messageError) console.error('Error posting chat message:', messageError);
+
+      toast.success('Meeting created successfully');
+      setShowCreateMeetingDialog(false);
+      setMeetingFormData({
+        title: '',
+        join_url: '',
+        starts_at: '',
+        ends_at: '',
+        recording_consent: false,
+      });
+    } catch (error) {
+      console.error('Error creating meeting:', error);
+      toast.error('Failed to create meeting');
+    }
+  };
+
+  const copyProjectLink = () => {
+    const projectUrl = `${window.location.origin}/project/${projectId}`;
+    navigator.clipboard.writeText(projectUrl);
+    toast.success('Project link copied to clipboard');
+  };
+
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -167,11 +240,19 @@ const ProjectChat: React.FC<ProjectChatProps> = ({ projectId }) => {
             Project Chat
           </CardTitle>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowCreateMeetingDialog(true)}
+            >
               <VideoIcon className="h-4 w-4 mr-2" />
               Create Meeting
             </Button>
-            <Button variant="outline" size="sm">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={copyProjectLink}
+            >
               <Link className="h-4 w-4 mr-2" />
               Share Link
             </Button>
@@ -254,6 +335,75 @@ const ProjectChat: React.FC<ProjectChatProps> = ({ projectId }) => {
           </div>
         </div>
       </CardContent>
+
+      {/* Meeting Creation Dialog */}
+      <Dialog open={showCreateMeetingDialog} onOpenChange={setShowCreateMeetingDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Create Meeting</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="meeting-title">Meeting Title *</Label>
+              <Input
+                id="meeting-title"
+                value={meetingFormData.title}
+                onChange={(e) => setMeetingFormData({ ...meetingFormData, title: e.target.value })}
+                placeholder="e.g., Project Kickoff"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="meeting-url">Meeting Link *</Label>
+              <Input
+                id="meeting-url"
+                value={meetingFormData.join_url}
+                onChange={(e) => setMeetingFormData({ ...meetingFormData, join_url: e.target.value })}
+                placeholder="https://meet.google.com/..."
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="meeting-start">Start Time (Optional)</Label>
+                <Input
+                  id="meeting-start"
+                  type="datetime-local"
+                  value={meetingFormData.starts_at}
+                  onChange={(e) => setMeetingFormData({ ...meetingFormData, starts_at: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="meeting-end">End Time (Optional)</Label>
+                <Input
+                  id="meeting-end"
+                  type="datetime-local"
+                  value={meetingFormData.ends_at}
+                  onChange={(e) => setMeetingFormData({ ...meetingFormData, ends_at: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="meeting-recording"
+                checked={meetingFormData.recording_consent}
+                onCheckedChange={(checked) => setMeetingFormData({ ...meetingFormData, recording_consent: checked })}
+              />
+              <Label htmlFor="meeting-recording">Recording consent obtained</Label>
+            </div>
+
+            <div className="flex gap-2 pt-4">
+              <Button onClick={createMeeting} className="flex-1">
+                Create Meeting
+              </Button>
+              <Button variant="outline" onClick={() => setShowCreateMeetingDialog(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };
