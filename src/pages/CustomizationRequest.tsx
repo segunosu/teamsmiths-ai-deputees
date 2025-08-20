@@ -7,8 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, Check, Send } from 'lucide-react';
+import { ArrowLeft, Check, Send, Info } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -27,6 +28,7 @@ const CustomizationRequest = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [allowUnauthRequests, setAllowUnauthRequests] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -47,7 +49,22 @@ const CustomizationRequest = () => {
     if (id) {
       fetchProduct();
     }
+    checkAuthSettings();
   }, [id]);
+
+  const checkAuthSettings = async () => {
+    try {
+      const { data } = await supabase
+        .from('admin_settings')
+        .select('setting_value')
+        .eq('setting_key', 'allow_custom_request_without_login')
+        .single();
+      
+      setAllowUnauthRequests(data?.setting_value || false);
+    } catch (error) {
+      console.error('Error checking auth settings:', error);
+    }
+  };
 
   const fetchProduct = async () => {
     if (!id) return;
@@ -77,20 +94,36 @@ const CustomizationRequest = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase
-        .from('customization_requests')
-        .insert({
-          ...formData,
-          user_id: user?.id,
-          product_id: id || null
+      if (user) {
+        // Authenticated user - use direct database insert
+        const { error } = await supabase
+          .from('customization_requests')
+          .insert({
+            ...formData,
+            user_id: user.id,
+            product_id: id || null
+          });
+
+        if (error) throw error;
+      } else {
+        // Unauthenticated user - use edge function
+        const { data, error } = await supabase.functions.invoke('submit-custom-request', {
+          body: {
+            ...formData,
+            product_id: id || null
+          }
         });
 
-      if (error) throw error;
+        if (error) throw error;
+        if (data?.error) throw new Error(data.error);
+      }
 
       setSubmitted(true);
       toast({
         title: "Request Submitted!",
-        description: "We'll review your customization requirements and get back to you within 24 hours.",
+        description: user 
+          ? "We'll review your customization requirements and get back to you within 24 hours."
+          : "We've sent you an email with next steps. Check your inbox for account creation instructions.",
       });
     } catch (error: any) {
       toast({
@@ -117,17 +150,53 @@ const CustomizationRequest = () => {
             </div>
             <h1 className="text-3xl font-bold mb-4">Request Submitted!</h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Thank you for your customization request. Our team will review your requirements and contact you within 24 hours.
+              {user 
+                ? "Thank you for your customization request. Our team will review your requirements and contact you within 24 hours."
+                : "We've sent you an email with account creation instructions. Please check your inbox to track your request progress."
+              }
             </p>
             <div className="space-y-4">
               <Button asChild size="lg">
                 <Link to="/catalog">Browse More Templates</Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link to="/dashboard">View My Requests</Link>
-              </Button>
+              {user && (
+                <Button asChild variant="outline" size="lg">
+                  <Link to="/dashboard">View My Requests</Link>
+                </Button>
+              )}
+              {!user && (
+                <Button asChild variant="outline" size="lg">
+                  <Link to="/auth">Create Account</Link>
+                </Button>
+              )}
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if user needs to login for requests
+  if (!user && !allowUnauthRequests) {
+    return (
+      <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <Card>
+            <CardHeader>
+              <CardTitle>Account Required</CardTitle>
+              <CardDescription>
+                Please create an account or sign in to submit a customization request
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Button asChild size="lg" className="w-full">
+                <Link to="/auth?flow=signup">Create Account</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="w-full">
+                <Link to="/auth">Sign In</Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
@@ -145,6 +214,16 @@ const CustomizationRequest = () => {
             </Link>
           </Button>
         </div>
+
+        {/* Guest user notice */}
+        {!user && allowUnauthRequests && (
+          <Alert className="mb-6">
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              You're submitting as a guest. We'll send you an email with instructions to create an account and track your request progress.
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Form */}

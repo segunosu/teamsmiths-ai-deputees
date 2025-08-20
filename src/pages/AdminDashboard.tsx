@@ -9,9 +9,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };
+  allow_custom_request_without_login: boolean;
 }
 
 interface QuoteForReview {
@@ -55,7 +58,10 @@ const AdminDashboard = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [settings, setSettings] = useState<AdminSettings>({ quote_approval_threshold: { amount: 5000, currency: 'gbp' } });
+  const [settings, setSettings] = useState<AdminSettings>({ 
+    quote_approval_threshold: { amount: 5000, currency: 'gbp' },
+    allow_custom_request_without_login: false
+  });
   const [quotesForReview, setQuotesForReview] = useState<QuoteForReview[]>([]);
   const [projects, setProjects] = useState<ProjectOverview[]>([]);
   const [deliverablesForQA, setDeliverablesForQA] = useState<DeliverableForQA[]>([]);
@@ -163,9 +169,10 @@ const AdminDashboard = () => {
     }
   };
 
-  const updateThreshold = async () => {
+  const updateSettings = async () => {
     try {
-      const { error } = await supabase
+      // Update quote approval threshold
+      const { error: thresholdError } = await supabase
         .from('admin_settings')
         .upsert({
           setting_key: 'quote_approval_threshold',
@@ -173,13 +180,24 @@ const AdminDashboard = () => {
           updated_by: user?.id
         });
 
-      if (error) throw error;
+      if (thresholdError) throw thresholdError;
 
-      toast.success('Threshold updated successfully');
+      // Update allow custom request without login
+      const { error: toggleError } = await supabase
+        .from('admin_settings')
+        .upsert({
+          setting_key: 'allow_custom_request_without_login',
+          setting_value: settings.allow_custom_request_without_login,
+          updated_by: user?.id
+        });
+
+      if (toggleError) throw toggleError;
+
+      toast.success('Settings updated successfully');
       await loadAdminData();
     } catch (error) {
-      console.error('Error updating threshold:', error);
-      toast.error('Failed to update threshold');
+      console.error('Error updating settings:', error);
+      toast.error('Failed to update settings');
     }
   };
 
