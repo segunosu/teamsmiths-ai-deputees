@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_settings: {
+        Row: {
+          id: string
+          setting_key: string
+          setting_value: Json
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          id?: string
+          setting_key: string
+          setting_value: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          id?: string
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       agencies: {
         Row: {
           created_at: string | null
@@ -468,6 +492,53 @@ export type Database = {
           },
         ]
       }
+      deliverable_files: {
+        Row: {
+          deliverable_id: string
+          file_name: string
+          file_size: number | null
+          file_type: string | null
+          id: string
+          notes: string | null
+          storage_path: string
+          uploaded_at: string
+          uploaded_by: string
+          version_number: number
+        }
+        Insert: {
+          deliverable_id: string
+          file_name: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          notes?: string | null
+          storage_path: string
+          uploaded_at?: string
+          uploaded_by: string
+          version_number?: number
+        }
+        Update: {
+          deliverable_id?: string
+          file_name?: string
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          notes?: string | null
+          storage_path?: string
+          uploaded_at?: string
+          uploaded_by?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deliverable_files_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
+            referencedRelation: "project_deliverables"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       deliverable_versions: {
         Row: {
           created_at: string | null
@@ -701,6 +772,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read_at: string | null
+          related_id: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read_at?: string | null
+          related_id?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read_at?: string | null
+          related_id?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       orders: {
         Row: {
@@ -952,6 +1056,69 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      project_deliverables: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          milestone_id: string | null
+          project_id: string
+          rejection_reason: string | null
+          status: string
+          submitted_at: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id: string
+          rejection_reason?: string | null
+          status?: string
+          submitted_at?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          milestone_id?: string | null
+          project_id?: string
+          rejection_reason?: string | null
+          status?: string
+          submitted_at?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_deliverables_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_deliverables_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       project_files: {
         Row: {
@@ -1407,6 +1574,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_notification: {
+        Args: {
+          p_message: string
+          p_related_id?: string
+          p_title: string
+          p_type: string
+          p_user_id: string
+        }
+        Returns: string
+      }
       get_project_id_from_deliverable: {
         Args: { _deliverable_id: string }
         Returns: string
