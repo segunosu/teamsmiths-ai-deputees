@@ -193,22 +193,25 @@ const Catalog = () => {
               
               <CardContent className="flex-1 flex flex-col">
                 <div className="mb-4">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
                     <Clock className="h-4 w-4" />
                     <span>{product.timeline}</span>
                   </div>
-                  
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-sm font-medium">
-                      <Package className="h-4 w-4" />
-                      <span>Deliverables:</span>
-                    </div>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6 list-disc">
-                      {formatDeliverables(product.deliverables).map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
+                  <div className="text-xs text-primary/70 ml-6">
+                    Fast track available - contact for expedited delivery
                   </div>
+                </div>
+                
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    <Package className="h-4 w-4" />
+                    <span>Deliverables:</span>
+                  </div>
+                  <ul className="text-sm text-muted-foreground space-y-1 ml-6 list-disc">
+                    {formatDeliverables(product.deliverables).map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
                 </div>
 
                 {product.tags && product.tags.length > 0 && (
