@@ -79,7 +79,7 @@ const ForAgencies = () => {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-background via-primary/5 to-muted py-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-8 leading-tight">
+          <h1 className="text-5xl sm:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-8 leading-normal">
             For Agencies
           </h1>
           <p className="text-2xl sm:text-3xl text-muted-foreground mb-6 max-w-4xl mx-auto font-light leading-relaxed">
