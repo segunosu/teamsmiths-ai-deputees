@@ -71,7 +71,7 @@ const Home = () => {
                 <Link to="/catalog">View Templates</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-                <Link to="/auth">Book 15-min Intro</Link>
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book 15-min Intro</a>
               </Button>
             </div>
 

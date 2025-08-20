@@ -67,9 +67,14 @@ const ProjectDetail = () => {
           )
         `)
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (projectError) throw projectError;
+
+      if (!projectData) {
+        setProject(null);
+        return;
+      }
 
       setProject(projectData);
 
