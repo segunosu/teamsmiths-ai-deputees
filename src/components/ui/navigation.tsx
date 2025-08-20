@@ -65,7 +65,8 @@ export const Navigation = () => {
               <img 
                 src="/lovable-uploads/3d9c4cdc-7ba2-4bf6-b47d-5db419081ab7.png" 
                 alt="Teamsmiths AI Logo" 
-                className="h-8 w-auto"
+                className="w-auto" 
+                style={{ height: '36.8px' }}
               />
             </Link>
           </div>
