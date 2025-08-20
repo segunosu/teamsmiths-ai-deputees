@@ -25,12 +25,12 @@ const ForClients = () => {
   ];
 
   const securityFeatures = [
-    "Your data stays in your systems (scoped RAG)",
-    "SOC 2 Type II compliant infrastructure",
-    "End-to-end encryption for all communications",
-    "GDPR compliant data handling",
-    "Regular security audits and penetration testing",
-    "Role-based access controls"
+    "Encrypted data transmission with SSL/TLS security protocols",
+    "Row-level access controls ensuring complete data isolation", 
+    "Role-based permissions with admin/user separation",
+    "Secure authentication with session management",
+    "GDPR-ready data policies with proper access controls",
+    "Automated security enforcement preventing unauthorized access"
   ];
 
   const qaProcess = [
@@ -117,7 +117,7 @@ const ForClients = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              Enterprise-Grade Security
+              Production-Ready Security
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Your data and intellectual property are protected at every step
@@ -138,9 +138,9 @@ const ForClients = () => {
             <div className="text-center">
               <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8">
                 <Shield className="h-24 w-24 text-primary mx-auto mb-6" />
-                <h3 className="text-2xl font-bold mb-4">Bank-Level Security</h3>
+                <h3 className="text-2xl font-bold mb-4">Professional Data Protection</h3>
                 <p className="text-muted-foreground">
-                  We use the same security standards as major financial institutions to protect your data.
+                  Enterprise-class security implementation without the enterprise complexity
                 </p>
               </div>
             </div>
