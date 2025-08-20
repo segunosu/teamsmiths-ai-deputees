@@ -11,6 +11,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Helper logging function for debugging
+const logStep = (step: string, details?: any) => {
+  const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
+  console.log(`[CREATE-PAYMENT] ${step}${detailsStr}`);
+};
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -24,82 +30,142 @@ serve(async (req) => {
   );
 
   try {
+    logStep("Function started");
+
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
-    if (!stripeKey) throw new Error("Stripe secret key not configured");
+    if (!stripeKey) {
+      logStep("ERROR: Stripe secret key not configured");
+      throw new Error("Payment system not configured. Please contact support.");
+    }
+    logStep("Stripe key verified");
 
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("Not authenticated");
-    const token = authHeader.replace("Bearer ", "");
-
-    // Get current user
-    const { data: userData, error: userError } = await supabaseAnon.auth.getUser(token);
-    if (userError) throw new Error(`Auth error: ${userError.message}`);
-    const user = userData.user;
-    if (!user?.email) throw new Error("User email not available");
-
-    // Parse body
-    const body = await req.json().catch(() => ({}));
+    // Parse body early for validation
+    const body = await req.json().catch(() => {
+      logStep("ERROR: Invalid JSON body");
+      throw new Error("Invalid request format");
+    });
+    
     const productId: string | undefined = body?.product_id;
-    if (!productId) throw new Error("product_id is required");
+    const guestEmail: string | undefined = body?.email;
+    
+    if (!productId) {
+      logStep("ERROR: Missing product_id");
+      throw new Error("Product ID is required");
+    }
+    logStep("Request validated", { productId, hasGuestEmail: !!guestEmail });
+
+    // Handle authentication (optional for guest checkout)
+    let user = null;
+    let customerEmail = guestEmail;
+    
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader) {
+      const token = authHeader.replace("Bearer ", "");
+      const { data: userData, error: userError } = await supabaseAnon.auth.getUser(token);
+      if (!userError && userData.user?.email) {
+        user = userData.user;
+        customerEmail = user.email;
+        logStep("User authenticated", { userId: user.id, email: user.email });
+      }
+    }
+
+    if (!customerEmail) {
+      logStep("ERROR: No email available");
+      throw new Error("Email is required for checkout");
+    }
 
     // Fetch product details (products are publicly viewable when is_active = true)
     const { data: product, error: productError } = await supabaseAnon
       .from("products")
-      .select("id, title, base_price")
+      .select("id, title, base_price, stripe_price_id")
       .eq("id", productId)
       .eq("is_active", true)
       .single();
 
-    if (productError) throw new Error(`Product error: ${productError.message}`);
-    if (!product) throw new Error("Product not found or inactive");
-
-    // base_price is stored in minor units (pence), Catalog divides by 100 for display
-    const unitAmount = Number(product.base_price);
-    if (!Number.isFinite(unitAmount) || unitAmount <= 0) {
-      throw new Error("Invalid product price");
+    if (productError) {
+      logStep("ERROR: Product query failed", { error: productError.message });
+      throw new Error("Failed to find product");
     }
+    if (!product) {
+      logStep("ERROR: Product not found or inactive");
+      throw new Error("Product not found or unavailable");
+    }
+    logStep("Product found", { title: product.title, price: product.base_price, hasPriceId: !!product.stripe_price_id });
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
 
-    // Ensure a Stripe customer exists (idempotent by email)
-    const customers = await stripe.customers.list({ email: user.email!, limit: 1 });
+    // Find or create Stripe customer
+    const customers = await stripe.customers.list({ email: customerEmail, limit: 1 });
     const customerId = customers.data[0]?.id;
+    logStep("Customer lookup", { customerId, email: customerEmail });
 
     const origin = req.headers.get("origin") || "https://iyqsbjawaampgcavsgcz.supabase.co";
 
-    const session = await stripe.checkout.sessions.create({
+    // Create checkout session - prefer Stripe Price ID if available
+    let sessionData: any = {
       customer: customerId,
-      customer_email: customerId ? undefined : user.email!,
+      customer_email: customerId ? undefined : customerEmail,
       mode: "payment",
-      line_items: [
-        {
-          price_data: {
-            currency: "gbp",
-            product_data: { name: product.title },
-            unit_amount: unitAmount,
-          },
-          quantity: 1,
-        },
-      ],
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/payment-canceled`,
       allow_promotion_codes: true,
       metadata: {
         product_id: product.id,
         product_title: product.title,
-        user_id: user.id,
+        user_id: user?.id || "guest",
       },
-    });
+    };
 
-    return new Response(JSON.stringify({ url: session.url }), {
+    if (product.stripe_price_id) {
+      // Use Stripe Price ID (recommended)
+      sessionData.line_items = [
+        {
+          price: product.stripe_price_id,
+          quantity: 1,
+        },
+      ];
+      logStep("Using Stripe Price ID", { priceId: product.stripe_price_id });
+    } else {
+      // Fallback to price_data
+      const unitAmount = Number(product.base_price);
+      if (!Number.isFinite(unitAmount) || unitAmount <= 0) {
+        logStep("ERROR: Invalid product price", { basePrice: product.base_price });
+        throw new Error("Product price is invalid");
+      }
+      
+      sessionData.line_items = [
+        {
+          price_data: {
+            currency: "gbp",
+            product_data: { name: product.title },
+            unit_amount: unitAmount, // Already in pence from DB
+          },
+          quantity: 1,
+        },
+      ];
+      logStep("Using price_data fallback", { unitAmount });
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionData);
+    logStep("Checkout session created", { sessionId: session.id, url: session.url });
+
+    return new Response(JSON.stringify({ ok: true, url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return new Response(JSON.stringify({ error: message }), {
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    const stack = (error as any)?.stack;
+    
+    logStep("ERROR in create-payment", { message, stack });
+    
+    return new Response(JSON.stringify({ 
+      ok: false, 
+      error: message,
+      code: 'PAYMENT_ERROR'
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
+      status: 400,
     });
   }
 });

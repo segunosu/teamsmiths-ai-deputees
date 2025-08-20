@@ -14,7 +14,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };
-  allow_custom_request_without_login: boolean;
 }
 
 interface QuoteForReview {
@@ -59,8 +58,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [settings, setSettings] = useState<AdminSettings>({ 
-    quote_approval_threshold: { amount: 5000, currency: 'gbp' },
-    allow_custom_request_without_login: false
+    quote_approval_threshold: { amount: 5000, currency: 'gbp' }
   });
   const [quotesForReview, setQuotesForReview] = useState<QuoteForReview[]>([]);
   const [projects, setProjects] = useState<ProjectOverview[]>([]);
@@ -100,18 +98,27 @@ const AdminDashboard = () => {
 
   const loadAdminData = async () => {
     try {
-      // Load admin settings
+      // Load admin settings (only quote_approval_threshold)
       const { data: settingsData } = await supabase
         .from('admin_settings')
-        .select('setting_key, setting_value');
+        .select('setting_key, setting_value')
+        .eq('setting_key', 'quote_approval_threshold');
 
-      if (settingsData) {
-        const settingsObj: any = {};
-        settingsData.forEach(setting => {
-          settingsObj[setting.setting_key] = setting.setting_value;
+      if (settingsData && settingsData.length > 0) {
+        const thresholdValue = settingsData[0].setting_value as { amount: number; currency: string };
+        setSettings({
+          quote_approval_threshold: thresholdValue || { amount: 5000, currency: 'gbp' }
         });
-        setSettings(settingsObj);
       }
+
+      // Ensure allow_custom_request_without_login is always true (hidden from UI)
+      await supabase
+        .from('admin_settings')
+        .upsert({
+          setting_key: 'allow_custom_request_without_login',
+          setting_value: true,
+          updated_by: user?.id
+        });
 
       // Load quotes needing review (above threshold)  
       const threshold = settings.quote_approval_threshold?.amount || 5000;
@@ -171,7 +178,7 @@ const AdminDashboard = () => {
 
   const updateSettings = async () => {
     try {
-      // Update quote approval threshold
+      // Update quote approval threshold only
       const { error: thresholdError } = await supabase
         .from('admin_settings')
         .upsert({
@@ -181,17 +188,6 @@ const AdminDashboard = () => {
         });
 
       if (thresholdError) throw thresholdError;
-
-      // Update allow custom request without login
-      const { error: toggleError } = await supabase
-        .from('admin_settings')
-        .upsert({
-          setting_key: 'allow_custom_request_without_login',
-          setting_value: settings.allow_custom_request_without_login,
-          updated_by: user?.id
-        });
-
-      if (toggleError) throw toggleError;
 
       toast.success('Settings updated successfully');
       await loadAdminData();

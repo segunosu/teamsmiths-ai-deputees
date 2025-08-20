@@ -93,17 +93,30 @@ const Catalog = () => {
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: { product_id: product.id },
       });
-      if (error) throw error;
+      
+      // Handle edge function errors
+      if (error) {
+        console.error('Edge function error:', error);
+        throw new Error(error.message || 'Failed to initiate checkout');
+      }
+      
+      // Handle structured error responses from edge function
+      if (data && !data.ok) {
+        console.error('Payment error:', data);
+        throw new Error(data.error || 'Payment system error');
+      }
+      
       if (data?.url) {
         // Open Stripe checkout in a new tab
         window.open(data.url, '_blank');
       } else {
-        throw new Error('Failed to create checkout session');
+        throw new Error('No checkout URL received. Please try again.');
       }
     } catch (err: any) {
+      console.error('Checkout error:', err);
       toast({
         title: 'Checkout failed',
-        description: err.message || 'Please try again.',
+        description: err.message || 'Please contact support if this persists.',
         variant: 'destructive',
       });
     } finally {

@@ -980,6 +980,7 @@ export type Database = {
           id: string
           is_active: boolean | null
           is_fixed_scope: boolean | null
+          stripe_price_id: string | null
           subcategory_id: string | null
           tags: string[] | null
           timeline: string | null
@@ -994,6 +995,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           is_fixed_scope?: boolean | null
+          stripe_price_id?: string | null
           subcategory_id?: string | null
           tags?: string[] | null
           timeline?: string | null
@@ -1008,6 +1010,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           is_fixed_scope?: boolean | null
+          stripe_price_id?: string | null
           subcategory_id?: string | null
           tags?: string[] | null
           timeline?: string | null
