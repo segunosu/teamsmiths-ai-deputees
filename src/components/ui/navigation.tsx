@@ -2,8 +2,10 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { LogOut, User, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { LogOut, User, Menu, X, Shield } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import NotificationSystem from '@/components/NotificationSystem';
+import { supabase } from '@/integrations/supabase/client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +18,23 @@ export const Navigation = () => {
   const { user, signOut } = useAuth();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('user_id', user.id)
+          .single();
+        
+        setIsAdmin(data?.is_admin || false);
+      }
+    };
+
+    checkAdminStatus();
+  }, [user]);
 
   const navItems = [
     { label: 'Home', path: '/' },
