@@ -406,6 +406,7 @@ export type Database = {
         Row: {
           ci_assessment: Json | null
           company: string | null
+          created_by: string | null
           email: string
           first_name: string | null
           funnel_stages: string[] | null
@@ -419,6 +420,7 @@ export type Database = {
         Insert: {
           ci_assessment?: Json | null
           company?: string | null
+          created_by?: string | null
           email: string
           first_name?: string | null
           funnel_stages?: string[] | null
@@ -432,6 +434,7 @@ export type Database = {
         Update: {
           ci_assessment?: Json | null
           company?: string | null
+          created_by?: string | null
           email?: string
           first_name?: string | null
           funnel_stages?: string[] | null
