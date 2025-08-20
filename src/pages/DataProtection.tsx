@@ -65,7 +65,7 @@ const DataProtection = () => {
               To exercise your rights or for any data protection queries, contact our DPO:
             </p>
             <p className="mt-2">
-              Email: dpo@teamsmiths-ai-deputees.com
+              Email: dpo@teamsmiths.ai
             </p>
           </section>
         </div>

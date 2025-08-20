@@ -58,7 +58,7 @@ const TermsOfService = () => {
               For questions about these Terms of Service, please contact us at:
             </p>
             <p className="mt-2">
-              Email: legal@teamsmiths-ai-deputees.com
+              Email: legal@teamsmiths.ai
             </p>
           </section>
         </div>

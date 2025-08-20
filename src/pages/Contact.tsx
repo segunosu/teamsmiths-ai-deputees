@@ -10,22 +10,22 @@ const Contact = () => {
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium text-foreground mb-2">General Inquiries</h3>
-                <p className="text-muted-foreground">hello@teamsmiths-ai-deputees.com</p>
+                <p className="text-muted-foreground">hello@teamsmiths.ai</p>
               </div>
               
               <div>
                 <h3 className="text-lg font-medium text-foreground mb-2">Sales</h3>
-                <p className="text-muted-foreground">sales@teamsmiths-ai-deputees.com</p>
+                <p className="text-muted-foreground">sales@teamsmiths.ai</p>
               </div>
               
               <div>
                 <h3 className="text-lg font-medium text-foreground mb-2">Support</h3>
-                <p className="text-muted-foreground">support@teamsmiths-ai-deputees.com</p>
+                <p className="text-muted-foreground">support@teamsmiths.ai</p>
               </div>
               
               <div>
                 <h3 className="text-lg font-medium text-foreground mb-2">Partnership Opportunities</h3>
-                <p className="text-muted-foreground">partnerships@teamsmiths-ai-deputees.com</p>
+                <p className="text-muted-foreground">partnerships@teamsmiths.ai</p>
               </div>
             </div>
           </div>

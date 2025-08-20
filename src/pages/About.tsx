@@ -57,7 +57,7 @@ const About = () => {
               how we can help you achieve your goals.
             </p>
             <p className="mt-2">
-              Email: hello@teamsmiths-ai-deputees.com
+              Email: hello@teamsmiths.ai
             </p>
           </section>
         </div>

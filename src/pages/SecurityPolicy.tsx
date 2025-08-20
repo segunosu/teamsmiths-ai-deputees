@@ -70,7 +70,7 @@ const SecurityPolicy = () => {
               If you discover a security vulnerability, please report it to our security team:
             </p>
             <p className="mt-2">
-              Email: security@teamsmiths-ai-deputees.com
+              Email: security@teamsmiths.ai
             </p>
             <p className="mt-2">
               We appreciate responsible disclosure and will work with you to address any issues promptly.

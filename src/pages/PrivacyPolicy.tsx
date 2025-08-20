@@ -56,7 +56,7 @@ const PrivacyPolicy = () => {
               If you have any questions about this Privacy Policy, please contact us at:
             </p>
             <p className="mt-2">
-              Email: privacy@teamsmiths-ai-deputees.com
+              Email: privacy@teamsmiths.ai
             </p>
           </section>
         </div>

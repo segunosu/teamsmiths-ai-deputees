@@ -88,7 +88,7 @@ const Compliance = () => {
               please contact our compliance team:
             </p>
             <p className="mt-2">
-              Email: compliance@teamsmiths-ai-deputees.com
+              Email: compliance@teamsmiths.ai
             </p>
           </section>
         </div>
