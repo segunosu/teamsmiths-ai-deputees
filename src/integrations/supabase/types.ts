@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_scheduled_reports: {
+        Row: {
+          cadence: string
+          created_at: string | null
+          filters: Json
+          id: string
+          is_active: boolean | null
+          last_run_at: string | null
+          owner_user_id: string | null
+          report_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          cadence: string
+          created_at?: string | null
+          filters?: Json
+          id?: string
+          is_active?: boolean | null
+          last_run_at?: string | null
+          owner_user_id?: string | null
+          report_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          cadence?: string
+          created_at?: string | null
+          filters?: Json
+          id?: string
+          is_active?: boolean | null
+          last_run_at?: string | null
+          owner_user_id?: string | null
+          report_type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_scheduled_reports_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "admin_scheduled_reports_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       admin_settings: {
         Row: {
           id: string
@@ -68,6 +119,13 @@ export type Database = {
             foreignKeyName: "agencies_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "agencies_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
@@ -97,8 +155,22 @@ export type Database = {
             foreignKeyName: "agency_members_agency_id_fkey"
             columns: ["agency_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_agencies"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "agency_members_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
             referencedRelation: "agencies"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "agency_members_user_id_fkey"
@@ -136,8 +208,22 @@ export type Database = {
             foreignKeyName: "agency_payout_splits_agency_id_fkey"
             columns: ["agency_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_agencies"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "agency_payout_splits_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
             referencedRelation: "agencies"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agency_payout_splits_member_user_id_fkey"
+            columns: ["member_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "agency_payout_splits_member_user_id_fkey"
@@ -150,8 +236,60 @@ export type Database = {
             foreignKeyName: "agency_payout_splits_milestone_id_fkey"
             columns: ["milestone_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_milestones"
+            referencedColumns: ["milestone_id"]
+          },
+          {
+            foreignKeyName: "agency_payout_splits_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
             referencedRelation: "milestones"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_log: {
+        Row: {
+          action: string
+          created_at: string | null
+          entity: string
+          entity_id: string | null
+          id: string
+          meta: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          entity: string
+          entity_id?: string | null
+          id?: string
+          meta?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          entity?: string
+          entity_id?: string | null
+          id?: string
+          meta?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "audit_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -199,6 +337,13 @@ export type Database = {
           status?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "change_orders_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
           {
             foreignKeyName: "change_orders_project_id_fkey"
             columns: ["project_id"]
@@ -273,6 +418,13 @@ export type Database = {
             foreignKeyName: "chat_sessions_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "chat_sessions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
@@ -332,8 +484,22 @@ export type Database = {
             foreignKeyName: "custom_project_milestones_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "custom_project_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "custom_project_milestones_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_quotes"
+            referencedColumns: ["quote_id"]
           },
           {
             foreignKeyName: "custom_project_milestones_quote_id_fkey"
@@ -418,6 +584,13 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "custom_quotes_customization_request_id_fkey"
+            columns: ["customization_request_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_requests"
+            referencedColumns: ["request_id"]
+          },
           {
             foreignKeyName: "custom_quotes_customization_request_id_fkey"
             columns: ["customization_request_id"]
@@ -534,6 +707,13 @@ export type Database = {
             foreignKeyName: "deliverable_files_deliverable_id_fkey"
             columns: ["deliverable_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_project_deliverables"
+            referencedColumns: ["deliverable_id"]
+          },
+          {
+            foreignKeyName: "deliverable_files_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
             referencedRelation: "project_deliverables"
             referencedColumns: ["id"]
           },
@@ -569,8 +749,22 @@ export type Database = {
             foreignKeyName: "deliverable_versions_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "deliverable_versions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "deliverable_versions_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_deliverables"
+            referencedColumns: ["deliverable_id"]
           },
           {
             foreignKeyName: "deliverable_versions_deliverable_id_fkey"
@@ -611,8 +805,22 @@ export type Database = {
             foreignKeyName: "deliverables_milestone_id_fkey"
             columns: ["milestone_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_milestones"
+            referencedColumns: ["milestone_id"]
+          },
+          {
+            foreignKeyName: "deliverables_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
             referencedRelation: "milestones"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deliverables_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "deliverables_project_id_fkey"
@@ -678,6 +886,13 @@ export type Database = {
           title?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "documents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
           {
             foreignKeyName: "documents_project_id_fkey"
             columns: ["project_id"]
@@ -774,6 +989,13 @@ export type Database = {
             foreignKeyName: "invite_status_request_id_fkey"
             columns: ["request_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_requests"
+            referencedColumns: ["request_id"]
+          },
+          {
+            foreignKeyName: "invite_status_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
             referencedRelation: "customization_requests"
             referencedColumns: ["id"]
           },
@@ -854,6 +1076,13 @@ export type Database = {
             foreignKeyName: "matching_snapshots_request_id_fkey"
             columns: ["request_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_requests"
+            referencedColumns: ["request_id"]
+          },
+          {
+            foreignKeyName: "matching_snapshots_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
             referencedRelation: "customization_requests"
             referencedColumns: ["id"]
           },
@@ -907,6 +1136,13 @@ export type Database = {
             foreignKeyName: "meetings_milestone_id_fkey"
             columns: ["milestone_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_milestones"
+            referencedColumns: ["milestone_id"]
+          },
+          {
+            foreignKeyName: "meetings_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
             referencedRelation: "milestones"
             referencedColumns: ["id"]
           },
@@ -914,8 +1150,22 @@ export type Database = {
             foreignKeyName: "meetings_organizer_user_id_fkey"
             columns: ["organizer_user_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "meetings_organizer_user_id_fkey"
+            columns: ["organizer_user_id"]
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "meetings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "meetings_project_id_fkey"
@@ -958,6 +1208,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
           {
             foreignKeyName: "milestones_project_id_fkey"
             columns: ["project_id"]
@@ -1060,8 +1317,22 @@ export type Database = {
             foreignKeyName: "org_members_org_id_fkey"
             columns: ["org_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_client_orgs"
+            referencedColumns: ["org_id"]
+          },
+          {
+            foreignKeyName: "org_members_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
             referencedRelation: "orgs"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "org_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "org_members_user_id_fkey"
@@ -1123,8 +1394,22 @@ export type Database = {
             foreignKeyName: "payment_intents_milestone_id_fkey"
             columns: ["milestone_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_milestones"
+            referencedColumns: ["milestone_id"]
+          },
+          {
+            foreignKeyName: "payment_intents_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
             referencedRelation: "milestones"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_intents_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "payment_intents_project_id_fkey"
@@ -1305,8 +1590,22 @@ export type Database = {
             foreignKeyName: "project_deliverables_milestone_id_fkey"
             columns: ["milestone_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_milestones"
+            referencedColumns: ["milestone_id"]
+          },
+          {
+            foreignKeyName: "project_deliverables_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
             referencedRelation: "milestones"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_deliverables_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
           },
           {
             foreignKeyName: "project_deliverables_project_id_fkey"
@@ -1350,8 +1649,22 @@ export type Database = {
             foreignKeyName: "project_files_deliverable_id_fkey"
             columns: ["deliverable_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_deliverables"
+            referencedColumns: ["deliverable_id"]
+          },
+          {
+            foreignKeyName: "project_files_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
             referencedRelation: "deliverables"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_files_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_milestones"
+            referencedColumns: ["milestone_id"]
           },
           {
             foreignKeyName: "project_files_milestone_id_fkey"
@@ -1364,8 +1677,22 @@ export type Database = {
             foreignKeyName: "project_files_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_files_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_files_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "project_files_uploaded_by_fkey"
@@ -1415,6 +1742,13 @@ export type Database = {
             foreignKeyName: "project_insights_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_insights_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
@@ -1447,8 +1781,22 @@ export type Database = {
             foreignKeyName: "project_messages_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_messages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_messages_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "project_messages_user_id_fkey"
@@ -1480,8 +1828,22 @@ export type Database = {
             foreignKeyName: "project_participants_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_participants_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "project_participants_user_id_fkey"
@@ -1537,8 +1899,22 @@ export type Database = {
             foreignKeyName: "projects_agency_id_fkey"
             columns: ["agency_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_agencies"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "projects_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
             referencedRelation: "agencies"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_client_orgs"
+            referencedColumns: ["org_id"]
           },
           {
             foreignKeyName: "projects_org_id_fkey"
@@ -1553,6 +1929,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "product_snapshots"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_teamsmith_user_id_fkey"
+            columns: ["teamsmith_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "projects_teamsmith_user_id_fkey"
@@ -1593,8 +1976,22 @@ export type Database = {
             foreignKeyName: "qa_reviews_deliverable_id_fkey"
             columns: ["deliverable_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_deliverables"
+            referencedColumns: ["deliverable_id"]
+          },
+          {
+            foreignKeyName: "qa_reviews_deliverable_id_fkey"
+            columns: ["deliverable_id"]
+            isOneToOne: false
             referencedRelation: "deliverables"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qa_reviews_reviewer_user_id_fkey"
+            columns: ["reviewer_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "qa_reviews_reviewer_user_id_fkey"
@@ -1640,6 +2037,13 @@ export type Database = {
           revision_number?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "quote_revisions_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_quotes"
+            referencedColumns: ["quote_id"]
+          },
           {
             foreignKeyName: "quote_revisions_quote_id_fkey"
             columns: ["quote_id"]
@@ -1699,6 +2103,13 @@ export type Database = {
           validity_until?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "standardized_quotes_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_requests"
+            referencedColumns: ["request_id"]
+          },
           {
             foreignKeyName: "standardized_quotes_request_id_fkey"
             columns: ["request_id"]
@@ -1767,6 +2178,13 @@ export type Database = {
             foreignKeyName: "teamsmiths_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "teamsmiths_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
@@ -1802,6 +2220,13 @@ export type Database = {
             foreignKeyName: "transcripts_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "transcripts_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
             referencedRelation: "projects"
             referencedColumns: ["id"]
           },
@@ -1827,9 +2252,563 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      admin_v_agencies: {
+        Row: {
+          active_projects: number | null
+          agency_id: string | null
+          completed_projects: number | null
+          created_at: string | null
+          members: number | null
+          name: string | null
+          website: string | null
+        }
+        Relationships: []
+      }
+      admin_v_client_orgs: {
+        Row: {
+          active_projects: number | null
+          billing_email: string | null
+          completed_projects: number | null
+          created_at: string | null
+          gross_value_gbp: number | null
+          name: string | null
+          org_id: string | null
+          total_projects: number | null
+        }
+        Relationships: []
+      }
+      admin_v_custom_milestones: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          due_date: string | null
+          milestone_id: string | null
+          paid_at: string | null
+          project_id: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          title: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          due_date?: string | null
+          milestone_id?: string | null
+          paid_at?: string | null
+          project_id?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          title?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          due_date?: string | null
+          milestone_id?: string | null
+          paid_at?: string | null
+          project_id?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_project_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "custom_project_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_v_deliverables: {
+        Row: {
+          created_at: string | null
+          deliverable_id: string | null
+          last_qa_decision: string | null
+          last_updated: string | null
+          milestone_id: string | null
+          project_id: string | null
+          status: string | null
+          title: string | null
+          versions: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          deliverable_id?: string | null
+          last_qa_decision?: never
+          last_updated?: never
+          milestone_id?: string | null
+          project_id?: string | null
+          status?: string | null
+          title?: string | null
+          versions?: never
+        }
+        Update: {
+          created_at?: string | null
+          deliverable_id?: string | null
+          last_qa_decision?: never
+          last_updated?: never
+          milestone_id?: string | null
+          project_id?: string | null
+          status?: string | null
+          title?: string | null
+          versions?: never
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deliverables_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_milestones"
+            referencedColumns: ["milestone_id"]
+          },
+          {
+            foreignKeyName: "deliverables_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deliverables_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "deliverables_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_v_freelancers: {
+        Row: {
+          active_projects: number | null
+          availability_weekly_hours: number | null
+          completed_projects: number | null
+          created_at: string | null
+          csat_avg: number | null
+          email: string | null
+          full_name: string | null
+          price_band_max: number | null
+          price_band_min: number | null
+          skills: string[] | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      admin_v_meetings: {
+        Row: {
+          created_at: string | null
+          ends_at: string | null
+          join_url: string | null
+          meeting_id: string | null
+          organizer_user_id: string | null
+          project_id: string | null
+          provider: string | null
+          recording_consent: boolean | null
+          starts_at: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          ends_at?: string | null
+          join_url?: string | null
+          meeting_id?: string | null
+          organizer_user_id?: string | null
+          project_id?: string | null
+          provider?: string | null
+          recording_consent?: boolean | null
+          starts_at?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          ends_at?: string | null
+          join_url?: string | null
+          meeting_id?: string | null
+          organizer_user_id?: string | null
+          project_id?: string | null
+          provider?: string | null
+          recording_consent?: boolean | null
+          starts_at?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meetings_organizer_user_id_fkey"
+            columns: ["organizer_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "meetings_organizer_user_id_fkey"
+            columns: ["organizer_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "meetings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "meetings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_v_milestones: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          due_date: string | null
+          milestone_id: string | null
+          payment_status: string | null
+          project_id: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          title: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_v_project_deliverables: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string | null
+          deliverable_id: string | null
+          milestone_id: string | null
+          project_id: string | null
+          rejection_reason: string | null
+          status: string | null
+          submitted_at: string | null
+          title: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          deliverable_id?: string | null
+          milestone_id?: string | null
+          project_id?: string | null
+          rejection_reason?: string | null
+          status?: string | null
+          submitted_at?: string | null
+          title?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          deliverable_id?: string | null
+          milestone_id?: string | null
+          project_id?: string | null
+          rejection_reason?: string | null
+          status?: string | null
+          submitted_at?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_deliverables_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_milestones"
+            referencedColumns: ["milestone_id"]
+          },
+          {
+            foreignKeyName: "project_deliverables_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_deliverables_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_projects"
+            referencedColumns: ["project_id"]
+          },
+          {
+            foreignKeyName: "project_deliverables_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_v_projects: {
+        Row: {
+          agency_id: string | null
+          created_at: string | null
+          currency: string | null
+          deliverables_count: number | null
+          milestones_count: number | null
+          org_id: string | null
+          project_id: string | null
+          qa_reviews_count: number | null
+          status: string | null
+          teamsmith_user_id: string | null
+          title: string | null
+          total_price: number | null
+        }
+        Insert: {
+          agency_id?: string | null
+          created_at?: string | null
+          currency?: string | null
+          deliverables_count?: never
+          milestones_count?: never
+          org_id?: string | null
+          project_id?: string | null
+          qa_reviews_count?: never
+          status?: string | null
+          teamsmith_user_id?: string | null
+          title?: string | null
+          total_price?: number | null
+        }
+        Update: {
+          agency_id?: string | null
+          created_at?: string | null
+          currency?: string | null
+          deliverables_count?: never
+          milestones_count?: never
+          org_id?: string | null
+          project_id?: string | null
+          qa_reviews_count?: never
+          status?: string | null
+          teamsmith_user_id?: string | null
+          title?: string | null
+          total_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_agencies"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "projects_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_client_orgs"
+            referencedColumns: ["org_id"]
+          },
+          {
+            foreignKeyName: "projects_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "orgs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_teamsmith_user_id_fkey"
+            columns: ["teamsmith_user_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "projects_teamsmith_user_id_fkey"
+            columns: ["teamsmith_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      admin_v_quotes: {
+        Row: {
+          budget_range: string | null
+          created_at: string | null
+          created_by: string | null
+          currency: string | null
+          project_title: string | null
+          quote_id: string | null
+          request_id: string | null
+          status: string | null
+          total_amount: number | null
+          user_id: string | null
+          valid_until: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_quotes_customization_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_requests"
+            referencedColumns: ["request_id"]
+          },
+          {
+            foreignKeyName: "custom_quotes_customization_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "customization_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_v_requests: {
+        Row: {
+          budget_range: string | null
+          created_at: string | null
+          email: string | null
+          product_id: string | null
+          project_title: string | null
+          request_id: string | null
+          status: string | null
+          timeline_preference: string | null
+          urgency_level: string | null
+          user_id: string | null
+        }
+        Insert: {
+          budget_range?: string | null
+          created_at?: string | null
+          email?: string | null
+          product_id?: string | null
+          project_title?: string | null
+          request_id?: string | null
+          status?: string | null
+          timeline_preference?: string | null
+          urgency_level?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          budget_range?: string | null
+          created_at?: string | null
+          email?: string | null
+          product_id?: string | null
+          project_title?: string | null
+          request_id?: string | null
+          status?: string | null
+          timeline_preference?: string | null
+          urgency_level?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customization_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
+      admin_list_freelancers: {
+        Args: {
+          p_filters?: Json
+          p_limit?: number
+          p_offset?: number
+          p_order?: string
+        }
+        Returns: {
+          active_projects: number
+          availability_weekly_hours: number
+          completed_projects: number
+          created_at: string
+          csat_avg: number
+          email: string
+          full_name: string
+          price_band_max: number
+          price_band_min: number
+          skills: string[]
+          total: number
+          user_id: string
+        }[]
+      }
+      admin_list_projects: {
+        Args: {
+          p_filters?: Json
+          p_limit?: number
+          p_offset?: number
+          p_order?: string
+        }
+        Returns: {
+          agency_id: string
+          created_at: string
+          currency: string
+          deliverables_count: number
+          milestones_count: number
+          org_id: string
+          project_id: string
+          qa_reviews_count: number
+          status: string
+          teamsmith_user_id: string
+          title: string
+          total: number
+          total_price: number
+        }[]
+      }
+      admin_list_quotes: {
+        Args: {
+          p_filters?: Json
+          p_limit?: number
+          p_offset?: number
+          p_order?: string
+        }
+        Returns: {
+          budget_range: string
+          created_at: string
+          created_by: string
+          currency: string
+          project_title: string
+          quote_id: string
+          request_id: string
+          status: string
+          total: number
+          total_amount: number
+          user_id: string
+          valid_until: string
+        }[]
+      }
       create_notification: {
         Args: {
           p_message: string
