@@ -179,32 +179,26 @@ const AdminDashboard = () => {
   const updateSettings = async () => {
     try {
       // Update quote approval threshold
-      const { error: thresholdError } = await supabase
-        .from('admin_settings')
-        .upsert({
-          setting_key: 'quote_approval_threshold',
-          setting_value: settings.quote_approval_threshold,
-          updated_by: user?.id
-        });
+      const { error: thresholdError } = await supabase.rpc('update_admin_setting', {
+        p_key: 'quote_approval_threshold',
+        p_value: settings.quote_approval_threshold
+      });
 
       if (thresholdError) throw thresholdError;
 
       // Update allow custom request without login
-      const { error: intakeError } = await supabase
-        .from('admin_settings')
-        .upsert({
-          setting_key: 'allow_custom_request_without_login',
-          setting_value: settings.allow_custom_request_without_login,
-          updated_by: user?.id
-        });
+      const { error: intakeError } = await supabase.rpc('update_admin_setting', {
+        p_key: 'allow_custom_request_without_login',
+        p_value: settings.allow_custom_request_without_login
+      });
 
       if (intakeError) throw intakeError;
 
       toast.success('Settings updated successfully');
       await loadAdminData();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating settings:', error);
-      toast.error('Failed to update settings');
+      toast.error(`Failed to update settings: ${error.message || 'Unknown error'}`);
     }
   };
 

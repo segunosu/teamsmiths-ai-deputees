@@ -1876,6 +1876,10 @@ export type Database = {
         Args: { _project_id: string; _uid: string }
         Returns: boolean
       }
+      update_admin_setting: {
+        Args: { p_key: string; p_value: Json }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

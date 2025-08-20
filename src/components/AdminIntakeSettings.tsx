@@ -45,19 +45,17 @@ const AdminIntakeSettings = () => {
   const saveSettings = async () => {
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('admin_settings')
-        .upsert({
-          setting_key: 'allow_custom_request_without_login',
-          setting_value: { enabled: settings.allow_custom_request_without_login },
-        }, { onConflict: 'setting_key' });
+      const { error } = await supabase.rpc('update_admin_setting', {
+        p_key: 'allow_custom_request_without_login',
+        p_value: { enabled: settings.allow_custom_request_without_login }
+      });
 
       if (error) throw error;
 
       toast.success('Settings saved successfully');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving settings:', error);
-      toast.error('Failed to save settings');
+      toast.error(`Failed to save settings: ${error.message || 'Unknown error'}`);
     } finally {
       setSaving(false);
     }
@@ -97,15 +95,34 @@ const AdminIntakeSettings = () => {
           <Switch
             id="allow-without-login"
             checked={settings.allow_custom_request_without_login}
-            onCheckedChange={(checked) => 
-              setSettings({ allow_custom_request_without_login: checked })
-            }
+            onCheckedChange={async (checked) => {
+              const originalValue = settings.allow_custom_request_without_login;
+              
+              // Optimistic update
+              setSettings({ allow_custom_request_without_login: checked });
+              setSaving(true);
+              
+              try {
+                const { error } = await supabase.rpc('update_admin_setting', {
+                  p_key: 'allow_custom_request_without_login',
+                  p_value: { enabled: checked }
+                });
+
+                if (error) throw error;
+
+                toast.success(`Setting ${checked ? 'enabled' : 'disabled'}.`);
+              } catch (error: any) {
+                // Rollback optimistic update
+                setSettings({ allow_custom_request_without_login: originalValue });
+                console.error('Error updating setting:', error);
+                toast.error(`Failed to update setting: ${error.message || 'Unknown error'}`);
+              } finally {
+                setSaving(false);
+              }
+            }}
+            disabled={saving}
           />
         </div>
-
-        <Button onClick={saveSettings} disabled={saving}>
-          {saving ? 'Saving...' : 'Save Settings'}
-        </Button>
       </CardContent>
     </Card>
   );

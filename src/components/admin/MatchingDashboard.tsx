@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Users, 
   Settings, 
@@ -161,13 +161,10 @@ const MatchingDashboard = () => {
       ];
 
       for (const update of updates) {
-        const { error } = await supabase
-          .from('admin_settings')
-          .upsert({
-            setting_key: update.key,
-            setting_value: update.value as any,
-            updated_by: (await supabase.auth.getUser()).data.user?.id
-          });
+        const { error } = await supabase.rpc('update_admin_setting', {
+          p_key: update.key,
+          p_value: update.value as any
+        });
 
         if (error) throw error;
       }

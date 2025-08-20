@@ -64,36 +64,25 @@ const AdminMeetingsSettings = () => {
     setSaving(true);
     try {
       const updates = [
-        {
-          setting_key: 'fireflies_enabled',
-          setting_value: { enabled: settings.fireflies_enabled },
-        },
-        {
-          setting_key: 'fireflies_bot_email',
-          setting_value: { email: settings.fireflies_bot_email },
-        },
-        {
-          setting_key: 'fireflies_default_on',
-          setting_value: { enabled: settings.fireflies_default_on },
-        },
-        {
-          setting_key: 'fireflies_privacy_note',
-          setting_value: { text: settings.fireflies_privacy_note },
-        },
+        { key: 'fireflies_enabled', value: { enabled: settings.fireflies_enabled } },
+        { key: 'fireflies_bot_email', value: { email: settings.fireflies_bot_email } },
+        { key: 'fireflies_default_on', value: { enabled: settings.fireflies_default_on } },
+        { key: 'fireflies_privacy_note', value: { text: settings.fireflies_privacy_note } },
       ];
 
       for (const update of updates) {
-        const { error } = await supabase
-          .from('admin_settings')
-          .upsert(update, { onConflict: 'setting_key' });
+        const { error } = await supabase.rpc('update_admin_setting', {
+          p_key: update.key,
+          p_value: update.value
+        });
 
         if (error) throw error;
       }
 
       toast.success('Settings saved successfully');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving settings:', error);
-      toast.error('Failed to save settings');
+      toast.error(`Failed to save settings: ${error.message || 'Unknown error'}`);
     } finally {
       setSaving(false);
     }
