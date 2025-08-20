@@ -120,7 +120,9 @@ const Catalog = () => {
   };
 
   const formatDeliverables = (deliverables: string) => {
-    return deliverables.split('\n').filter(item => item.trim());
+    return deliverables.split('\n')
+      .filter(item => item.trim())
+      .map(item => item.replace(/^[•\s]+/, '').trim());
   };
 
   if (loading) {
@@ -201,7 +203,7 @@ const Catalog = () => {
                       <Package className="h-4 w-4" />
                       <span>Deliverables:</span>
                     </div>
-                    <ul className="text-sm text-muted-foreground space-y-1 ml-6">
+                    <ul className="text-sm text-muted-foreground space-y-1 ml-6 list-disc">
                       {formatDeliverables(product.deliverables).map((item, index) => (
                         <li key={index}>{item}</li>
                       ))}
