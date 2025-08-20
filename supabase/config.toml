@@ -65,5 +65,11 @@ verify_jwt = false
 [functions.send-quote-notifications]
 verify_jwt = false
 
+[functions.create-google-meet]
+verify_jwt = true
+
+[functions.create-jitsi-meet]
+verify_jwt = true
+
 [edge_runtime]
 enabled = true
