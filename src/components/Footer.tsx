@@ -69,13 +69,6 @@ export const Footer = () => {
               className="h-16 opacity-80 hover:opacity-100 transition-opacity filter brightness-0 invert"
             />
           </div>
-          <div className="hover-scale">
-            <img 
-              src="/lovable-uploads/437462b4-16c8-40a3-8a92-c97583238537.png" 
-              alt="Professional Association" 
-              className="h-16 opacity-80 hover:opacity-100 transition-opacity filter brightness-0 invert"
-            />
-          </div>
         </div>
 
         <div className="border-t border-primary-foreground/20 pt-8">
