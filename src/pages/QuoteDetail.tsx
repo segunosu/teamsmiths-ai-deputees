@@ -27,6 +27,7 @@ interface CustomQuote {
   client_notes: string;
   expires_at: string;
   created_at: string;
+  created_by: string;
   customization_request: {
     base_template: string;
     custom_requirements: string;
@@ -126,12 +127,53 @@ const QuoteDetail = () => {
 
       if (error) throw error;
 
-      toast({
-        title: action === 'approved' ? "Quote Approved!" : "Quote Rejected",
-        description: action === 'approved' 
-          ? "The project will begin shortly. You'll receive milestone payment requests as work progresses."
-          : "We'll review your feedback and provide a revised quote if needed.",
-      });
+      // If approved, create project automatically
+      if (action === 'approved') {
+        try {
+          const { error: projectError } = await supabase.functions.invoke('create-project-from-quote', {
+            body: { quoteId: quote.id }
+          });
+
+          if (projectError) {
+            console.error('Error creating project:', projectError);
+            toast({
+              title: "Quote Approved",
+              description: "Quote approved but project creation failed. Please contact support.",
+              variant: "destructive"
+            });
+          } else {
+            toast({
+              title: "Quote Approved!",
+              description: "Your project has been created! You'll receive milestone payment requests as work progresses."
+            });
+          }
+
+          // Send notification to freelancer
+          await supabase.rpc('create_notification', {
+            p_user_id: quote.created_by,
+            p_type: 'quote_approved',
+            p_title: 'Quote Approved',
+            p_message: `Your quote for "${quote.project_title}" has been approved! The project will be created automatically.`,
+            p_related_id: quote.id
+          });
+        } catch (projectCreationError) {
+          console.error('Error in project creation process:', projectCreationError);
+        }
+      } else {
+        toast({
+          title: "Quote Rejected",
+          description: "We'll review your feedback and provide a revised quote if needed."
+        });
+
+        // Send notification to freelancer
+        await supabase.rpc('create_notification', {
+          p_user_id: quote.created_by,
+          p_type: 'quote_rejected', 
+          p_title: 'Quote Rejected',
+          p_message: `Your quote for "${quote.project_title}" has been rejected.`,
+          p_related_id: quote.id
+        });
+      }
 
       // Refresh quote data
       await fetchQuoteDetails();

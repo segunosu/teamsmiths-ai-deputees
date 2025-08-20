@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
-import { ArrowLeft, MessageCircle, FileText, Clock, Users, Send } from 'lucide-react';
-import AIChat from '@/components/AIChat';
+import { Progress } from '@/components/ui/progress';
+import DeliverableManagement from '@/components/DeliverableManagement';
 import ProjectInsights from '@/components/ProjectInsights';
+import AIChat from '@/components/AIChat';
+import { toast } from 'sonner';
+import { Users, Calendar, DollarSign, FileText, MessageSquare, TrendingUp } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -20,6 +20,11 @@ interface Project {
   currency: string;
   created_at: string;
   is_custom: boolean;
+  project_participants: Array<{
+    role: string;
+    user_id: string;
+    profiles?: { full_name: string; email: string };
+  }>;
 }
 
 interface Milestone {
@@ -27,167 +32,117 @@ interface Milestone {
   title: string;
   description: string;
   amount: number;
-  status: string;
   due_date: string;
-}
-
-interface Message {
-  id: string;
-  message: string;
-  created_at: string;
-  user_id: string;
-  profiles: {
-    full_name: string;
-    email: string;
-  };
+  status: string;
+  milestone_number: number;
 }
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
-  const { toast } = useToast();
   const [project, setProject] = useState<Project | null>(null);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
-  const [sending, setSending] = useState(false);
+  const [userRole, setUserRole] = useState<'client' | 'freelancer' | 'admin'>('client');
 
   useEffect(() => {
-    document.title = 'Project Details - Teamsmiths';
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.setAttribute('content', 'View project details and communicate with your team');
-  }, []);
+    if (id) {
+      fetchProjectDetails();
+    }
+  }, [id]);
 
-  useEffect(() => {
-    if (!user || !id) return;
-
-    const fetchData = async () => {
-      try {
-        // Fetch project details
-        const { data: projectData, error: projectError } = await supabase
-          .from('projects')
-          .select('*')
-          .eq('id', id)
-          .single();
-
-        if (projectError) throw projectError;
-        setProject(projectData);
-
-        // Fetch milestones
-        const { data: milestonesData, error: milestonesError } = await supabase
-          .from('milestones')
-          .select('*')
-          .eq('project_id', id)
-          .order('created_at');
-
-        if (milestonesError) throw milestonesError;
-        setMilestones(milestonesData || []);
-
-        // Fetch messages with profile info
-        const { data: messagesData, error: messagesError } = await supabase
-          .from('project_messages')
-          .select(`
-            *,
-            profiles(full_name, email)
-          `)
-          .eq('project_id', id)
-          .order('created_at', { ascending: false });
-
-        if (messagesError) throw messagesError;
-        setMessages(messagesData || []);
-      } catch (error: any) {
-        toast({
-          title: 'Error loading project',
-          description: error.message,
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [user, id, toast]);
-
-  const sendMessage = async () => {
-    if (!newMessage.trim() || !user || !id) return;
-
+  const fetchProjectDetails = async () => {
     try {
-      setSending(true);
-      const { error } = await supabase
-        .from('project_messages')
-        .insert({
-          project_id: id,
-          user_id: user.id,
-          message: newMessage.trim(),
-        });
-
-      if (error) throw error;
-
-      // Refresh messages
-      const { data: messagesData } = await supabase
-        .from('project_messages')
+      // Fetch project with participants
+      const { data: projectData, error: projectError } = await supabase
+        .from('projects')
         .select(`
           *,
-          profiles(full_name, email)
+          project_participants (
+            role,
+            user_id,
+            profiles:user_id (full_name, email)
+          )
         `)
-        .eq('project_id', id)
-        .order('created_at', { ascending: false });
+        .eq('id', id)
+        .single();
 
-      setMessages(messagesData || []);
-      setNewMessage('');
-    } catch (error: any) {
-      toast({
-        title: 'Error sending message',
-        description: error.message,
-        variant: 'destructive',
-      });
+      if (projectError) throw projectError;
+
+      setProject(projectData);
+
+      // Determine user role
+      const userParticipant = projectData.project_participants.find(p => p.user_id === user?.id);
+      if (userParticipant) {
+        setUserRole(userParticipant.role as 'client' | 'freelancer' | 'admin');
+      } else {
+        // Check if admin
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('user_id', user?.id)
+          .single();
+        
+        if (profile?.is_admin) {
+          setUserRole('admin');
+        }
+      }
+
+      // Fetch milestones for custom projects
+      if (projectData.is_custom) {
+        const { data: milestonesData, error: milestonesError } = await supabase
+          .from('custom_project_milestones')
+          .select('*')
+          .eq('project_id', id)
+          .order('milestone_number', { ascending: true });
+
+        if (milestonesError) {
+          console.error('Error fetching milestones:', milestonesError);
+        } else {
+          setMilestones(milestonesData || []);
+        }
+      }
+
+    } catch (error) {
+      console.error('Error fetching project details:', error);
+      toast.error('Failed to load project details');
     } finally {
-      setSending(false);
+      setLoading(false);
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const colors: Record<string, string> = {
-      draft: 'bg-muted text-muted-foreground',
-      active: 'bg-primary text-primary-foreground',
-      completed: 'bg-success text-success-foreground',
-      cancelled: 'bg-destructive text-destructive-foreground',
-      planned: 'bg-muted text-muted-foreground',
-      'in_progress': 'bg-primary text-primary-foreground',
-    };
-    return <Badge className={colors[status] || colors.draft}>{status.replace('_', ' ')}</Badge>;
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'bg-success text-success-foreground';
+      case 'completed':
+        return 'bg-primary text-primary-foreground';
+      case 'on_hold':
+        return 'bg-warning text-warning-foreground';
+      case 'cancelled':
+        return 'bg-destructive text-destructive-foreground';
+      default:
+        return 'bg-muted text-muted-foreground';
+    }
   };
 
-  const formatPrice = (amount: number, currency = 'gbp') => {
-    return `${currency.toUpperCase()} ${(amount / 100).toLocaleString()}`;
+  const getMilestoneProgress = () => {
+    if (milestones.length === 0) return 0;
+    const completedMilestones = milestones.filter(m => m.status === 'completed').length;
+    return Math.round((completedMilestones / milestones.length) * 100);
   };
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Access Required</CardTitle>
-            <CardDescription>Please sign in to view project details.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button asChild className="w-full">
-              <Link to="/auth">Sign In</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  const formatPrice = (amount: number, currency: string) => {
+    const symbol = currency.toLowerCase() === 'gbp' ? '£' : '$';
+    return `${symbol}${(amount / 100).toLocaleString()}`;
+  };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading project...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading project details...</p>
         </div>
       </div>
     );
@@ -196,228 +151,255 @@ const ProjectDetail = () => {
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
+        <Card className="w-[400px]">
           <CardHeader>
             <CardTitle>Project Not Found</CardTitle>
-            <CardDescription>The project you're looking for doesn't exist or you don't have access to it.</CardDescription>
+            <CardDescription>
+              The project you're looking for doesn't exist or you don't have access to it.
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Button asChild className="w-full">
-              <Link to="/dashboard">Back to Dashboard</Link>
-            </Button>
-          </CardContent>
         </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Project Header */}
         <div className="mb-8">
-          <Button asChild variant="outline" className="mb-4">
-            <Link to="/dashboard">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Dashboard
-            </Link>
-          </Button>
-          
-          <div className="flex justify-between items-start">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-bold">{project.title}</h1>
-              <p className="text-muted-foreground">
-                Created {new Date(project.created_at).toLocaleDateString()}
+              <p className="text-muted-foreground mt-1">
+                Created on {new Date(project.created_at).toLocaleDateString()}
               </p>
             </div>
-            <div className="text-right">
-              {getStatusBadge(project.status)}
-              <p className="text-2xl font-bold mt-2">
-                {formatPrice(project.total_price, project.currency)}
-              </p>
-            </div>
+            <Badge className={getStatusColor(project.status)}>
+              {project.status.replace('_', ' ').toUpperCase()}
+            </Badge>
           </div>
-        </div>
 
-        {/* Main Content */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="milestones">Milestones</TabsTrigger>
-            <TabsTrigger value="messages">Messages</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    Project Details
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="font-medium">Type</p>
-                    <p className="text-muted-foreground">
-                      {project.is_custom ? 'Custom Project' : 'Outcome Pack'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Status</p>
-                    {getStatusBadge(project.status)}
-                  </div>
-                  <div>
-                    <p className="font-medium">Total Value</p>
-                    <p className="text-muted-foreground">
-                      {formatPrice(project.total_price, project.currency)}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="h-5 w-5" />
-                    Team Communication
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Use the Messages tab to communicate with your assigned Teamsmith and track project progress.
-                  </p>
-                  <Button asChild className="w-full">
-                    <Link to={`/project/${id}?tab=messages`}>
-                      <MessageCircle className="mr-2 h-4 w-4" />
-                      Open Messages
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="milestones" className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">Project Milestones</h2>
-            </div>
-
-            {milestones.length === 0 ? (
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="text-center py-8">
-                    <Clock className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-medium mb-2">No milestones yet</h3>
-                    <p className="text-muted-foreground">
-                      Your Teamsmith will create milestones as work begins.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {milestones.map((milestone) => (
-                  <Card key={milestone.id}>
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="text-lg">{milestone.title}</CardTitle>
-                          <CardDescription>{milestone.description}</CardDescription>
-                        </div>
-                        <div className="text-right">
-                          {getStatusBadge(milestone.status)}
-                          <p className="font-semibold mt-1">
-                            {formatPrice(milestone.amount, project.currency)}
-                          </p>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    {milestone.due_date && (
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          Due: {new Date(milestone.due_date).toLocaleDateString()}
-                        </p>
-                      </CardContent>
-                    )}
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="messages" className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">Project Messages</h2>
-            </div>
-
+          {/* Project Overview Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <Card>
-              <CardHeader>
-                <CardTitle>Send Message</CardTitle>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                  <DollarSign className="h-4 w-4" />
+                  Total Value
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <Textarea
-                  placeholder="Type your message here..."
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  rows={3}
-                />
-                <Button onClick={sendMessage} disabled={!newMessage.trim() || sending}>
-                  {sending ? (
-                    'Sending...'
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {formatPrice(project.total_price, project.currency)}
+                </div>
               </CardContent>
             </Card>
 
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Team Members
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {project.project_participants.length}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Milestones
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {milestones.length}
+                </div>
+              </CardContent>
+            </Card>
+
+            {project.is_custom && (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    Progress
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {getMilestoneProgress()}%
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* Progress Bar for Custom Projects */}
+          {project.is_custom && milestones.length > 0 && (
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="text-lg">Project Progress</CardTitle>
+                <CardDescription>
+                  {milestones.filter(m => m.status === 'completed').length} of {milestones.length} milestones completed
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Progress value={getMilestoneProgress()} className="w-full" />
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        {/* Main Content Tabs */}
+        <Tabs defaultValue="deliverables" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="deliverables" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Deliverables
+            </TabsTrigger>
+            <TabsTrigger value="milestones" className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Milestones
+            </TabsTrigger>
+            <TabsTrigger value="insights" className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Insights
+            </TabsTrigger>
+            <TabsTrigger value="chat" className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" />
+              AI Assistant
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="deliverables">
+            <DeliverableManagement projectId={project.id} userRole={userRole} />
+          </TabsContent>
+
+          <TabsContent value="milestones">
             <div className="space-y-4">
-              {messages.length === 0 ? (
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">Project Milestones</h2>
+                <Badge variant="secondary">{milestones.length} total</Badge>
+              </div>
+              
+              {milestones.length === 0 ? (
                 <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center py-8">
-                      <MessageCircle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-lg font-medium mb-2">No messages yet</h3>
-                      <p className="text-muted-foreground">
-                        Start the conversation with your Teamsmith.
-                      </p>
-                    </div>
+                  <CardContent className="text-center py-8">
+                    <Calendar className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                    <p className="text-muted-foreground">No milestones defined for this project</p>
                   </CardContent>
                 </Card>
               ) : (
-                messages.map((message) => (
-                  <Card key={message.id}>
-                    <CardContent className="pt-6">
-                      <div className="flex justify-between items-start mb-2">
-                        <div className="font-medium">
-                          {message.profiles?.full_name || message.profiles?.email || 'Team Member'}
+                <div className="space-y-4">
+                  {milestones.map((milestone, index) => (
+                    <Card key={milestone.id}>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <CardTitle className="text-lg">
+                              Milestone {milestone.milestone_number}: {milestone.title}
+                            </CardTitle>
+                            {milestone.description && (
+                              <CardDescription className="mt-1">
+                                {milestone.description}
+                              </CardDescription>
+                            )}
+                          </div>
+                          <Badge 
+                            className={
+                              milestone.status === 'completed' 
+                                ? 'bg-success text-success-foreground'
+                                : milestone.status === 'in_progress'
+                                ? 'bg-primary text-primary-foreground' 
+                                : 'bg-muted text-muted-foreground'
+                            }
+                          >
+                            {milestone.status.replace('_', ' ')}
+                          </Badge>
                         </div>
-                        <div className="text-sm text-muted-foreground">
-                          {new Date(message.created_at).toLocaleDateString()} {new Date(message.created_at).toLocaleTimeString()}
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm text-muted-foreground">
+                              Amount: {formatPrice(milestone.amount, project.currency)}
+                            </p>
+                            {milestone.due_date && (
+                              <p className="text-sm text-muted-foreground">
+                                Due: {new Date(milestone.due_date).toLocaleDateString()}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <p className="whitespace-pre-wrap">{message.message}</p>
-                    </CardContent>
-                  </Card>
-                ))
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               )}
             </div>
           </TabsContent>
+
+          <TabsContent value="insights">
+            <ProjectInsights projectId={project.id} />
+          </TabsContent>
+
+          <TabsContent value="chat">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5" />
+                  AI Project Assistant
+                </CardTitle>
+                <CardDescription>
+                  Get help with your project, ask questions, or request insights
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AIChat projectId={project.id} />
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
-        
-        {/* AI Insights */}
-        <div className="mt-8">
-          <ProjectInsights projectId={id!} />
-        </div>
+
+        {/* Team Members */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              Team Members
+            </CardTitle>
+            <CardDescription>
+              People working on this project
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {project.project_participants.map((participant) => (
+                <div key={participant.user_id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <p className="font-medium">
+                      {participant.profiles?.full_name || 'Unknown User'}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {participant.profiles?.email}
+                    </p>
+                  </div>
+                  <Badge variant="secondary">
+                    {participant.role.charAt(0).toUpperCase() + participant.role.slice(1)}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      
-      {/* AI Chat Interface */}
-      <AIChat projectId={id!} />
     </div>
   );
 };
