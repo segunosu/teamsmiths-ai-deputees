@@ -77,12 +77,10 @@ const Home = () => {
 
             {/* Trust Strip */}
             <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-              {trustFactors.map((factor) => (
-                <div key={factor} className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-success" />
-                  <span>{factor}</span>
-                </div>
-              ))}
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-success" />
+                <span>Precision matching. We shortlist vetted Teamsmiths based on skills, domain, outcomes, availability—then you receive comparable quotes fast. Human QA on every milestone.</span>
+              </div>
             </div>
           </div>
         </div>

@@ -80,7 +80,7 @@ const ForClients = () => {
             For Clients
           </h1>
           <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Start with proven templates, customize to your needs. Better than agencies or freelancers.
+            Precision matching, zero guesswork. Vetted leaders only, matching by skills, domain & tools, outcomes, availability. Multiple comparable quotes, human QA before every release.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">

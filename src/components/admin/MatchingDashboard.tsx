@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
@@ -81,15 +82,47 @@ const MatchingDashboard = () => {
 
   const loadData = async () => {
     try {
-      // Load matching configuration
+      // Load matching configuration from individual admin settings
       const { data: adminSettings, error: configError } = await supabase
         .from('admin_settings')
-        .select('setting_value')
-        .eq('setting_key', 'matching_config')
-        .single();
+        .select('setting_key, setting_value')
+        .in('setting_key', [
+          'matching_weights',
+          'shortlist_size_default',
+          'max_quotes_per_request',
+          'min_quotes_before_presenting',
+          'invite_response_sla_hours',
+          'conflict_window_days',
+          'sensitive_single_provider_only'
+        ]);
 
       if (configError) throw configError;
-      setConfig(adminSettings.setting_value as unknown as MatchingConfig);
+
+      const settingsMap = adminSettings?.reduce((acc, item) => {
+        acc[item.setting_key] = item.setting_value;
+        return acc;
+      }, {} as Record<string, any>) || {};
+
+      const loadedConfig: MatchingConfig = {
+        matching_weights: settingsMap.matching_weights || {
+          skills: 0.25,
+          domain: 0.15,
+          outcomes: 0.20,
+          availability: 0.15,
+          locale: 0.05,
+          price: 0.10,
+          vetting: 0.07,
+          history: 0.03
+        },
+        shortlist_size_default: settingsMap.shortlist_size_default?.value || 3,
+        max_quotes_per_request: settingsMap.max_quotes_per_request?.value || 3,
+        min_quotes_before_presenting: settingsMap.min_quotes_before_presenting?.value || 2,
+        invite_response_sla_hours: settingsMap.invite_response_sla_hours?.value || 24,
+        conflict_window_days: settingsMap.conflict_window_days?.value || 60,
+        sensitive_single_provider_only: settingsMap.sensitive_single_provider_only?.enabled || false
+      };
+
+      setConfig(loadedConfig);
 
       // Load recent customization requests
       const { data: requestsData, error: requestsError } = await supabase
@@ -116,12 +149,28 @@ const MatchingDashboard = () => {
     if (!config) return;
 
     try {
-      const { error } = await supabase
-        .from('admin_settings')
-        .update({ setting_value: config as any })
-        .eq('setting_key', 'matching_config');
+      // Update each setting individually
+      const updates = [
+        { key: 'matching_weights', value: config.matching_weights },
+        { key: 'shortlist_size_default', value: { value: config.shortlist_size_default } },
+        { key: 'max_quotes_per_request', value: { value: config.max_quotes_per_request } },
+        { key: 'min_quotes_before_presenting', value: { value: config.min_quotes_before_presenting } },
+        { key: 'invite_response_sla_hours', value: { value: config.invite_response_sla_hours } },
+        { key: 'conflict_window_days', value: { value: config.conflict_window_days } },
+        { key: 'sensitive_single_provider_only', value: { enabled: config.sensitive_single_provider_only } }
+      ];
 
-      if (error) throw error;
+      for (const update of updates) {
+        const { error } = await supabase
+          .from('admin_settings')
+          .upsert({
+            setting_key: update.key,
+            setting_value: update.value as any,
+            updated_by: (await supabase.auth.getUser()).data.user?.id
+          });
+
+        if (error) throw error;
+      }
 
       toast({
         title: 'Configuration updated',
@@ -495,6 +544,37 @@ const MatchingDashboard = () => {
                       })}
                       min={1}
                       max={config.max_quotes_per_request}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Conflict Window (days)</Label>
+                    <Input
+                      type="number"
+                      value={config.conflict_window_days}
+                      onChange={(e) => setConfig({
+                        ...config,
+                        conflict_window_days: parseInt(e.target.value) || 60
+                      })}
+                      min={1}
+                      max={365}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="sensitive-single">Sensitive projects require single provider</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Restrict sensitive projects to one provider only
+                      </p>
+                    </div>
+                    <Switch
+                      id="sensitive-single"
+                      checked={config.sensitive_single_provider_only}
+                      onCheckedChange={(checked) => setConfig({
+                        ...config,
+                        sensitive_single_provider_only: checked
+                      })}
                     />
                   </div>
                 </CardContent>

@@ -8,12 +8,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign } from 'lucide-react';
+import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign, Target } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import MatchingDashboard from '@/components/admin/MatchingDashboard';
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };
+  allow_custom_request_without_login: { enabled: boolean };
 }
 
 interface QuoteForReview {
@@ -58,7 +60,8 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [settings, setSettings] = useState<AdminSettings>({ 
-    quote_approval_threshold: { amount: 5000, currency: 'gbp' }
+    quote_approval_threshold: { amount: 5000, currency: 'gbp' },
+    allow_custom_request_without_login: { enabled: true }
   });
   const [quotesForReview, setQuotesForReview] = useState<QuoteForReview[]>([]);
   const [projects, setProjects] = useState<ProjectOverview[]>([]);
@@ -98,27 +101,22 @@ const AdminDashboard = () => {
 
   const loadAdminData = async () => {
     try {
-      // Load admin settings (only quote_approval_threshold)
+      // Load admin settings
       const { data: settingsData } = await supabase
         .from('admin_settings')
         .select('setting_key, setting_value')
-        .eq('setting_key', 'quote_approval_threshold');
+        .in('setting_key', ['quote_approval_threshold', 'allow_custom_request_without_login']);
 
-      if (settingsData && settingsData.length > 0) {
-        const thresholdValue = settingsData[0].setting_value as { amount: number; currency: string };
-        setSettings({
-          quote_approval_threshold: thresholdValue || { amount: 5000, currency: 'gbp' }
-        });
-      }
+      const settingsMap = settingsData?.reduce((acc, item) => {
+        acc[item.setting_key] = item.setting_value;
+        return acc;
+      }, {} as Record<string, any>) || {};
 
-      // Ensure allow_custom_request_without_login is always true (hidden from UI)
-      await supabase
-        .from('admin_settings')
-        .upsert({
-          setting_key: 'allow_custom_request_without_login',
-          setting_value: true,
-          updated_by: user?.id
-        });
+      setSettings({
+        quote_approval_threshold: settingsMap.quote_approval_threshold || { amount: 5000, currency: 'gbp' },
+        allow_custom_request_without_login: settingsMap.allow_custom_request_without_login || { enabled: true }
+      });
+
 
       // Load quotes needing review (above threshold)  
       const threshold = settings.quote_approval_threshold?.amount || 5000;
@@ -178,7 +176,7 @@ const AdminDashboard = () => {
 
   const updateSettings = async () => {
     try {
-      // Update quote approval threshold only
+      // Update quote approval threshold
       const { error: thresholdError } = await supabase
         .from('admin_settings')
         .upsert({
@@ -188,6 +186,17 @@ const AdminDashboard = () => {
         });
 
       if (thresholdError) throw thresholdError;
+
+      // Update allow custom request without login
+      const { error: intakeError } = await supabase
+        .from('admin_settings')
+        .upsert({
+          setting_key: 'allow_custom_request_without_login',
+          setting_value: settings.allow_custom_request_without_login,
+          updated_by: user?.id
+        });
+
+      if (intakeError) throw intakeError;
 
       toast.success('Settings updated successfully');
       await loadAdminData();
@@ -361,7 +370,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="quotes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="quotes" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Quote Reviews
@@ -373,6 +382,10 @@ const AdminDashboard = () => {
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Projects
+            </TabsTrigger>
+            <TabsTrigger value="matching" className="flex items-center gap-2">
+              <Target className="h-4 w-4" />
+              Matching
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
@@ -504,43 +517,80 @@ const AdminDashboard = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="matching">
+            <MatchingDashboard />
+          </TabsContent>
+
           <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>Admin Settings</CardTitle>
-                <CardDescription>
-                  Configure platform thresholds and approval workflows
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="threshold">Quote Approval Threshold (£)</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="threshold"
-                      type="number"
-                      value={settings.quote_approval_threshold?.amount || 5000}
-                      onChange={(e) => 
+            <div className="space-y-6">
+              {/* Intake & Access Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Intake & Access</CardTitle>
+                  <CardDescription>
+                    Configure how clients can submit customization requests
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="allow-without-login">Allow customization request without login</Label>
+                      <p className="text-sm text-muted-foreground">
+                        When ON, visitors can submit a brief with email and receive a magic-link to claim their request. When OFF, login is required before submitting.
+                      </p>
+                    </div>
+                    <Switch
+                      id="allow-without-login"
+                      checked={settings.allow_custom_request_without_login?.enabled || true}
+                      onCheckedChange={(checked) => 
                         setSettings({
                           ...settings,
-                          quote_approval_threshold: {
-                            ...settings.quote_approval_threshold,
-                            amount: parseInt(e.target.value)
-                          }
+                          allow_custom_request_without_login: { enabled: checked }
                         })
                       }
-                      className="w-32"
                     />
-                    <Button onClick={updateSettings}>
-                      Update Settings
-                    </Button>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Quotes above this amount require admin approval before being sent to clients.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+
+              {/* Quote Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quote Settings</CardTitle>
+                  <CardDescription>
+                    Configure platform thresholds and approval workflows
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="threshold">Quote Approval Threshold (£)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="threshold"
+                        type="number"
+                        value={settings.quote_approval_threshold?.amount || 5000}
+                        onChange={(e) => 
+                          setSettings({
+                            ...settings,
+                            quote_approval_threshold: {
+                              ...settings.quote_approval_threshold,
+                              amount: parseInt(e.target.value)
+                            }
+                          })
+                        }
+                        className="w-32"
+                      />
+                      <Button onClick={updateSettings}>
+                        Update Settings
+                      </Button>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Quotes above this amount require admin approval before being sent to clients.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
