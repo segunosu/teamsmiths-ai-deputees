@@ -1462,10 +1462,15 @@ export type Database = {
           id: string
           is_active: boolean | null
           is_fixed_scope: boolean | null
+          most_popular: boolean | null
+          outcomes: Json | null
+          series_id: string | null
           stripe_price_id: string | null
           subcategory_id: string | null
           tags: string[] | null
+          tier: string | null
           timeline: string | null
+          timeline_days: number | null
           title: string
         }
         Insert: {
@@ -1477,10 +1482,15 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           is_fixed_scope?: boolean | null
+          most_popular?: boolean | null
+          outcomes?: Json | null
+          series_id?: string | null
           stripe_price_id?: string | null
           subcategory_id?: string | null
           tags?: string[] | null
+          tier?: string | null
           timeline?: string | null
+          timeline_days?: number | null
           title: string
         }
         Update: {
@@ -1492,10 +1502,15 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           is_fixed_scope?: boolean | null
+          most_popular?: boolean | null
+          outcomes?: Json | null
+          series_id?: string | null
           stripe_price_id?: string | null
           subcategory_id?: string | null
           tags?: string[] | null
+          tier?: string | null
           timeline?: string | null
+          timeline_days?: number | null
           title?: string
         }
         Relationships: [
@@ -1504,6 +1519,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_series_id_fkey"
+            columns: ["series_id"]
+            isOneToOne: false
+            referencedRelation: "series"
             referencedColumns: ["id"]
           },
           {
@@ -2052,6 +2074,54 @@ export type Database = {
             columns: ["quote_id"]
             isOneToOne: false
             referencedRelation: "custom_quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      series: {
+        Row: {
+          category_id: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          slug: string
+          subcategory_id: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          slug: string
+          subcategory_id?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          slug?: string
+          subcategory_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "series_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "series_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "subcategories"
             referencedColumns: ["id"]
           },
         ]
