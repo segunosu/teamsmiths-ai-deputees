@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowRight, Clock, Package, Tag } from 'lucide-react';
+import { ArrowRight, Clock, Package, Tag, Rocket, Shield, Brain, TrendingUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Product {
@@ -143,6 +143,19 @@ const Catalog = () => {
     ? products 
     : products.filter(product => product.category?.slug === selectedCategory);
 
+  const getCategoryIcon = (categoryName: string) => {
+    switch (categoryName?.toLowerCase()) {
+      case 'sales acceleration':
+        return <Rocket className="h-5 w-5 text-primary" />;
+      case 'compliance':
+        return <Shield className="h-5 w-5 text-primary" />;
+      case 'continuous improvement':
+        return <Brain className="h-5 w-5 text-primary" />;
+      default:
+        return <TrendingUp className="h-5 w-5 text-primary" />;
+    }
+  };
+
   const formatPrice = (price: number) => {
     return `£${(price / 100).toLocaleString()}`;
   };
@@ -200,29 +213,39 @@ const Catalog = () => {
             >
               All Categories
             </Button>
-            {categories.map((category) => (
-              <Button
-                key={category.id}
-                variant={selectedCategory === category.slug ? 'default' : 'outline'}
-                onClick={() => setSelectedCategory(category.slug)}
-                className="rounded-full"
-              >
-                {category.name}
-              </Button>
-            ))}
+            {/* Prioritize Continuous Improvement first */}
+            {categories
+              .sort((a, b) => {
+                if (a.name === 'Continuous Improvement') return -1;
+                if (b.name === 'Continuous Improvement') return 1;
+                return a.name.localeCompare(b.name);
+              })
+              .map((category) => (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.slug ? 'default' : 'outline'}
+                  onClick={() => setSelectedCategory(category.slug)}
+                  className="rounded-full"
+                >
+                  {category.name}
+                </Button>
+              ))}
           </div>
         </div>
 
         {/* Products Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product) => (
-            <Card key={product.id} className="shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col">
+            <Card key={product.id} className="shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col relative overflow-hidden">
               <CardHeader>
                 <div className="flex items-start justify-between mb-2">
-                  <Badge variant="secondary" className="text-xs">
-                    {product.category?.name}
-                  </Badge>
-                  <div className="text-2xl font-bold text-primary">
+                  <div className="flex items-center gap-2">
+                    {getCategoryIcon(product.category?.name || '')}
+                    <Badge variant="secondary" className="text-xs">
+                      {product.category?.name}
+                    </Badge>
+                  </div>
+                  <div className="text-3xl font-bold text-primary">
                     {formatPrice(product.base_price)}
                   </div>
                 </div>
@@ -248,10 +271,18 @@ const Catalog = () => {
                     <Package className="h-4 w-4" />
                     <span>Deliverables:</span>
                   </div>
-                  <ul className="text-sm text-muted-foreground space-y-1 ml-6 list-disc">
-                    {formatDeliverables(product.deliverables).slice(0, 3).map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
+                  <ul className="text-sm text-muted-foreground space-y-0.5 ml-6 list-disc">
+                    {formatDeliverables(product.deliverables).slice(0, 3).map((item, index) => {
+                      const words = item.split(' ');
+                      const firstPart = words.slice(0, 3).join(' ');
+                      const restPart = words.slice(3).join(' ');
+                      return (
+                        <li key={index}>
+                          <span className="font-medium text-foreground">{firstPart}</span>
+                          {restPart && <span className="ml-1">{restPart}</span>}
+                        </li>
+                      );
+                    })}
                     {formatDeliverables(product.deliverables).length > 3 && (
                       <li className="list-none text-xs text-muted-foreground">+ more</li>
                     )}
@@ -294,11 +325,18 @@ const Catalog = () => {
                       <Link to={`/customize/${product.id}`}>Customize</Link>
                     </Button>
                   </div>
-                  <Button asChild variant="ghost" className="w-full text-xs">
-                    <Link to={`/product/${product.id}`}>
-                      View Details
-                    </Link>
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button asChild variant="ghost" className="flex-1 text-xs">
+                      <Link to={`/product/${product.id}`}>
+                        View Details
+                      </Link>
+                    </Button>
+                    <Button asChild variant="ghost" className="flex-1 text-xs">
+                      <Link to={`/product/${product.id}`}>
+                        Learn More
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

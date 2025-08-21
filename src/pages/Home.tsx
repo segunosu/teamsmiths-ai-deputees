@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck } from 'lucide-react';
+import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck, Award, Clock, UserCheck, Database } from 'lucide-react';
 import { useEffect } from 'react';
 
 const Home = () => {
@@ -61,17 +61,21 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-background via-background to-muted py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted opacity-80"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.05),transparent_50%),radial-gradient(circle_at_80%_80%,hsl(var(--accent)/0.05),transparent_50%)]"></div>
+        
+        <div className="max-w-7xl mx-auto relative">
           <div className="text-center">
-            <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 leading-[1.1] py-2">
+            <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
               Revenue Up. Waste Down. Fast
             </h1>
-            <p className="text-xl sm:text-2xl text-muted-foreground mb-12 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
               Accelerate performance without consulting overhead.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
               <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
                 <Link to="/catalog">View Outcome Packs</Link>
               </Button>
@@ -83,19 +87,19 @@ const Home = () => {
             {/* Trust Strip */}
             <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground max-w-4xl mx-auto">
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-success" />
+                <Award className="h-4 w-4 text-success" />
                 <span>Human QA on every deliverable</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-success" />
+                <Shield className="h-4 w-4 text-success" />
                 <span>Escrowed milestones</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-success" />
+                <UserCheck className="h-4 w-4 text-success" />
                 <span>Precision matching</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-success" />
+                <Database className="h-4 w-4 text-success" />
                 <span>Your data, scoped RAG</span>
               </div>
             </div>
