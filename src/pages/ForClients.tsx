@@ -15,7 +15,7 @@ const ForClients = () => {
     {
       icon: <Users className="h-8 w-8 text-primary" />,
       title: "Vetted Experts",
-      description: "Work with experienced leaders who have track records in your industry.",
+      description: "Work with experienced experts who have track records in your industry.",
     },
     {
       icon: <Clock className="h-8 w-8 text-primary" />,
@@ -36,8 +36,8 @@ const ForClients = () => {
   const qaProcess = [
     {
       step: "1",
-      title: "Teamsmith Creates",
-      description: "Your assigned Teamsmith uses AI Deputees™ to accelerate the work"
+      title: "Expert Creates",
+      description: "Your assigned expert uses AI Deputees™ to accelerate the work"
     },
     {
       step: "2", 
@@ -58,7 +58,7 @@ const ForClients = () => {
 
   const testimonials = [
     {
-      quote: "Teamsmiths delivered our lead generation campaign faster than any agency we've worked with. The QA process caught issues we would have missed.",
+      quote: "Our experts delivered our lead generation campaign faster than any agency we've worked with. The QA process caught issues we would have missed.",
       author: "Sarah Chen",
       role: "VP Marketing, TechFlow",
       rating: 5
@@ -83,7 +83,7 @@ const ForClients = () => {
             <span className="text-foreground font-medium">Precision matching, zero guesswork.</span>
           </p>
           <p className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-            Vetted leaders only, matching by skills, domain & tools, outcomes, availability. Multiple comparable quotes, human QA before every release.
+            Vetted experts only, matching by skills, domain & tools, outcomes, availability. Multiple comparable quotes, human QA before every release.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
@@ -232,7 +232,7 @@ const ForClients = () => {
               Better Than Agencies
             </h2>
             <p className="text-xl text-muted-foreground">
-              Compare traditional agencies vs Teamsmiths flexible solutions
+              Compare traditional agencies vs our flexible expert solutions
             </p>
           </div>
 
@@ -271,7 +271,7 @@ const ForClients = () => {
 
             <Card className="border-2 border-primary">
               <CardHeader>
-                <CardTitle className="text-xl text-center">Teamsmiths Packs</CardTitle>
+                <CardTitle className="text-xl text-center">Expert Packs</CardTitle>
                 <Badge className="mx-auto w-fit">Recommended</Badge>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -285,7 +285,7 @@ const ForClients = () => {
                   <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center">
                     <CheckCircle className="h-4 w-4 text-success" />
                   </div>
-                  <span>Vetted leaders + AI acceleration</span>
+                  <span>Vetted experts + AI acceleration</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center">

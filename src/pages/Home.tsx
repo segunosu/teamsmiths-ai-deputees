@@ -14,8 +14,8 @@ const Home = () => {
   const features = [
     {
       icon: <Users className="h-8 w-8 text-primary" />,
-      title: "Vetted Leaders",
-      description: "Work with experienced Teamsmiths who deliver results, not just outputs"
+      title: "Vetted Experts",
+      description: "Work with experienced experts who deliver results, not just outputs"
     },
     {
       icon: <Shield className="h-8 w-8 text-primary" />,
@@ -55,7 +55,7 @@ const Home = () => {
     "Your data stays yours (scoped RAG)",
     "Mandatory QA on every deliverable",
     "Template starting points",
-    "Vetted leaders only"
+    "Vetted experts only"
   ];
 
   return (
