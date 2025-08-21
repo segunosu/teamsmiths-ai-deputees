@@ -185,11 +185,8 @@ const Catalog = () => {
           <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
             Outcome Packs
           </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-2">
-            Outcome Packs are pre-scoped solutions you can start today — faster, safer, and more affordable than traditional consulting.
-          </p>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Human QA included. Pay by milestone.
+            Pre-scoped, delivered fast. Human QA included. Pay by milestone.
           </p>
         </div>
 
