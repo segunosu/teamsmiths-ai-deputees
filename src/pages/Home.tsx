@@ -56,30 +56,42 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-background via-background to-muted py-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-gradient-to-br from-background via-background to-muted py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-normal py-2">
-              Revenue up. Waste down.
+            <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 leading-[1.1] py-2">
+              World-class consulting, scaled by AI, priced for every SME
             </h1>
-            <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Delivered by vetted leaders + AI Deputees.
+            <p className="text-xl sm:text-2xl text-muted-foreground mb-12 max-w-4xl mx-auto leading-relaxed">
+              Accelerate performance in weeks, not months — without the overhead of traditional consulting.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button asChild size="lg" className="text-lg px-8 py-6">
-                <Link to="/catalog">View Templates</Link>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+              <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
+                <Link to="/catalog">View Outcome Packs</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book 15-min Intro</a>
+              <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a 15‑min intro</a>
               </Button>
             </div>
 
             {/* Trust Strip */}
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+            <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground max-w-4xl mx-auto">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-success" />
-                <span>Precision matching. We shortlist vetted Teamsmiths based on skills, domain, outcomes, availability—then you receive comparable quotes fast. Human QA on every milestone.</span>
+                <span>Human QA on every deliverable</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-success" />
+                <span>Escrowed milestones</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-success" />
+                <span>Precision matching</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-success" />
+                <span>Your data, scoped RAG</span>
               </div>
             </div>
           </div>
@@ -87,28 +99,28 @@ const Home = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
               How It Works
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Outcomes you can trust—faster, safer, smarter.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-10">
             {features.map((feature, index) => (
-              <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader>
-                  <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit">
+              <Card key={index} className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
+                <CardHeader className="pb-6">
+                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
                     {feature.icon}
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <CardTitle className="text-2xl font-semibold">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base">
+                  <CardDescription className="text-lg leading-relaxed">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
@@ -119,41 +131,50 @@ const Home = () => {
       </section>
 
       {/* Three Pillars */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              The Three Pillars
+          <div className="text-center mb-20">
+            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
+              Outcome Packs
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Hire a Teamsmith: a vetted leader who commands AI Deputees to deliver results. Pay for milestones. QA included.
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Choose from three proven pillars. Each pack combines vetted expertise with AI acceleration for guaranteed results.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-10">
             {pillars.map((pillar, index) => (
-              <Card key={index} className="shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader>
-                  <div className="mb-4">
+              <Card key={index} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80">
+                <CardHeader className="pb-6">
+                  <div className="mb-6">
                     {pillar.icon}
                   </div>
-                  <CardTitle className="text-2xl">{pillar.title}</CardTitle>
-                  <CardDescription className="text-lg font-medium">
+                  <CardTitle className="text-3xl font-bold">{pillar.title}</CardTitle>
+                  <CardDescription className="text-lg font-medium text-muted-foreground mt-3">
                     {pillar.description}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
+                <CardContent className="pt-0">
+                  <ul className="space-y-4">
                     {pillar.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span>{item}</span>
+                      <li key={itemIndex} className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-success mt-1 flex-shrink-0" />
+                        <span className="text-base leading-relaxed">{item}</span>
                       </li>
                     ))}
                   </ul>
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          <div className="text-center mt-16">
+            <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
+              <Link to="/catalog">
+                Explore All Outcome Packs
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -165,18 +186,18 @@ const Home = () => {
             Ready to Get Started?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Browse our solution templates or book a quick intro call to discuss your customization needs.
+            Browse our outcome packs or book a quick intro call to discuss your needs.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8 py-6">
               <Link to="/catalog">
-                Browse Templates
+                Browse Outcome Packs
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-              <Link to="/auth">Book Intro Call</Link>
+              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book Intro Call</a>
             </Button>
           </div>
 
