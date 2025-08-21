@@ -162,6 +162,16 @@ const Catalog = () => {
           </p>
         </div>
 
+        {/* Primary CTA (above category tabs) */}
+        <div className="mb-6 flex flex-col sm:flex-row gap-3 justify-center">
+          <Button asChild size="sm">
+            <Link to="/customize">Discuss Customization</Link>
+          </Button>
+          <Button asChild variant="outline" size="sm">
+            <Link to="/auth">Book Consultation</Link>
+          </Button>
+        </div>
+
         {/* Category Filter */}
         <div className="mb-8">
           <div className="flex flex-wrap gap-2 justify-center">
@@ -199,7 +209,7 @@ const Catalog = () => {
                   </div>
                 </div>
                 <CardTitle className="text-xl">{product.title}</CardTitle>
-                <CardDescription className="text-base">
+                <CardDescription className="text-base" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {product.description}
                 </CardDescription>
               </CardHeader>
@@ -221,9 +231,12 @@ const Catalog = () => {
                     <span>Deliverables:</span>
                   </div>
                   <ul className="text-sm text-muted-foreground space-y-1 ml-6 list-disc">
-                    {formatDeliverables(product.deliverables).map((item, index) => (
+                    {formatDeliverables(product.deliverables).slice(0, 3).map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
+                    {formatDeliverables(product.deliverables).length > 3 && (
+                      <li className="list-none text-xs text-muted-foreground">+ more</li>
+                    )}
                   </ul>
                 </div>
 
@@ -277,9 +290,9 @@ const Catalog = () => {
         {filteredProducts.length === 0 && (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-2xl font-semibold mb-2">No packs found</h3>
+            <h3 className="text-2xl font-semibold mb-2">No templates found</h3>
             <p className="text-muted-foreground">
-              Try selecting a different category or check back soon for new packs.
+              Try selecting a different category or check back soon for new templates.
             </p>
           </div>
         )}
