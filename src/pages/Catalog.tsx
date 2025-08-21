@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -41,6 +41,7 @@ const Catalog = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,6 +91,16 @@ const Catalog = () => {
   const handleCheckout = async (product: Product) => {
     try {
       setLoadingProductId(product.id);
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData?.user;
+      if (!user?.email) {
+        toast({
+          title: 'Sign in required',
+          description: 'Please sign in to purchase this pack.',
+        });
+        navigate('/auth');
+        return;
+      }
       const { data, error } = await supabase.functions.invoke('create-payment', {
         body: { product_id: product.id },
       });
