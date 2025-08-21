@@ -296,16 +296,19 @@ export type Database = {
       categories: {
         Row: {
           id: string
+          is_active: boolean | null
           name: string
           slug: string
         }
         Insert: {
           id?: string
+          is_active?: boolean | null
           name: string
           slug: string
         }
         Update: {
           id?: string
+          is_active?: boolean | null
           name?: string
           slug?: string
         }
@@ -2123,18 +2126,21 @@ export type Database = {
         Row: {
           category_id: string | null
           id: string
+          is_active: boolean | null
           name: string
           slug: string
         }
         Insert: {
           category_id?: string | null
           id?: string
+          is_active?: boolean | null
           name: string
           slug: string
         }
         Update: {
           category_id?: string | null
           id?: string
+          is_active?: boolean | null
           name?: string
           slug?: string
         }

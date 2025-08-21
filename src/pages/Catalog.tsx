@@ -34,14 +34,33 @@ interface Category {
   slug: string;
 }
 
+interface Subcategory {
+  id: string;
+  name: string;
+  slug: string;
+  category_id: string;
+}
+
 const Catalog = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('all');
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  // Silent mapping for old category slugs to new structure
+  const mapLegacyCategory = (categorySlug: string) => {
+    const legacyMapping: Record<string, { category: string; subcategory: string }> = {
+      'team-productivity': { category: 'continuous-improvement', subcategory: 'team-productivity' },
+      'process-optimization': { category: 'continuous-improvement', subcategory: 'process-optimization' },
+      'software-development': { category: 'continuous-improvement', subcategory: 'app-dev-enablers' }
+    };
+    return legacyMapping[categorySlug];
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -50,17 +69,42 @@ const Catalog = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch categories
+        // Fetch active categories in specific order
         const { data: categoriesData, error: categoriesError } = await supabase
           .from('categories')
           .select('*')
+          .eq('is_active', true)
           .order('name');
 
         if (categoriesError) {
           throw categoriesError;
         }
 
-        setCategories(categoriesData || []);
+        // Order categories explicitly: Sales Acceleration, Continuous Improvement, Compliance
+        const orderedCategories = (categoriesData || []).sort((a, b) => {
+          const order = ['sales-acceleration', 'continuous-improvement', 'compliance'];
+          const aIndex = order.indexOf(a.slug);
+          const bIndex = order.indexOf(b.slug);
+          if (aIndex === -1 && bIndex === -1) return a.name.localeCompare(b.name);
+          if (aIndex === -1) return 1;
+          if (bIndex === -1) return -1;
+          return aIndex - bIndex;
+        });
+
+        setCategories(orderedCategories);
+
+        // Fetch active subcategories
+        const { data: subcategoriesData, error: subcategoriesError } = await supabase
+          .from('subcategories')
+          .select('*')
+          .eq('is_active', true)
+          .order('name');
+
+        if (subcategoriesError) {
+          throw subcategoriesError;
+        }
+
+        setSubcategories(subcategoriesData || []);
 
         // Fetch products with category and subcategory info
         const { data: productsData, error: productsError } = await supabase
@@ -78,6 +122,14 @@ const Catalog = () => {
         }
 
         setProducts(productsData || []);
+
+        // Handle legacy category mapping from URL or stored state
+        const currentCategory = selectedCategory;
+        const legacyMap = mapLegacyCategory(currentCategory);
+        if (legacyMap) {
+          setSelectedCategory(legacyMap.category);
+          setSelectedSubcategory(legacyMap.subcategory);
+        }
       } catch (error: any) {
         toast({
           title: "Error loading catalog",
@@ -139,9 +191,45 @@ const Catalog = () => {
     }
   };
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
-    : products.filter(product => product.category?.slug === selectedCategory);
+  const filteredProducts = (() => {
+    if (selectedCategory === 'all') return products;
+    
+    const categoryProducts = products.filter(product => product.category?.slug === selectedCategory);
+    
+    if (selectedCategory === 'continuous-improvement' && selectedSubcategory !== 'all') {
+      return categoryProducts.filter(product => product.subcategory?.slug === selectedSubcategory);
+    }
+    
+    return categoryProducts;
+  })();
+
+  const handleCategoryChange = (categorySlug: string) => {
+    setSelectedCategory(categorySlug);
+    setSelectedSubcategory('all'); // Reset subcategory when changing category
+  };
+
+  const handleSubcategoryChange = (subcategorySlug: string) => {
+    setSelectedSubcategory(subcategorySlug);
+  };
+
+  const getContinuousImprovementSubcategories = () => {
+    const ciCategory = categories.find(cat => cat.slug === 'continuous-improvement');
+    if (!ciCategory) return [];
+    
+    return subcategories.filter(sub => sub.category_id === ciCategory.id);
+  };
+
+  const getSelectedCategoryName = () => {
+    if (selectedCategory === 'all') return 'All Categories';
+    const category = categories.find(cat => cat.slug === selectedCategory);
+    return category?.name || '';
+  };
+
+  const getSelectedSubcategoryName = () => {
+    if (selectedSubcategory === 'all') return '';
+    const subcategory = subcategories.find(sub => sub.slug === selectedSubcategory);
+    return subcategory?.name || '';
+  };
 
   const getCategoryIcon = (categoryName: string) => {
     switch (categoryName?.toLowerCase()) {
@@ -205,30 +293,68 @@ const Catalog = () => {
           <div className="flex flex-wrap gap-2 justify-center">
             <Button
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory('all')}
+              onClick={() => handleCategoryChange('all')}
               className="rounded-full"
             >
               All Categories
             </Button>
-            {/* Prioritize Continuous Improvement first */}
-            {categories
-              .sort((a, b) => {
-                if (a.name === 'Continuous Improvement') return -1;
-                if (b.name === 'Continuous Improvement') return 1;
-                return a.name.localeCompare(b.name);
-              })
-              .map((category) => (
-                <Button
-                  key={category.id}
-                  variant={selectedCategory === category.slug ? 'default' : 'outline'}
-                  onClick={() => setSelectedCategory(category.slug)}
-                  className="rounded-full"
-                >
-                  {category.name}
-                </Button>
-              ))}
+            {categories.map((category) => (
+              <Button
+                key={category.id}
+                variant={selectedCategory === category.slug ? 'default' : 'outline'}
+                onClick={() => handleCategoryChange(category.slug)}
+                className="rounded-full"
+              >
+                {category.name}
+              </Button>
+            ))}
           </div>
         </div>
+
+        {/* Subcategory Pills (only show for Continuous Improvement) */}
+        {selectedCategory === 'continuous-improvement' && (
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-2 justify-center">
+              <Button
+                variant={selectedSubcategory === 'all' ? 'default' : 'outline'}
+                onClick={() => handleSubcategoryChange('all')}
+                className="rounded-full"
+                size="sm"
+              >
+                All CI
+              </Button>
+              {getContinuousImprovementSubcategories().map((subcategory) => (
+                <Button
+                  key={subcategory.id}
+                  variant={selectedSubcategory === subcategory.slug ? 'default' : 'outline'}
+                  onClick={() => handleSubcategoryChange(subcategory.slug)}
+                  className="rounded-full"
+                  size="sm"
+                >
+                  {subcategory.name}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Breadcrumb for subcategory selection */}
+        {selectedCategory === 'continuous-improvement' && selectedSubcategory !== 'all' && (
+          <div className="mb-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              {getSelectedCategoryName()} → {getSelectedSubcategoryName()}
+            </p>
+          </div>
+        )}
+
+        {/* Continuous Improvement Category Description */}
+        {selectedCategory === 'continuous-improvement' && selectedSubcategory === 'all' && (
+          <div className="mb-8 text-center">
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Includes Team Productivity, Process Optimization, AI Readiness & Automation, and App Dev (Enabler).
+            </p>
+          </div>
+        )}
 
         {/* Products Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
