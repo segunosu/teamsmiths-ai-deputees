@@ -40,6 +40,10 @@ const ProductDetail = () => {
   const { user } = useAuth();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchProduct = async () => {
       if (!id) {
         navigate('/catalog');

@@ -23,6 +23,10 @@ const Auth = () => {
     }
   }, [user, navigate]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const handleEmailAuth = async (mode: 'signin' | 'signup') => {
     setLoading(true);
     

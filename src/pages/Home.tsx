@@ -4,8 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck } from 'lucide-react';
+import { useEffect } from 'react';
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const features = [
     {
       icon: <Users className="h-8 w-8 text-primary" />,
