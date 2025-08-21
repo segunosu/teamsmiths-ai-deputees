@@ -271,7 +271,7 @@ const ForClients = () => {
 
             <Card className="border-2 border-primary">
               <CardHeader>
-                <CardTitle className="text-xl text-center">Expert Packs</CardTitle>
+                <CardTitle className="text-xl text-center">Outcome Packs</CardTitle>
                 <Badge className="mx-auto w-fit">Recommended</Badge>
               </CardHeader>
               <CardContent className="space-y-4">
