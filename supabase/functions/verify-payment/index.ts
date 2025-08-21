@@ -63,6 +63,34 @@ serve(async (req) => {
     const productId = session.metadata?.product_id as string | undefined;
     const productTitle = (session.metadata?.product_title as string | undefined) ?? "Purchased Pack";
 
+    // Check if a project already exists for this session (idempotency)
+    const { data: existingOrders } = await supabaseService
+      .from("orders")
+      .select("*")
+      .eq("stripe_session_id", sessionId)
+      .eq("user_id", user.id)
+      .limit(1);
+
+    if (existingOrders && existingOrders.length > 0) {
+      // Find the project for this existing order
+      const { data: existingProject } = await supabaseService
+        .from("projects")
+        .select("id")
+        .eq("teamsmith_user_id", user.id)
+        .gte("created_at", new Date(Date.now() - 60 * 60 * 1000).toISOString()) // within last hour
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single();
+
+      if (existingProject) {
+        console.log("Returning existing project for session:", sessionId);
+        return new Response(
+          JSON.stringify({ success: true, project_id: existingProject.id, product_id: productId }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+        );
+      }
+    }
+
     // Create a project for the user
     const title = `${productTitle} - ${new Date().toLocaleDateString()}`;
     const total = session.amount_total ?? 0; // minor units (pence)
@@ -83,12 +111,26 @@ serve(async (req) => {
 
     if (projectError) throw new Error(`Project creation failed: ${projectError.message}`);
 
-    // Add user as participant (ensure allowed role)
-    const { error: participantError } = await supabaseService.from("project_participants").insert({
-      project_id: project.id,
+    // Record the order for idempotency tracking
+    await supabaseService.from("orders").insert({
       user_id: user.id,
-      role: "client",
+      stripe_session_id: sessionId,
+      amount: total,
+      currency: currency.toLowerCase(),
+      product_id: productId,
+      status: "paid",
     });
+
+    // Add user as participant (idempotent insertion)
+    const { error: participantError } = await supabaseService
+      .from("project_participants")
+      .insert({
+        project_id: project.id,
+        user_id: user.id,
+        role: "client",
+      })
+      .select()
+      .maybeSingle();
 
     if (participantError) {
       console.error("Failed to add participant:", participantError);

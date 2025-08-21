@@ -212,7 +212,7 @@ const ProjectDetail = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {project.project_participants.length}
+                  {project.project_participants.filter(p => p.role !== 'admin').length}
                 </div>
               </CardContent>
             </Card>
