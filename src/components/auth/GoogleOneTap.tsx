@@ -39,6 +39,9 @@ export default function GoogleOneTap() {
       document.querySelector<HTMLMetaElement>('meta[name="google-client-id"]')?.content;
 
     if (!clientId) return; // No client ID configured — safely skip
+    
+    // Only show One Tap on production domain
+    if (!window.location.origin.includes('teamsmiths.ai')) return;
 
     let cancelled = false;
 
