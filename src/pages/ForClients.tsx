@@ -20,7 +20,7 @@ const ForClients = () => {
     {
       icon: <Clock className="h-8 w-8 text-primary" />,
       title: "Flexible Solutions",
-      description: "Start with proven templates, then customize to your exact needs.",
+      description: "Start with proven outcome packs, then customize to your exact needs.",
     },
   ];
 
@@ -279,7 +279,7 @@ const ForClients = () => {
                   <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center">
                     <CheckCircle className="h-4 w-4 text-success" />
                   </div>
-                  <span>Templated start, fully customizable</span>
+                  <span>Proven starting point, fully customizable</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center">
@@ -312,7 +312,7 @@ const ForClients = () => {
             Ready to Try Risk-Free?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Start with a proven template, customize as needed. Escrow protection included.
+            Start with a proven outcome pack, customize as needed. Escrow protection included.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -170,10 +170,13 @@ const Catalog = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-            Solution Templates
+            Outcome Packs
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Start with proven templates, then customize to your exact needs. Human QA included. Pay by milestone.
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-2">
+            Outcome Packs are pre-scoped solutions you can start today — faster, safer, and more affordable than traditional consulting.
+          </p>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Human QA included. Pay by milestone.
           </p>
         </div>
 
@@ -282,7 +285,7 @@ const Catalog = () => {
                     >
                       {loadingProductId === product.id ? 'Processing...' : (
                         <>
-                          Buy Template
+                          Buy Outcome Pack
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                       )}
@@ -305,9 +308,9 @@ const Catalog = () => {
         {filteredProducts.length === 0 && (
           <div className="text-center py-16">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-2xl font-semibold mb-2">No templates found</h3>
+            <h3 className="text-2xl font-semibold mb-2">No outcome packs found</h3>
             <p className="text-muted-foreground">
-              Try selecting a different category or check back soon for new templates.
+              Try selecting a different category or check back soon for new outcome packs.
             </p>
           </div>
         )}
@@ -316,7 +319,7 @@ const Catalog = () => {
         <div className="text-center mt-16 p-8 bg-muted/50 rounded-lg">
           <h3 className="text-2xl font-bold mb-4">Need full customization?</h3>
           <p className="text-muted-foreground mb-6">
-            Every template can be fully customized. Our Teamsmiths will tailor any solution to your specific requirements.
+            Every outcome pack can be fully customized. Our experts will tailor any solution to your specific requirements.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">

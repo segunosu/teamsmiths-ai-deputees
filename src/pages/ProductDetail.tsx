@@ -237,7 +237,7 @@ const ProductDetail = () => {
                   <div className="text-3xl font-bold text-primary mb-2">
                     {formatPrice(product.base_price)}
                   </div>
-                  <p className="text-sm text-muted-foreground">Template starting price</p>
+                  <p className="text-sm text-muted-foreground">Outcome pack starting price</p>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -249,7 +249,7 @@ const ProductDetail = () => {
                 >
                   {checkoutLoading ? 'Processing...' : (
                     <>
-                      Buy Template
+                      Buy Outcome Pack
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </>
                   )}
@@ -264,7 +264,7 @@ const ProductDetail = () => {
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-green-500" />
-                    <span>Proven template foundation</span>
+                    <span>Proven outcome pack foundation</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-green-500" />
@@ -288,9 +288,9 @@ const ProductDetail = () => {
 
         {/* Customization CTA */}
         <div className="text-center mt-16 p-8 bg-muted/50 rounded-lg">
-          <h3 className="text-2xl font-bold mb-4">Want to customize this template?</h3>
+          <h3 className="text-2xl font-bold mb-4">Want to customize this outcome pack?</h3>
           <p className="text-muted-foreground mb-6">
-            Every template can be fully tailored to your needs. Discuss modifications, additions, or complete customizations with our Teamsmiths.
+            Every outcome pack can be fully tailored to your needs. Discuss modifications, additions, or complete customizations with our experts.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
