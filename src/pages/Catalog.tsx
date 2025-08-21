@@ -186,7 +186,7 @@ const Catalog = () => {
             Outcome Packs
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Pre-scoped, delivered fast. Human QA included. Pay by milestone.
+            Pre-scoped solutions. Delivered fast. Human QA. Pay by milestone.
           </p>
         </div>
 
