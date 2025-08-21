@@ -41,7 +41,7 @@ const WhatHappensNext = () => {
 
   const steps = [
     'We refine your brief (AI-assist)',
-    `We shortlist the top ${settings.shortlist_size_default} Teamsmiths`,
+    `We shortlist the top ${settings.shortlist_size_default} experts`,
     `You receive comparable quotes within ${settings.invite_response_sla_hours}h`,
     'You choose; milestones are escrowed; QA on every deliverable'
   ];

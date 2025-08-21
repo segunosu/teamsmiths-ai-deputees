@@ -10,7 +10,7 @@ const ForAgencies = () => {
     {
       icon: <Users className="h-8 w-8 text-primary" />,
       title: "Build Your Roster",
-      description: "Create an agency profile and invite your best Teamsmiths to join your collective.",
+      description: "Create an agency profile and invite your best experts to join your collective.",
     },
     {
       icon: <DollarSign className="h-8 w-8 text-primary" />,
@@ -42,12 +42,12 @@ const ForAgencies = () => {
       description: "Business development, client relationship, project oversight"
     },
     {
-      role: "Lead Teamsmith",
+      role: "Lead Expert",
       percentage: "40-60%", 
       description: "Primary delivery, strategy, client-facing work"
     },
     {
-      role: "Supporting Teamsmith",
+      role: "Supporting Expert",
       percentage: "20-30%",
       description: "Specialized expertise, execution support, QA review"
     }
@@ -223,7 +223,7 @@ const ForAgencies = () => {
                     <span className="font-semibold">£4,000</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Lead Teamsmith (50%)</span>
+                    <span>Lead Expert (50%)</span>
                     <span className="font-semibold">£5,000</span>
                   </div>
                   <div className="flex justify-between">
@@ -290,7 +290,7 @@ const ForAgencies = () => {
               Agency Success Stories
             </h2>
             <p className="text-xl text-muted-foreground">
-              Real agencies scaling with Teamsmiths
+              Real agencies scaling with experts
             </p>
           </div>
 
@@ -361,7 +361,7 @@ const ForAgencies = () => {
             Ready to Build Your Collective?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Start with your existing team or recruit vetted Teamsmiths to join your agency.
+            Start with your existing team or recruit vetted experts to join your agency.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">

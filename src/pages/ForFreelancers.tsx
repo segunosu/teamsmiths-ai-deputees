@@ -59,7 +59,7 @@ const ForFreelancers = () => {
             For Freelancers
           </h1>
           <p className="text-2xl sm:text-3xl text-muted-foreground mb-6 max-w-4xl mx-auto font-light leading-relaxed">
-            <span className="text-foreground font-medium">Become a Teamsmith:</span>
+            <span className="text-foreground font-medium">Become an expert:</span>
           </p>
           <p className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
             Command AI Deputees™ and deliver premium outcomes while focusing on strategy and client success
@@ -130,7 +130,7 @@ const ForFreelancers = () => {
             <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 max-w-4xl mx-auto">
               <h3 className="text-2xl font-bold mb-4">The Deputee Advantage</h3>
               <p className="text-lg text-muted-foreground mb-6">
-                While traditional freelancers get bogged down in execution, Teamsmiths use AI to deliver 3x faster while maintaining premium quality and strategic oversight.
+                While traditional freelancers get bogged down in execution, experts use AI to deliver 3x faster while maintaining premium quality and strategic oversight.
               </p>
               <div className="grid md:grid-cols-3 gap-4 text-center">
                 <div>
