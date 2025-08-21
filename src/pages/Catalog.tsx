@@ -28,6 +28,9 @@ interface Series {
     base_price: number;
     most_popular: boolean;
     timeline_days?: number;
+    title?: string;
+    deliverables?: string;
+    tags?: string[];
   }>;
 }
 
@@ -128,7 +131,7 @@ const Catalog = () => {
           (seriesData || []).map(async (seriesItem) => {
             const { data: productsData, error: productsError } = await supabase
               .from('products')
-              .select('id, tier, base_price, most_popular, timeline_days')
+              .select('id, tier, base_price, most_popular, timeline_days, title, deliverables, tags')
               .eq('series_id', seriesItem.id)
               .eq('is_active', true);
 
