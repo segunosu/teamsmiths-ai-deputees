@@ -372,7 +372,7 @@ const ForAgencies = () => {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-              <Link to="/auth">Schedule Demo</Link>
+              <a href="https://calendly.com/osu/teamsmiths-agency" target="_blank" rel="noopener noreferrer">Schedule Demo</a>
             </Button>
           </div>
 
