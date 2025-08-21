@@ -83,12 +83,16 @@ serve(async (req) => {
 
     if (projectError) throw new Error(`Project creation failed: ${projectError.message}`);
 
-    // Add user as participant/owner (best-effort)
-    await supabaseService.from("project_participants").insert({
+    // Add user as participant (ensure allowed role)
+    const { error: participantError } = await supabaseService.from("project_participants").insert({
       project_id: project.id,
       user_id: user.id,
-      role: "owner",
+      role: "client",
     });
+
+    if (participantError) {
+      console.error("Failed to add participant:", participantError);
+    }
 
     return new Response(
       JSON.stringify({ success: true, project_id: project.id, product_id: productId }),
