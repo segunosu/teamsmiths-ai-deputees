@@ -9,7 +9,7 @@ const ForFreelancers = () => {
   const benefits = [
     {
       icon: <Zap className="h-8 w-8 text-primary" />,
-      title: "AI Deputees",
+      title: "AI Deputees™",
       description: "Command AI agents to accelerate your work while you focus on strategy and quality.",
     },
     {
@@ -50,27 +50,6 @@ const ForFreelancers = () => {
     }
   ];
 
-  const earnings = [
-    {
-      level: "Entry Teamsmith",
-      rate: "£75-150/hour",
-      annual: "£150k-300k",
-      description: "Delivery focused, learning our workflows"
-    },
-    {
-      level: "Senior Teamsmith", 
-      rate: "£150-250/hour",
-      annual: "£300k-500k",
-      description: "Strategy focused, mentoring others"
-    },
-    {
-      level: "Lead Teamsmith",
-      rate: "£250-400/hour", 
-      annual: "£500k-800k",
-      description: "Complex programmes, C-level engagement"
-    }
-  ];
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -83,7 +62,7 @@ const ForFreelancers = () => {
             <span className="text-foreground font-medium">Become a Teamsmith:</span>
           </p>
           <p className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-            Command AI Deputees and deliver premium outcomes while focusing on strategy and client success
+            Command AI Deputees™ and deliver premium outcomes while focusing on strategy and client success
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
@@ -120,7 +99,7 @@ const ForFreelancers = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              Command AI Deputees
+              Command AI Deputees™
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Our AI agents handle the heavy lifting while you focus on strategy and client success
@@ -168,48 +147,6 @@ const ForFreelancers = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Earnings Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              Earning Potential
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              Premium rates for premium outcomes
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {earnings.map((tier, index) => (
-              <Card key={index} className={`shadow-lg ${index === 1 ? 'border-2 border-primary' : ''}`}>
-                <CardHeader>
-                  {index === 1 && (
-                    <Badge className="mx-auto w-fit mb-2">Most Popular</Badge>
-                  )}
-                  <CardTitle className="text-xl text-center">{tier.level}</CardTitle>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-primary">{tier.rate}</div>
-                    <div className="text-sm text-muted-foreground">Equivalent to {tier.annual} annually</div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center text-base">
-                    {tier.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Rates shown are based on 25-30 billable hours per week. Top Teamsmiths often exceed these ranges for specialized domains or complex programmes.
-            </p>
           </div>
         </div>
       </section>
@@ -282,7 +219,7 @@ const ForFreelancers = () => {
             Ready to Join the Elite?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Applications are reviewed on a rolling basis. The sooner you apply, the sooner you can start commanding premium rates.
+            Applications are reviewed on a rolling basis. Join the elite network of performance-focused professionals.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -303,8 +240,8 @@ const ForFreelancers = () => {
               <div className="text-sm text-muted-foreground">Acceptance Rate</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-primary">£200k+</div>
-              <div className="text-sm text-muted-foreground">Average Annual Earnings</div>
+              <div className="text-3xl font-bold text-primary">Elite</div>
+              <div className="text-sm text-muted-foreground">Performance Tier</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-primary">98%</div>

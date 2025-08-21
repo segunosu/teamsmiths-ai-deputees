@@ -74,7 +74,7 @@ export const Footer = () => {
         <div className="border-t border-primary-foreground/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div className="text-primary-foreground/70 text-sm">
-              © {new Date().getFullYear()} Teamsmiths AI Deputees. All rights reserved.
+              © {new Date().getFullYear()} Teamsmiths AI Deputees™. All rights reserved.
             </div>
             
             {/* Social Media Icons */}

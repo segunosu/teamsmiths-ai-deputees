@@ -37,7 +37,7 @@ const ForClients = () => {
     {
       step: "1",
       title: "Teamsmith Creates",
-      description: "Your assigned Teamsmith uses AI Deputees to accelerate the work"
+      description: "Your assigned Teamsmith uses AI Deputees™ to accelerate the work"
     },
     {
       step: "2", 
@@ -322,7 +322,18 @@ const ForClients = () => {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+            <Button 
+              asChild 
+              variant="outline" 
+              size="lg" 
+              className="text-lg px-8 py-6"
+              onClick={() => {
+                const authElement = document.querySelector('[href="/auth"]');
+                if (authElement) {
+                  authElement.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+            >
               <Link to="/auth">Book Consultation</Link>
             </Button>
           </div>

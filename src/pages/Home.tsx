@@ -19,7 +19,7 @@ const Home = () => {
     },
     {
       icon: <Zap className="h-8 w-8 text-primary" />,
-      title: "AI Deputees",
+      title: "AI Deputees™",
       description: "Our AI agents accelerate work while humans ensure quality and strategy"
     }
   ];
@@ -60,10 +60,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-8 leading-[1.1] py-2">
-              World-class consulting, scaled by AI, priced for every SME
+              Revenue Up. Waste Down. Fast
             </h1>
             <p className="text-xl sm:text-2xl text-muted-foreground mb-12 max-w-4xl mx-auto leading-relaxed">
-              Accelerate performance in weeks, not months — without the overhead of traditional consulting.
+              Accelerate performance without consulting overhead.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">

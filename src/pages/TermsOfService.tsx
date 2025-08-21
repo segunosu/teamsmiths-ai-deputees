@@ -12,7 +12,7 @@ const TermsOfService = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Agreement to Terms</h2>
             <p>
-              By accessing and using Teamsmiths AI Deputees services, you accept and agree to 
+              By accessing and using Teamsmiths AI Deputees™ services, you accept and agree to 
               be bound by the terms and provision of this agreement.
             </p>
           </section>
@@ -20,7 +20,7 @@ const TermsOfService = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Service Description</h2>
             <p>
-              Teamsmiths AI Deputees provides AI-powered business solutions and consulting services 
+              Teamsmiths AI Deputees™ provides AI-powered business solutions and consulting services 
               to help organizations optimize their operations and achieve better business outcomes.
             </p>
           </section>
@@ -47,7 +47,7 @@ const TermsOfService = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Limitation of Liability</h2>
             <p>
-              In no event shall Teamsmiths AI Deputees be liable for any indirect, incidental, 
+              In no event shall Teamsmiths AI Deputees™ be liable for any indirect, incidental, 
               special, consequential, or punitive damages.
             </p>
           </section>

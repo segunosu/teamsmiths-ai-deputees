@@ -302,7 +302,7 @@ const ForAgencies = () => {
                   <Badge>GDPR Specialists</Badge>
                 </div>
                 <CardDescription className="text-lg">
-                  "We went from 2 freelancers to a 6-person collective. The AI Deputees let us take on 3x more clients while maintaining quality."
+                  "We went from 2 freelancers to a 6-person collective. The AI Deputees™ let us take on 3x more clients while maintaining quality."
                 </CardDescription>
               </CardHeader>
               <CardContent>

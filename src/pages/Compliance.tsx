@@ -8,7 +8,7 @@ const Compliance = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Regulatory Compliance</h2>
             <p>
-              Teamsmiths AI Deputees is committed to maintaining the highest standards of 
+              Teamsmiths AI Deputees™ is committed to maintaining the highest standards of 
               regulatory compliance across all our operations and services.
             </p>
           </section>

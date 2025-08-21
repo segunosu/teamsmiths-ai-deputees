@@ -2,13 +2,13 @@ const About = () => {
   return (
     <div className="container mx-auto px-6 py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-foreground mb-8">About Teamsmiths AI Deputees</h1>
+        <h1 className="text-4xl font-bold text-foreground mb-8">About Teamsmiths AI Deputees™</h1>
         
         <div className="prose prose-lg max-w-none text-muted-foreground">
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Our Mission</h2>
             <p>
-              At Teamsmiths AI Deputees, we believe in the power of AI to transform businesses 
+              At Teamsmiths AI Deputees™, we believe in the power of AI to transform businesses 
               and drive tangible results. Our mission is to help organizations harness the 
               potential of artificial intelligence to optimize operations, reduce waste, and 
               accelerate growth.

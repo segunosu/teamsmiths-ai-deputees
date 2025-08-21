@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Introduction</h2>
             <p>
-              Teamsmiths AI Deputees ("we," "our," or "us") is committed to protecting your privacy. 
+              Teamsmiths AI Deputees™ ("we," "our," or "us") is committed to protecting your privacy. 
               This Privacy Policy explains how we collect, use, disclose, and safeguard your information 
               when you visit our website or use our services.
             </p>
