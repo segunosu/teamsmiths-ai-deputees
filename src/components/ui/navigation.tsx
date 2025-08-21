@@ -63,10 +63,10 @@ export const Navigation = () => {
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
               <img 
-                src="/lovable-uploads/3d9c4cdc-7ba2-4bf6-b47d-5db419081ab7.png" 
+                src="/lovable-uploads/3062ec0f-2a6a-4786-a53e-0c23b5b350b9.png" 
                 alt="Teamsmiths AI Logo" 
                 className="w-auto" 
-                style={{ height: '36.8px' }}
+                style={{ height: '40.5px' }}
               />
             </Link>
           </div>
