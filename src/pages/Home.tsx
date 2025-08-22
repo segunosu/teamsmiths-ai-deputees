@@ -85,22 +85,12 @@ const Home = () => {
             </div>
 
             {/* Trust Strip */}
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground max-w-4xl mx-auto">
-              <div className="flex items-center gap-2">
-                <Award className="h-4 w-4 text-success" />
-                <span>Human QA on every deliverable</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="h-4 w-4 text-success" />
-                <span>Escrowed milestones</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <UserCheck className="h-4 w-4 text-success" />
-                <span>Precision matching</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Database className="h-4 w-4 text-success" />
-                <span>Your data, scoped RAG</span>
+            <div className="border-t border-border/40 mt-6 pt-4">
+              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 text-sm font-semibold text-foreground max-w-4xl mx-auto">
+                <span className="text-center md:text-left">Precision matched experts</span>
+                <span className="text-center md:text-left">Milestone payments</span>
+                <span className="text-center md:text-left">Faster outcomes</span>
+                <span className="text-center md:text-left">Quality assured</span>
               </div>
             </div>
           </div>
