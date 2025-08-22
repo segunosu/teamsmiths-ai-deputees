@@ -11,7 +11,6 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
-import SeriesDetail from "./pages/SeriesDetail";
 import CustomizationRequest from "./pages/CustomizationRequest";
 import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
@@ -50,7 +49,6 @@ const App = () => (
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/series/:slug" element={<SeriesDetail />} />
                 <Route path="/customize" element={<CustomizationRequest />} />
                 <Route path="/customize/:id" element={<CustomizationRequest />} />
                 <Route path="/quote/:id" element={<QuoteDetail />} />
