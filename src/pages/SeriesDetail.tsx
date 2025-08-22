@@ -212,9 +212,9 @@ const SeriesDetail = () => {
         {/* Back Navigation */}
         <div className="mb-6">
           <Button variant="ghost" asChild>
-            <Link to="/catalog">
+            <Link to={`/catalog?category=${series.category.slug}`}>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Catalog
+              Back to {series.category.name}
             </Link>
           </Button>
         </div>

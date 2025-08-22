@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Star, Clock, Package } from 'lucide-react';
+import { ArrowRight, Star, Clock, Package, ChevronDown, ChevronUp, Zap, Wrench } from 'lucide-react';
 
 interface SeriesCardProps {
   series: {
@@ -35,6 +35,7 @@ interface SeriesCardProps {
 }
 
 export const SeriesCard: React.FC<SeriesCardProps> = ({ series }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const getMinPrice = () => {
     if (!series.products || series.products.length === 0) return 0;
     return Math.min(...series.products.map(p => p.base_price));
@@ -224,13 +225,65 @@ export const SeriesCard: React.FC<SeriesCardProps> = ({ series }) => {
           </div>
         )}
 
-        <div className="mt-auto">
-          <Button asChild className="w-full">
-            <Link to={`/series/${series.slug}`}>
-              View Series
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
+        {/* Tier Preview (when expanded) */}
+        {isExpanded && (
+          <div className="space-y-3 mb-4">
+            <div className="text-sm font-medium text-foreground flex items-center gap-2">
+              <Zap className="h-4 w-4" />
+              Available Tiers
+            </div>
+            <div className="space-y-2">
+              {series.products.slice(0, 3).map((product, index) => (
+                <div key={product.id} className="flex items-center justify-between text-sm p-2 bg-muted/50 rounded">
+                  <div className="flex items-center gap-2">
+                    <span className="capitalize font-medium">{product.tier}</span>
+                    {product.most_popular && (
+                      <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                    )}
+                  </div>
+                  <span className="font-medium">{formatPrice(product.base_price)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-auto space-y-2">
+          {/* Quick Expand Button */}
+          <Button 
+            variant="outline" 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full"
+            size="sm"
+          >
+            {isExpanded ? (
+              <>
+                <ChevronUp className="mr-2 h-4 w-4" />
+                Hide Details
+              </>
+            ) : (
+              <>
+                <ChevronDown className="mr-2 h-4 w-4" />
+                Preview Tiers
+              </>
+            )}
           </Button>
+          
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            <Button asChild className="flex-1">
+              <Link to={`/series/${series.slug}`}>
+                <Zap className="mr-2 h-4 w-4" />
+                View Series
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="flex-1">
+              <Link to="/customize">
+                <Wrench className="mr-2 h-4 w-4" />
+                Customize
+              </Link>
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

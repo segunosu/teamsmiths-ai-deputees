@@ -57,6 +57,15 @@ const Catalog = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Get category from URL params on page load
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const categoryParam = params.get('category');
+    if (categoryParam && categoryParam !== selectedCategory) {
+      setSelectedCategory(categoryParam);
+    }
+  }, []);
+
   // Silent mapping for old category slugs to new structure
   const mapLegacyCategory = (categorySlug: string) => {
     const legacyMapping: Record<string, { category: string; subcategory: string }> = {
@@ -286,50 +295,7 @@ const Catalog = () => {
           </div>
         </div>
 
-        {/* Subcategory Pills (only show for Continuous Improvement) */}
-        {selectedCategory === 'continuous-improvement' && (
-          <div className="mb-6">
-            <div className="flex flex-wrap gap-2 justify-center">
-              <Button
-                variant={selectedSubcategory === 'all' ? 'default' : 'outline'}
-                onClick={() => handleSubcategoryChange('all')}
-                className="rounded-full"
-                size="sm"
-              >
-                All CI
-              </Button>
-              {getContinuousImprovementSubcategories().map((subcategory) => (
-                <Button
-                  key={subcategory.id}
-                  variant={selectedSubcategory === subcategory.slug ? 'default' : 'outline'}
-                  onClick={() => handleSubcategoryChange(subcategory.slug)}
-                  className="rounded-full"
-                  size="sm"
-                >
-                  {subcategory.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
 
-        {/* Breadcrumb for subcategory selection */}
-        {selectedCategory === 'continuous-improvement' && selectedSubcategory !== 'all' && (
-          <div className="mb-6 text-center">
-            <p className="text-sm text-muted-foreground">
-              {getSelectedCategoryName()} → {getSelectedSubcategoryName()}
-            </p>
-          </div>
-        )}
-
-        {/* Continuous Improvement Category Description */}
-        {selectedCategory === 'continuous-improvement' && selectedSubcategory === 'all' && (
-          <div className="mb-8 text-center">
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Includes Team Productivity, Process Optimization, AI Readiness & Automation, and App Dev (Enabler).
-            </p>
-          </div>
-        )}
 
         {/* Series Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
