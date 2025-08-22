@@ -336,7 +336,7 @@ const Catalog = () => {
                       )}
                     </Button>
                     <Button asChild variant="outline" className="flex-1">
-                      <Link to={`/product/${product.id}`}>View Details (or Customize)</Link>
+                      <Link to={`/product/${product.id}`}>See Details or Customize</Link>
                     </Button>
                   </div>
                 </div>
