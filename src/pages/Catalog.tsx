@@ -322,21 +322,22 @@ const Catalog = () => {
                 <Separator className="my-4" />
                 
                 <div className="mt-auto">
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
+                    <Button asChild className="flex-1">
+                      <Link to={`/product/${product.id}`}>See Details or Customize</Link>
+                    </Button>
                     <Button
+                      variant="outline"
                       className="flex-1"
                       onClick={() => handleCheckout(product)}
                       disabled={loadingProductId === product.id}
                     >
                       {loadingProductId === product.id ? 'Processing...' : (
                         <>
-                          Buy Outcome Pack
+                          Buy Now
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                       )}
-                    </Button>
-                    <Button asChild variant="outline" className="flex-1">
-                      <Link to={`/product/${product.id}`}>See Details or Customize</Link>
                     </Button>
                   </div>
                 </div>
