@@ -85,22 +85,24 @@ const Home = () => {
             </div>
 
             {/* Trust Strip */}
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground max-w-4xl mx-auto">
-              <div className="flex items-center gap-2">
-                <Award className="h-4 w-4 text-success" />
-                <span>Human QA on every deliverable</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="h-4 w-4 text-success" />
-                <span>Escrowed milestones</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <UserCheck className="h-4 w-4 text-success" />
-                <span>Precision matching</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Database className="h-4 w-4 text-success" />
-                <span>Your data, scoped RAG</span>
+            <div className="border-t border-border/50 mt-8 pt-6">
+              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-medium text-foreground max-w-4xl mx-auto">
+                <div className="flex items-center gap-2 justify-center md:justify-start">
+                  <UserCheck className="h-4 w-4 text-success" />
+                  <span>Precision matched experts</span>
+                </div>
+                <div className="flex items-center gap-2 justify-center md:justify-start">
+                  <Shield className="h-4 w-4 text-success" />
+                  <span>Milestone payments</span>
+                </div>
+                <div className="flex items-center gap-2 justify-center md:justify-start">
+                  <Zap className="h-4 w-4 text-success" />
+                  <span>Faster outcomes</span>
+                </div>
+                <div className="flex items-center gap-2 justify-center md:justify-start">
+                  <Award className="h-4 w-4 text-success" />
+                  <span>Quality assured</span>
+                </div>
               </div>
             </div>
           </div>
