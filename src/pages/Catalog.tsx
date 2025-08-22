@@ -21,11 +21,6 @@ interface Product {
     name: string;
     slug: string;
   };
-  subcategory: {
-    id: string;
-    name: string;
-    slug: string;
-  };
 }
 
 interface Category {
@@ -50,10 +45,11 @@ const Catalog = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch categories
+        // Fetch only active categories
         const { data: categoriesData, error: categoriesError } = await supabase
           .from('categories')
           .select('*')
+          .eq('is_active', true)
           .order('name');
 
         if (categoriesError) {
@@ -62,16 +58,14 @@ const Catalog = () => {
 
         setCategories(categoriesData || []);
 
-        // Fetch products with category and subcategory info
+        // Fetch products with category info
         const { data: productsData, error: productsError } = await supabase
           .from('products')
           .select(`
             *,
-            category:categories(id, name, slug),
-            subcategory:subcategories(id, name, slug)
+            category:categories(id, name, slug)
           `)
-          .eq('is_active', true)
-          .order('base_price');
+          .eq('is_active', true);
 
         if (productsError) {
           throw productsError;
@@ -139,9 +133,31 @@ const Catalog = () => {
     }
   };
 
-  const filteredProducts = selectedCategory === 'all' 
+  // Filter and sort products
+  const filteredProducts = (selectedCategory === 'all' 
     ? products 
-    : products.filter(product => product.category?.slug === selectedCategory);
+    : products.filter(product => product.category?.slug === selectedCategory))
+    .sort((a, b) => {
+      // Group by similar names first, then by price
+      const aTitle = a.title.toLowerCase();
+      const bTitle = b.title.toLowerCase();
+      
+      // Extract base name (before numbers/descriptors)
+      const getBaseName = (title: string) => {
+        return title.replace(/\d+|\b(starter|pilot|advanced|pro|premium|lite|basic)\b/g, '').trim();
+      };
+      
+      const aBaseName = getBaseName(aTitle);
+      const bBaseName = getBaseName(bTitle);
+      
+      // If same base name, sort by price
+      if (aBaseName === bBaseName) {
+        return a.base_price - b.base_price;
+      }
+      
+      // Different base names, sort alphabetically
+      return aBaseName.localeCompare(bBaseName);
+    });
 
   const getCategoryIcon = (categoryName: string) => {
     switch (categoryName?.toLowerCase()) {
@@ -149,7 +165,9 @@ const Catalog = () => {
         return <Rocket className="h-5 w-5 text-primary" />;
       case 'compliance':
         return <Shield className="h-5 w-5 text-primary" />;
-      case 'continuous improvement':
+      case 'performance improvement':
+        return <TrendingUp className="h-5 w-5 text-primary" />;
+      case 'process optimization':
         return <Brain className="h-5 w-5 text-primary" />;
       default:
         return <TrendingUp className="h-5 w-5 text-primary" />;
@@ -210,12 +228,11 @@ const Catalog = () => {
             >
               All Categories
             </Button>
-            {/* Prioritize Continuous Improvement first */}
             {categories
               .sort((a, b) => {
-                if (a.name === 'Continuous Improvement') return -1;
-                if (b.name === 'Continuous Improvement') return 1;
-                return a.name.localeCompare(b.name);
+                // Order: Sales Acceleration, Performance Improvement, Process Optimization, Compliance
+                const order = ['sales-acceleration', 'performance-improvement', 'process-optimization', 'compliance'];
+                return order.indexOf(a.slug) - order.indexOf(b.slug);
               })
               .map((category) => (
                 <Button
@@ -304,7 +321,7 @@ const Catalog = () => {
 
                 <Separator className="my-4" />
                 
-                <div className="mt-auto space-y-2">
+                <div className="mt-auto">
                   <div className="flex gap-2">
                     <Button
                       className="flex-1"
@@ -319,19 +336,7 @@ const Catalog = () => {
                       )}
                     </Button>
                     <Button asChild variant="outline" className="flex-1">
-                      <Link to={`/customize/${product.id}`}>Customize</Link>
-                    </Button>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button asChild variant="ghost" className="flex-1 text-xs">
-                      <Link to={`/product/${product.id}`}>
-                        View Details
-                      </Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="flex-1 text-xs">
-                      <Link to={`/product/${product.id}`}>
-                        Learn More
-                      </Link>
+                      <Link to={`/product/${product.id}`}>View Details (or Customize)</Link>
                     </Button>
                   </div>
                 </div>
