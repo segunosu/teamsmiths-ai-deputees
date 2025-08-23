@@ -279,10 +279,10 @@ const ExpertsSection = () => {
                 variant={selectedIntent === 'curator' ? 'default' : 'outline'}
                 className="h-auto p-4 text-left flex-col items-start"
               >
-                <Link to="/contact">
+                <a href="https://calendly.com/teamsmiths/curator-consultation" target="_blank" rel="noopener noreferrer">
                   <div className="font-medium mb-1">Talk to a curator</div>
-                  <div className="text-sm opacity-75">Human guidance for complex requirements</div>
-                </Link>
+                  <div className="text-sm opacity-75">Book a 15-minute consultation call</div>
+                </a>
               </Button>
             </div>
           </div>
@@ -429,7 +429,7 @@ const ExpertsSection = () => {
               </h3>
             </div>
             <div className="space-y-1 text-muted-foreground max-w-3xl mx-auto">
-              <p>Every engagement monitored by Deputee™ AI + human QA</p>
+              <p>Every engagement monitored by Deputee™ AI™ + human QA</p>
               <p>Optional insurance: replace your expert if things don't work out</p>
               <p className="font-medium text-foreground">That's the Teamsmiths Guarantee.</p>
             </div>

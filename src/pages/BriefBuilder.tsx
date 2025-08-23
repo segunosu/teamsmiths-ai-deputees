@@ -20,7 +20,7 @@ const BriefBuilder = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [briefData, setBriefData] = useState({
+const [briefData, setBriefData] = useState({
     goal: '',
     context: '',
     constraints: '',
@@ -28,6 +28,13 @@ const BriefBuilder = () => {
     timeline: '',
     urgency: 'standard',
     expert_style: ''
+  });
+
+  const [contactData, setContactData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: ''
   });
 
   const [aiResponses, setAiResponses] = useState({
@@ -39,6 +46,8 @@ const BriefBuilder = () => {
     urgency: '',
     style: ''
   });
+
+  const [showContactForm, setShowContactForm] = useState(false);
 
   const [proposal, setProposal] = useState({
     roles: ['Growth Strategist', 'AI Consultant'],
@@ -61,19 +70,54 @@ const BriefBuilder = () => {
   };
 
   const generateAiResponse = (field: string, value: string) => {
-    const responses = {
-      goal: `I've understood that you want to ${value.toLowerCase()}. That typically involves strategic planning and execution. Does that sound right?`,
-      context: `Thanks. Many SMBs in your industry face challenges with scaling efficiently. I'll factor that into your project scope.`,
-      constraints: `Got it — ${value.toLowerCase()} is important. I'll suggest experts and timelines that address your specific needs.`,
-      budget: `Thanks. I'll align recommendations with the budget range you've set.`,
-      timeline: `Noted. This timeline will influence the mix of experts I propose.`,
-      urgency: `Understood. Deputee™ AI will balance urgency against cost optimization.`,
-      style: `Perfect. I'll weight recommendations toward experts who match this approach.`
-    };
+    if (!value.trim()) return;
+    
+    let response = '';
+    
+    switch (field) {
+      case 'goal':
+        response = `I've understood that you want to ${value}. That typically involves strategic planning and execution. Does that sound right?`;
+        break;
+      case 'context':
+        const isEnterprise = value.toLowerCase().includes('enterprise') || value.toLowerCase().includes('large') || 
+                           value.toLowerCase().includes('corporation') || /\d{3,}.*staff|employee/i.test(value);
+        const isSMB = !isEnterprise && (value.toLowerCase().includes('smb') || value.toLowerCase().includes('small') || 
+                      value.toLowerCase().includes('startup') || /\d{1,2}.*staff|employee/i.test(value));
+        
+        if (isEnterprise) {
+          response = `Thanks. Many enterprises face challenges with scaling and coordination across departments. I'll factor your organizational complexity into the project scope.`;
+        } else if (isSMB) {
+          response = `Thanks. Many SMBs face challenges with resource optimization and growth scalability. I'll factor that into your project scope.`;
+        } else {
+          response = `Thanks. I'll factor your organizational context into the project scope and expert matching.`;
+        }
+        break;
+      case 'constraints':
+        if (value.toLowerCase().includes('fast') || value.toLowerCase().includes('quick') || value.toLowerCase().includes('urgent')) {
+          response = `Got it — speed is critical for your ${value.toLowerCase()}. I'll suggest experts and timelines that prioritize quick wins.`;
+        } else {
+          response = `Got it — ${value} is important. I'll suggest experts and timelines that address your specific needs.`;
+        }
+        break;
+      case 'budget_range':
+        response = `Thanks. I'll align recommendations with the budget range you've set.`;
+        break;
+      case 'timeline':
+        response = `Noted. This timeline will influence the mix of experts I propose.`;
+        break;
+      case 'urgency':
+        response = `Understood. Deputee™ AI will balance urgency against cost optimization.`;
+        break;
+      case 'expert_style':
+        response = `Perfect. I'll weight recommendations toward ${value.toLowerCase()} experts who match this approach.`;
+        break;
+      default:
+        response = `Thanks for that information about ${field}.`;
+    }
 
     setAiResponses(prev => ({
       ...prev,
-      [field]: responses[field as keyof typeof responses] || `Thanks for that information about ${field}.`
+      [field]: response
     }));
   };
 
@@ -81,11 +125,11 @@ const BriefBuilder = () => {
     if (currentStep < 7) {
       setCurrentStep(prev => prev + 1);
     } else {
-      handleSubmit();
+      setShowContactForm(true);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleContactSubmit = async () => {
     setLoading(true);
     
     // Simulate AI processing
@@ -101,14 +145,9 @@ const BriefBuilder = () => {
   };
 
   const handleConfirmProposal = () => {
-    if (!user) {
-      navigate('/auth?flow=signup&redirect=brief-builder');
-      return;
-    }
-    
     toast({
       title: "Proposal Confirmed!",
-      description: "Proceeding to project setup and milestone creation.",
+      description: "Our team will contact you within 2 hours to finalize your project.",
     });
   };
 
@@ -131,7 +170,7 @@ const BriefBuilder = () => {
               <Sparkles className="h-8 w-8 text-primary" />
             </div>
             <h1 className="text-3xl font-bold mb-2">Deputee™ AI Proposal Preview</h1>
-            <p className="text-muted-foreground">AI-generated proposal • QA confirmation in &lt;2 hours</p>
+            <p className="text-muted-foreground">This proposal was created by Deputee™ AI™. QA validation will follow within 2 hours.</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -236,6 +275,97 @@ const BriefBuilder = () => {
               </Card>
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (showContactForm) {
+    return (
+      <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 bg-muted/10">
+        <div className="max-w-2xl mx-auto">
+          {/* Back Button */}
+          <div className="mb-6">
+            <Button variant="ghost" onClick={() => setShowContactForm(false)}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Brief
+            </Button>
+          </div>
+
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+              <Sparkles className="h-8 w-8 text-primary" />
+            </div>
+            <h1 className="text-3xl font-bold mb-2">Almost There!</h1>
+            <p className="text-muted-foreground mb-4">
+              Let's get your contact details so we can send you the proposal and next steps
+            </p>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Contact Information</CardTitle>
+              <CardDescription>
+                We'll use this to send your instant Deputee™ AI proposal and coordinate next steps
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name">Full Name *</Label>
+                  <Input
+                    id="name"
+                    placeholder="John Smith"
+                    value={contactData.name}
+                    onChange={(e) => setContactData(prev => ({ ...prev, name: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="email">Email Address *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="john@company.com"
+                    value={contactData.email}
+                    onChange={(e) => setContactData(prev => ({ ...prev, email: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="company">Company Name *</Label>
+                  <Input
+                    id="company"
+                    placeholder="Acme Corp"
+                    value={contactData.company}
+                    onChange={(e) => setContactData(prev => ({ ...prev, company: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="phone">Phone Number (Optional)</Label>
+                  <Input
+                    id="phone"
+                    placeholder="+44 123 456 7890"
+                    value={contactData.phone}
+                    onChange={(e) => setContactData(prev => ({ ...prev, phone: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <Button 
+                  onClick={handleContactSubmit} 
+                  disabled={loading || !contactData.name || !contactData.email || !contactData.company}
+                  size="lg" 
+                  className="w-full"
+                >
+                  {loading ? 'Processing...' : 'Confirm & Get My Proposal'}
+                  {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
@@ -413,9 +543,9 @@ const BriefBuilder = () => {
                   >
                     Previous
                   </Button>
-                  <Button onClick={handleNext} disabled={loading}>
-                    {loading ? 'Processing...' : currentStep === 7 ? 'Generate Proposal' : 'Next'}
-                    {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
+                  <Button onClick={handleNext}>
+                    {currentStep === 7 ? 'Continue to Contact Details' : 'Next'}
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
               </CardContent>
