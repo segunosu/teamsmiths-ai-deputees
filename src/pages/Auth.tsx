@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,6 +18,10 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const { user, signIn, signUp, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  
+  const redirectReason = searchParams.get('redirect');
+  const expertName = searchParams.get('expert');
 
   useEffect(() => {
     if (user) {
@@ -62,9 +66,14 @@ const Auth = () => {
       <GoogleOneTap />
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Welcome to Teamsmiths</CardTitle>
+          <CardTitle className="text-2xl text-center">
+            {redirectReason === 'shortlist' ? 'Sign in to Save Expert' : 'Welcome to Teamsmiths'}
+          </CardTitle>
           <CardDescription className="text-center">
-            Sign in to your account or create a new one
+            {redirectReason === 'shortlist' && expertName 
+              ? `Sign in to add ${expertName} to your shortlist and get matched with similar experts`
+              : 'Sign in to your account or create a new one'
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>

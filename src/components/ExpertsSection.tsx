@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -19,18 +19,7 @@ const ExpertsSection = () => {
 
   const handleAddToShortlist = (expertName: string) => {
     if (!user) {
-      toast({
-        title: "Sign in required",
-        description: "Please sign in to add experts to your shortlist.",
-        action: (
-          <button 
-            onClick={() => navigate('/auth')}
-            className="px-3 py-1 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/90"
-          >
-            Sign In
-          </button>
-        ),
-      });
+      navigate(`/auth?redirect=shortlist&expert=${encodeURIComponent(expertName)}`);
       return;
     }
     
