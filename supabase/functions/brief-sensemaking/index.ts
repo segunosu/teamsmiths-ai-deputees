@@ -60,7 +60,7 @@ When field is:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-5-mini-2025-08-07",
+        model: "gpt-4.1-2025-04-14",
         messages: [
           { role: "system", content: system },
           {
@@ -113,12 +113,59 @@ When field is:
       typeof parsed.confidence !== "number" ||
       !Array.isArray(parsed.tags)
     ) {
+      // Heuristic fallback if parsing failed — avoid blocking the user
+      const text = (value || '').trim();
+      const lower = text.toLowerCase();
+
+      // Basic extractors
+      const pct = lower.match(/(\d+(?:\.\d+)?)\s?%/);
+      const money = text.match(/([£$€])\s?([\d,.]+)(?:\s?(million|m|billion|b|k|thousand))?/i);
+      const wordAmount = lower.match(/(\d+(?:\.\d+)?)\s?(million|billion|m|k)/i);
+      const byMonth = lower.match(/by\s+(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)/i);
+      const inDuration = lower.match(/in\s+(\d+)\s+(day|week|month|quarter|year)s?/i);
+
+      let metric: string | null = null;
+      if (pct) metric = `${pct[1]}%`;
+      else if (money) {
+        const symbol = money[1];
+        const amount = money[2];
+        const scale = money[3]?.toLowerCase();
+        metric = `${symbol}${amount}${scale ? ' ' + scale : ''}`;
+      } else if (wordAmount) {
+        metric = `${wordAmount[1]} ${wordAmount[2]}`;
+      }
+
+      let timeframe: string | null = null;
+      if (byMonth) timeframe = `by ${byMonth[1]}`;
+      else if (inDuration) timeframe = `in ${inDuration[1]} ${inDuration[2]}${Number(inDuration[1]) > 1 ? 's' : ''}`;
+
+      const objectiveKeywords = ['revenue','sales','leads','users','profit','growth','churn','retention','engagement','traffic','mrr','arr'];
+      const foundObjective = objectiveKeywords.find(k => lower.includes(k)) || 'objective';
+
+      const pieces = [
+        metric ? `aim to reach ${metric}` : null,
+        foundObjective ? `in ${foundObjective}` : null,
+        timeframe
+      ].filter(Boolean);
+
+      const interpreted = pieces.length
+        ? `Goal: ${pieces.join(' ')}.`
+        : 'High-level goal noted. We will refine as you add details.';
+
+      const tags = [ 'goal' ];
+      if (metric) tags.push('metric');
+      if (timeframe) tags.push('timeline');
+
       parsed = {
-        interpreted: "",
-        confidence: 0.0,
-        tags: ["parse_error"],
-        warnings: ["parse_error"],
-        normalized: {},
+        interpreted,
+        confidence: pieces.length ? 0.6 : 0.4,
+        tags,
+        warnings: ['model_fallback'],
+        normalized: {
+          objective: foundObjective !== 'objective' ? foundObjective : null,
+          metric: metric,
+          timeframe: timeframe
+        },
       };
     }
 

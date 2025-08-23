@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,6 +48,9 @@ const [briefData, setBriefData] = useState({
     style: ''
   });
 
+  // Debounce timers per-field to avoid calling AI on every keystroke
+  const typingTimers = useRef<Record<string, number | undefined>>({});
+
   const [showContactForm, setShowContactForm] = useState(false);
 
   const [proposal, setProposal] = useState({
@@ -63,15 +66,35 @@ const [briefData, setBriefData] = useState({
 
   const handleInputChange = (field: string, value: string) => {
     setBriefData(prev => ({ ...prev, [field]: value }));
-    
-    // Simulate AI response with realistic delays
-    setTimeout(() => {
-      generateAiResponse(field, value);
-    }, 800);
+
+    // Cancel any pending call for this field
+    const currentTimer = typingTimers.current[field];
+    if (currentTimer) window.clearTimeout(currentTimer);
+
+    // Only trigger sensemaking when the user has typed a meaningful chunk
+    const trimmed = value.trim();
+    if (trimmed.length < 8) {
+      setAiResponses(prev => ({ ...prev, [field]: '' }));
+      return;
+    }
+
+    typingTimers.current[field] = window.setTimeout(() => {
+      generateAiResponse(field, trimmed);
+    }, 700);
   };
 
   const generateAiResponse = async (field: string, value: string) => {
     if (!value.trim()) return;
+
+    const fieldFallbacks: Record<string, string> = {
+      goal: "Try a clear objective in one sentence (e.g., 'Increase qualified leads by 30% by December'). You can add details later.",
+      context: "Add company type, size or industry if relevant.",
+      constraints: "Share any constraints (time, budget, compliance) if important.",
+      budget_range: "Pick a range that feels right; we can refine later.",
+      timeline: "State a rough target date or duration.",
+      urgency: "Choose urgent, standard, or flexible.",
+      expert_style: "Prefer strategic, hands-on, or hybrid?"
+    };
 
     try {
       const { data, error } = await supabase.functions.invoke('brief-sensemaking', {
@@ -86,12 +109,11 @@ const [briefData, setBriefData] = useState({
 
       let response = interpreted?.trim();
       if (!response) {
-        response = "I couldn’t make sense of that. Please rephrase with concrete details (e.g., timeline, scope, constraints).";
+        response = fieldFallbacks[field] || "Let's keep going.";
       } else if (confidence < 0.4) {
         response = `${response} (Confidence is low — refine if this misses the mark.)`;
       }
 
-      // Never parrot raw input back; use interpreted summary only
       setAiResponses(prev => ({
         ...prev,
         [field]: response
@@ -100,7 +122,7 @@ const [briefData, setBriefData] = useState({
       console.error('Sensemaking failed', err);
       setAiResponses(prev => ({
         ...prev,
-        [field]: "I couldn’t parse that. Try clarifying the key points (goal, timeline, budget, constraints)."
+        [field]: fieldFallbacks[field] || 'Please add a bit more detail.'
       }));
     }
   };
