@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck, Award, Clock, UserCheck, Database } from 'lucide-react';
 import { useEffect } from 'react';
+import ExpertsSection from '@/components/ExpertsSection';
 
 const Home = () => {
   useEffect(() => {
@@ -140,6 +141,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Meet the Experts */}
+      <ExpertsSection />
 
       {/* Three Pillars */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
