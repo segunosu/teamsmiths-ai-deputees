@@ -76,7 +76,7 @@ const [briefData, setBriefData] = useState({
     
     switch (field) {
       case 'goal':
-        response = `I've understood that you want to ${value}. That typically involves strategic planning and execution. Does that sound right?`;
+        response = `Perfect. I've captured that you want to ${value}. This typically involves strategic planning and execution — I'll factor this into your expert matching and project scope.`;
         break;
       case 'context':
         const isEnterprise = value.toLowerCase().includes('enterprise') || value.toLowerCase().includes('large') || 
