@@ -82,15 +82,37 @@ When field is:
     }
 
     const data = await response.json();
-    let parsed;
-    try {
-      parsed = JSON.parse(data.choices?.[0]?.message?.content || "{}");
-    } catch (_) {
-      parsed = null;
+    const content: string | undefined = data?.choices?.[0]?.message?.content;
+    let parsed: any = null;
+
+    if (typeof content === "string" && content.trim().length > 0) {
+      // Try to extract pure JSON (handles fenced code blocks or extra text)
+      let text = content.trim();
+      const fenceMatch = text.match(/```(?:json)?([\s\S]*?)```/i);
+      if (fenceMatch) {
+        text = fenceMatch[1].trim();
+      } else {
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) text = jsonMatch[0];
+      }
+      try {
+        parsed = JSON.parse(text);
+      } catch (e) {
+        console.error("brief-sensemaking JSON.parse failed", e, "content:", content);
+        parsed = null;
+      }
+    } else {
+      console.error("brief-sensemaking: missing model content", JSON.stringify(data).slice(0, 500));
     }
 
-    // Fallback if parsing failed
-    if (!parsed || typeof parsed !== "object") {
+    // Validate shape and fallback if missing required fields
+    if (
+      !parsed ||
+      typeof parsed !== "object" ||
+      typeof parsed.interpreted !== "string" ||
+      typeof parsed.confidence !== "number" ||
+      !Array.isArray(parsed.tags)
+    ) {
       parsed = {
         interpreted: "",
         confidence: 0.0,
