@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +13,33 @@ const ExpertsSection = () => {
   const [selectedRole, setSelectedRole] = useState('all');
   const [selectedIndustry, setSelectedIndustry] = useState('all');
   const [selectedIntent, setSelectedIntent] = useState('goal');
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleAddToShortlist = (expertName: string) => {
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to add experts to your shortlist.",
+        action: (
+          <button 
+            onClick={() => navigate('/auth')}
+            className="px-3 py-1 bg-primary text-primary-foreground rounded text-sm hover:bg-primary/90"
+          >
+            Sign In
+          </button>
+        ),
+      });
+      return;
+    }
+    
+    // TODO: Implement shortlist functionality for authenticated users
+    toast({
+      title: "Added to shortlist",
+      description: `${expertName} has been added to your shortlist.`,
+    });
+  };
 
   const expertProfiles = [
     {
@@ -342,7 +371,12 @@ const ExpertsSection = () => {
               </CardHeader>
               
               <CardContent className="pt-0 space-y-2">
-                <Button variant="secondary" size="sm" className="w-full">
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => handleAddToShortlist(expert.name)}
+                >
                   Add to Shortlist
                 </Button>
                 <Dialog>
