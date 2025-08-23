@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
-import CustomizationRequest from "./pages/CustomizationRequest";
+import BriefBuilder from "./pages/BriefBuilder";
 import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
@@ -49,8 +49,9 @@ const App = () => (
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/customize" element={<CustomizationRequest />} />
-                <Route path="/customize/:id" element={<CustomizationRequest />} />
+                <Route path="/customize" element={<BriefBuilder />} />
+                <Route path="/customize/:id" element={<BriefBuilder />} />
+                <Route path="/brief-builder" element={<BriefBuilder />} />
                 <Route path="/quote/:id" element={<QuoteDetail />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/project/:id" element={<ProjectDetail />} />
