@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ArrowLeft, ArrowRight, Sparkles, CheckCircle, Clock, DollarSign, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 const BriefBuilder = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -69,58 +70,40 @@ const [briefData, setBriefData] = useState({
     }, 800);
   };
 
-  const generateAiResponse = (field: string, value: string) => {
+  const generateAiResponse = async (field: string, value: string) => {
     if (!value.trim()) return;
-    
-    let response = '';
-    
-    switch (field) {
-      case 'goal':
-        response = `Perfect. I've captured that you want to ${value}. This typically involves strategic planning and execution — I'll factor this into your expert matching and project scope.`;
-        break;
-      case 'context':
-        const isEnterprise = value.toLowerCase().includes('enterprise') || value.toLowerCase().includes('large') || 
-                           value.toLowerCase().includes('corporation') || /\d{3,}.*staff|employee/i.test(value);
-        const isSMB = !isEnterprise && (value.toLowerCase().includes('smb') || value.toLowerCase().includes('small') || 
-                      value.toLowerCase().includes('startup') || /\d{1,2}.*staff|employee/i.test(value));
-        
-        if (isEnterprise) {
-          response = `Thanks. Many enterprises face challenges with scaling and coordination across departments. I'll factor your organizational complexity into the project scope.`;
-        } else if (isSMB) {
-          response = `Thanks. Many SMBs face challenges with resource optimization and growth scalability. I'll factor that into your project scope.`;
-        } else {
-          response = `Thanks. I'll factor your organizational context into the project scope and expert matching.`;
-        }
-        break;
-      case 'constraints':
-        if (value.toLowerCase().includes('fast') || value.toLowerCase().includes('quick') || value.toLowerCase().includes('urgent')) {
-          response = `Got it — speed is critical for your ${value.toLowerCase()}. I'll suggest experts and timelines that prioritize quick wins.`;
-        } else {
-          response = `Got it — ${value} is important. I'll suggest experts and timelines that address your specific needs.`;
-        }
-        break;
-      case 'budget_range':
-        response = `Thanks. I'll align recommendations with the budget range you've set.`;
-        break;
-      case 'timeline':
-        response = `Noted. This timeline will influence the mix of experts I propose.`;
-        break;
-      case 'urgency':
-        response = `Understood. Deputee™ AI will balance urgency against cost optimization.`;
-        break;
-      case 'expert_style':
-        response = `Perfect. I'll weight recommendations toward ${value.toLowerCase()} experts who match this approach.`;
-        break;
-      default:
-        response = `Thanks for that information about ${field}.`;
+
+    try {
+      const { data, error } = await supabase.functions.invoke('brief-sensemaking', {
+        body: { field, value }
+      });
+
+      if (error) throw error;
+
+      const interpreted: string = data?.interpreted ?? '';
+      const confidence: number = data?.confidence ?? 0.0;
+      const warnings: string[] = data?.warnings ?? [];
+
+      let response = interpreted?.trim();
+      if (!response) {
+        response = "I couldn’t make sense of that. Please rephrase with concrete details (e.g., timeline, scope, constraints).";
+      } else if (confidence < 0.4) {
+        response = `${response} (Confidence is low — refine if this misses the mark.)`;
+      }
+
+      // Never parrot raw input back; use interpreted summary only
+      setAiResponses(prev => ({
+        ...prev,
+        [field]: response
+      }));
+    } catch (err) {
+      console.error('Sensemaking failed', err);
+      setAiResponses(prev => ({
+        ...prev,
+        [field]: "I couldn’t parse that. Try clarifying the key points (goal, timeline, budget, constraints)."
+      }));
     }
-
-    setAiResponses(prev => ({
-      ...prev,
-      [field]: response
-    }));
   };
-
   const handleNext = () => {
     if (currentStep < 7) {
       setCurrentStep(prev => prev + 1);
