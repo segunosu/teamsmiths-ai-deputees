@@ -195,7 +195,7 @@ const DeputeeAIBriefBuilder = () => {
           contact_phone: contactData.phone,
           structured_brief: structuredBrief,
           proposal_json: proposal,
-          assured_mode: proposal.assuredMode,
+          assured_mode: proposal?.assuredMode || false,
           origin: briefOrigin || 'bespoke',
           origin_id: capabilityId || packId
         }
@@ -203,7 +203,12 @@ const DeputeeAIBriefBuilder = () => {
 
       if (error) {
         console.error('Brief submission error:', error);
-        throw new Error(error.message || 'Failed to submit brief');
+        toast({
+          title: "Submission Issue",
+          description: "We saved your answers locally. Please try again.",
+          variant: "default"
+        });
+        return;
       }
 
       console.log('Brief submitted successfully:', data);
@@ -214,15 +219,21 @@ const DeputeeAIBriefBuilder = () => {
         origin_id: capabilityId || packId 
       });
 
-      setShowProposal(true);
-      trackAnalyticsEvent('proposal.preview_shown', { brief_id: data.brief_id });
+      // Navigate to dashboard with success message
+      toast({
+        title: "Brief Submitted!",
+        description: "Proposal generating — QA validation in <2h.",
+      });
+      
+      // Navigate to dashboard with brief ID
+      window.location.href = `/dashboard/briefs/${data.brief_id}`;
 
     } catch (error) {
       console.error('Brief submission error:', error);
       toast({
-        title: "Submission Error",
-        description: "Failed to save your brief. Please try again.",
-        variant: "destructive"
+        title: "Submission Issue",
+        description: "We saved your answers locally. Please try again.",
+        variant: "default"
       });
     } finally {
       setLoading(false);

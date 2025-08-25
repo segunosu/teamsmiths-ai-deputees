@@ -389,13 +389,6 @@ export type Database = {
             referencedRelation: "orgs"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "briefs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
         ]
       }
       categories: {
@@ -3102,6 +3095,10 @@ export type Database = {
       is_project_participant: {
         Args: { _project_id: string; _uid: string }
         Returns: boolean
+      }
+      link_briefs_to_user_by_email: {
+        Args: { _email: string; _user_id: string }
+        Returns: undefined
       }
       update_admin_setting: {
         Args: { p_key: string; p_value: Json }

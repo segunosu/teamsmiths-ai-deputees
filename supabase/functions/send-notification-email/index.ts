@@ -35,6 +35,14 @@ serve(async (req) => {
 
     // Generate email content based on type
     switch (type) {
+      case 'brief_received':
+        subject = `We received your brief — Deputee™ AI is drafting your plan`;
+        html = generateBriefReceivedEmail(data);
+        break;
+      case 'proposal_ready':
+        subject = `Your proposal is ready!`;
+        html = generateProposalReadyEmail(data);
+        break;
       case 'quote_received':
         subject = `New Quote Available - ${data.quoteNumber}`;
         html = generateQuoteReceivedEmail(data);
@@ -505,6 +513,102 @@ function generateGenericEmail(data: any): string {
       <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b; font-size: 14px;">
         <p>This is an automated notification from Teamsmiths.ai</p>
         <p>Please log in to your dashboard for more details</p>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+function generateBriefReceivedEmail(data: any): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Brief Received</title>
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background: linear-gradient(135deg, #059669, #10b981); padding: 30px; border-radius: 12px; text-align: center; color: white; margin-bottom: 30px;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: bold;">🤖 Brief Received!</h1>
+        <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Deputee™ AI is now drafting your personalized plan</p>
+      </div>
+
+      <div style="background: #f0fdf4; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #10b981;">
+        <h2 style="margin: 0 0 15px 0; color: #059669; font-size: 20px;">Hello ${data.contactName || 'there'}!</h2>
+        <p style="margin: 8px 0;">Thank you for submitting your brief for <strong>${data.projectTitle}</strong>.</p>
+        <p style="margin: 8px 0;">Our AI is analyzing your requirements and will match you with the perfect experts.</p>
+      </div>
+
+      <div style="background: #fffbeb; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #f59e0b;">
+        <h3 style="margin: 0 0 10px 0; color: #d97706;">What happens next:</h3>
+        <ul style="margin: 5px 0; padding-left: 20px; color: #92400e;">
+          <li>Deputee™ AI analyzes your requirements</li>
+          <li>We match you with vetted experts</li>
+          <li>You'll receive your proposal within 2 hours</li>
+          <li>QA validation ensures quality delivery</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center; margin: 30px 0;">
+        ${data.actionUrl ? `
+          <a href="${data.actionUrl}" style="background: #059669; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            View Your Brief
+          </a>
+        ` : ''}
+      </div>
+
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b; font-size: 14px;">
+        <p>Best regards,<br>The Deputee Team</p>
+        <p>Track progress in your dashboard anytime</p>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+function generateProposalReadyEmail(data: any): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Proposal Ready</title>
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background: linear-gradient(135deg, #7c3aed, #a855f7); padding: 30px; border-radius: 12px; text-align: center; color: white; margin-bottom: 30px;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: bold;">🎉 Your Proposal is Ready!</h1>
+        <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Deputee™ AI has crafted your personalized solution</p>
+      </div>
+
+      <div style="background: #faf5ff; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #a855f7;">
+        <h2 style="margin: 0 0 15px 0; color: #7c3aed; font-size: 20px;">Hi ${data.contactName || 'there'}!</h2>
+        <p style="margin: 8px 0;">Great news! Your personalized proposal for <strong>${data.projectTitle}</strong> is now ready for review.</p>
+        <p style="margin: 8px 0;">We've matched you with expert professionals and created a detailed plan to achieve your goals.</p>
+      </div>
+
+      <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #10b981;">
+        <h3 style="margin: 0 0 10px 0; color: #059669;">Your proposal includes:</h3>
+        <ul style="margin: 5px 0; padding-left: 20px; color: #166534;">
+          <li>Curated team of expert professionals</li>
+          <li>Detailed project timeline and milestones</li>
+          <li>Transparent pricing and payment structure</li>
+          <li>Success metrics and quality assurance</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center; margin: 30px 0;">
+        ${data.actionUrl ? `
+          <a href="${data.actionUrl}" style="background: #7c3aed; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            Review Your Proposal
+          </a>
+        ` : ''}
+      </div>
+
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b; font-size: 14px;">
+        <p>Questions? Book a curator call to discuss your proposal</p>
+        <p>Best regards,<br>The Deputee Team</p>
       </div>
     </body>
     </html>

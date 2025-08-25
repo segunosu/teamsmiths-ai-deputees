@@ -33,9 +33,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Link briefs to user when they sign in
+        if (event === 'SIGNED_IN' && session?.user) {
+          setTimeout(() => {
+            linkBriefsToUser(session.user);
+          }, 0);
+        }
       }
     );
 
@@ -48,6 +56,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const linkBriefsToUser = async (user: User) => {
+    if (!user.email) return;
+    
+    try {
+      console.log('Linking briefs to user:', user.email);
+      await supabase.rpc('link_briefs_to_user_by_email', {
+        _email: user.email,
+        _user_id: user.id
+      });
+      console.log('Successfully linked briefs to user');
+    } catch (error) {
+      console.error('Error linking briefs to user:', error);
+      // Don't throw error, just log it
+    }
+  };
 
   const signUp = async (email: string, password: string, fullName?: string) => {
     try {

@@ -57,50 +57,19 @@ serve(async (req) => {
       currentUser = data.user
     }
 
-    // Check for existing user with this email
-    const { data: existingUsers, error: userLookupError } = await supabaseAdmin
-      .from('users')
-      .select('id, name, email')
-      .eq('email', contact_email.toLowerCase())
-      .limit(1)
-
-    if (userLookupError) {
-      console.error('Error looking up user:', userLookupError)
-    }
-
     let userId = currentUser?.id || null
     let orgId = null
 
-    // If user exists, use their ID
-    if (existingUsers && existingUsers.length > 0) {
-      userId = existingUsers[0].id
-      
-      // Get user's org if they have one
+    // If user is authenticated, get their org
+    if (currentUser) {
       const { data: userOrgs } = await supabaseAdmin
         .from('user_orgs')
         .select('org_id')
-        .eq('user_id', userId)
+        .eq('user_id', currentUser.id)
         .limit(1)
       
       if (userOrgs && userOrgs.length > 0) {
         orgId = userOrgs[0].org_id
-      }
-    } else if (!currentUser) {
-      // Create a new user record
-      const { data: newUser, error: createUserError } = await supabaseAdmin
-        .from('users')
-        .insert([{
-          email: contact_email.toLowerCase(),
-          name: contact_name
-        }])
-        .select()
-        .single()
-
-      if (createUserError) {
-        console.error('Error creating user:', createUserError)
-      } else if (newUser) {
-        userId = newUser.id
-        console.log('Created new user:', newUser.id)
       }
     }
 
@@ -166,6 +135,20 @@ serve(async (req) => {
       console.log('Created new brief:', briefId)
     }
 
+    // Link briefs to authenticated user by email if not already linked
+    if (currentUser && currentUser.email) {
+      try {
+        await supabaseAdmin.rpc('link_briefs_to_user_by_email', {
+          _email: currentUser.email,
+          _user_id: currentUser.id
+        });
+        console.log('Linked existing briefs to user:', currentUser.id);
+      } catch (linkError) {
+        console.error('Error linking briefs to user:', linkError);
+        // Don't fail the request if linking fails
+      }
+    }
+
     // Create brief event
     const { error: eventError } = await supabaseAdmin
       .from('brief_events')
@@ -186,6 +169,27 @@ serve(async (req) => {
     // TODO: Send acknowledgment email
     // TODO: Send Slack notification
     // TODO: Run matching algorithm
+
+    // Send brief received email
+    try {
+      await supabaseAdmin.functions.invoke('send-notification-email', {
+        body: {
+          to: contact_email,
+          type: 'brief_received',
+          data: {
+            title: 'Brief Received',
+            message: 'We received your brief — Deputee™ AI is drafting your plan',
+            projectTitle: structured_brief?.goal || 'Your Project',
+            actionUrl: `${Deno.env.get('SUPABASE_URL')}/dashboard/briefs/${briefId}`,
+            contactName: contact_name
+          }
+        }
+      });
+      console.log('Brief received email sent successfully');
+    } catch (emailError) {
+      console.error('Error sending brief received email:', emailError);
+      // Don't fail the request if email fails
+    }
 
     return new Response(
       JSON.stringify({ 
