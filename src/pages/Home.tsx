@@ -85,23 +85,23 @@ const Home = () => {
             </Button>
           </div>
 
-            {/* Trust Strip */}
-            <div className="border-t border-border/50 mt-8 pt-6">
-              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-medium text-foreground max-w-4xl mx-auto">
+            {/* Benefits Strip */}
+            <div className="border-t border-neutral-200 mt-8 pt-4">
+              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-neutral-800 max-w-4xl mx-auto">
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <UserCheck className="h-4 w-4 text-success" />
+                  <UserCheck className="h-4 w-4 text-primary" />
                   <span>Precision matched experts</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <Shield className="h-4 w-4 text-success" />
+                  <Shield className="h-4 w-4 text-primary" />
                   <span>Milestone payments</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <Zap className="h-4 w-4 text-success" />
+                  <Zap className="h-4 w-4 text-primary" />
                   <span>Faster outcomes</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <Award className="h-4 w-4 text-success" />
+                  <Award className="h-4 w-4 text-primary" />
                   <span>Quality assured</span>
                 </div>
               </div>

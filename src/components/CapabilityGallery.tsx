@@ -174,46 +174,31 @@ const CapabilityGallery = () => {
 
         {/* Intent Selector */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex rounded-lg bg-muted p-1">
-            <button
-              onClick={() => {
-                setSelectedIntent('goal');
-                navigate('/brief-builder');
-              }}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
-                selectedIntent === 'goal'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+          <div className="inline-flex rounded-lg bg-muted p-1 gap-1">
+            <Button
+              onClick={() => navigate('/brief-builder')}
+              variant="default"
+              size="sm"
+              className="rounded-md"
             >
               I have a business goal
-            </button>
-            <button
-              onClick={() => {
-                setSelectedIntent('packs');
-                navigate('/catalog');
-              }}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
-                selectedIntent === 'packs'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+            </Button>
+            <Button
+              onClick={() => navigate('/catalog')}
+              variant="outline"
+              size="sm"
+              className="rounded-md"
             >
               Browse outcome packs
-            </button>
-            <button
-              onClick={() => {
-                setSelectedIntent('curator');
-                window.open('https://calendly.com/osu/brief-chat', '_blank', 'noopener,noreferrer');
-              }}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
-                selectedIntent === 'curator'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+            </Button>
+            <Button
+              onClick={() => window.open('https://calendly.com/osu/brief-chat', '_blank', 'noopener,noreferrer')}
+              variant="outline"
+              size="sm"
+              className="rounded-md"
             >
               Talk to a curator
-            </button>
+            </Button>
           </div>
         </div>
 

@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, ArrowRight, Sparkles, CheckCircle, Clock, DollarSign, Users, Shield, Info, Bot, Edit3 } from 'lucide-react';
+import { useAnalytics, AnalyticsEvent } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,6 +34,7 @@ const DeputeeAIBriefBuilder = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { trackEvent } = useAnalytics();
 
   // Get prefill data from URL params
   const capabilityId = searchParams.get('capability_id');
@@ -80,10 +82,10 @@ const DeputeeAIBriefBuilder = () => {
     assuredMode: false
   });
 
-  // Analytics tracking
-  const trackEvent = useCallback((eventName: string, properties = {}) => {
-    console.log('Analytics:', eventName, { ...properties, brief_origin: briefOrigin });
-  }, [briefOrigin]);
+  // Analytics tracking - now using proper hook
+  const trackAnalyticsEvent = useCallback((eventName: keyof AnalyticsEvent, properties: any) => {
+    trackEvent(eventName, { ...properties, brief_origin: briefOrigin });
+  }, [briefOrigin, trackEvent]);
 
   // Deputee AI processing
   const processWithDeputeeAI = useCallback(async (message: string, field: string) => {
@@ -124,7 +126,7 @@ const DeputeeAIBriefBuilder = () => {
         }
       }
 
-      trackEvent('brief_builder.ai_processed', { field, has_extraction: !!data.extracted_data });
+      trackAnalyticsEvent('brief_builder.ai_processed', { field, has_extraction: !!data.extracted_data });
 
     } catch (error) {
       console.error('Deputee AI error:', error);
@@ -136,12 +138,12 @@ const DeputeeAIBriefBuilder = () => {
     } finally {
       setProcessingField(null);
     }
-  }, [briefData, toast, trackEvent]);
+  }, [briefData, toast, trackAnalyticsEvent]);
 
   // Debounced input handler
   const handleInputChange = useCallback((field: string, value: string) => {
     setBriefData(prev => ({ ...prev, [field]: value }));
-    trackEvent('brief_builder.answer', { field, length: value.length });
+    trackAnalyticsEvent('brief_builder.answer', { field, length: value.length });
 
     // Clear existing timer
     if (typingTimers.current[field]) {
@@ -154,7 +156,7 @@ const DeputeeAIBriefBuilder = () => {
         processWithDeputeeAI(value, field);
       }, DEBOUNCE_DELAY);
     }
-  }, [processWithDeputeeAI, trackEvent]);
+  }, [processWithDeputeeAI, trackAnalyticsEvent]);
 
   // Contact form submission
   const handleContactSubmit = async () => {
@@ -171,12 +173,12 @@ const DeputeeAIBriefBuilder = () => {
     try {
       // TODO: Save brief to database when briefs table is created
       
-      trackEvent('brief_builder.submit_contact', { 
+      trackAnalyticsEvent('brief_builder.submit_contact', { 
         has_ai_responses: Object.keys(aiResponses).length > 0 
       });
 
       setShowProposal(true);
-      trackEvent('proposal.preview_shown');
+      trackAnalyticsEvent('proposal.preview_shown', {});
 
     } catch (error) {
       console.error('Brief submission error:', error);
@@ -191,7 +193,7 @@ const DeputeeAIBriefBuilder = () => {
   };
 
   const handleConfirmProposal = () => {
-    trackEvent('proposal.confirmed', { assured_mode: proposal.assuredMode });
+    trackAnalyticsEvent('proposal.confirmed', { assured_mode: proposal.assuredMode });
     toast({
       title: "Proposal Confirmed",
       description: "We'll match you with the perfect expert within 24 hours.",
@@ -200,7 +202,7 @@ const DeputeeAIBriefBuilder = () => {
   };
 
   const handleBookCuratorCall = () => {
-    trackEvent('curator.booking_clicked', { 
+    trackAnalyticsEvent('curator.booking_clicked', { 
       brief_id: 'current', 
       email: contactData.email 
     });
@@ -212,9 +214,9 @@ const DeputeeAIBriefBuilder = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (briefOrigin) {
-      trackEvent('experts.intent_select', { intent: briefOrigin });
+      trackAnalyticsEvent('experts.intent_select', { intent: briefOrigin });
     }
-  }, [briefOrigin, trackEvent]);
+  }, [briefOrigin, trackAnalyticsEvent]);
 
   // Cleanup timers
   useEffect(() => {

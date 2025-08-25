@@ -9,12 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign, Target } from 'lucide-react';
+import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign, Target, Activity } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import MatchingDashboard from '@/components/admin/MatchingDashboard';
 import AdminMeetingsSettings from '@/components/AdminMeetingsSettings';
 import AdminIntakeSettings from '@/components/AdminIntakeSettings';
+import AnalyticsMonitor from '@/components/admin/AnalyticsMonitor';
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };
@@ -375,7 +376,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="quotes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="quotes" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Quote Reviews
@@ -391,6 +392,10 @@ const AdminDashboard = () => {
             <TabsTrigger value="matching" className="flex items-center gap-2">
               <Target className="h-4 w-4" />
               Matching
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Analytics
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
@@ -524,6 +529,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="matching">
             <MatchingDashboard />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <AnalyticsMonitor />
           </TabsContent>
 
           <TabsContent value="settings">

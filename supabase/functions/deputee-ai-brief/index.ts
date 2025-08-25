@@ -60,14 +60,13 @@ Guidelines:
 - Don't ask "Does that sound right?" - provide confident interpretations`
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-5-mini-2025-08-07",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: message }
       ],
       response_format: { type: "json_object" },
-      temperature: 0.7,
-      max_tokens: 500
+      max_completion_tokens: 500
     })
 
     const response = completion.choices[0]?.message?.content

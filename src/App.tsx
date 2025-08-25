@@ -11,7 +11,6 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
-import BriefBuilder from "./pages/BriefBuilder";
 import DeputeeAIBriefBuilder from "./components/DeputeeAIBriefBuilder";
 import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
@@ -53,8 +52,8 @@ const App = () => (
                 <Route path="/outcomes" element={<Outcomes />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/customize" element={<BriefBuilder />} />
-                <Route path="/customize/:id" element={<BriefBuilder />} />
+                <Route path="/customize" element={<DeputeeAIBriefBuilder />} />
+                <Route path="/customize/:id" element={<DeputeeAIBriefBuilder />} />
                 <Route path="/brief-builder" element={<DeputeeAIBriefBuilder />} />
                 <Route path="/quote/:id" element={<QuoteDetail />} />
                 <Route path="/dashboard" element={<Dashboard />} />
