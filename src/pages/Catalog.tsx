@@ -324,20 +324,13 @@ const Catalog = () => {
                 <div className="mt-auto">
                   <div className="flex gap-3">
                     <Button asChild className="flex-1">
-                      <Link to={`/product/${product.id}`}>See Details or Customize</Link>
+                      <Link to={`/brief-builder?pack_id=${product.id}`}>Customize this outcome</Link>
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="flex-1"
-                      onClick={() => handleCheckout(product)}
-                      disabled={loadingProductId === product.id}
-                    >
-                      {loadingProductId === product.id ? 'Processing...' : (
-                        <>
-                          Buy Now
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </>
-                      )}
+                    <Button asChild variant="outline" className="flex-1">
+                      <Link to={`/product/${product.id}`}>
+                        View Details
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
                     </Button>
                   </div>
                 </div>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck, Award, Clock, UserCheck, Database } from 'lucide-react';
 import { useEffect } from 'react';
-import ExpertsSection from '@/components/ExpertsSection';
+import CapabilityGallery from '@/components/CapabilityGallery';
 
 const Home = () => {
   useEffect(() => {
@@ -76,14 +76,14 @@ const Home = () => {
               Accelerate performance without consulting overhead.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-              <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-                <Link to="/catalog">View Outcome Packs</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a 15‑min intro</a>
-              </Button>
-            </div>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
+            <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
+              <Link to="/brief-builder">Start a Bespoke Brief</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
+              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Talk to a curator</a>
+            </Button>
+          </div>
 
             {/* Trust Strip */}
             <div className="border-t border-border/50 mt-8 pt-6">
@@ -142,8 +142,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Meet the Experts */}
-      <ExpertsSection />
+      {/* Outcomes in Action - Capability Gallery */}
+      <CapabilityGallery />
 
       {/* Three Pillars */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
@@ -186,7 +186,7 @@ const Home = () => {
           <div className="text-center mt-16">
             <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
               <Link to="/catalog">
-                Explore All Outcome Packs
+                Browse Outcome Catalog
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
@@ -206,13 +206,13 @@ const Home = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/catalog">
-                Browse Outcome Packs
+              <Link to="/brief-builder">
+                Start a Bespoke Brief
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book Intro Call</a>
+              <Link to="/catalog">Browse Outcome Catalog</Link>
             </Button>
           </div>
 

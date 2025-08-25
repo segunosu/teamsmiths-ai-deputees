@@ -38,10 +38,9 @@ export const Navigation = () => {
 
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'Catalog', path: '/catalog' },
-    { label: 'For Clients', path: '/for-clients' },
-    { label: 'For Freelancers', path: '/for-freelancers' },
-    { label: 'For Agencies', path: '/for-agencies' },
+    { label: 'Outcome Catalog', path: '/catalog' },
+    { label: 'Pricing', path: '/pricing' },
+    { label: 'Contact', path: '/contact' },
   ];
 
   if (user) {

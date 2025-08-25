@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,18 +8,25 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, ArrowRight, Sparkles, CheckCircle, Clock, DollarSign, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, CheckCircle, Clock, DollarSign, Users, Shield, Info } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 const BriefBuilder = () => {
+  const [searchParams] = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showProposal, setShowProposal] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // Get prefill data from URL params
+  const capabilityId = searchParams.get('capability_id');
+  const packId = searchParams.get('pack_id');
+  const briefOrigin = capabilityId ? 'capability' : packId ? 'catalog' : null;
+  const [prefilledOutcome, setPrefilledOutcome] = useState<string>('');
 
 const [briefData, setBriefData] = useState({
     goal: '',
@@ -56,16 +63,112 @@ const [briefData, setBriefData] = useState({
   const [proposal, setProposal] = useState({
     roles: ['Growth Strategist', 'AI Consultant'],
     timeline: '4–6 weeks',
-    budget: '£3,950–£6,250',
-    roiBenchmark: 'Typical 200-300% ROI within 6 months'
+    budget: '£6,000–£10,000',
+    milestones: [
+      'Discovery & Strategy (Week 1)',
+      'Implementation Phase 1 (Weeks 2–3)', 
+      'Implementation Phase 2 (Weeks 4–5)',
+      'QA Review & Optimization (Week 6)'
+    ],
+    successMetrics: [
+      'Clear success metrics defined and tracked',
+      'Outcome Assurance™ monitoring active'
+    ],
+    assuredMode: false
   });
+
+  // Track analytics events
+  const trackEvent = (eventName: string, properties = {}) => {
+    // Analytics implementation would go here
+    console.log('Analytics:', eventName, properties);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Track intent selection
+    if (briefOrigin) {
+      trackEvent('experts.intent_select', { 
+        intent: briefOrigin === 'capability' ? 'brief' : 'catalog' 
+      });
+      
+      if (capabilityId) {
+        trackEvent('capability.customize_clicked', { capability_id: capabilityId });
+      } else if (packId) {
+        trackEvent('catalog.customize_clicked', { pack_id: packId });
+      }
+    }
   }, []);
+
+  // Prefill data based on capability or pack
+  useEffect(() => {
+    const loadPrefillData = () => {
+      if (capabilityId) {
+        // Map capability IDs to prefill data
+        const capabilityMappings: Record<string, any> = {
+          'sales-proposal-accelerator': {
+            goal: 'Close deals faster with AI-assisted proposals',
+            tools: 'Deputee Uplift™, HubSpot AI, Docs AI',
+            success_metric: '40% faster proposal cycle',
+            outcome: 'Sales Proposal Accelerator'
+          },
+          'marketing-content-engine': {
+            goal: 'Scale content that converts with AI workflows',
+            tools: 'Canva, Suno, Copy.ai, Meta Advantage',
+            success_metric: '3× engagement uplift',
+            outcome: 'Marketing Content Engine'
+          },
+          'ops-streamliner': {
+            goal: 'Save 120+ hours/month with workflow automation',
+            tools: 'Notion AI, Zapier, Deputee Uplift™',
+            success_metric: '120+ hours saved/month',
+            outcome: 'Ops Streamliner'
+          },
+          'data-insight-translator': {
+            goal: 'Get next best actions from your data in 48h',
+            tools: 'Deputee CI Lead™, Power BI, ChatGPT',
+            success_metric: 'Next best actions in 48h',
+            outcome: 'Data Insight Translator'
+          },
+          'customer-success-multiplier': {
+            goal: 'Boost retention +25% with proactive AI',
+            tools: 'Intercom AI, Notion, Deputee Uplift™',
+            success_metric: '+25% retention',
+            outcome: 'Customer Success Multiplier'
+          }
+        };
+
+        const prefillData = capabilityMappings[capabilityId];
+        if (prefillData) {
+          setBriefData(prev => ({
+            ...prev,
+            goal: prefillData.goal,
+            constraints: `Tools: ${prefillData.tools}`
+          }));
+          setPrefilledOutcome(prefillData.outcome);
+        }
+      } else if (packId) {
+        // This would fetch pack data from database in real implementation
+        setPrefilledOutcome('Selected Outcome Pack');
+        setBriefData(prev => ({
+          ...prev,
+          goal: 'Customize this outcome pack to fit your specific needs'
+        }));
+      }
+    };
+
+    loadPrefillData();
+  }, [capabilityId, packId]);
 
   const handleInputChange = (field: string, value: string) => {
     setBriefData(prev => ({ ...prev, [field]: value }));
+
+    // Track analytics for answers
+    trackEvent('brief_builder.answer', {
+      brief_id: `brief_${Date.now()}`,
+      question_id: field,
+      value: value.slice(0, 50) // Truncate for privacy
+    });
 
     // Cancel any pending call for this field
     const currentTimer = typingTimers.current[field];
@@ -75,6 +178,11 @@ const [briefData, setBriefData] = useState({
     const trimmed = value.trim();
     if (trimmed.length < 8) {
       setAiResponses(prev => ({ ...prev, [field]: '' }));
+      return;
+    }
+
+    // Don't trigger AI for prefilled placeholder values
+    if (briefOrigin && field === 'goal' && trimmed === briefData.goal && !trimmed.includes('Customize this outcome')) {
       return;
     }
 
@@ -137,23 +245,50 @@ const [briefData, setBriefData] = useState({
   const handleContactSubmit = async () => {
     setLoading(true);
     
+    // Track analytics
+    trackEvent('brief_builder.submit_contact', { 
+      brief_id: `brief_${Date.now()}`,
+      origin: briefOrigin 
+    });
+    
     // Simulate AI processing
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     setShowProposal(true);
     setLoading(false);
     
+    // Track proposal preview
+    trackEvent('proposal.preview_shown', { 
+      brief_id: `brief_${Date.now()}`,
+      origin: briefOrigin 
+    });
+    
     toast({
       title: "Proposal Generated!",
-      description: "Deputee™ AI has created your instant proposal. QA validation in progress.",
+      description: "Deputee™ AI™ has created your instant proposal. QA validation in <2 hours.",
     });
   };
 
   const handleConfirmProposal = () => {
+    trackEvent('proposal.confirmed', { 
+      brief_id: `brief_${Date.now()}`,
+      assured_mode: proposal.assuredMode,
+      origin: briefOrigin 
+    });
+    
     toast({
       title: "Proposal Confirmed!",
       description: "Our team will contact you within 2 hours to finalize your project.",
     });
+  };
+
+  const handleCuratorBooking = () => {
+    trackEvent('curator.booking_clicked', { 
+      brief_id: `brief_${Date.now()}`,
+      origin: briefOrigin 
+    });
+    
+    window.open('https://calendly.com/osu/brief-chat?brief_id=123&email=' + encodeURIComponent(contactData.email || ''), '_blank');
   };
 
   const steps = [
@@ -174,8 +309,8 @@ const [briefData, setBriefData] = useState({
             <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
               <Sparkles className="h-8 w-8 text-primary" />
             </div>
-            <h1 className="text-3xl font-bold mb-2">Deputee™ AI Proposal Preview</h1>
-            <p className="text-muted-foreground">This proposal was created by Deputee™ AI™. QA validation will follow within 2 hours.</p>
+            <h1 className="text-3xl font-bold mb-2">Deputee™ AI™ Proposal Preview</h1>
+            <p className="text-muted-foreground">AI-generated; QA validation in &lt;2 hours.</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -187,7 +322,7 @@ const [briefData, setBriefData] = useState({
                     Instant Proposal
                   </CardTitle>
                   <CardDescription>
-                    Based on your brief, here's what Deputee™ AI recommends
+                    Based on your brief, here's what Deputee™ AI™ recommends
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -220,14 +355,61 @@ const [briefData, setBriefData] = useState({
                   </div>
 
                   <div>
-                    <h3 className="font-semibold mb-2">ROI Benchmark</h3>
-                    <p className="text-muted-foreground">{proposal.roiBenchmark}</p>
+                    <h3 className="font-semibold mb-2">Project Milestones</h3>
+                    <ul className="space-y-2">
+                      {proposal.milestones.map((milestone, idx) => (
+                        <li key={idx} className="flex items-center gap-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          {milestone}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
-                  <div className="pt-4">
+                  <div>
+                    <h3 className="font-semibold mb-2">Success Metrics</h3>
+                    <ul className="space-y-2">
+                      {proposal.successMetrics.map((metric, idx) => (
+                        <li key={idx} className="flex items-center gap-2 text-sm">
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          {metric}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="border rounded-lg p-4 bg-muted/30">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Shield className="h-4 w-4 text-primary" />
+                        <span className="font-medium">Enable Assured Mode</span>
+                      </div>
+                      <Badge variant="outline" className="text-xs">QA + insurance add-on</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Get additional QA coverage and expert replacement insurance
+                    </p>
+                    <Button 
+                      variant={proposal.assuredMode ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => setProposal(prev => ({ ...prev, assuredMode: !prev.assuredMode }))}
+                    >
+                      {proposal.assuredMode ? 'Assured Mode Enabled' : 'Enable Assured Mode'}
+                    </Button>
+                  </div>
+
+                  <div className="pt-4 space-y-3">
                     <Button onClick={handleConfirmProposal} size="lg" className="w-full">
                       Confirm & Proceed
                       <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full"
+                      onClick={handleCuratorBooking}
+                    >
+                      Book a 15-min curator call
                     </Button>
                   </div>
                 </CardContent>
@@ -391,10 +573,18 @@ const [briefData, setBriefData] = useState({
 
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Deputee™ AI Brief Builder</h1>
+          <h1 className="text-3xl font-bold mb-2">Deputee™ AI™ Brief Builder</h1>
           <p className="text-muted-foreground mb-4">
-            Let our AI guide you through creating the perfect project brief
+            Deputee™ AI™ is drafting your plan in real time.
           </p>
+          {briefOrigin && prefilledOutcome && (
+            <Alert className="max-w-2xl mx-auto mb-4">
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                You're customizing the <strong>{prefilledOutcome}</strong> outcome. Deputee™ AI™ has prefilled the details — adjust anything you like.
+              </AlertDescription>
+            </Alert>
+          )}
           <div className="flex items-center justify-center gap-2 text-sm">
             <Badge variant="outline">Step {currentStep} of 7</Badge>
             <span className="text-muted-foreground">•</span>
