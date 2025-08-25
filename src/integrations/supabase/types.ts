@@ -293,6 +293,111 @@ export type Database = {
           },
         ]
       }
+      brief_events: {
+        Row: {
+          brief_id: string
+          created_at: string | null
+          id: string
+          payload: Json | null
+          type: string
+        }
+        Insert: {
+          brief_id: string
+          created_at?: string | null
+          id?: string
+          payload?: Json | null
+          type: string
+        }
+        Update: {
+          brief_id?: string
+          created_at?: string | null
+          id?: string
+          payload?: Json | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brief_events_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "briefs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      briefs: {
+        Row: {
+          assured_mode: boolean | null
+          contact_email: string
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string | null
+          id: string
+          org_id: string | null
+          origin: string
+          origin_id: string | null
+          proposal_json: Json | null
+          status: string | null
+          structured_brief: Json | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          assured_mode?: boolean | null
+          contact_email: string
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          org_id?: string | null
+          origin: string
+          origin_id?: string | null
+          proposal_json?: Json | null
+          status?: string | null
+          structured_brief?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          assured_mode?: boolean | null
+          contact_email?: string
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          org_id?: string | null
+          origin?: string
+          origin_id?: string | null
+          proposal_json?: Json | null
+          status?: string | null
+          structured_brief?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "briefs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_client_orgs"
+            referencedColumns: ["org_id"]
+          },
+          {
+            foreignKeyName: "briefs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "orgs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "briefs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       categories: {
         Row: {
           id: string
@@ -2307,6 +2412,73 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_orgs: {
+        Row: {
+          created_at: string | null
+          org_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          org_id: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          org_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_orgs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_client_orgs"
+            referencedColumns: ["org_id"]
+          },
+          {
+            foreignKeyName: "user_orgs_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "orgs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_orgs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       zapier_fallback: {
         Row: {
