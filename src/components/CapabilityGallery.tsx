@@ -176,7 +176,10 @@ const CapabilityGallery = () => {
         <div className="flex justify-center mb-12">
           <div className="inline-flex rounded-lg bg-muted p-1">
             <button
-              onClick={() => setSelectedIntent('goal')}
+              onClick={() => {
+                setSelectedIntent('goal');
+                navigate('/brief-builder');
+              }}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
                 selectedIntent === 'goal'
                   ? 'bg-background text-foreground shadow-sm'
@@ -186,7 +189,10 @@ const CapabilityGallery = () => {
               I have a business goal
             </button>
             <button
-              onClick={() => setSelectedIntent('packs')}
+              onClick={() => {
+                setSelectedIntent('packs');
+                navigate('/catalog');
+              }}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
                 selectedIntent === 'packs'
                   ? 'bg-background text-foreground shadow-sm'
@@ -196,7 +202,10 @@ const CapabilityGallery = () => {
               Browse outcome packs
             </button>
             <button
-              onClick={() => setSelectedIntent('curator')}
+              onClick={() => {
+                setSelectedIntent('curator');
+                window.open('https://calendly.com/osu/brief-chat', '_blank', 'noopener,noreferrer');
+              }}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
                 selectedIntent === 'curator'
                   ? 'bg-background text-foreground shadow-sm'
