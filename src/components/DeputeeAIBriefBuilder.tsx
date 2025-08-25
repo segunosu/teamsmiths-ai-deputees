@@ -16,14 +16,17 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 interface AIResponse {
-  interpretation: string;
-  extracted_data: {
-    key_points: string[];
-    implied_timeline?: string;
-    budget_hints?: string;
-    success_metrics: string[];
-  };
-  follow_up?: string;
+  interpreted: string;
+  confidence: number;
+  tags: string[];
+  warnings: string[];
+  normalized: any;
+}
+
+interface AiState {
+  state: 'idle' | 'processing' | 'ready' | 'error';
+  insights: string[];
+  missing: string[];
 }
 
 const DeputeeAIBriefBuilder = () => {
@@ -59,11 +62,11 @@ const DeputeeAIBriefBuilder = () => {
   });
 
   const [aiResponses, setAiResponses] = useState<Record<string, AIResponse>>({});
-  const [processingField, setProcessingField] = useState<string | null>(null);
+  const [aiStates, setAiStates] = useState<Record<string, AiState>>({});
 
   // Debounce timers per field
   const typingTimers = useRef<Record<string, number>>({});
-  const DEBOUNCE_DELAY = 1500; // ms
+  const DEBOUNCE_DELAY = 600; // ms - faster debounce as requested
 
   const [proposal, setProposal] = useState({
     roles: ['Growth Strategist', 'AI Consultant'],
@@ -87,67 +90,101 @@ const DeputeeAIBriefBuilder = () => {
     trackEvent(eventName, { ...properties, brief_origin: briefOrigin });
   }, [briefOrigin, trackEvent]);
 
-  // Deputee AI processing
+  // Deputee AI processing with proper state management and timeout
   const processWithDeputeeAI = useCallback(async (message: string, field: string) => {
     if (!message.trim()) return;
 
-    setProcessingField(field);
+    // Set processing state
+    setAiStates(prev => ({
+      ...prev,
+      [field]: { state: 'processing', insights: [], missing: [] }
+    }));
+    
+    // Set timeout fallback (3s client timeout)
+    const timeoutId = setTimeout(() => {
+      setAiStates(prev => ({
+        ...prev,
+        [field]: { 
+          state: 'ready', 
+          insights: ['Deputee™ AI™ will finish interpreting in the background.'], 
+          missing: [] 
+        }
+      }));
+      setAiResponses(prev => ({
+        ...prev,
+        [field]: {
+          interpreted: 'Input captured. We will refine as you add details.',
+          confidence: 0.5,
+          tags: ['timeout_fallback'],
+          warnings: ['ai_timeout'],
+          normalized: {}
+        }
+      }));
+    }, 3000);
     
     try {
-      const { data, error } = await supabase.functions.invoke('deputee-ai-brief', {
-        body: { 
-          message, 
-          field, 
-          context: briefData 
-        }
+      const { data, error } = await supabase.functions.invoke('brief-sensemaking', {
+        body: { field, value: message }
       });
 
+      clearTimeout(timeoutId);
+
       if (error) throw error;
+
+      // Process the response
+      const insights = [];
+      if (data.interpreted) {
+        insights.push(`Goal recognized: "${data.interpreted}"`);
+      }
+      if (data.normalized?.timeframe) {
+        insights.push(`Timeline: ${data.normalized.timeframe}`);
+      }
+      if (data.normalized?.metric) {
+        insights.push(`Target: ${data.normalized.metric}`);
+      }
 
       setAiResponses(prev => ({
         ...prev,
         [field]: data
       }));
 
-      // Auto-populate related fields if AI extracted data
-      if (data.extracted_data) {
-        const updates: Partial<typeof briefData> = {};
-        
-        if (field === 'goal' && data.extracted_data.implied_timeline && !briefData.timeline) {
-          updates.timeline = data.extracted_data.implied_timeline;
+      setAiStates(prev => ({
+        ...prev,
+        [field]: { 
+          state: 'ready', 
+          insights: insights.slice(0, 2), // Max 2 insights as requested
+          missing: [] // TODO: Add missing field detection logic
         }
-        
-        if (data.extracted_data.budget_hints && !briefData.budget_range) {
-          updates.budget_range = data.extracted_data.budget_hints;
-        }
+      }));
 
-        if (Object.keys(updates).length > 0) {
-          setBriefData(prev => ({ ...prev, ...updates }));
-        }
-      }
-
-      trackAnalyticsEvent('brief_builder.ai_processed', { field, has_extraction: !!data.extracted_data });
+      trackAnalyticsEvent('brief_builder.ai_processed', { field, confidence: data.confidence });
 
     } catch (error) {
+      clearTimeout(timeoutId);
       console.error('Deputee AI error:', error);
-      // Set a graceful fallback response instead of blocking
+      
+      // Graceful fallback - don't block the user
+      setAiStates(prev => ({
+        ...prev,
+        [field]: { 
+          state: 'ready', 
+          insights: ['Input captured. We will refine as you add details.'], 
+          missing: [] 
+        }
+      }));
+      
       setAiResponses(prev => ({
         ...prev,
         [field]: {
-          interpretation: "I understand your input. Let me help you structure this information.",
-          extracted_data: {
-            key_points: [briefData[field]?.substring(0, 100) || "Input captured"],
-            implied_timeline: null,
-            budget_hints: null,
-            success_metrics: []
-          },
-          follow_up: null
+          interpreted: 'Input captured. We will refine as you add details.',
+          confidence: 0.4,
+          tags: ['fallback'],
+          warnings: ['ai_error'],
+          normalized: {}
         }
       }));
-    } finally {
-      setProcessingField(null);
     }
-  }, [briefData, toast, trackAnalyticsEvent]);
+  }, [trackAnalyticsEvent]);
 
   // Debounced input handler
   const handleInputChange = useCallback((field: string, value: string) => {
@@ -187,8 +224,8 @@ const DeputeeAIBriefBuilder = () => {
         ...aiResponses
       };
 
-      // Submit to new brief system
-      const { data, error } = await supabase.functions.invoke('submit-brief', {
+      // Submit to new brief system - improved error handling
+      const response = await supabase.functions.invoke('submit-brief', {
         body: {
           contact_name: contactData.name,
           contact_email: contactData.email,
@@ -201,8 +238,8 @@ const DeputeeAIBriefBuilder = () => {
         }
       });
 
-      if (error) {
-        console.error('Brief submission error:', error);
+      if (response.error || !response.data?.brief_id) {
+        console.error('Brief submission error:', response.error);
         toast({
           title: "Submission Issue",
           description: "We saved your answers locally. Please try again.",
@@ -210,6 +247,8 @@ const DeputeeAIBriefBuilder = () => {
         });
         return;
       }
+
+      const { data } = response;
 
       console.log('Brief submitted successfully:', data);
       
@@ -225,8 +264,8 @@ const DeputeeAIBriefBuilder = () => {
         description: "Proposal generating — QA validation in <2h.",
       });
       
-      // Navigate to dashboard with brief ID
-      window.location.href = `/dashboard/briefs/${data.brief_id}`;
+      // Navigate to dashboard with brief ID - use navigate instead of window.location for better UX
+      navigate(`/dashboard/briefs/${data.brief_id}`);
 
     } catch (error) {
       console.error('Brief submission error:', error);
@@ -442,31 +481,25 @@ const DeputeeAIBriefBuilder = () => {
                   />
                   
                   {/* AI Response */}
-                  {processingField === 'goal' && (
+                  {aiStates.goal?.state === 'processing' && (
                     <div className="mt-3 p-3 bg-primary/5 rounded-lg border">
                       <div className="flex items-center gap-2">
                         <Bot className="h-4 w-4 text-primary animate-pulse" />
-                        <span className="text-sm text-primary">Deputee™ AI™ is analyzing...</span>
+                        <span className="text-sm text-primary">Deputee™ AI™ is synthesizing...</span>
                       </div>
                     </div>
                   )}
                   
-                  {aiResponses.goal && (
+                  {aiStates.goal?.state === 'ready' && aiStates.goal.insights.length > 0 && (
                     <Alert className="mt-3">
                       <Bot className="h-4 w-4" />
                       <AlertDescription>
-                        <strong>Deputee™ AI™ interpretation:</strong>
-                        <p className="mt-1">{aiResponses.goal.interpretation}</p>
-                        {aiResponses.goal.extracted_data.key_points.length > 0 && (
-                          <div className="mt-2">
-                            <strong>Key points identified:</strong>
-                            <ul className="list-disc list-inside mt-1">
-                              {aiResponses.goal.extracted_data.key_points.map((point, index) => (
-                                <li key={index} className="text-sm">{point}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
+                        <strong>Deputee™ AI™ interpreted your input:</strong>
+                        <ul className="mt-1 space-y-1">
+                          {aiStates.goal.insights.map((insight, index) => (
+                            <li key={index} className="text-sm">• {insight}</li>
+                          ))}
+                        </ul>
                       </AlertDescription>
                     </Alert>
                   )}
@@ -491,21 +524,25 @@ const DeputeeAIBriefBuilder = () => {
                     className="min-h-[100px]"
                   />
                   
-                  {processingField === 'context' && (
+                  {aiStates.context?.state === 'processing' && (
                     <div className="mt-3 p-3 bg-primary/5 rounded-lg border">
                       <div className="flex items-center gap-2">
                         <Bot className="h-4 w-4 text-primary animate-pulse" />
-                        <span className="text-sm text-primary">Deputee™ AI™ is analyzing...</span>
+                        <span className="text-sm text-primary">Deputee™ AI™ is synthesizing...</span>
                       </div>
                     </div>
                   )}
                   
-                  {aiResponses.context && (
+                  {aiStates.context?.state === 'ready' && aiStates.context.insights.length > 0 && (
                     <Alert className="mt-3">
                       <Bot className="h-4 w-4" />
                       <AlertDescription>
-                        <strong>Deputee™ AI™ interpretation:</strong>
-                        <p className="mt-1">{aiResponses.context.interpretation}</p>
+                        <strong>Deputee™ AI™ interpreted your input:</strong>
+                        <ul className="mt-1 space-y-1">
+                          {aiStates.context.insights.map((insight, index) => (
+                            <li key={index} className="text-sm">• {insight}</li>
+                          ))}
+                        </ul>
                       </AlertDescription>
                     </Alert>
                   )}
@@ -530,21 +567,25 @@ const DeputeeAIBriefBuilder = () => {
                     className="min-h-[100px]"
                   />
                   
-                  {processingField === 'constraints' && (
+                  {aiStates.constraints?.state === 'processing' && (
                     <div className="mt-3 p-3 bg-primary/5 rounded-lg border">
                       <div className="flex items-center gap-2">
                         <Bot className="h-4 w-4 text-primary animate-pulse" />
-                        <span className="text-sm text-primary">Deputee™ AI™ is analyzing...</span>
+                        <span className="text-sm text-primary">Deputee™ AI™ is synthesizing...</span>
                       </div>
                     </div>
                   )}
                   
-                  {aiResponses.constraints && (
+                  {aiStates.constraints?.state === 'ready' && aiStates.constraints.insights.length > 0 && (
                     <Alert className="mt-3">
                       <Bot className="h-4 w-4" />
                       <AlertDescription>
-                        <strong>Deputee™ AI™ interpretation:</strong>
-                        <p className="mt-1">{aiResponses.constraints.interpretation}</p>
+                        <strong>Deputee™ AI™ interpreted your input:</strong>
+                        <ul className="mt-1 space-y-1">
+                          {aiStates.constraints.insights.map((insight, index) => (
+                            <li key={index} className="text-sm">• {insight}</li>
+                          ))}
+                        </ul>
                       </AlertDescription>
                     </Alert>
                   )}
