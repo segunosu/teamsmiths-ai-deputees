@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck, Award, Clock, UserCheck, Database } from 'lucide-react';
+import { OutcomeAssurance } from '@/components/OutcomeAssurance';
 import { useEffect } from 'react';
 import CapabilityGallery from '@/components/CapabilityGallery';
 
@@ -86,8 +87,8 @@ const Home = () => {
           </div>
 
             {/* Benefits Strip */}
-            <div className="border-t border-neutral-200 mt-8 pt-4">
-              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-neutral-800 max-w-4xl mx-auto">
+            <div className="border-t border-border mt-8 pt-4 pb-4">
+              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-foreground max-w-4xl mx-auto">
                 <div className="flex items-center gap-2 justify-center md:justify-start">
                   <UserCheck className="h-4 w-4 text-primary" />
                   <span>Precision matched experts</span>
@@ -191,6 +192,13 @@ const Home = () => {
               </Link>
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Outcome Assurance */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <OutcomeAssurance />
         </div>
       </section>
 

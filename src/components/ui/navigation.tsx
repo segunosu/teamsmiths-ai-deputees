@@ -39,16 +39,14 @@ export const Navigation = () => {
 
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'For Clients', path: '/for-clients' },
-    { label: 'For Freelancers', path: '/for-freelancers' },
-    { label: 'For Agencies', path: '/for-agencies' },
-    { label: 'Pricing', path: '/pricing' },
-    { label: 'Contact', path: '/contact' },
   ];
 
+  // Add contact link to Calendly
+  const contactLink = 'https://calendly.com/osu/brief-chat';
+
   const outcomesItems = [
-    { label: 'Proof in Action', path: '/outcomes?view=proof' },
-    { label: 'Outcome Catalog', path: '/outcomes?view=catalog' },
+    { label: 'Proof in Action', path: '/outcomes' },
+    { label: 'Outcome Catalog', path: '/catalog' },
   ];
 
   if (user) {
@@ -117,6 +115,16 @@ export const Navigation = () => {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
+              
+              {/* Contact Link */}
+              <a
+                href={contactLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+              >
+                Contact
+              </a>
             </div>
           </div>
 

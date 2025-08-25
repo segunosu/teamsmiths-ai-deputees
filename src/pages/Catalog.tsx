@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { ArrowRight, Clock, Package, Tag, Rocket, Shield, Brain, TrendingUp } from 'lucide-react';
+import { OutcomeAssurance } from '@/components/OutcomeAssurance';
 import { useToast } from '@/hooks/use-toast';
 
 interface Product {
@@ -321,15 +322,15 @@ const Catalog = () => {
 
                 <Separator className="my-4" />
                 
-                <div className="mt-auto">
+                  <div className="mt-auto">
                   <div className="flex gap-3">
-                    <Button asChild variant="outline" className="flex-1">
+                    <Button asChild className="flex-1">
                       <Link to={`/product/${product.id}`}>
                         See Details or Customize
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
-                    <Button asChild className="flex-1">
+                    <Button asChild variant="outline" className="flex-1">
                       <Link to={`/brief-builder?pack_id=${product.id}`}>Buy Outcome Pack</Link>
                     </Button>
                   </div>
@@ -349,18 +350,23 @@ const Catalog = () => {
           </div>
         )}
 
+        {/* Outcome Assurance */}
+        <div className="mt-16">
+          <OutcomeAssurance />
+        </div>
+
         {/* Bottom CTA */}
-        <div className="text-center mt-16 p-8 bg-muted/50 rounded-lg">
+        <div className="text-center mt-8 p-8 bg-muted/50 rounded-lg">
           <h3 className="text-2xl font-bold mb-4">Need full customization?</h3>
           <p className="text-muted-foreground mb-6">
             Every outcome pack can be fully customized. Our experts will tailor any solution to your specific requirements.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link to="/customize">Discuss Customization</Link>
+              <Link to="/brief-builder">Customize this outcome</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link to="/auth">Book Consultation</Link>
+              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Talk to a curator</a>
             </Button>
           </div>
         </div>

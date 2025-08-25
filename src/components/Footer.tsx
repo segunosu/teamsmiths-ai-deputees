@@ -10,10 +10,10 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Company</h3>
             <ul className="space-y-3">
-              <li><Link to="/about" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About Us</Link></li>
-              <li><Link to="/careers" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Careers</Link></li>
-              <li><Link to="/contact" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact</Link></li>
-              <li><Link to="/blog" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Blog</Link></li>
+              <li><Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About Us</Link></li>
+              <li><Link to="/careers" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Careers</Link></li>
+              <li><Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact</Link></li>
+              <li><Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Blog</Link></li>
             </ul>
           </div>
 
@@ -21,10 +21,11 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
-              <li><Link to="/for-clients" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Clients</Link></li>
-              <li><Link to="/for-freelancers" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Freelancers</Link></li>
-              <li><Link to="/for-agencies" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Agencies</Link></li>
-              <li><Link to="/catalog" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Browse Packs</Link></li>
+              <li><Link to="/for-clients" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Clients</Link></li>
+              <li><Link to="/for-freelancers" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Freelancers</Link></li>
+              <li><Link to="/for-agencies" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Agencies</Link></li>
+              <li><Link to="/pricing" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Pricing</Link></li>
+              <li><Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Browse Outcome Packs</Link></li>
             </ul>
           </div>
 
