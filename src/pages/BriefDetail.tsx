@@ -47,25 +47,35 @@ export const BriefDetail = () => {
 
   const fetchBrief = async (briefId: string) => {
     try {
+      console.log('Fetching brief with ID:', briefId);
+      
+      // Use maybeSingle() to handle cases where no data is returned
       const { data, error } = await supabase
         .from('briefs')
         .select('*')
         .eq('id', briefId)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching brief:', error);
         toast({
-          title: "Error",
-          description: "Failed to load brief details",
+          title: "Database Error",
+          description: `Failed to load brief: ${error.message}`,
           variant: "destructive"
         });
         return;
       }
 
+      if (!data) {
+        console.log('No brief found with ID:', briefId);
+        setBrief(null);
+        return;
+      }
+
+      console.log('Brief fetched successfully:', data);
       setBrief(data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Unexpected error:', error);
       toast({
         title: "Error",
         description: "Failed to load brief details",

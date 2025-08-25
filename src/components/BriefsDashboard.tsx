@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,6 +45,7 @@ export const BriefsDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchBriefs();
@@ -95,8 +97,9 @@ export const BriefsDashboard = () => {
   };
 
   const handleViewBrief = (briefId: string) => {
-    // Navigate to brief detail view
-    window.location.href = `/dashboard/briefs/${briefId}`;
+    console.log('Navigating to brief:', briefId);
+    // Use React Router navigation instead of window.location for better UX
+    navigate(`/dashboard/briefs/${briefId}`);
   };
 
   if (loading) {
