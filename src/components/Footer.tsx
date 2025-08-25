@@ -22,8 +22,8 @@ export const Footer = () => {
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
               <li><Link to="/for-clients" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Clients</Link></li>
-              <li><Link to="/for-freelancers" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Freelancers</Link></li>
-              <li><Link to="/for-agencies" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Agencies</Link></li>
+              <li><Link to="/for-freelancers" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Freelancers</Link></li>
+              <li><Link to="/for-agencies" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Agencies</Link></li>
               <li><Link to="/pricing" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Pricing</Link></li>
               <li><Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Browse Outcome Packs</Link></li>
             </ul>

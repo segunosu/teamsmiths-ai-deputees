@@ -63,7 +63,7 @@ Guidelines:
       model: "gpt-5-mini-2025-08-07",
       messages: [
         { role: "system", content: systemPrompt },
-        { role: "user", content: message }
+        { role: "user", content: `Field: ${field}\nContext: ${context || 'None'}\nUser input: ${message}` }
       ],
       response_format: { type: "json_object" },
       max_completion_tokens: 500
@@ -72,10 +72,41 @@ Guidelines:
     const response = completion.choices[0]?.message?.content
     
     if (!response) {
-      throw new Error('No response from AI')
+      console.error('OpenAI response empty:', { completion, model: "gpt-5-mini-2025-08-07" })
+      return new Response(
+        JSON.stringify({ 
+          interpretation: "I understand your input. Let me help you structure this information.",
+          extracted_data: {
+            key_points: [message.substring(0, 100)],
+            implied_timeline: null,
+            budget_hints: null,
+            success_metrics: []
+          },
+          follow_up: null
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
     }
 
-    const parsedResponse = JSON.parse(response)
+    let parsedResponse
+    try {
+      parsedResponse = JSON.parse(response)
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError, 'Raw response:', response)
+      // Fallback response
+      parsedResponse = {
+        interpretation: "I understand your input. Let me help you structure this information.",
+        extracted_data: {
+          key_points: [message.substring(0, 100)],
+          implied_timeline: null,
+          budget_hints: null,
+          success_metrics: []
+        },
+        follow_up: null
+      }
+    }
     
     return new Response(
       JSON.stringify(parsedResponse),

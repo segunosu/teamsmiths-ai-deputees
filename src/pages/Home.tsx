@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck, Award, Clock, UserCheck, Database } from 'lucide-react';
+import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck, Award, Clock, UserCheck, Database, CreditCard } from 'lucide-react';
 import { OutcomeAssurance } from '@/components/OutcomeAssurance';
 import { useEffect } from 'react';
 import CapabilityGallery from '@/components/CapabilityGallery';
@@ -87,14 +87,14 @@ const Home = () => {
           </div>
 
             {/* Benefits Strip */}
-            <div className="border-t border-border mt-8 pt-4 pb-4">
-              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-foreground max-w-4xl mx-auto">
+            <div className="border-t border-[#E5E7EB] mt-8 pt-4 pb-4">
+              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-[#111] max-w-4xl mx-auto">
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <UserCheck className="h-4 w-4 text-primary" />
+                  <Target className="h-4 w-4 text-primary" />
                   <span>Precision matched experts</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <Shield className="h-4 w-4 text-primary" />
+                  <CreditCard className="h-4 w-4 text-primary" />
                   <span>Milestone payments</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
@@ -102,7 +102,7 @@ const Home = () => {
                   <span>Faster outcomes</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <Award className="h-4 w-4 text-primary" />
+                  <Shield className="h-4 w-4 text-primary" />
                   <span>Quality assured</span>
                 </div>
               </div>
