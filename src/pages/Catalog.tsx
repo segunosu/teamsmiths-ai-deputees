@@ -323,14 +323,14 @@ const Catalog = () => {
                 
                 <div className="mt-auto">
                   <div className="flex gap-3">
-                    <Button asChild className="flex-1">
-                      <Link to={`/brief-builder?pack_id=${product.id}`}>Customize this outcome</Link>
-                    </Button>
                     <Button asChild variant="outline" className="flex-1">
                       <Link to={`/product/${product.id}`}>
-                        View Details
+                        See Details or Customize
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
+                    </Button>
+                    <Button asChild className="flex-1">
+                      <Link to={`/brief-builder?pack_id=${product.id}`}>Buy Outcome Pack</Link>
                     </Button>
                   </div>
                 </div>

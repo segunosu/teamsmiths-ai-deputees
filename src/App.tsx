@@ -12,6 +12,7 @@ import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
 import BriefBuilder from "./pages/BriefBuilder";
+import DeputeeAIBriefBuilder from "./components/DeputeeAIBriefBuilder";
 import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
@@ -25,6 +26,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Pricing from "./pages/Pricing";
+import Outcomes from "./pages/Outcomes";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import SecurityPolicy from "./pages/SecurityPolicy";
@@ -48,11 +50,12 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/outcomes" element={<Outcomes />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/customize" element={<BriefBuilder />} />
                 <Route path="/customize/:id" element={<BriefBuilder />} />
-                <Route path="/brief-builder" element={<BriefBuilder />} />
+                <Route path="/brief-builder" element={<DeputeeAIBriefBuilder />} />
                 <Route path="/quote/:id" element={<QuoteDetail />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/project/:id" element={<ProjectDetail />} />

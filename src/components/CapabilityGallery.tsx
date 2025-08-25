@@ -322,7 +322,7 @@ const CapabilityGallery = () => {
 
         {/* Outcome Assurance Strip */}
         {visibleExperts.length >= 3 && (
-          <div className="py-6 px-8 bg-neutral-50 rounded-lg border border-neutral-200/50 mb-8">
+          <div className="py-6 px-8 bg-muted/30 rounded-lg border border-border/50 mb-8">
             <div className="text-center">
               <h3 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
@@ -331,7 +331,7 @@ const CapabilityGallery = () => {
               <div className="space-y-1 text-sm text-muted-foreground">
                 <p>Every engagement monitored by Deputee™ AI™ + Human QA</p>
                 <p>Optional insurance: replace your expert if things don't work out</p>
-                <p className="font-medium">That's the Teamsmiths Guarantee</p>
+                <p className="font-medium text-foreground">That's the Teamsmiths Guarantee</p>
               </div>
             </div>
           </div>

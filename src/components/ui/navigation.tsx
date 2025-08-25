@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ChevronDown } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export const Navigation = () => {
@@ -38,12 +39,16 @@ export const Navigation = () => {
 
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'Outcome Catalog', path: '/catalog' },
     { label: 'For Clients', path: '/for-clients' },
     { label: 'For Freelancers', path: '/for-freelancers' },
     { label: 'For Agencies', path: '/for-agencies' },
     { label: 'Pricing', path: '/pricing' },
     { label: 'Contact', path: '/contact' },
+  ];
+
+  const outcomesItems = [
+    { label: 'Proof in Action', path: '/outcomes?view=proof' },
+    { label: 'Outcome Catalog', path: '/outcomes?view=catalog' },
   ];
 
   if (user) {
@@ -89,6 +94,29 @@ export const Navigation = () => {
                   {item.label}
                 </Link>
               ))}
+              
+              {/* Outcomes Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className={`px-3 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-1 ${
+                    isActive('/outcomes') || isActive('/catalog')
+                      ? 'text-primary bg-primary/10'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  }`}>
+                    Outcomes
+                    <ChevronDown className="h-3 w-3" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48">
+                  {outcomesItems.map((item) => (
+                    <DropdownMenuItem key={item.path} asChild>
+                      <Link to={item.path} className="w-full">
+                        {item.label}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
@@ -183,6 +211,27 @@ export const Navigation = () => {
                   {item.label}
                 </Link>
               ))}
+              
+              {/* Mobile Outcomes Section */}
+              <div className="pt-2">
+                <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Outcomes
+                </div>
+                {outcomesItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`block px-6 py-2 rounded-md text-base font-medium transition-all ${
+                      isActive(item.path)
+                        ? 'text-primary bg-primary/10'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
               
               {/* Mobile Auth */}
               <div className="pt-4 border-t border-border">
