@@ -180,14 +180,42 @@ const DeputeeAIBriefBuilder = () => {
 
     setLoading(true);
     try {
-      // TODO: Save brief to database when briefs table is created
+      // Prepare structured brief data
+      const structuredBrief = {
+        goal: briefData.goal,
+        ...briefData,
+        ...aiResponses
+      };
+
+      // Submit to new brief system
+      const { data, error } = await supabase.functions.invoke('submit-brief', {
+        body: {
+          contact_name: contactData.name,
+          contact_email: contactData.email,
+          contact_phone: contactData.phone,
+          structured_brief: structuredBrief,
+          proposal_json: proposal,
+          assured_mode: proposal.assuredMode,
+          origin: briefOrigin || 'bespoke',
+          origin_id: capabilityId || packId
+        }
+      });
+
+      if (error) {
+        console.error('Brief submission error:', error);
+        throw new Error(error.message || 'Failed to submit brief');
+      }
+
+      console.log('Brief submitted successfully:', data);
       
       trackAnalyticsEvent('brief_builder.submit_contact', { 
-        has_ai_responses: Object.keys(aiResponses).length > 0 
+        brief_id: data.brief_id,
+        origin: briefOrigin,
+        origin_id: capabilityId || packId 
       });
 
       setShowProposal(true);
-      trackAnalyticsEvent('proposal.preview_shown', {});
+      trackAnalyticsEvent('proposal.preview_shown', { brief_id: data.brief_id });
 
     } catch (error) {
       console.error('Brief submission error:', error);

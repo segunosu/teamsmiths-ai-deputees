@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, FolderOpen, Clock, CheckCircle2, AlertCircle, Package } from 'lucide-react';
+import { BriefsDashboard } from '@/components/BriefsDashboard';
 
 interface Project {
   id: string;
@@ -216,6 +217,10 @@ const Dashboard = () => {
         </div>
 
         {/* Main Content */}
+        <div className="mb-8">
+          <BriefsDashboard />
+        </div>
+        
         <Tabs defaultValue="projects" className="space-y-6">
           <TabsList>
             <TabsTrigger value="projects">Projects</TabsTrigger>
