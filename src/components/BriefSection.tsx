@@ -17,9 +17,9 @@ export function BriefSection({ title, data, type = 'scalar' }: BriefSectionProps
   // Handle scalar values (simple fields)
   if (type === 'scalar') {
     return (
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-sm font-medium text-muted-foreground">{title}:</span>
-        <Badge variant="outline">{safeText(data)}</Badge>
+      <div className="flex items-center justify-between gap-4 mb-2">
+        <span className="text-sm font-medium text-muted-foreground min-w-0 flex-shrink-0">{title}:</span>
+        <Badge variant="outline" className="ml-auto">{safeText(data)}</Badge>
       </div>
     );
   }
@@ -156,14 +156,6 @@ export function BriefSection({ title, data, type = 'scalar' }: BriefSectionProps
           </div>
         )}
 
-        <details className="mt-4">
-          <summary className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">
-            Debug Information
-          </summary>
-          <pre className="text-xs bg-muted p-3 rounded mt-2 overflow-auto">
-            {safeText(data)}
-          </pre>
-        </details>
       </CardContent>
     </Card>
   );

@@ -357,7 +357,7 @@ export default function BriefDetail() {
               <CardTitle className="text-base">Brief Origin</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              <BriefSection title="Origin" data={brief!.origin} type="scalar" />
+              <BriefSection title="Origin" data={brief!.origin || 'Direct submission'} type="scalar" />
               {brief!.origin_id && <BriefSection title="Origin ID" data={brief!.origin_id} type="scalar" />}
             </CardContent>
           </Card>
@@ -369,7 +369,7 @@ export default function BriefDetail() {
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <CheckCircle className="h-5 w-5" />
-            AI Proposal
+            Deputee™ AI Proposal
           </CardTitle>
           <CardDescription>
             {proposal ? 'Generated proposal based on your brief' : 'Proposal generation status'}
@@ -422,7 +422,7 @@ export default function BriefDetail() {
                     {proposal.milestones.map((milestone: any, index: number) => (
                       <div key={index} className="border rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-medium">{safeText(milestone.title)}</h4>
+                          <h4 className="font-medium">{safeText(milestone.title || `Milestone ${index + 1}`)}</h4>
                           {milestone.eta_days && (
                             <Badge variant="secondary" className="text-xs">
                               {safeText(milestone.eta_days)} days
@@ -441,7 +441,7 @@ export default function BriefDetail() {
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">
-                    Proposal generating — QA validation &lt;2h.
+                    Deputee™ AI is generating your proposal milestones. QA validation &lt;2h.
                   </p>
                 )}
               </div>
@@ -484,15 +484,6 @@ export default function BriefDetail() {
                 </div>
               )}
 
-              {/* Debug Information */}
-              <details className="mt-4">
-                <summary className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">
-                  Raw Proposal Data
-                </summary>
-                <pre className="text-xs bg-muted p-3 rounded mt-2 overflow-auto">
-                  {safeText(proposal)}
-                </pre>
-              </details>
             </div>
           ) : (
             <div className="text-center py-8">
