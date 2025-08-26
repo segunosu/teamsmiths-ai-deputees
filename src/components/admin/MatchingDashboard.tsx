@@ -206,7 +206,7 @@ const MatchingDashboard = () => {
   const computeMatching = async (briefId: string, forceRecompute = false) => {
     setComputing(true);
     try {
-      const { data, error } = await supabase.functions.invoke('match-experts', {
+      const { data, error } = await supabase.functions.invoke('compute-matching', {
         body: { brief_id: briefId, force_recompute: forceRecompute }
       });
 
@@ -393,86 +393,104 @@ const MatchingDashboard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                {briefRequests.length === 0 ? (
-                  <p className="text-muted-foreground text-center py-8">
-                    No briefs ready for matching
-                  </p>
-                ) : (
-                  briefRequests.map((brief) => (
-                    <div
-                      key={brief.brief_id}
-                      className={`p-3 rounded cursor-pointer transition-colors ${
-                        selectedBrief === brief.brief_id
-                          ? 'bg-primary/10 border border-primary'
-                          : 'bg-muted hover:bg-muted/80'
-                      }`}
-                      onClick={() => {
-                        setSelectedBrief(brief.brief_id);
-                        loadBriefMatchingResults(brief.brief_id);
+        {briefRequests.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground mb-2">No briefs ready for matching</p>
+            <p className="text-sm text-muted-foreground">Briefs from both bespoke and catalog purchases will appear here</p>
+          </div>
+        ) : (
+          <div className="space-y-2 max-h-96 overflow-y-auto">
+            {briefRequests.map((brief) => (
+              <div
+                key={brief.brief_id}
+                className={`p-3 rounded cursor-pointer transition-colors ${
+                  selectedBrief === brief.brief_id
+                    ? 'bg-primary/10 border border-primary'
+                    : 'bg-muted hover:bg-muted/80'
+                }`}
+                onClick={() => {
+                  setSelectedBrief(brief.brief_id);
+                  loadBriefMatchingResults(brief.brief_id);
+                }}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium truncate">{brief.project_title}</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {brief.budget_range} • {brief.timeline_preference}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                      <Badge 
+                        variant={brief.status === 'submitted' ? 'default' : 'secondary'}
+                        className="text-xs"
+                      >
+                        {brief.status}
+                      </Badge>
+                      {brief.candidate_count > 0 && (
+                        <Badge variant="outline" className="text-xs">
+                          {brief.candidate_count} candidates
+                        </Badge>
+                      )}
+                      {brief.assured_mode && (
+                        <Badge variant="outline" className="bg-primary/10 text-primary text-xs">
+                          Assured
+                        </Badge>
+                      )}
+                      <Badge variant="outline" className="text-xs">
+                        {brief.origin === 'catalog' ? 'Pack' : 'Custom'}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1 ml-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        escalateToQuotes(brief.brief_id);
                       }}
                     >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h4 className="font-medium">{brief.project_title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {brief.budget_range} • {brief.timeline_preference}
-                          </p>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge variant={brief.status === 'submitted' ? 'default' : 'secondary'}>
-                              {brief.status}
-                            </Badge>
-                            {brief.candidate_count > 0 && (
-                              <Badge variant="outline">
-                                {brief.candidate_count} candidates
-                              </Badge>
-                            )}
-                            {brief.assured_mode && (
-                              <Badge variant="outline" className="bg-primary/10 text-primary">
-                                Assured
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              escalateToQuotes(brief.brief_id);
-                            }}
-                          >
-                            Escalate
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
+                      Escalate
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
               </CardContent>
             </Card>
 
             {/* Matching Results */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
                   <Users className="h-4 w-4" />
                   Deputee™ AI Matching Results
-                  {selectedBrief && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => computeMatching(selectedBrief, true)}
-                      disabled={computing}
-                    >
-                      {computing ? (
-                        <RefreshCw className="h-3 w-3 animate-spin" />
-                      ) : (
-                        'Recompute'
-                      )}
-                    </Button>
-                  )}
+                  <div className="ml-auto flex items-center gap-2">
+                    {selectedBrief && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => computeMatching(selectedBrief, true)}
+                        disabled={computing}
+                        className="text-xs"
+                      >
+                        {computing ? (
+                          <RefreshCw className="h-3 w-3 animate-spin" />
+                        ) : (
+                          'Recompute'
+                        )}
+                      </Button>
+                    )}
+                    <div className="hidden sm:block text-xs text-muted-foreground">
+                      ℹ️
+                    </div>
+                  </div>
                 </CardTitle>
+                <CardDescription className="text-xs">
+                  Scores blend tool mastery, industry fit, and delivery signals. Click 'Recompute' to update.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 {!selectedBrief ? (

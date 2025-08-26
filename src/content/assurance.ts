@@ -6,4 +6,19 @@ export const ASSURANCE = {
     "It's not about promises — it's about proof."
   ],
   compact: "AI-driven insight, human validation, structured QA — proof over promise.",
+  
+  // New Performance Safeguard copy
+  safeguard: {
+    title: "Performance Safeguard",
+    description: "Optional add-on: if outcomes fall off track against the agreed plan, we'll reinforce the team (additional oversight or specialist support) at no extra cost."
+  },
+  
+  // New assurance block
+  assurance_block: {
+    title: "Outcome Assurance™ — our QA promise",
+    body: [
+      "Every engagement is monitored by Deputee™ AI™ + human QA.",
+      "Optional Performance Safeguard keeps your project on track — we reinforce, we don't replace."
+    ]
+  }
 };

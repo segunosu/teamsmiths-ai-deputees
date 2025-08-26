@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 interface MatchingRequest {
-  request_id: string;
+  brief_id: string;
   force_recompute?: boolean;
 }
 
@@ -61,24 +61,27 @@ serve(async (req) => {
       { auth: { persistSession: false } }
     );
 
-    const { request_id, force_recompute = false }: MatchingRequest = await req.json();
+    const { brief_id, force_recompute = false }: MatchingRequest = await req.json();
 
-    console.log(`Computing matches for request ${request_id}`);
+    console.log(`Computing matches for brief ${brief_id}`);
 
-    // Check if we already have a recent matching snapshot (unless forced)
+    // Check if we already have recent matching results (unless forced)
     if (!force_recompute) {
-      const { data: existingSnapshot } = await supabase
-        .from("matching_snapshots")
-        .select("*")
-        .eq("request_id", request_id)
-        .gte("created_at", new Date(Date.now() - 60 * 60 * 1000).toISOString()) // 1 hour
+      const { data: existingBrief } = await supabase
+        .from("briefs")
+        .select("matching_results, matched_at")
+        .eq("id", brief_id)
         .single();
 
-      if (existingSnapshot) {
+      if (existingBrief?.matching_results && 
+          existingBrief.matching_results.length > 0 &&
+          existingBrief.matched_at &&
+          new Date(existingBrief.matched_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)) {
         return new Response(JSON.stringify({ 
-          success: true, 
-          snapshot_id: existingSnapshot.id,
-          message: "Using existing snapshot" 
+          status: "success",
+          brief_id,
+          candidates: existingBrief.matching_results,
+          message: "Using cached matching results from less than 24h ago"
         }), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
@@ -104,15 +107,22 @@ serve(async (req) => {
       history: 0.03
     };
 
-    // Get the customization request details
-    const { data: request, error: requestError } = await supabase
-      .from("customization_requests")
+    // Get the brief details
+    const { data: brief, error: briefError } = await supabase
+      .from("briefs")
       .select("*")
-      .eq("id", request_id)
+      .eq("id", brief_id)
       .single();
 
-    if (requestError || !request) {
-      throw new Error("Customization request not found");
+    if (briefError || !brief) {
+      return new Response(JSON.stringify({
+        status: "error",
+        message: "Brief not found",
+        brief_id
+      }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Get all freelancer profiles
@@ -120,19 +130,38 @@ serve(async (req) => {
       .from("freelancer_profiles")
       .select(`
         *,
-        profiles!inner(full_name, email)
+        profiles!freelancer_profiles_user_id_fkey(full_name, email)
       `);
 
     if (freelancersError) {
-      throw new Error(`Failed to fetch freelancers: ${freelancersError.message}`);
+      return new Response(JSON.stringify({
+        status: "error",
+        message: `Failed to fetch freelancers: ${freelancersError.message}`,
+        brief_id
+      }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     console.log(`Found ${freelancers?.length || 0} freelancers to evaluate`);
 
-    // Extract request context for matching
-    const requestSkills = extractSkillsFromText(request.custom_requirements);
-    const requestBudget = parseBudgetRange(request.budget_range);
-    const requestIndustries = extractIndustriesFromText(request.custom_requirements);
+    // Extract brief context for matching from structured_brief
+    const structuredBrief = brief.structured_brief || {};
+    const requestSkills = extractSkillsFromText(
+      [
+        structuredBrief.goal?.interpreted || '',
+        structuredBrief.context?.interpreted || '',
+        structuredBrief.constraints?.interpreted || ''
+      ].join(' ')
+    );
+    const requestBudget = parseBudgetRange(structuredBrief.budget_range || '');
+    const requestIndustries = extractIndustriesFromText(
+      [
+        structuredBrief.goal?.interpreted || '',
+        structuredBrief.context?.interpreted || ''
+      ].join(' ')
+    );
 
     // Score each freelancer
     const scoredCandidates = freelancers?.map((freelancer: any) => {
@@ -175,40 +204,58 @@ serve(async (req) => {
 
     console.log(`Created shortlist of ${shortlist.length} candidates`);
 
-    // Store matching snapshot
-    const { data: snapshot, error: snapshotError } = await supabase
-      .from("matching_snapshots")
-      .insert({
-        request_id,
-        candidates: shortlist,
-        matching_weights: weights,
-        shortlist_size: shortlistSize
+    // Store results in brief
+    const { error: updateError } = await supabase
+      .from("briefs")
+      .update({
+        matching_results: shortlist,
+        matched_at: new Date().toISOString()
       })
-      .select("id")
-      .single();
+      .eq("id", brief_id);
 
-    if (snapshotError) {
-      throw new Error(`Failed to save snapshot: ${snapshotError.message}`);
+    if (updateError) {
+      console.error('Error updating brief with matching results:', updateError);
     }
 
-    console.log(`Saved matching snapshot ${snapshot.id}`);
+    console.log(`Generated ${shortlist.length} candidates for brief ${brief_id}`);
 
     return new Response(JSON.stringify({
-      success: true,
-      snapshot_id: snapshot.id,
-      shortlist,
-      message: `Generated shortlist of ${shortlist.length} candidates`
+      status: "success",
+      brief_id,
+      candidates: shortlist,
+      weights_used: weights,
+      shortlist_size: shortlistSize,
+      message: `Successfully matched ${shortlist.length} candidates`
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
 
   } catch (error: any) {
     console.error("Error in compute-matching:", error);
+    
+    // Log error to brief_events table if we have a brief_id
+    const body = await req.json().catch(() => ({}));
+    if (body.brief_id) {
+      try {
+        await supabase.from('brief_events').insert({
+          brief_id: body.brief_id,
+          type: 'matching_error',
+          payload: { 
+            error: error.message,
+            timestamp: new Date().toISOString()
+          }
+        });
+      } catch (logError) {
+        console.error('Failed to log error:', logError);
+      }
+    }
+
     return new Response(JSON.stringify({ 
-      success: false, 
-      error: error.message 
+      status: "error",
+      message: error.message || 'Failed to compute matching results',
+      brief_id: body.brief_id
     }), {
-      status: 500,
+      status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
