@@ -415,9 +415,9 @@ export default function BriefDetail() {
               )}
 
               {/* Milestones */}
-              {Array.isArray(proposal.milestones) && proposal.milestones.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-3">Project Milestones</h3>
+              <div>
+                <h3 className="font-semibold mb-3">Project Milestones</h3>
+                {Array.isArray(proposal.milestones) && proposal.milestones.length > 0 ? (
                   <div className="space-y-3">
                     {proposal.milestones.map((milestone: any, index: number) => (
                       <div key={index} className="border rounded-lg p-4">
@@ -439,8 +439,12 @@ export default function BriefDetail() {
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Proposal generating — QA validation &lt;2h.
+                  </p>
+                )}
+              </div>
 
               {/* Success Metrics */}
               {Array.isArray(proposal.success_metrics) && proposal.success_metrics.length > 0 && (

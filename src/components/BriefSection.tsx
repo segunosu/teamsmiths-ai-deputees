@@ -59,16 +59,22 @@ export function BriefSection({ title, data, type = 'scalar' }: BriefSectionProps
           <div className="space-y-2">
             {type === 'goal' && (
               <>
-                {normalized.metrics && (
+                {normalized.metric && (
                   <div>
-                    <span className="text-xs text-muted-foreground">Metrics:</span>
-                    <Chips data={normalized.metrics} className="mt-1" />
+                    <span className="text-xs text-muted-foreground">Metric:</span>
+                    <Chips data={[normalized.metric]} className="mt-1" />
                   </div>
                 )}
                 {normalized.timeframe && (
                   <div>
                     <span className="text-xs text-muted-foreground">Timeframe:</span>
-                    <Chips data={normalized.timeframe} className="mt-1" />
+                    <Chips data={[normalized.timeframe]} className="mt-1" />
+                  </div>
+                )}
+                {normalized.objective && (
+                  <div>
+                    <span className="text-xs text-muted-foreground">Objective:</span>
+                    <Chips data={[normalized.objective]} className="mt-1" />
                   </div>
                 )}
               </>
@@ -99,22 +105,22 @@ export function BriefSection({ title, data, type = 'scalar' }: BriefSectionProps
             
             {type === 'constraints' && (
               <>
-                {normalized.integrations && (
+                {normalized.hardware_support && (
                   <div>
-                    <span className="text-xs text-muted-foreground">Integrations:</span>
-                    <Chips data={normalized.integrations} className="mt-1" />
+                    <span className="text-xs text-muted-foreground">Hardware Support:</span>
+                    <Chips data={[normalized.hardware_support]} className="mt-1" />
                   </div>
                 )}
-                {normalized.tools && (
+                {normalized.integration_software && (
                   <div>
-                    <span className="text-xs text-muted-foreground">Tools:</span>
-                    <Chips data={normalized.tools} className="mt-1" />
+                    <span className="text-xs text-muted-foreground">Integration Software:</span>
+                    <Chips data={[normalized.integration_software]} className="mt-1" />
                   </div>
                 )}
-                {normalized.approvals && (
+                {normalized.ai_model_compatibility && (
                   <div>
-                    <span className="text-xs text-muted-foreground">Approvals:</span>
-                    <Chips data={normalized.approvals} className="mt-1" />
+                    <span className="text-xs text-muted-foreground">AI Model Compatibility:</span>
+                    <Chips data={[normalized.ai_model_compatibility]} className="mt-1" />
                   </div>
                 )}
               </>
@@ -122,13 +128,13 @@ export function BriefSection({ title, data, type = 'scalar' }: BriefSectionProps
             
             {/* Generic fallback for other normalized fields */}
             {Object.entries(normalized).map(([key, value]) => {
-              const isHandled = ['metrics', 'timeframe', 'industry', 'org_size', 'region', 'integrations', 'tools', 'approvals'].includes(key);
+              const isHandled = ['metric', 'timeframe', 'objective', 'industry', 'org_size', 'region', 'hardware_support', 'integration_software', 'ai_model_compatibility'].includes(key);
               if (isHandled || !value) return null;
               
               return (
                 <div key={key}>
                   <span className="text-xs text-muted-foreground">{key.replace(/_/g, ' ')}:</span>
-                  <Chips data={value as any} className="mt-1" />
+                  <Chips data={Array.isArray(value) ? value : [value]} className="mt-1" />
                 </div>
               );
             })}
