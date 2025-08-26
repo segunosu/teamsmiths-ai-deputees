@@ -9,7 +9,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Shield, Sparkles, Star, Clock, MapPin, DollarSign, Plus, CheckCircle2, ArrowRight, Globe, TrendingUp, CheckCircle } from 'lucide-react';
 import { OutcomeAssurance } from '@/components/OutcomeAssurance';
-import { toast } from "sonner";
 import { useToast } from '@/hooks/use-toast';
 import { ASSURANCE } from '@/content/assurance';
 

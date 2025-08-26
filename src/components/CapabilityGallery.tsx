@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Shield, Sparkles, Star, Clock, MapPin, DollarSign, CheckCircle, Award, TrendingUp, HeartHandshake } from 'lucide-react';
 import { OutcomeAssurance } from '@/components/OutcomeAssurance';
-import { toast } from "sonner";
 import { useToast } from '@/hooks/use-toast';
 import { ASSURANCE } from '@/content/assurance';
 
