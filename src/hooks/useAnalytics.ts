@@ -9,7 +9,13 @@ export interface AnalyticsEvent {
   'brief_builder.submit_contact': { has_ai_responses: boolean };
   'proposal.preview_shown': Record<string, never>;
   'proposal.confirmed': { assured_mode: boolean };
-  'curator.booking_clicked': { brief_id: string; email: string };
+  'proposal.submitted': { brief_id: string; authed: boolean };
+  'proposal.ready': { brief_id: string };
+  'proposal.accepted': { brief_id: string; assured_mode: boolean };
+  'brief.missing_fields': { brief_id: string; fields: string[] };
+  'curator.booking_clicked': { brief_id: string };
+  'detail.open': { brief_id: string; status: string };
+  'detail.error': { brief_id: string; code: string; message: string };
 }
 
 export const useAnalytics = () => {

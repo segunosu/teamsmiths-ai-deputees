@@ -95,7 +95,40 @@ export const BriefsDashboard = () => {
   });
 
   const getBriefTitle = (brief: Brief) => {
-    return safeText(brief.structured_brief?.goal, 'Untitled Brief');
+    // Try to get interpreted goal first, fallback to raw goal, then default
+    const goal = brief.structured_brief?.goal;
+    if (goal?.interpreted) {
+      return safeText(goal.interpreted).slice(0, 60) + (safeText(goal.interpreted).length > 60 ? '...' : '');
+    }
+    if (typeof goal === 'string') {
+      return goal.slice(0, 60) + (goal.length > 60 ? '...' : '');
+    }
+    return 'Custom Brief';
+  };
+
+  const getBriefChips = (brief: Brief) => {
+    const chips: string[] = [];
+    const sb = brief.structured_brief || {};
+    
+    // Add industry from context
+    if (sb.context?.normalized?.industry) {
+      const industry = Array.isArray(sb.context.normalized.industry) 
+        ? sb.context.normalized.industry[0]
+        : sb.context.normalized.industry;
+      chips.push(safeText(industry));
+    }
+    
+    // Add timeline
+    if (sb.timeline) {
+      chips.push(safeText(sb.timeline));
+    }
+    
+    // Add budget range
+    if (sb.budget_range) {
+      chips.push(safeText(sb.budget_range));
+    }
+    
+    return chips.slice(0, 3); // Limit to 3 chips
   };
 
   const handleViewBrief = (briefId: string) => {
@@ -184,13 +217,18 @@ export const BriefsDashboard = () => {
                       </span>
                       <span>Origin: {originLabels[brief.origin]}</span>
                       {brief.contact_name && (
-                        <span>Contact: {brief.contact_name}</span>
+                        <span>Contact: {safeText(brief.contact_name)}</span>
                       )}
                     </div>
                     
-                    {brief.structured_brief?.budget_band && (
-                      <div className="text-sm">
-                        <span className="font-medium">Budget:</span> {safeText(brief.structured_brief.budget_band)}
+                    {/* Brief chips */}
+                    {getBriefChips(brief).length > 0 && (
+                      <div className="flex gap-2 mt-2">
+                        {getBriefChips(brief).map((chip, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {chip}
+                          </Badge>
+                        ))}
                       </div>
                     )}
                   </div>
