@@ -77,5 +77,11 @@ verify_jwt = false
 [functions.match-experts]
 verify_jwt = false
 
+[functions.compute-matches]
+verify_jwt = false
+
+[functions.create-brief-from-catalog]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true

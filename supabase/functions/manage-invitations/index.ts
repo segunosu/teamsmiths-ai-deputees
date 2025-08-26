@@ -8,8 +8,10 @@ const corsHeaders = {
 
 interface InvitationRequest {
   action: 'send_invites' | 'respond_to_invite' | 'check_expired';
-  request_id?: string;
+  brief_id?: string;
   user_ids?: string[];
+  min_score?: number;
+  max_invites?: number;
   response?: 'accepted' | 'declined';
   invite_id?: string;
 }
@@ -26,13 +28,13 @@ serve(async (req) => {
       { auth: { persistSession: false } }
     );
 
-    const { action, request_id, user_ids, response, invite_id }: InvitationRequest = await req.json();
+    const { action, brief_id, user_ids, min_score, max_invites, response, invite_id }: InvitationRequest = await req.json();
 
     console.log(`Managing invitations: ${action}`);
 
     switch (action) {
       case 'send_invites':
-        return await sendInvites(supabase, request_id!, user_ids!);
+        return await sendInvites(supabase, brief_id!, user_ids!, min_score, max_invites);
       
       case 'respond_to_invite':
         return await respondToInvite(supabase, invite_id!, response!);
@@ -56,59 +58,87 @@ serve(async (req) => {
   }
 });
 
-async function sendInvites(supabase: any, requestId: string, userIds: string[]) {
-  // Get SLA hours from admin settings
-  const { data: adminSettings } = await supabase
-    .from("admin_settings")
-    .select("setting_value")
-    .eq("setting_key", "matching_config")
+async function sendInvites(supabase: any, briefId: string, userIds: string[], minScore?: number, maxInvites?: number) {
+  console.log(`Sending invites for brief ${briefId} to ${userIds.length} candidates`);
+  
+  // Check for existing invitations to avoid duplicates
+  const { data: existingInvites } = await supabase
+    .from('expert_invites')
+    .select('expert_user_id')
+    .eq('brief_id', briefId);
+  
+  const alreadyInvited = existingInvites?.map((invite: any) => invite.expert_user_id) || [];
+  const newUserIds = userIds.filter(id => !alreadyInvited.includes(id));
+  
+  if (newUserIds.length === 0) {
+    return new Response(JSON.stringify({ sent: 0, skipped: userIds.length }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  // Limit to maxInvites if specified
+  const finalUserIds = maxInvites ? newUserIds.slice(0, maxInvites) : newUserIds;
+  
+  // Get SLA hours from admin settings (default 120 hours = 5 days)
+  const { data: slaData } = await supabase
+    .from('admin_settings')
+    .select('setting_value')
+    .eq('setting_key', 'sla_hours')
     .single();
+  
+  const slaHours = slaData?.setting_value || 120;
+  const expiresAt = new Date(Date.now() + slaHours * 60 * 60 * 1000);
 
-  const slaHours = adminSettings?.setting_value?.invite_response_sla_hours || 24;
-  const expiresAt = new Date(Date.now() + (slaHours * 60 * 60 * 1000));
-
-  // Create invitation records
-  const invitations = userIds.map(userId => ({
-    request_id: requestId,
-    user_id: userId,
+  // Create invitations
+  const invitations = finalUserIds.map(userId => ({
+    brief_id: briefId,
+    expert_user_id: userId,
+    expires_at: expiresAt.toISOString(),
     status: 'sent',
-    expires_at: expiresAt.toISOString()
+    score_at_invite: minScore || 0.65
   }));
 
-  const { data: createdInvites, error: inviteError } = await supabase
-    .from("invite_status")
+  const { data: insertedInvites, error: inviteError } = await supabase
+    .from('expert_invites')
     .insert(invitations)
-    .select("*");
+    .select();
 
   if (inviteError) {
-    throw new Error(`Failed to create invitations: ${inviteError.message}`);
+    console.error('Error creating invitations:', inviteError);
+    throw new Error('Failed to create invitations');
   }
 
-  // Get request details for notification
-  const { data: request } = await supabase
-    .from("customization_requests")
-    .select("project_title, custom_requirements")
-    .eq("id", requestId)
+  // Get brief details for notifications
+  const { data: brief } = await supabase
+    .from('briefs')
+    .select('structured_brief')
+    .eq('id', briefId)
     .single();
 
-  // Create notifications for each invited freelancer
-  for (const invite of createdInvites) {
-    await supabase
-      .from("notifications")
-      .insert({
-        user_id: invite.user_id,
-        type: "project_invitation",
-        title: "New Project Invitation",
-        message: `You've been invited to quote on "${request?.project_title}". Review the brief and submit your quote within ${slaHours} hours.`,
-        related_id: requestId
-      });
+  const projectTitle = brief?.structured_brief?.goal?.interpreted || 'New Project';
+
+  // Create notifications for each invited user (only for real users, not shadow)
+  const realUserInvites = insertedInvites.filter((invite: any) => 
+    invite.expert_user_id && !invite.expert_user_id.toString().includes('shadow')
+  );
+  
+  if (realUserInvites.length > 0) {
+    const notifications = realUserInvites.map((invite: any) => ({
+      user_id: invite.expert_user_id,
+      type: 'invitation',
+      title: 'New Project Invitation',
+      message: `You've been invited to quote on: ${projectTitle}`,
+      related_id: invite.id
+    }));
+
+    await supabase.from('notifications').insert(notifications);
   }
 
-  console.log(`Sent ${createdInvites.length} invitations for request ${requestId}`);
+  console.log(`Successfully sent ${insertedInvites.length} invitations`);
 
-  return new Response(JSON.stringify({
-    success: true,
-    invitations_sent: createdInvites.length,
+  return new Response(JSON.stringify({ 
+    sent: insertedInvites.length, 
+    skipped: userIds.length - insertedInvites.length,
     expires_at: expiresAt.toISOString()
   }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },

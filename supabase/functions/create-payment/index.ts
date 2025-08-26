@@ -149,6 +149,27 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create(sessionData);
     logStep("Checkout session created", { sessionId: session.id, url: session.url });
 
+    // Create brief from catalog purchase
+    try {
+      const supabaseService = createClient(
+        Deno.env.get("SUPABASE_URL") ?? "",
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+        { auth: { persistSession: false } }
+      );
+
+      await supabaseService.functions.invoke('create-brief-from-catalog', {
+        body: {
+          product_id: product.id,
+          user_id: user?.id,
+          contact_email: customerEmail,
+          contact_name: user?.user_metadata?.full_name
+        }
+      });
+    } catch (briefError) {
+      // Don't fail checkout if brief creation fails
+      console.error("Failed to create brief from catalog:", briefError);
+    }
+
     return new Response(JSON.stringify({ ok: true, url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
