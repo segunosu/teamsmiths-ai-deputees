@@ -343,25 +343,25 @@ const MatchingDashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-6 min-h-screen bg-background">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Matching Dashboard</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-xl sm:text-2xl font-bold">Matching Dashboard</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">
             Manage automated freelancer matching and invitations
           </p>
         </div>
-        <Button onClick={updateConfig} variant="outline">
+        <Button onClick={updateConfig} variant="outline" size="sm">
           <Settings className="h-4 w-4 mr-2" />
           Save Settings
         </Button>
       </div>
 
       <Tabs defaultValue="requests" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="requests">Active Requests</TabsTrigger>
-          <TabsTrigger value="settings">Matching Rules</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="requests" className="text-xs sm:text-sm">Active Requests</TabsTrigger>
+          <TabsTrigger value="settings" className="text-xs sm:text-sm">Matching Rules</TabsTrigger>
+          <TabsTrigger value="performance" className="text-xs sm:text-sm">Performance</TabsTrigger>
         </TabsList>
 
         <TabsContent value="requests" className="space-y-4">

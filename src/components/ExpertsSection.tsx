@@ -246,7 +246,7 @@ const ExpertsSection = () => {
             <span>•</span>
             <span>Deputee™ AI + Human QA</span>
             <span>•</span>
-            <span>Risk-Free Replacement Option</span>
+            <span>Performance Safeguard</span>
           </div>
         </div>
 

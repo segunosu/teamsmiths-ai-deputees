@@ -127,5 +127,31 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+
+  /* Responsive container classes */
+  .container {
+    @apply max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Responsive grid classes */
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
+  }
+
+  /* Responsive text classes */
+  .responsive-text {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+
+  /* Ensure pills and CTAs wrap properly */
+  .responsive-pills {
+    @apply flex flex-wrap gap-2;
+  }
+
+  /* Mobile-first responsive cards */
+  .responsive-cards {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
   }
 }

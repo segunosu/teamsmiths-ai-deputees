@@ -169,7 +169,7 @@ const CapabilityGallery = () => {
             </Badge>
             <Badge variant="outline" className="px-3 py-1">
               <Award className="h-3 w-3 mr-1" />
-              Risk-Free Replacement Option
+              Performance Safeguard
             </Badge>
           </div>
         </div>

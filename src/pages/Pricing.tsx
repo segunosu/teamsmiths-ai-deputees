@@ -53,7 +53,7 @@ const Pricing = () => {
         'White-glove QA management',
         'Performance-based pricing options',
         'Premium Outcome Assurance™',
-        'Risk-free replacement guarantee',
+        'Performance Safeguard — reinforcement support',
         'Post-project optimization support'
       ],
       popular: false
