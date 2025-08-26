@@ -34,7 +34,9 @@ const statusColors: Record<string, string> = {
 };
 
 export const BriefDetail = () => {
+  console.log('BriefDetail component is rendering');
   const { id } = useParams<{ id: string }>();
+  console.log('URL param id:', id);
   const [brief, setBrief] = useState<Brief | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
