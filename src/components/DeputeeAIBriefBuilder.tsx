@@ -14,6 +14,7 @@ import { useAnalytics, AnalyticsEvent } from '@/hooks/useAnalytics';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { safeText } from '@/lib/safeRender';
 
 interface AIResponse {
   interpreted: string;
@@ -509,7 +510,7 @@ const DeputeeAIBriefBuilder = () => {
                         <strong>Deputee™ AI™ interpreted your input:</strong>
                         <ul className="mt-1 space-y-1">
                           {aiStates.goal.insights.map((insight, index) => (
-                            <li key={index} className="text-sm">• {insight}</li>
+                            <li key={index} className="text-sm">• {safeText(insight)}</li>
                           ))}
                         </ul>
                       </AlertDescription>
@@ -552,7 +553,7 @@ const DeputeeAIBriefBuilder = () => {
                         <strong>Deputee™ AI™ interpreted your input:</strong>
                         <ul className="mt-1 space-y-1">
                           {aiStates.context.insights.map((insight, index) => (
-                            <li key={index} className="text-sm">• {insight}</li>
+                            <li key={index} className="text-sm">• {safeText(insight)}</li>
                           ))}
                         </ul>
                       </AlertDescription>
@@ -595,7 +596,7 @@ const DeputeeAIBriefBuilder = () => {
                         <strong>Deputee™ AI™ interpreted your input:</strong>
                         <ul className="mt-1 space-y-1">
                           {aiStates.constraints.insights.map((insight, index) => (
-                            <li key={index} className="text-sm">• {insight}</li>
+                            <li key={index} className="text-sm">• {safeText(insight)}</li>
                           ))}
                         </ul>
                       </AlertDescription>

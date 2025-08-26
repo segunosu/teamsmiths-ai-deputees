@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Search, Calendar, Filter, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
+import { safeText } from '@/lib/safeRender';
 
 interface Brief {
   id: string;
@@ -82,8 +83,9 @@ export const BriefsDashboard = () => {
   };
 
   const filteredBriefs = briefs.filter(brief => {
+    const goalText = safeText(brief.structured_brief?.goal, '');
     const matchesSearch = !searchTerm || 
-      brief.structured_brief?.goal?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      goalText.toLowerCase().includes(searchTerm.toLowerCase()) ||
       brief.contact_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       brief.contact_email.toLowerCase().includes(searchTerm.toLowerCase());
     
@@ -93,7 +95,7 @@ export const BriefsDashboard = () => {
   });
 
   const getBriefTitle = (brief: Brief) => {
-    return brief.structured_brief?.goal || 'Untitled Brief';
+    return safeText(brief.structured_brief?.goal, 'Untitled Brief');
   };
 
   const handleViewBrief = (briefId: string) => {
@@ -188,7 +190,7 @@ export const BriefsDashboard = () => {
                     
                     {brief.structured_brief?.budget_band && (
                       <div className="text-sm">
-                        <span className="font-medium">Budget:</span> {brief.structured_brief.budget_band}
+                        <span className="font-medium">Budget:</span> {safeText(brief.structured_brief.budget_band)}
                       </div>
                     )}
                   </div>
