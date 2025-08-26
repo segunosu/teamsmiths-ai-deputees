@@ -71,5 +71,8 @@ verify_jwt = true
 [functions.create-jitsi-meet]
 verify_jwt = true
 
+[functions.match-experts]
+verify_jwt = true
+
 [edge_runtime]
 enabled = true

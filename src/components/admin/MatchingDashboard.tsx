@@ -43,38 +43,49 @@ interface MatchingConfig {
   conflict_window_days: number;
 }
 
-interface CustomizationRequest {
-  id: string;
+interface BriefRequest {
+  brief_id: string;
   project_title: string;
   status: string;
   created_at: string;
-  user_id: string;
-  custom_requirements: string;
+  contact_email: string;
+  contact_name: string | null;
+  contact_phone: string | null;
   budget_range: string;
   timeline_preference: string;
+  urgency_level: string;
+  candidate_count: number;
+  matching_results: any;
+  matched_at: string | null;
+  assured_mode: boolean;
+  origin: string;
+  origin_id: string | null;
+  structured_brief: any;
+  proposal_json: any;
+  updated_at: string;
 }
 
-interface MatchingSnapshot {
-  id: string;
-  request_id: string;
+interface MatchingResults {
   candidates: Array<{
     user_id: string;
     score: number;
     breakdown: any;
     profile: any;
   }>;
-  created_at: string;
+  matched_at?: string;
 }
 
 const MatchingDashboard = () => {
   const { toast } = useToast();
   const [config, setConfig] = useState<MatchingConfig | null>(null);
-  const [requests, setRequests] = useState<CustomizationRequest[]>([]);
-  const [selectedRequest, setSelectedRequest] = useState<string | null>(null);
-  const [matchingSnapshot, setMatchingSnapshot] = useState<MatchingSnapshot | null>(null);
+  const [briefRequests, setBriefRequests] = useState<BriefRequest[]>([]);
+  const [customRequests, setCustomRequests] = useState<any[]>([]);
+  const [selectedBrief, setSelectedBrief] = useState<string | null>(null);
+  const [matchingResults, setMatchingResults] = useState<MatchingResults | null>(null);
   const [loading, setLoading] = useState(true);
   const [computing, setComputing] = useState(false);
   const [inviting, setInviting] = useState(false);
+  const [humanOversight, setHumanOversight] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -124,15 +135,25 @@ const MatchingDashboard = () => {
 
       setConfig(loadedConfig);
 
-      // Load recent customization requests
-      const { data: requestsData, error: requestsError } = await supabase
+      // Load submitted briefs ready for matching
+      const { data: briefsData, error: briefsError } = await supabase
+        .from('admin_v_briefs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (briefsError) throw briefsError;
+      setBriefRequests(briefsData || []);
+
+      // Load recent customization requests (legacy)
+      const { data: customRequestsData, error: customRequestsError } = await supabase
         .from('customization_requests')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(20);
 
-      if (requestsError) throw requestsError;
-      setRequests(requestsData || []);
+      if (customRequestsError) throw customRequestsError;
+      setCustomRequests(customRequestsData || []);
 
     } catch (error: any) {
       toast({
@@ -182,21 +203,22 @@ const MatchingDashboard = () => {
     }
   };
 
-  const computeMatching = async (requestId: string, forceRecompute = false) => {
+  const computeMatching = async (briefId: string, forceRecompute = false) => {
     setComputing(true);
     try {
-      const { data, error } = await supabase.functions.invoke('compute-matching', {
-        body: { request_id: requestId, force_recompute: forceRecompute }
+      const { data, error } = await supabase.functions.invoke('match-experts', {
+        body: { brief_id: briefId, force_recompute: forceRecompute }
       });
 
       if (error) throw error;
 
       toast({
-        title: 'Matching computed',
+        title: 'AI Matching Completed',
         description: data.message,
       });
 
-      await loadMatchingSnapshot(requestId);
+      await loadBriefMatchingResults(briefId);
+      await loadData(); // Refresh the brief list
     } catch (error: any) {
       toast({
         title: 'Error computing matches',
@@ -208,35 +230,45 @@ const MatchingDashboard = () => {
     }
   };
 
-  const loadMatchingSnapshot = async (requestId: string) => {
+  const loadBriefMatchingResults = async (briefId: string) => {
     try {
       const { data, error } = await supabase
-        .from('matching_snapshots')
-        .select('*')
-        .eq('request_id', requestId)
-        .order('created_at', { ascending: false })
-        .limit(1)
+        .from('briefs')
+        .select('matching_results, matched_at')
+        .eq('id', briefId)
         .single();
 
       if (error && error.code !== 'PGRST116') throw error;
-      setMatchingSnapshot(data ? {
-        ...data,
-        candidates: Array.isArray(data.candidates) ? data.candidates as any[] : []
-      } : null);
+      
+      if (data?.matching_results) {
+        const parsedResults = Array.isArray(data.matching_results) 
+          ? data.matching_results 
+          : (typeof data.matching_results === 'string' 
+            ? JSON.parse(data.matching_results) 
+            : []);
+        
+        setMatchingResults({
+          candidates: parsedResults,
+          matched_at: data.matched_at
+        });
+      } else {
+        setMatchingResults(null);
+      }
     } catch (error: any) {
-      console.error('Error loading snapshot:', error);
+      console.error('Error loading matching results:', error);
+      setMatchingResults(null);
     }
   };
 
   const sendInvitations = async (userIds: string[]) => {
-    if (!selectedRequest) return;
+    if (!selectedBrief) return;
 
     setInviting(true);
     try {
       const { data, error } = await supabase.functions.invoke('manage-invitations', {
         body: {
           action: 'send_invites',
-          request_id: selectedRequest,
+          brief_id: selectedBrief,
           user_ids: userIds
         }
       });
@@ -245,8 +277,16 @@ const MatchingDashboard = () => {
 
       toast({
         title: 'Invitations sent',
-        description: `Sent ${data.invitations_sent} invitations successfully.`,
+        description: `Sent ${data.invitations_sent || userIds.length} invitations successfully.`,
       });
+
+      // Update brief status to indicate invitations sent
+      await supabase
+        .from('briefs')
+        .update({ status: 'proposal_ready' })
+        .eq('id', selectedBrief);
+
+      await loadData();
     } catch (error: any) {
       toast({
         title: 'Error sending invitations',
@@ -255,6 +295,30 @@ const MatchingDashboard = () => {
       });
     } finally {
       setInviting(false);
+    }
+  };
+
+  const escalateToQuotes = async (briefId: string) => {
+    try {
+      // This would create a custom quote from the brief
+      toast({
+        title: 'Escalated to Quotes',
+        description: 'Brief has been escalated to manual quote generation.',
+      });
+      
+      // Update brief status
+      await supabase
+        .from('briefs')
+        .update({ status: 'escalated_to_quotes' })
+        .eq('id', briefId);
+
+      await loadData();
+    } catch (error: any) {
+      toast({
+        title: 'Error escalating to quotes',
+        description: error.message,
+        variant: 'destructive',
+      });
     }
   };
 
@@ -301,42 +365,90 @@ const MatchingDashboard = () => {
         </TabsList>
 
         <TabsContent value="requests" className="space-y-4">
+          {/* Human Oversight Toggle */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-4">
+              <h3 className="text-lg font-medium">AI Matching Mode</h3>
+              <div className="flex items-center space-x-2">
+                <Label htmlFor="human-oversight">Human Oversight</Label>
+                <Switch
+                  id="human-oversight"
+                  checked={humanOversight}
+                  onCheckedChange={setHumanOversight}
+                />
+              </div>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {briefRequests.length} briefs ready for processing
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Requests List */}
+            {/* Briefs List */}
             <Card>
               <CardHeader>
-                <CardTitle>Customization Requests</CardTitle>
+                <CardTitle>Brief Requests</CardTitle>
                 <CardDescription>
-                  Select a request to view matching candidates
+                  AI-first matching with {humanOversight ? 'human oversight' : 'auto-processing'}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
-                {requests.map((request) => (
-                  <div
-                    key={request.id}
-                    className={`p-3 rounded cursor-pointer transition-colors ${
-                      selectedRequest === request.id
-                        ? 'bg-primary/10 border border-primary'
-                        : 'bg-muted hover:bg-muted/80'
-                    }`}
-                    onClick={() => {
-                      setSelectedRequest(request.id);
-                      loadMatchingSnapshot(request.id);
-                    }}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <h4 className="font-medium">{request.project_title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {request.budget_range} • {request.timeline_preference}
-                        </p>
+                {briefRequests.length === 0 ? (
+                  <p className="text-muted-foreground text-center py-8">
+                    No briefs ready for matching
+                  </p>
+                ) : (
+                  briefRequests.map((brief) => (
+                    <div
+                      key={brief.brief_id}
+                      className={`p-3 rounded cursor-pointer transition-colors ${
+                        selectedBrief === brief.brief_id
+                          ? 'bg-primary/10 border border-primary'
+                          : 'bg-muted hover:bg-muted/80'
+                      }`}
+                      onClick={() => {
+                        setSelectedBrief(brief.brief_id);
+                        loadBriefMatchingResults(brief.brief_id);
+                      }}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h4 className="font-medium">{brief.project_title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {brief.budget_range} • {brief.timeline_preference}
+                          </p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant={brief.status === 'submitted' ? 'default' : 'secondary'}>
+                              {brief.status}
+                            </Badge>
+                            {brief.candidate_count > 0 && (
+                              <Badge variant="outline">
+                                {brief.candidate_count} candidates
+                              </Badge>
+                            )}
+                            {brief.assured_mode && (
+                              <Badge variant="outline" className="bg-primary/10 text-primary">
+                                Assured
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              escalateToQuotes(brief.brief_id);
+                            }}
+                          >
+                            Escalate
+                          </Button>
+                        </div>
                       </div>
-                      <Badge variant={request.status === 'new' ? 'default' : 'secondary'}>
-                        {request.status}
-                      </Badge>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </CardContent>
             </Card>
 
@@ -345,12 +457,12 @@ const MatchingDashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Users className="h-4 w-4" />
-                  Matching Results
-                  {selectedRequest && (
+                  Deputee™ AI Matching Results
+                  {selectedBrief && (
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => computeMatching(selectedRequest, true)}
+                      onClick={() => computeMatching(selectedBrief, true)}
                       disabled={computing}
                     >
                       {computing ? (
@@ -363,17 +475,17 @@ const MatchingDashboard = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {!selectedRequest ? (
+                {!selectedBrief ? (
                   <p className="text-muted-foreground text-center py-8">
-                    Select a request to view candidates
+                    Select a brief to view AI-generated candidates
                   </p>
-                ) : !matchingSnapshot ? (
+                ) : !matchingResults ? (
                   <div className="text-center py-8">
                     <p className="text-muted-foreground mb-4">
                       No matching results yet
                     </p>
                     <Button
-                      onClick={() => computeMatching(selectedRequest)}
+                      onClick={() => computeMatching(selectedBrief)}
                       disabled={computing}
                     >
                       {computing ? (
@@ -381,18 +493,31 @@ const MatchingDashboard = () => {
                       ) : (
                         <TrendingUp className="h-4 w-4 mr-2" />
                       )}
-                      Compute Matches
+                      Run AI Matching
                     </Button>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {matchingSnapshot.candidates.map((candidate, index) => (
+                    {matchingResults.matched_at && (
+                      <Alert>
+                        <AlertDescription>
+                          AI matched on {new Date(matchingResults.matched_at).toLocaleString()}
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {matchingResults.candidates.map((candidate, index) => (
                       <div key={candidate.user_id} className="border rounded p-3">
                         <div className="flex justify-between items-start mb-2">
                           <div>
-                            <p className="font-medium">{candidate.profile.full_name}</p>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm bg-primary/10 text-primary px-2 py-1 rounded">
+                                #{index + 1}
+                              </span>
+                              <p className="font-medium">{candidate.profile?.full_name || 'Unknown'}</p>
+                            </div>
                             <p className="text-sm text-muted-foreground">
-                              {candidate.profile.skills.slice(0, 3).join(', ')}
+                              {(candidate.profile?.skills || []).slice(0, 3).join(', ')}
                             </p>
                           </div>
                           <div className="text-right">
@@ -400,33 +525,50 @@ const MatchingDashboard = () => {
                               {(candidate.score * 100).toFixed(0)}%
                             </div>
                             <p className="text-sm text-muted-foreground">
-                              {candidate.profile.price_range}
+                              {candidate.profile?.price_range || 'Rate not specified'}
                             </p>
                           </div>
                         </div>
                         
-                        <div className="grid grid-cols-4 gap-2 text-xs">
-                          <div>Skills: {(candidate.breakdown.skills * 100).toFixed(0)}%</div>
-                          <div>Domain: {(candidate.breakdown.domain * 100).toFixed(0)}%</div>
-                          <div>Track: {(candidate.breakdown.outcomes * 100).toFixed(0)}%</div>
-                          <div>Avail: {(candidate.breakdown.availability * 100).toFixed(0)}%</div>
-                        </div>
+                        {candidate.breakdown && (
+                          <div className="grid grid-cols-4 gap-2 text-xs">
+                            <div>Skills: {((candidate.breakdown.skills || 0) * 100).toFixed(0)}%</div>
+                            <div>Domain: {((candidate.breakdown.domain || 0) * 100).toFixed(0)}%</div>
+                            <div>Track: {((candidate.breakdown.outcomes || 0) * 100).toFixed(0)}%</div>
+                            <div>Avail: {((candidate.breakdown.availability || 0) * 100).toFixed(0)}%</div>
+                          </div>
+                        )}
                       </div>
                     ))}
 
                     <div className="flex gap-2 pt-4">
-                      <Button
-                        onClick={() => sendInvitations(matchingSnapshot.candidates.map(c => c.user_id))}
-                        disabled={inviting}
-                        className="flex-1"
-                      >
-                        {inviting ? (
-                          <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                        ) : (
-                          <Send className="h-4 w-4 mr-2" />
-                        )}
-                        Send All Invitations
-                      </Button>
+                      {humanOversight ? (
+                        <Button
+                          onClick={() => sendInvitations(matchingResults.candidates.map(c => c.user_id))}
+                          disabled={inviting}
+                          className="flex-1"
+                        >
+                          {inviting ? (
+                            <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                          ) : (
+                            <CheckCircle className="h-4 w-4 mr-2" />
+                          )}
+                          Approve & Send Invitations
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => sendInvitations(matchingResults.candidates.map(c => c.user_id))}
+                          disabled={inviting}
+                          className="flex-1"
+                        >
+                          {inviting ? (
+                            <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                          ) : (
+                            <Send className="h-4 w-4 mr-2" />
+                          )}
+                          Send All Invitations
+                        </Button>
+                      )}
                       
                       <Button variant="outline" size="sm">
                         <Eye className="h-4 w-4" />

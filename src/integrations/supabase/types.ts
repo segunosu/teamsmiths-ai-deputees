@@ -320,6 +320,13 @@ export type Database = {
             foreignKeyName: "brief_events_brief_id_fkey"
             columns: ["brief_id"]
             isOneToOne: false
+            referencedRelation: "admin_v_briefs"
+            referencedColumns: ["brief_id"]
+          },
+          {
+            foreignKeyName: "brief_events_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
             referencedRelation: "briefs"
             referencedColumns: ["id"]
           },
@@ -333,6 +340,9 @@ export type Database = {
           contact_phone: string | null
           created_at: string | null
           id: string
+          matched_at: string | null
+          matched_expert_id: string | null
+          matching_results: Json | null
           org_id: string | null
           origin: string
           origin_id: string | null
@@ -349,6 +359,9 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string | null
           id?: string
+          matched_at?: string | null
+          matched_expert_id?: string | null
+          matching_results?: Json | null
           org_id?: string | null
           origin: string
           origin_id?: string | null
@@ -365,6 +378,9 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string | null
           id?: string
+          matched_at?: string | null
+          matched_expert_id?: string | null
+          matching_results?: Json | null
           org_id?: string | null
           origin?: string
           origin_id?: string | null
@@ -375,6 +391,20 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "briefs_matched_expert_id_fkey"
+            columns: ["matched_expert_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "briefs_matched_expert_id_fkey"
+            columns: ["matched_expert_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
           {
             foreignKeyName: "briefs_org_id_fkey"
             columns: ["org_id"]
@@ -2504,6 +2534,90 @@ export type Database = {
           website: string | null
         }
         Relationships: []
+      }
+      admin_v_briefs: {
+        Row: {
+          assured_mode: boolean | null
+          brief_id: string | null
+          budget_range: string | null
+          candidate_count: number | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string | null
+          matched_at: string | null
+          matched_expert_id: string | null
+          matching_results: Json | null
+          origin: string | null
+          origin_id: string | null
+          project_title: string | null
+          proposal_json: Json | null
+          status: string | null
+          structured_brief: Json | null
+          timeline_preference: string | null
+          updated_at: string | null
+          urgency_level: string | null
+        }
+        Insert: {
+          assured_mode?: boolean | null
+          brief_id?: string | null
+          budget_range?: never
+          candidate_count?: never
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          matched_at?: string | null
+          matched_expert_id?: string | null
+          matching_results?: Json | null
+          origin?: string | null
+          origin_id?: string | null
+          project_title?: never
+          proposal_json?: Json | null
+          status?: string | null
+          structured_brief?: Json | null
+          timeline_preference?: never
+          updated_at?: string | null
+          urgency_level?: never
+        }
+        Update: {
+          assured_mode?: boolean | null
+          brief_id?: string | null
+          budget_range?: never
+          candidate_count?: never
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          matched_at?: string | null
+          matched_expert_id?: string | null
+          matching_results?: Json | null
+          origin?: string | null
+          origin_id?: string | null
+          project_title?: never
+          proposal_json?: Json | null
+          status?: string | null
+          structured_brief?: Json | null
+          timeline_preference?: never
+          updated_at?: string | null
+          urgency_level?: never
+        }
+        Relationships: [
+          {
+            foreignKeyName: "briefs_matched_expert_id_fkey"
+            columns: ["matched_expert_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_freelancers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "briefs_matched_expert_id_fkey"
+            columns: ["matched_expert_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       admin_v_client_orgs: {
         Row: {
