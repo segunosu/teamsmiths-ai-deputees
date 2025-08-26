@@ -101,11 +101,25 @@ export const BriefDetail = () => {
 
   if (!brief) {
     return (
-      <div className="text-center py-12">
-        <h1 className="text-2xl font-bold mb-4">Brief not found</h1>
-        <Link to="/dashboard" className="text-primary hover:underline">
-          Return to Dashboard
-        </Link>
+      <div className="container mx-auto px-4 py-12 max-w-lg text-center">
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-2xl font-bold mb-2">We can't find that brief</h1>
+            <p className="text-muted-foreground">
+              The brief you're looking for might have been moved or doesn't exist.
+            </p>
+          </div>
+          
+          <Button asChild>
+            <Link to="/dashboard">
+              Go to My Requests
+            </Link>
+          </Button>
+          
+          <div className="text-xs text-muted-foreground pt-4 border-t">
+            Brief ID: {id ? `${id.slice(0, 8)}...` : 'Invalid'}
+          </div>
+        </div>
       </div>
     );
   }

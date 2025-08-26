@@ -176,13 +176,14 @@ serve(async (req) => {
         body: {
           to: contact_email,
           type: 'brief_received',
-          data: {
-            title: 'Brief Received',
-            message: 'We received your brief — Deputee™ AI is drafting your plan',
-            projectTitle: structured_brief?.goal || 'Your Project',
-            actionUrl: `${Deno.env.get('SUPABASE_URL')}/dashboard/briefs/${briefId}`,
-            contactName: contact_name
-          }
+            data: {
+              title: 'Brief Received',
+              message: 'We received your brief — Deputee™ AI is drafting your plan',
+              projectTitle: structured_brief?.goal || 'Your Project',
+              actionUrl: `${Deno.env.get('SUPABASE_URL').replace('/rest/v1', '')}/dashboard/briefs/${briefId}`,
+              contactName: contact_name,
+              magicLink: true
+            }
         }
       });
       console.log('Brief received email sent successfully');
@@ -194,6 +195,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         brief_id: briefId,
+        linked_to_user: !!userId,
         status: 'submitted',
         message: 'Brief submitted successfully'
       }),

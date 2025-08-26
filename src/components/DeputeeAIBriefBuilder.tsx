@@ -258,14 +258,20 @@ const DeputeeAIBriefBuilder = () => {
         origin_id: capabilityId || packId 
       });
 
-      // Navigate to dashboard with success message
-      toast({
-        title: "Brief Submitted!",
-        description: "Proposal generating — QA validation in <2h.",
-      });
-      
-      // Navigate to dashboard with brief ID - use navigate instead of window.location for better UX
-      navigate(`/dashboard/briefs/${data.brief_id}`);
+      // Auth-aware routing: logged in users go to dashboard, guests get thank-you page
+      if (user?.id) {
+        toast({
+          title: "Brief Submitted!",
+          description: "Proposal generating — QA validation in <2h.",
+        });
+        navigate(`/dashboard/briefs/${data.brief_id}`);
+      } else {
+        toast({
+          title: "Brief Submitted!",
+          description: "Check your email for a secure link to view your proposal.",
+        });
+        navigate(`/brief-submitted?brief=${data.brief_id}`);
+      }
 
     } catch (error) {
       console.error('Brief submission error:', error);

@@ -13,6 +13,7 @@ import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
 import DeputeeAIBriefBuilder from "./components/DeputeeAIBriefBuilder";
 import { BriefDetail } from "./pages/BriefDetail";
+import { BriefSubmitted } from "./pages/BriefSubmitted";
 import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
@@ -56,6 +57,7 @@ const App = () => (
                 <Route path="/customize" element={<DeputeeAIBriefBuilder />} />
                 <Route path="/customize/:id" element={<DeputeeAIBriefBuilder />} />
                 <Route path="/brief-builder" element={<DeputeeAIBriefBuilder />} />
+                <Route path="/brief-submitted" element={<BriefSubmitted />} />
                 <Route path="/dashboard/briefs/:id" element={<BriefDetail />} />
                 <Route path="/quote/:id" element={<QuoteDetail />} />
                 <Route path="/dashboard" element={<Dashboard />} />
