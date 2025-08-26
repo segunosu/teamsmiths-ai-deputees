@@ -7,13 +7,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/Footer";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
 import DeputeeAIBriefBuilder from "./components/DeputeeAIBriefBuilder";
-import { BriefDetail } from "./pages/BriefDetail";
+import BriefDetail from "./pages/BriefDetail";
 import { BriefSubmitted } from "./pages/BriefSubmitted";
+import DebugBrief from "./pages/DebugBrief";
 import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
@@ -58,9 +60,18 @@ const App = () => (
                 <Route path="/customize/:id" element={<DeputeeAIBriefBuilder />} />
                 <Route path="/brief-builder" element={<DeputeeAIBriefBuilder />} />
                 <Route path="/brief-submitted" element={<BriefSubmitted />} />
-                <Route path="/dashboard/briefs/:id" element={<BriefDetail />} />
+                <Route path="/debug/brief" element={<DebugBrief />} />
+                <Route path="/dashboard/briefs/:id" element={
+                  <ErrorBoundary>
+                    <BriefDetail />
+                  </ErrorBoundary>
+                } />
                 <Route path="/quote/:id" element={<QuoteDetail />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard" element={
+                  <ErrorBoundary>
+                    <Dashboard />
+                  </ErrorBoundary>
+                } />
                 <Route path="/project/:id" element={<ProjectDetail />} />
                 <Route path="/for-clients" element={<ForClients />} />
                 <Route path="/for-freelancers" element={<ForFreelancers />} />

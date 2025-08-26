@@ -257,25 +257,26 @@ const DeputeeAIBriefBuilder = () => {
       
       trackAnalyticsEvent('brief_builder.submit_contact', { 
         brief_id: data.brief_id,
+        authed: !!user?.id,
         origin: briefOrigin,
         origin_id: capabilityId || packId 
       });
 
-      // Auth-aware routing: Use linked_to_user from response instead of user state
-      if (data.linked_to_user || user?.id) {
-        console.log('Redirecting to dashboard:', `/dashboard/briefs/${data.brief_id}`);
+      // Auth-aware routing: logged in users go to dashboard, guests get thank-you page
+      if (user?.id) {
+        console.log('Redirecting authenticated user to dashboard:', `/dashboard/briefs/${data.brief_id}`);
         toast({
           title: "Brief Submitted!",
           description: "Proposal generating — QA validation in <2h.",
         });
-        navigate(`/dashboard/briefs/${data.brief_id}`);
+        navigate(`/dashboard/briefs/${data.brief_id}`, { replace: true });
       } else {
-        console.log('Redirecting to brief submitted page:', `/brief-submitted?brief=${data.brief_id}`);
+        console.log('Redirecting guest to brief submitted page:', `/brief-submitted?brief=${data.brief_id}`);
         toast({
           title: "Brief Submitted!",
           description: "Check your email for a secure link to view your proposal.",
         });
-        navigate(`/brief-submitted?brief=${data.brief_id}`);
+        navigate(`/brief-submitted?brief=${data.brief_id}`, { replace: true });
       }
 
     } catch (error) {
