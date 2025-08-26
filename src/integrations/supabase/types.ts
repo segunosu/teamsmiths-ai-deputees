@@ -1033,6 +1033,69 @@ export type Database = {
           },
         ]
       }
+      expert_invites: {
+        Row: {
+          brief_id: string
+          created_at: string | null
+          expert_user_id: string
+          expires_at: string
+          id: string
+          invitation_message: string | null
+          responded_at: string | null
+          response_message: string | null
+          score_at_invite: number | null
+          sent_at: string | null
+          status: string
+          updated_at: string | null
+          viewed_at: string | null
+        }
+        Insert: {
+          brief_id: string
+          created_at?: string | null
+          expert_user_id: string
+          expires_at: string
+          id?: string
+          invitation_message?: string | null
+          responded_at?: string | null
+          response_message?: string | null
+          score_at_invite?: number | null
+          sent_at?: string | null
+          status?: string
+          updated_at?: string | null
+          viewed_at?: string | null
+        }
+        Update: {
+          brief_id?: string
+          created_at?: string | null
+          expert_user_id?: string
+          expires_at?: string
+          id?: string
+          invitation_message?: string | null
+          responded_at?: string | null
+          response_message?: string | null
+          score_at_invite?: number | null
+          sent_at?: string | null
+          status?: string
+          updated_at?: string | null
+          viewed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expert_invites_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_briefs"
+            referencedColumns: ["brief_id"]
+          },
+          {
+            foreignKeyName: "expert_invites_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "briefs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       freelancer_profiles: {
         Row: {
           availability_weekly_hours: number | null
