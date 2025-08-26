@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Shield, Star, ArrowRight, Calendar, CheckCircle, TrendingUp } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Shield, Sparkles, Star, Clock, MapPin, DollarSign, Plus, CheckCircle2, ArrowRight, Globe, TrendingUp, CheckCircle } from 'lucide-react';
+import { OutcomeAssurance } from '@/components/OutcomeAssurance';
+import { toast } from "sonner";
+import { useToast } from '@/hooks/use-toast';
+import { ASSURANCE } from '@/content/assurance';
 
 const ExpertsSection = () => {
   const [selectedRole, setSelectedRole] = useState('all');
@@ -425,13 +429,12 @@ const ExpertsSection = () => {
             <div className="flex items-center justify-center gap-2 mb-3">
               <Shield className="h-6 w-6 text-primary" />
               <h3 className="text-xl font-semibold text-foreground">
-                Outcome Assurance™ — The Teamsmiths Difference
+                {ASSURANCE.title}
               </h3>
             </div>
             <div className="space-y-1 text-muted-foreground max-w-3xl mx-auto">
-              <p>Every engagement monitored by Deputee™ AI™ + human QA</p>
-              <p>Optional insurance: replace your expert if things don't work out</p>
-              <p className="font-medium text-foreground">That's the Teamsmiths Guarantee.</p>
+              <p>{ASSURANCE.body[0]}</p>
+              <p>{ASSURANCE.body[1]}</p>
             </div>
           </div>
         )}

@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Shield, Star, Users } from 'lucide-react';
+import { CheckCircle, Shield, Star, ArrowRight, Users } from 'lucide-react';
+import { OutcomeAssurance } from '@/components/OutcomeAssurance';
+import { ASSURANCE } from '@/content/assurance';
 
 const Pricing = () => {
   useEffect(() => {
@@ -76,10 +78,10 @@ const Pricing = () => {
   ];
 
   const assuranceFeatures = [
-    'Every engagement monitored by Deputee™ AI™ + Human QA',
-    'Optional insurance: replace your expert if things don\'t work out',
+    'AI-driven insight, human validation, structured QA',
     'Milestone-based payments with satisfaction guarantees',
-    'Real-time progress tracking and quality metrics'
+    'Real-time progress tracking and quality metrics',
+    'Continuous optimization and support'
   ];
 
   return (
@@ -155,7 +157,7 @@ const Pricing = () => {
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
               <Shield className="h-8 w-8 text-primary" />
-              Outcome Assurance™ — The Teamsmiths Difference
+              {ASSURANCE.title}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Every engagement includes our comprehensive quality and outcome guarantee system.
@@ -170,7 +172,7 @@ const Pricing = () => {
             ))}
           </div>
           <div className="text-center mt-8">
-            <p className="font-semibold text-lg">That's the Teamsmiths Guarantee</p>
+            <p className="font-semibold text-lg">{ASSURANCE.body[1]}</p>
           </div>
         </div>
 

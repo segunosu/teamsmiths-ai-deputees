@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Lock } from 'lucide-react';
+import { ASSURANCE } from '@/content/assurance';
 
 interface OutcomeAssuranceProps {
   className?: string;
@@ -17,12 +18,11 @@ export const OutcomeAssurance: React.FC<OutcomeAssuranceProps> = ({ className = 
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-lg font-semibold text-foreground mb-2">
-            Outcome Assurance™ — The Teamsmiths Difference
+            {ASSURANCE.title}
           </h3>
           <div className="space-y-1 text-sm text-muted-foreground">
-            <p>Every engagement monitored by Deputee™ AI™ + Human QA</p>
-            <p>Optional insurance: replace your expert if things don't work out</p>
-            <p className="font-medium text-foreground">That's the Teamsmiths Guarantee</p>
+            <p>{ASSURANCE.body[0]}</p>
+            <p>{ASSURANCE.body[1]}</p>
           </div>
         </div>
       </div>

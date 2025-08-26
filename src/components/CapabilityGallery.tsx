@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Star, Shield, CheckCircle, Award, TrendingUp, Users, HeartHandshake } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Shield, Sparkles, Star, Clock, MapPin, DollarSign, CheckCircle, Award, TrendingUp, HeartHandshake } from 'lucide-react';
+import { OutcomeAssurance } from '@/components/OutcomeAssurance';
+import { toast } from "sonner";
 import { useToast } from '@/hooks/use-toast';
+import { ASSURANCE } from '@/content/assurance';
 
 const CapabilityGallery = () => {
   const [selectedIntent, setSelectedIntent] = useState<'goal' | 'packs' | 'curator'>('goal');
@@ -311,12 +314,11 @@ const CapabilityGallery = () => {
             <div className="text-center">
               <h3 className="font-semibold text-lg mb-2 flex items-center justify-center gap-2">
                 <Shield className="h-5 w-5 text-primary" />
-                Outcome Assurance™ — The Teamsmiths Difference
+                {ASSURANCE.title}
               </h3>
               <div className="space-y-1 text-sm text-muted-foreground">
-                <p>Every engagement monitored by Deputee™ AI™ + Human QA</p>
-                <p>Optional insurance: replace your expert if things don't work out</p>
-                <p className="font-medium text-foreground">That's the Teamsmiths Guarantee</p>
+                <p>{ASSURANCE.body[0]}</p>
+                <p>{ASSURANCE.body[1]}</p>
               </div>
             </div>
           </div>
