@@ -251,6 +251,9 @@ const DeputeeAIBriefBuilder = () => {
       const { data } = response;
 
       console.log('Brief submitted successfully:', data);
+      console.log('Current user state:', user);
+      console.log('User ID:', user?.id);
+      console.log('Data linked_to_user:', data.linked_to_user);
       
       trackAnalyticsEvent('brief_builder.submit_contact', { 
         brief_id: data.brief_id,
@@ -258,14 +261,16 @@ const DeputeeAIBriefBuilder = () => {
         origin_id: capabilityId || packId 
       });
 
-      // Auth-aware routing: logged in users go to dashboard, guests get thank-you page
-      if (user?.id) {
+      // Auth-aware routing: Use linked_to_user from response instead of user state
+      if (data.linked_to_user || user?.id) {
+        console.log('Redirecting to dashboard:', `/dashboard/briefs/${data.brief_id}`);
         toast({
           title: "Brief Submitted!",
           description: "Proposal generating — QA validation in <2h.",
         });
         navigate(`/dashboard/briefs/${data.brief_id}`);
       } else {
+        console.log('Redirecting to brief submitted page:', `/brief-submitted?brief=${data.brief_id}`);
         toast({
           title: "Brief Submitted!",
           description: "Check your email for a secure link to view your proposal.",
