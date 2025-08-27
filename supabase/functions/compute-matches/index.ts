@@ -110,64 +110,87 @@ serve(async (req) => {
       history: 0.03
     };
 
-    // Score each freelancer
-    const scoredCandidates = freelancers?.map((freelancer: any) => {
-      const scores = {
-        skills: calculateSkillsScore(freelancer.skills, requestSkills),
-        domain: calculateDomainScore(freelancer.industries, freelancer.tools, requestIndustries),
-        outcomes: calculateOutcomesScore(freelancer.outcome_history),
-        availability: calculateAvailabilityScore(freelancer.availability_weekly_hours),
-        locale: calculateLocaleScore(freelancer.locales),
-        price: calculatePriceScore(freelancer.price_band_min, freelancer.price_band_max, requestBudget),
-        vetting: calculateVettingScore(freelancer.certifications),
-        history: 0.5
-      };
+  // Get synonyms for better matching
+  const { data: matchingSettings } = await supabase.rpc('admin_get_matching_settings');
+  const toolSynonyms = matchingSettings?.tool_synonyms || {};
+  const industrySynonyms = matchingSettings?.industry_synonyms || {};
+  
+  // Apply synonyms to normalize skills and tools
+  const normalizedSkills = normalizeWithSynonyms(requestSkills, toolSynonyms);
+  const normalizedIndustries = normalizeWithSynonyms(requestIndustries, industrySynonyms);
 
-      const totalScore = Object.entries(scores).reduce((sum, [key, score]) => {
-        return sum + (weights[key as keyof typeof weights] * score);
-      }, 0);
+  // Score each freelancer
+  const scoredCandidates = freelancers?.map((freelancer: any) => {
+    const scores = {
+      tools: calculateToolsScore(freelancer.tools, normalizedSkills, toolSynonyms),
+      skills: calculateSkillsScore(freelancer.skills, normalizedSkills),
+      industry: calculateIndustryScore(freelancer.industries, normalizedIndustries, industrySynonyms),
+      availability: calculateAvailabilityScore(freelancer.availability_weekly_hours),
+      price: calculatePriceScore(freelancer.price_band_min, freelancer.price_band_max, requestBudget)
+    };
 
-      // Create reasons array based on scores
-      const reasons = [];
-      if (scores.skills > 0.7) {
-        const matchedSkills = requestSkills.filter(skill => 
-          freelancer.skills?.some((fs: string) => fs.toLowerCase().includes(skill.toLowerCase()))
-        );
-        if (matchedSkills.length > 0) {
-          reasons.push({ label: "Skills", value: `+${matchedSkills.slice(0, 2).join(', ')}` });
-        }
-      }
-      if (scores.domain > 0.6) {
-        reasons.push({ label: "Domain", value: "+Industry match" });
-      }
-      if (scores.outcomes > 0.8) {
-        reasons.push({ label: "Track Record", value: "+Excellent outcomes" });
-      }
+    // Updated weighted scoring to match spec
+    const weights_updated = {
+      tools: 0.35,
+      skills: 0.25, 
+      industry: 0.20,
+      availability: 0.10,
+      price: 0.10
+    };
 
-      const red_flags = [];
-      if (scores.price < 0.3) {
-        red_flags.push("Budget mismatch");
-      }
-      if (scores.availability < 0.4) {
-        red_flags.push("Limited availability");
-      }
+    const totalScore = Object.entries(scores).reduce((sum, [key, score]) => {
+      return sum + (weights_updated[key as keyof typeof weights_updated] * score);
+    }, 0);
 
-      // expert_id is already computed in the view
-      const expert_user_id = freelancer.expert_id;
+    // Create detailed reasons array
+    const reasons = [];
+    const flags = [];
+    
+    if (scores.tools > 0.6) {
+      const matchedTools = freelancer.tools?.filter((tool: string) =>
+        normalizedSkills.some(skill => tool.toLowerCase().includes(skill.toLowerCase()) ||
+          Object.keys(toolSynonyms).some(syn => syn.toLowerCase() === skill.toLowerCase() && 
+            toolSynonyms[syn].toLowerCase() === tool.toLowerCase()))
+      ) || [];
+      if (matchedTools.length > 0) {
+        reasons.push(`Tools: ${matchedTools.slice(0, 2).join(', ')}`);
+      }
+    }
+    
+    if (scores.industry > 0.5) {
+      reasons.push("Industry: SaaS experience");
+    }
+    
+    if (scores.availability >= 0.8) {
+      reasons.push(`Availability: ${freelancer.availability_weekly_hours}h/week`);
+    }
+    
+    if (scores.price < 0.4) {
+      flags.push("Rate slightly high");
+    }
+    
+    if (scores.availability < 0.5) {
+      flags.push("Limited availability");
+    }
+
+    // expert_id is already computed in the view
+    const expert_user_id = freelancer.expert_id;
       
-      return {
-        expert_user_id,
-        score: Math.round(totalScore * 100) / 100,
-        reasons,
-        red_flags,
-        profile: {
-          full_name: freelancer.full_name,
-          email: freelancer.email,
-          skills: freelancer.skills,
-          price_range: `£${Math.floor(freelancer.price_band_min/100)}-${Math.floor(freelancer.price_band_max/100)}`,
-          availability: `${freelancer.availability_weekly_hours}h/week`
-        }
-      };
+    return {
+      expert_id: expert_user_id,
+      expert_user_id, // Keep for backward compatibility
+      score: Math.round(totalScore * 100) / 100,
+      reasons,
+      flags,
+      profile: {
+        full_name: freelancer.full_name,
+        email: freelancer.email,
+        skills: freelancer.skills,
+        tools: freelancer.tools,
+        price_range: `£${Math.floor((freelancer.price_band_min || 0)/100)}-${Math.floor((freelancer.price_band_max || 0)/100)}`,
+        availability: `${freelancer.availability_weekly_hours || 0}h/week`
+      }
+    };
     }) || [];
 
     // Filter by minimum score and sort
@@ -222,13 +245,21 @@ serve(async (req) => {
 });
 
 // Helper functions
+function normalizeWithSynonyms(items: string[], synonyms: Record<string, string>): string[] {
+  return items.map(item => {
+    const normalized = item.toLowerCase();
+    return synonyms[normalized] || item;
+  });
+}
+
 function extractSkillsFromText(text: string): string[] {
   const commonSkills = [
     'react', 'vue', 'angular', 'javascript', 'typescript', 'python', 'java',
     'ui/ux', 'design', 'marketing', 'seo', 'content', 'copywriting',
     'project management', 'agile', 'scrum', 'analytics', 'data',
     'automation', 'crm', 'hubspot', 'salesforce', 'stripe', 'payment',
-    'notion', 'zapier', 'integration', 'api', 'workflow'
+    'notion', 'zapier', 'integration', 'api', 'workflow', 'hubspot ai',
+    'notion ai', 'openai', 'chatgpt', 'claude'
   ];
   
   const found = commonSkills.filter(skill => 
@@ -236,6 +267,45 @@ function extractSkillsFromText(text: string): string[] {
   );
   
   return found.length ? found : ['general'];
+}
+
+function calculateToolsScore(freelancerTools: string[], requestSkills: string[], synonyms: Record<string, string>): number {
+  if (!requestSkills.length || !freelancerTools?.length) return 0.3;
+  
+  let matches = 0;
+  for (const skill of requestSkills) {
+    const normalized = skill.toLowerCase();
+    const synonym = synonyms[normalized] || skill;
+    
+    if (freelancerTools.some(tool => 
+      tool.toLowerCase().includes(normalized) ||
+      tool.toLowerCase().includes(synonym.toLowerCase())
+    )) {
+      matches++;
+    }
+  }
+  
+  return Math.min(matches / requestSkills.length, 1.0);
+}
+
+function calculateIndustryScore(freelancerIndustries: string[], requestIndustries: string[], synonyms: Record<string, string>): number {
+  if (!requestIndustries.length) return 0.5;
+  if (!freelancerIndustries?.length) return 0.2;
+  
+  let matches = 0;
+  for (const industry of requestIndustries) {
+    const normalized = industry.toLowerCase();
+    const synonym = synonyms[normalized] || industry;
+    
+    if (freelancerIndustries.some(fi => 
+      fi.toLowerCase().includes(normalized) ||
+      fi.toLowerCase().includes(synonym.toLowerCase())
+    )) {
+      matches++;
+    }
+  }
+  
+  return Math.min(matches / requestIndustries.length, 1.0);
 }
 
 function extractIndustriesFromText(text: string): string[] {

@@ -11,10 +11,9 @@ interface InviteResponse {
   action: 'accept' | 'decline';
   response_message?: string;
   proposal_details?: {
-    estimated_hours?: number;
-    hourly_rate?: number;
-    timeline_days?: number;
-    approach_summary?: string;
+    estimated_timeline: string;
+    key_deliverables: string[];
+    approach: string;
   };
 }
 
@@ -30,53 +29,62 @@ serve(async (req) => {
       { auth: { persistSession: false } }
     );
 
-    // Get authenticated user
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("Authentication required");
+    // Get user from JWT
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Missing authorization' }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: userData, error: userError } = await supabase.auth.getUser(token);
-    if (userError || !userData.user) throw new Error("Invalid authentication");
+    const jwt = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(jwt);
+    
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: 'Invalid authorization' }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
-    const user = userData.user;
     const { invite_id, action, response_message, proposal_details }: InviteResponse = await req.json();
 
     console.log(`Expert ${user.id} responding to invite ${invite_id} with action: ${action}`);
 
-    // Get invite details and verify ownership
+    // Get invite and brief details
     const { data: invite, error: inviteError } = await supabase
       .from('expert_invites')
       .select(`
         *,
-        briefs:brief_id (
-          id, user_id, contact_email, contact_name, 
-          structured_brief, project_title
+        briefs (
+          id, contact_name, contact_email, project_title, structured_brief
         )
       `)
       .eq('id', invite_id)
       .eq('expert_user_id', user.id)
+      .eq('status', 'sent')
       .single();
 
     if (inviteError || !invite) {
-      throw new Error("Invite not found or access denied");
+      return new Response(JSON.stringify({ 
+        error: 'Invite not found or not eligible for response' 
+      }), {
+        status: 404,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    if (invite.status !== 'sent') {
-      throw new Error(`Cannot respond to invite with status: ${invite.status}`);
-    }
-
-    const brief = invite.briefs;
-    if (!brief) {
-      throw new Error("Associated brief not found");
-    }
-
-    // Update invite status
+    // Update the invite
     const updateData: any = {
       status: action === 'accept' ? 'accepted' : 'declined',
       responded_at: new Date().toISOString(),
-      response_message,
-      acceptance_metadata: action === 'accept' ? proposal_details || {} : {}
+      response_message: response_message || null
     };
+
+    if (action === 'accept' && proposal_details) {
+      updateData.acceptance_metadata = proposal_details;
+    }
 
     const { error: updateError } = await supabase
       .from('expert_invites')
@@ -85,101 +93,105 @@ serve(async (req) => {
 
     if (updateError) throw updateError;
 
-    // Get expert profile info
-    const { data: expertProfile } = await supabase
-      .from('profiles')
-      .select('full_name, email')
-      .eq('user_id', user.id)
-      .single();
-
-    const expertName = expertProfile?.full_name || 'Expert';
-
     if (action === 'accept') {
-      console.log(`Expert ${expertName} accepted invite for brief ${brief.id}`);
+      // Get expert profile for notification
+      const { data: expertProfile } = await supabase
+        .from('profiles')
+        .select('full_name, email')
+        .eq('user_id', user.id)
+        .single();
 
-      // Notify client of acceptance
-      if (brief.user_id) {
-        await supabase.from('notifications').insert({
-          user_id: brief.user_id,
-          type: 'expert_accepted',
-          title: 'Expert Accepted Your Project',
-          message: `${expertName} has accepted your project invitation${response_message ? ': ' + response_message : '.'}`,
-          related_id: brief.id
+      // Notify brief owner about acceptance
+      const { data: briefOwner } = await supabase
+        .from('briefs')
+        .select('user_id, contact_email, contact_name')
+        .eq('id', invite.brief_id)
+        .single();
+
+      if (briefOwner?.user_id) {
+        await supabase.rpc('create_notification', {
+          p_user_id: briefOwner.user_id,
+          p_type: 'expert_accepted',
+          p_title: 'Expert Accepted Your Project',
+          p_message: `${expertProfile?.full_name || 'An expert'} has accepted your project invitation. Click to confirm and start the project.`,
+          p_related_id: invite.brief_id
         });
       }
 
       // Update brief status if this is the first acceptance
-      const { data: otherAcceptances } = await supabase
-        .from('expert_invites')
-        .select('id')
-        .eq('brief_id', brief.id)
-        .eq('status', 'accepted')
-        .neq('id', invite_id);
+      const { data: briefStatus } = await supabase
+        .from('briefs')
+        .select('status')
+        .eq('id', invite.brief_id)
+        .single();
 
-      if (!otherAcceptances?.length) {
-        await supabase.from('briefs').update({
-          status: 'expert_responses_received'
-        }).eq('id', brief.id);
+      if (briefStatus?.status === 'submitted') {
+        await supabase
+          .from('briefs')
+          .update({ status: 'expert_responses_received' })
+          .eq('id', invite.brief_id);
       }
 
-      // Log acceptance event
+      // Log event
       await supabase.from('brief_events').insert({
-        brief_id: brief.id,
+        brief_id: invite.brief_id,
         type: 'expert_accepted',
         payload: {
           expert_user_id: user.id,
-          expert_name: expertName,
-          proposal_details: proposal_details || {},
-          response_message
+          expert_name: expertProfile?.full_name,
+          proposal_details
         }
       });
 
     } else {
-      console.log(`Expert ${expertName} declined invite for brief ${brief.id}`);
-
-      // Log decline event
-      await supabase.from('brief_events').insert({
-        brief_id: brief.id,
-        type: 'expert_declined',
-        payload: {
-          expert_user_id: user.id,
-          expert_name: expertName,
-          response_message
-        }
-      });
-
-      // Check if we need more experts (if all have declined)
-      const { data: remainingInvites } = await supabase
+      // Handle decline - check if all experts have declined
+      const { data: allInvites } = await supabase
         .from('expert_invites')
         .select('status')
-        .eq('brief_id', brief.id);
+        .eq('brief_id', invite.brief_id);
 
-      const activeInvites = remainingInvites?.filter(i => i.status === 'sent') || [];
-      const acceptedInvites = remainingInvites?.filter(i => i.status === 'accepted') || [];
+      const allDeclined = allInvites?.every(inv => inv.status === 'declined');
+      
+      if (allDeclined) {
+        // Update brief to need more experts
+        await supabase
+          .from('briefs')
+          .update({ status: 'needs_more_experts' })
+          .eq('id', invite.brief_id);
 
-      if (activeInvites.length === 0 && acceptedInvites.length === 0) {
-        // No active invites and no acceptances - need more matching
-        await supabase.from('briefs').update({
-          status: 'needs_more_experts'
-        }).eq('id', brief.id);
+        // Notify admin or brief owner
+        const { data: briefOwner } = await supabase
+          .from('briefs')
+          .select('user_id, contact_email')
+          .eq('id', invite.brief_id)
+          .single();
 
-        if (brief.user_id) {
-          await supabase.from('notifications').insert({
-            user_id: brief.user_id,
-            type: 'need_more_experts',
-            title: 'Finding Additional Experts',
-            message: 'We are finding additional qualified experts for your project.',
-            related_id: brief.id
+        if (briefOwner?.user_id) {
+          await supabase.rpc('create_notification', {
+            p_user_id: briefOwner.user_id,
+            p_type: 'experts_declined',
+            p_title: 'Expert Pool Needs Expansion',
+            p_message: 'All invited experts have declined. We\'ll find additional candidates for your project.',
+            p_related_id: invite.brief_id
           });
         }
       }
+
+      // Log decline event
+      await supabase.from('brief_events').insert({
+        brief_id: invite.brief_id,
+        type: 'expert_declined',
+        payload: {
+          expert_user_id: user.id,
+          response_message
+        }
+      });
     }
 
     return new Response(JSON.stringify({
-      status: 'success',
-      message: action === 'accept' 
-        ? 'Invitation accepted successfully'
-        : 'Invitation declined'
+      success: true,
+      action,
+      message: action === 'accept' ? 'Invitation accepted successfully' : 'Invitation declined'
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
@@ -188,8 +200,8 @@ serve(async (req) => {
     console.error("Error in respond-to-invite:", error);
     
     return new Response(JSON.stringify({
-      status: "error",
-      message: error.message || "Failed to respond to invitation"
+      success: false,
+      error: error.message || "Failed to respond to invitation"
     }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

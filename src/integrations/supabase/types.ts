@@ -3250,6 +3250,10 @@ export type Database = {
       }
     }
     Functions: {
+      admin_get_matching_settings: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       admin_list_briefs: {
         Args: {
           p_limit?: number
@@ -3444,6 +3448,10 @@ export type Database = {
           user_id: string
           valid_until: string
         }[]
+      }
+      admin_update_matching_settings: {
+        Args: { p_settings: Json }
+        Returns: undefined
       }
       create_notification: {
         Args: {
