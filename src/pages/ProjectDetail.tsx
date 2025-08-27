@@ -1,18 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import DeliverableManagement from '@/components/DeliverableManagement';
-import ProjectInsights from '@/components/ProjectInsights';
-import AIChat from '@/components/AIChat';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useToast } from '@/hooks/use-toast';
 import ProjectChat from '@/components/ProjectChat';
-import ProjectMeetings from '@/components/ProjectMeetings';
-import { toast } from 'sonner';
-import { Users, Calendar, DollarSign, FileText, MessageSquare, TrendingUp, VideoIcon } from 'lucide-react';
+import { 
+  Calendar, 
+  DollarSign, 
+  User, 
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  FileText,
+  Users
+} from 'lucide-react';
+import { format } from 'date-fns';
 
 interface Project {
   id: string;
@@ -20,136 +28,136 @@ interface Project {
   status: string;
   total_price: number;
   currency: string;
+  expert_user_id: string;
+  client_user_id: string;
   created_at: string;
-  is_custom: boolean;
-  project_participants: Array<{
-    role: string;
-    user_id: string;
-    profiles?: { full_name: string; email: string };
-  }>;
+  brief_id: string;
+  teamsmith_user_id?: string;
 }
 
-interface Milestone {
+interface ProjectMilestone {
   id: string;
   title: string;
   description: string;
   amount: number;
   due_date: string;
   status: string;
-  milestone_number: number;
+  created_at: string;
+}
+
+interface Profile {
+  user_id: string;
+  full_name: string;
+  email: string;
 }
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [project, setProject] = useState<Project | null>(null);
-  const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [milestones, setMilestones] = useState<ProjectMilestone[]>([]);
+  const [expertProfile, setExpertProfile] = useState<Profile | null>(null);
+  const [clientProfile, setClientProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [userRole, setUserRole] = useState<'client' | 'freelancer' | 'admin'>('client');
 
   useEffect(() => {
     if (id) {
-      fetchProjectDetails();
+      loadProject();
     }
   }, [id]);
 
-  const fetchProjectDetails = async () => {
+  const loadProject = async () => {
     try {
-      // Fetch project with participants
+      // Load project details
       const { data: projectData, error: projectError } = await supabase
         .from('projects')
-        .select(`
-          *,
-          project_participants (
-            role,
-            user_id,
-            profiles:user_id (full_name, email)
-          )
-        `)
+        .select('*')
         .eq('id', id)
-        .maybeSingle();
+        .single();
 
       if (projectError) throw projectError;
-
-      if (!projectData) {
-        setProject(null);
-        return;
-      }
-
       setProject(projectData);
 
-      // Determine user role
-      const userParticipant = projectData.project_participants.find(p => p.user_id === user?.id);
-      if (userParticipant) {
-        setUserRole(userParticipant.role as 'client' | 'freelancer' | 'admin');
+      // Load milestones (use custom milestones table if available)
+      const { data: milestonesData, error: milestonesError } = await supabase
+        .from('custom_project_milestones')
+        .select('*')
+        .eq('project_id', id)
+        .order('created_at', { ascending: true });
+
+      if (milestonesError) {
+        console.log('No custom milestones found:', milestonesError);
+        setMilestones([]);
       } else {
-        // Check if admin
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('is_admin')
-          .eq('user_id', user?.id)
-          .single();
-        
-        if (profile?.is_admin) {
-          setUserRole('admin');
-        }
+        setMilestones(milestonesData || []);
       }
 
-      // Fetch milestones for custom projects
-      if (projectData.is_custom) {
-        const { data: milestonesData, error: milestonesError } = await supabase
-          .from('custom_project_milestones')
-          .select('*')
-          .eq('project_id', id)
-          .order('milestone_number', { ascending: true });
+      // Load expert and client profiles
+      const { data: expertData, error: expertError } = await supabase
+        .from('profiles')
+        .select('user_id, full_name, email')
+        .eq('user_id', projectData.expert_user_id)
+        .single();
 
-        if (milestonesError) {
-          console.error('Error fetching milestones:', milestonesError);
-        } else {
-          setMilestones(milestonesData || []);
-        }
-      }
+      if (!expertError) setExpertProfile(expertData);
 
-    } catch (error) {
-      console.error('Error fetching project details:', error);
-      toast.error('Failed to load project details');
+      const { data: clientData, error: clientError } = await supabase
+        .from('profiles')
+        .select('user_id, full_name, email')
+        .eq('user_id', projectData.client_user_id)
+        .single();
+
+      if (!clientError) setClientProfile(clientData);
+
+    } catch (error: any) {
+      console.error('Error loading project:', error);
+      toast({
+        title: 'Error loading project',
+        description: error.message,
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string): "default" | "secondary" | "destructive" | "outline" => {
     switch (status) {
-      case 'active':
-        return 'bg-success text-success-foreground';
-      case 'completed':
-        return 'bg-primary text-primary-foreground';
-      case 'on_hold':
-        return 'bg-warning text-warning-foreground';
-      case 'cancelled':
-        return 'bg-destructive text-destructive-foreground';
-      default:
-        return 'bg-muted text-muted-foreground';
+      case 'active': return 'default';
+      case 'completed': return 'secondary';
+      case 'cancelled': return 'destructive';
+      default: return 'outline';
     }
   };
 
-  const getMilestoneProgress = () => {
-    if (milestones.length === 0) return 0;
-    const completedMilestones = milestones.filter(m => m.status === 'completed').length;
-    return Math.round((completedMilestones / milestones.length) * 100);
+  const getMilestoneStatusColor = (status: string): "default" | "secondary" | "destructive" | "outline" => {
+    switch (status) {
+      case 'completed': return 'secondary';
+      case 'in_progress': return 'default';
+      case 'cancelled': return 'destructive';
+      default: return 'outline';
+    }
   };
 
-  const formatPrice = (amount: number, currency: string) => {
-    const symbol = currency.toLowerCase() === 'gbp' ? '£' : '$';
-    return `${symbol}${(amount / 100).toLocaleString()}`;
+  const formatCurrency = (amount: number, currency: string) => {
+    return new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: currency.toUpperCase(),
+    }).format(amount / 100);
+  };
+
+  const getProjectProgress = () => {
+    if (milestones.length === 0) return 0;
+    const completed = milestones.filter(m => m.status === 'completed').length;
+    return (completed / milestones.length) * 100;
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading project details...</p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       </div>
     );
@@ -157,272 +165,214 @@ const ProjectDetail = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-[400px]">
-          <CardHeader>
-            <CardTitle>Project Not Found</CardTitle>
-            <CardDescription>
-              The project you're looking for doesn't exist or you don't have access to it.
-            </CardDescription>
-          </CardHeader>
-        </Card>
+      <div className="container mx-auto px-4 py-8">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            Project not found or you don't have access to this project.
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
+
+  // Check if user has access to this project
+  const hasAccess = user && (
+    user.id === project.expert_user_id || 
+    user.id === project.client_user_id
+  );
+
+  if (!hasAccess) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            You don't have permission to access this project.
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Project Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold">{project.title}</h1>
-              <p className="text-muted-foreground mt-1">
-                Created on {new Date(project.created_at).toLocaleDateString()}
-              </p>
+    <div className="container mx-auto px-4 py-8">
+      {/* Project Header */}
+      <div className="mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">{project.title}</h1>
+            <p className="text-muted-foreground mt-2">Project created from brief</p>
+            <div className="flex items-center gap-4 mt-4">
+              <Badge variant={getStatusColor(project.status)}>
+                {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+              </Badge>
+              <span className="text-sm text-muted-foreground flex items-center gap-1">
+                <Calendar className="h-4 w-4" />
+                Created {format(new Date(project.created_at), 'MMM d, yyyy')}
+              </span>
             </div>
-            <Badge className={getStatusColor(project.status)}>
-              {project.status.replace('_', ' ').toUpperCase()}
-            </Badge>
           </div>
-
-          {/* Project Overview Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <DollarSign className="h-4 w-4" />
-                  Total Value
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {formatPrice(project.total_price, project.currency)}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  Team Members
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {project.project_participants.filter(p => p.role !== 'admin').length}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  Milestones
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {milestones.length}
-                </div>
-              </CardContent>
-            </Card>
-
-            {project.is_custom && (
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4" />
-                    Progress
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {getMilestoneProgress()}%
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+          <div className="text-right">
+            <div className="text-2xl font-bold text-primary">
+              {formatCurrency(project.total_price, project.currency)}
+            </div>
+            <p className="text-sm text-muted-foreground">Total Budget</p>
           </div>
-
-          {/* Progress Bar for Custom Projects */}
-          {project.is_custom && milestones.length > 0 && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Project Progress</CardTitle>
-                <CardDescription>
-                  {milestones.filter(m => m.status === 'completed').length} of {milestones.length} milestones completed
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Progress value={getMilestoneProgress()} className="w-full" />
-              </CardContent>
-            </Card>
-          )}
         </div>
 
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="deliverables" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="deliverables" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Deliverables
-            </TabsTrigger>
-            <TabsTrigger value="milestones" className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              Milestones
-            </TabsTrigger>
-            <TabsTrigger value="chat" className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4" />
-              Chat
-            </TabsTrigger>
-            <TabsTrigger value="meetings" className="flex items-center gap-2">
-              <VideoIcon className="h-4 w-4" />
-              Meetings
-            </TabsTrigger>
-            <TabsTrigger value="insights" className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
-              Insights
-            </TabsTrigger>
-            <TabsTrigger value="ai-chat" className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4" />
-              AI Assistant
-            </TabsTrigger>
-          </TabsList>
+        {/* Progress Bar */}
+        <div className="mt-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium">Project Progress</span>
+            <span className="text-sm text-muted-foreground">
+              {Math.round(getProjectProgress())}% complete
+            </span>
+          </div>
+          <Progress value={getProjectProgress()} className="h-2" />
+        </div>
+      </div>
 
-          <TabsContent value="deliverables">
-            <DeliverableManagement projectId={project.id} userRole={userRole} />
-          </TabsContent>
+      {/* Project Tabs */}
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="milestones">Milestones</TabsTrigger>
+          <TabsTrigger value="chat">Communication</TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="milestones">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold">Project Milestones</h2>
-                <Badge variant="secondary">{milestones.length} total</Badge>
-              </div>
-              
-              {milestones.length === 0 ? (
-                <Card>
-                  <CardContent className="text-center py-8">
-                    <Calendar className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                    <p className="text-muted-foreground">No milestones defined for this project</p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="space-y-4">
-                  {milestones.map((milestone, index) => (
-                    <Card key={milestone.id}>
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <CardTitle className="text-lg">
-                              Milestone {milestone.milestone_number}: {milestone.title}
-                            </CardTitle>
-                            {milestone.description && (
-                              <CardDescription className="mt-1">
-                                {milestone.description}
-                              </CardDescription>
-                            )}
-                          </div>
-                          <Badge 
-                            className={
-                              milestone.status === 'completed' 
-                                ? 'bg-success text-success-foreground'
-                                : milestone.status === 'in_progress'
-                                ? 'bg-primary text-primary-foreground' 
-                                : 'bg-muted text-muted-foreground'
-                            }
-                          >
-                            {milestone.status.replace('_', ' ')}
-                          </Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-muted-foreground">
-                              Amount: {formatPrice(milestone.amount, project.currency)}
-                            </p>
-                            {milestone.due_date && (
-                              <p className="text-sm text-muted-foreground">
-                                Due: {new Date(milestone.due_date).toLocaleDateString()}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="chat">
-            <ProjectChat projectId={project.id} />
-          </TabsContent>
-
-          <TabsContent value="meetings">
-            <ProjectMeetings projectId={project.id} />
-          </TabsContent>
-
-          <TabsContent value="insights">
-            <ProjectInsights projectId={project.id} />
-          </TabsContent>
-
-          <TabsContent value="ai-chat">
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Project Team */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5" />
-                  AI Project Assistant
+                  <Users className="h-5 w-5" />
+                  Project Team
                 </CardTitle>
-                <CardDescription>
-                  Get help with your project, ask questions, or request insights
-                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <AIChat projectId={project.id} />
+              <CardContent className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-sm text-muted-foreground">Expert</h4>
+                  <div className="flex items-center gap-2 mt-1">
+                    <User className="h-4 w-4" />
+                    <span>{expertProfile?.full_name || 'Loading...'}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {expertProfile?.email}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-sm text-muted-foreground">Client</h4>
+                  <div className="flex items-center gap-2 mt-1">
+                    <User className="h-4 w-4" />
+                    <span>{clientProfile?.full_name || 'Loading...'}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {clientProfile?.email}
+                  </p>
+                </div>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
 
-        {/* Team Members */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Team Members
-            </CardTitle>
-            <CardDescription>
-              People working on this project
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {project.project_participants.map((participant) => (
-                <div key={participant.user_id} className="flex items-center justify-between p-3 border rounded-lg">
+            {/* Project Stats */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Project Statistics
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="font-medium">
-                      {participant.profiles?.full_name || 'Unknown User'}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {participant.profiles?.email}
+                    <h4 className="font-medium text-sm text-muted-foreground">Total Milestones</h4>
+                    <p className="text-2xl font-bold">{milestones.length}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-sm text-muted-foreground">Completed</h4>
+                    <p className="text-2xl font-bold text-green-600">
+                      {milestones.filter(m => m.status === 'completed').length}
                     </p>
                   </div>
-                  <Badge variant="secondary">
-                    {participant.role.charAt(0).toUpperCase() + participant.role.slice(1)}
-                  </Badge>
+                  <div>
+                    <h4 className="font-medium text-sm text-muted-foreground">In Progress</h4>
+                    <p className="text-2xl font-bold text-blue-600">
+                      {milestones.filter(m => m.status === 'in_progress').length}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-sm text-muted-foreground">Planned</h4>
+                    <p className="text-2xl font-bold text-gray-600">
+                      {milestones.filter(m => m.status === 'planned').length}
+                    </p>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="milestones" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Project Milestones</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {milestones.length === 0 ? (
+                <div className="text-center py-8">
+                  <Clock className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-muted-foreground">No milestones defined yet</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {milestones.map((milestone, index) => (
+                    <div key={milestone.id} className="flex items-start gap-4 p-4 border rounded-lg">
+                      <div className="flex-shrink-0">
+                        {milestone.status === 'completed' ? (
+                          <CheckCircle2 className="h-6 w-6 text-green-600 mt-1" />
+                        ) : milestone.status === 'in_progress' ? (
+                          <Clock className="h-6 w-6 text-blue-600 mt-1" />
+                        ) : (
+                          <div className="h-6 w-6 rounded-full border-2 border-gray-300 mt-1" />
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-medium">{milestone.title}</h3>
+                          <div className="flex items-center gap-2">
+                            <Badge variant={getMilestoneStatusColor(milestone.status)}>
+                              {milestone.status.replace('_', ' ')}
+                            </Badge>
+                            <span className="text-sm font-medium">
+                              {formatCurrency(milestone.amount, project.currency)}
+                            </span>
+                          </div>
+                        </div>
+                        {milestone.description && (
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {milestone.description}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                          {milestone.due_date && (
+                            <span>Due: {format(new Date(milestone.due_date), 'MMM d, yyyy')}</span>
+                          )}
+                          <span>Milestone {index + 1} of {milestones.length}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="chat" className="space-y-6">
+          <ProjectChat projectId={project.id} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

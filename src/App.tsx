@@ -26,6 +26,7 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminReports from "./pages/AdminReports";
 import ProjectDetail from "./pages/ProjectDetail";
+import { default as ExpertInviteDashboard } from "./components/ExpertInviteDashboard";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Pricing from "./pages/Pricing";
@@ -70,6 +71,11 @@ const App = () => (
                 <Route path="/dashboard" element={
                   <ErrorBoundary>
                     <Dashboard />
+                  </ErrorBoundary>
+                } />
+                <Route path="/expert-invites" element={
+                  <ErrorBoundary>
+                    <ExpertInviteDashboard />
                   </ErrorBoundary>
                 } />
                 <Route path="/project/:id" element={<ProjectDetail />} />

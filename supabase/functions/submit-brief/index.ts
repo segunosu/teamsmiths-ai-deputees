@@ -166,9 +166,16 @@ serve(async (req) => {
       console.error('Error creating brief event:', eventError)
     }
 
-    // TODO: Send acknowledgment email
-    // TODO: Send Slack notification
-    // TODO: Run matching algorithm
+    // Trigger auto AI matching if enabled
+    try {
+      await supabaseAdmin.functions.invoke('auto-ai-matching', {
+        body: { brief_id: briefId }
+      });
+      console.log('Auto AI matching triggered for brief:', briefId);
+    } catch (matchingError) {
+      console.error('Error triggering auto-matching:', matchingError);
+      // Don't fail the request if matching fails - brief is still submitted
+    }
 
     // Send brief received email
     try {

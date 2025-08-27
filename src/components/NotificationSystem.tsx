@@ -142,6 +142,16 @@ const NotificationSystem = () => {
         return '🎉';
       case 'admin_review_required':
         return '⚠️';
+      case 'expert_accepted':
+        return '✅';
+      case 'expert_declined':
+        return '❌';
+      case 'project_created':
+        return '🚀';
+      case 'auto_matching_complete':
+        return '🔍';
+      case 'need_more_experts':
+        return '🔄';
       default:
         return '📢';
     }
@@ -157,6 +167,13 @@ const NotificationSystem = () => {
       case 'deliverable_rejected':
         return 'bg-destructive/10 text-destructive-foreground';
       case 'admin_review_required':
+        return 'bg-warning/10 text-warning-foreground';
+      case 'expert_accepted':
+      case 'project_created':
+      case 'auto_matching_complete':
+        return 'bg-success/10 text-success-foreground';
+      case 'expert_declined':
+      case 'need_more_experts':
         return 'bg-warning/10 text-warning-foreground';
       default:
         return 'bg-primary/10 text-primary-foreground';
