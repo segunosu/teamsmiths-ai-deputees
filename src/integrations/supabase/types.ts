@@ -1109,6 +1109,7 @@ export type Database = {
           price_band_max: number | null
           price_band_min: number | null
           pto_ranges: Json | null
+          shadow_user_id: string | null
           skills: string[] | null
           tools: string[] | null
           updated_at: string | null
@@ -1126,6 +1127,7 @@ export type Database = {
           price_band_max?: number | null
           price_band_min?: number | null
           pto_ranges?: Json | null
+          shadow_user_id?: string | null
           skills?: string[] | null
           tools?: string[] | null
           updated_at?: string | null
@@ -1143,6 +1145,7 @@ export type Database = {
           price_band_max?: number | null
           price_band_min?: number | null
           pto_ranges?: Json | null
+          shadow_user_id?: string | null
           skills?: string[] | null
           tools?: string[] | null
           updated_at?: string | null
@@ -1239,6 +1242,51 @@ export type Database = {
           roi_output?: Json | null
         }
         Relationships: []
+      }
+      matching_runs: {
+        Row: {
+          brief_id: string
+          candidates_found: number
+          created_at: string
+          id: string
+          max_invites: number
+          metadata: Json | null
+          min_score: number
+        }
+        Insert: {
+          brief_id: string
+          candidates_found?: number
+          created_at?: string
+          id?: string
+          max_invites: number
+          metadata?: Json | null
+          min_score: number
+        }
+        Update: {
+          brief_id?: string
+          candidates_found?: number
+          created_at?: string
+          id?: string
+          max_invites?: number
+          metadata?: Json | null
+          min_score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matching_runs_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_briefs"
+            referencedColumns: ["brief_id"]
+          },
+          {
+            foreignKeyName: "matching_runs_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "briefs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       matching_snapshots: {
         Row: {
@@ -3157,6 +3205,22 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      v_experts: {
+        Row: {
+          availability_weekly_hours: number | null
+          email: string | null
+          expert_id: string | null
+          full_name: string | null
+          industries: string[] | null
+          locales: string[] | null
+          outcome_history: Json | null
+          price_band_max: number | null
+          price_band_min: number | null
+          skills: string[] | null
+          tools: string[] | null
+        }
+        Relationships: []
       }
     }
     Functions: {
