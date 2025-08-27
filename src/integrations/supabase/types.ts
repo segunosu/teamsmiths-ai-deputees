@@ -3160,6 +3160,36 @@ export type Database = {
       }
     }
     Functions: {
+      admin_list_briefs: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_order?: string
+          p_statuses?: string[]
+        }
+        Returns: {
+          assured_mode: boolean | null
+          brief_id: string | null
+          budget_range: string | null
+          candidate_count: number | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string | null
+          matched_at: string | null
+          matched_expert_id: string | null
+          matching_results: Json | null
+          origin: string | null
+          origin_id: string | null
+          project_title: string | null
+          proposal_json: Json | null
+          status: string | null
+          structured_brief: Json | null
+          timeline_preference: string | null
+          updated_at: string | null
+          urgency_level: string | null
+        }[]
+      }
       admin_list_freelancers: {
         Args: {
           p_filters?: Json

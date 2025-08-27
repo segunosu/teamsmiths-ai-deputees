@@ -94,13 +94,14 @@ const MatchingDashboard = () => {
 
   const loadData = async () => {
     try {
-      // Load submitted briefs ready for matching (catalog and custom)
+      // Load submitted briefs ready for matching using secure admin RPC
       const { data: briefsData, error: briefsError } = await supabase
-        .from('admin_v_briefs')
-        .select('*')
-        .in('status', ['submitted', 'proposal_ready', 'qa_in_review'])
-        .order('created_at', { ascending: false })
-        .limit(50);
+        .rpc('admin_list_briefs', {
+          p_statuses: ['submitted', 'proposal_ready', 'qa_in_review'],
+          p_limit: 50,
+          p_offset: 0,
+          p_order: 'created_at.desc'
+        });
 
       if (briefsError) throw briefsError;
       setBriefRequests(briefsData || []);
