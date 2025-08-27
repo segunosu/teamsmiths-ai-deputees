@@ -1035,6 +1035,7 @@ export type Database = {
       }
       expert_invites: {
         Row: {
+          acceptance_metadata: Json | null
           brief_id: string
           created_at: string | null
           expert_user_id: string
@@ -1050,6 +1051,7 @@ export type Database = {
           viewed_at: string | null
         }
         Insert: {
+          acceptance_metadata?: Json | null
           brief_id: string
           created_at?: string | null
           expert_user_id: string
@@ -1065,6 +1067,7 @@ export type Database = {
           viewed_at?: string | null
         }
         Update: {
+          acceptance_metadata?: Json | null
           brief_id?: string
           created_at?: string | null
           expert_user_id?: string
@@ -2121,8 +2124,11 @@ export type Database = {
       projects: {
         Row: {
           agency_id: string | null
+          brief_id: string | null
+          client_user_id: string | null
           created_at: string | null
           currency: string | null
+          expert_user_id: string | null
           id: string
           is_custom: boolean | null
           org_id: string | null
@@ -2134,8 +2140,11 @@ export type Database = {
         }
         Insert: {
           agency_id?: string | null
+          brief_id?: string | null
+          client_user_id?: string | null
           created_at?: string | null
           currency?: string | null
+          expert_user_id?: string | null
           id?: string
           is_custom?: boolean | null
           org_id?: string | null
@@ -2147,8 +2156,11 @@ export type Database = {
         }
         Update: {
           agency_id?: string | null
+          brief_id?: string | null
+          client_user_id?: string | null
           created_at?: string | null
           currency?: string | null
+          expert_user_id?: string | null
           id?: string
           is_custom?: boolean | null
           org_id?: string | null
@@ -2171,6 +2183,20 @@ export type Database = {
             columns: ["agency_id"]
             isOneToOne: false
             referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_briefs"
+            referencedColumns: ["brief_id"]
+          },
+          {
+            foreignKeyName: "projects_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "briefs"
             referencedColumns: ["id"]
           },
           {
@@ -3431,8 +3457,11 @@ export type Database = {
         Args: { _uid: string }
         Returns: {
           agency_id: string | null
+          brief_id: string | null
+          client_user_id: string | null
           created_at: string | null
           currency: string | null
+          expert_user_id: string | null
           id: string
           is_custom: boolean | null
           org_id: string | null

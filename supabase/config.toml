@@ -89,5 +89,14 @@ verify_jwt = false
 [functions.create-brief-from-catalog]
 verify_jwt = false
 
+[functions.auto-ai-matching]
+verify_jwt = false
+
+[functions.respond-to-invite]
+verify_jwt = true
+
+[functions.create-project-from-acceptance]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true
