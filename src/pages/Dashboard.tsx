@@ -28,16 +28,6 @@ interface Order {
   created_at: string;
 }
 
-interface CustomizationRequest {
-  id: string;
-  project_title: string;
-  base_template: string;
-  custom_requirements: string;
-  budget_range: string;
-  timeline_preference: string;
-  status: string;
-  created_at: string;
-}
 
 interface CustomQuote {
   id: string;
@@ -54,7 +44,7 @@ const Dashboard = () => {
   const { toast } = useToast();
   const [projects, setProjects] = useState<Project[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [customizationRequests, setCustomizationRequests] = useState<CustomizationRequest[]>([]);
+  
   const [customQuotes, setCustomQuotes] = useState<CustomQuote[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -88,14 +78,6 @@ const Dashboard = () => {
 
         if (ordersError) throw ordersError;
 
-        // Fetch user's customization requests
-        const { data: customizationData, error: customizationError } = await supabase
-          .from('customization_requests')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false });
-
-        if (customizationError) throw customizationError;
 
         // Fetch user's custom quotes
         const { data: quotesData, error: quotesError } = await supabase
@@ -108,7 +90,6 @@ const Dashboard = () => {
 
         setProjects(projectsData || []);
         setOrders(ordersData || []);
-        setCustomizationRequests(customizationData || []);
         setCustomQuotes(quotesData || []);
       } catch (error: any) {
         toast({
@@ -226,7 +207,6 @@ const Dashboard = () => {
             <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="quotes">Quotes</TabsTrigger>
-            <TabsTrigger value="customizations">Requests</TabsTrigger>
           </TabsList>
 
           <TabsContent value="projects" className="space-y-4">
@@ -348,7 +328,7 @@ const Dashboard = () => {
                       Custom quotes will appear here after we review your customization requests.
                     </p>
                     <Button asChild>
-                      <Link to="/customize">Submit Request</Link>
+                      <Link to="/brief-builder">+ New Request</Link>
                     </Button>
                   </div>
                 </CardContent>
@@ -400,70 +380,6 @@ const Dashboard = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="customizations" className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">Customization Requests</h2>
-              <Button asChild>
-                <Link to="/customize">
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Request
-                </Link>
-              </Button>
-            </div>
-
-            {customizationRequests.length === 0 ? (
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="text-center py-8">
-                    <AlertCircle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-medium mb-2">No customization requests yet</h3>
-                    <p className="text-muted-foreground mb-4">
-                      Request custom modifications to any template or create something from scratch.
-                    </p>
-                    <Button asChild>
-                      <Link to="/customize">Submit Request</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid gap-4">
-                {customizationRequests.map((request) => (
-                  <Card key={request.id}>
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="text-lg">{request.project_title}</CardTitle>
-                          <CardDescription>
-                            Based on: {request.base_template || 'Custom from scratch'}
-                          </CardDescription>
-                          <CardDescription>
-                            Submitted {new Date(request.created_at).toLocaleDateString()}
-                          </CardDescription>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {getStatusBadge(request.status)}
-                          {request.budget_range && (
-                            <Badge variant="outline">{request.budget_range}</Badge>
-                          )}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                        {request.custom_requirements}
-                      </p>
-                      <div className="flex gap-2 text-xs text-muted-foreground">
-                        {request.timeline_preference && (
-                          <span>Timeline: {request.timeline_preference}</span>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
         </Tabs>
       </div>
     </div>
