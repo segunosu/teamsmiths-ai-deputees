@@ -53,40 +53,35 @@ const MeetingsReport = () => {
     try {
       setLoading(true);
       
-      let query = supabase
-        .from('admin_v_meetings')
-        .select('*', { count: 'exact' })
-        .order('starts_at', { ascending: false })
-        .range((currentPage - 1) * pageSize, currentPage * pageSize - 1);
-
-      if (filters.provider) {
-        query = query.eq('provider', filters.provider);
-      }
-      if (filters.q) {
-        query = query.ilike('title', `%${filters.q}%`);
-      }
-      if (filters.date_range) {
-        const now = new Date();
-        let startDate = new Date();
-        
-        switch (filters.date_range) {
-          case 'today':
-            startDate.setHours(0, 0, 0, 0);
-            break;
-          case 'week':
-            startDate.setDate(now.getDate() - 7);
-            break;
-          case 'month':
-            startDate.setMonth(now.getMonth() - 1);
-            break;
-        }
-        
-        if (filters.date_range !== 'all') {
-          query = query.gte('starts_at', startDate.toISOString());
-        }
-      }
-
-      const { data, error, count } = await query;
+      // Query admin meetings using secure RPC
+      const { data, error, count } = await supabase.rpc('admin_list_meetings', {
+        p_provider: filters.provider || null,
+        p_q: filters.q || null,
+        p_since: (() => {
+          if (!filters.date_range) return null;
+          
+          const now = new Date();
+          let startDate = new Date();
+          
+          switch (filters.date_range) {
+            case 'today':
+              startDate.setHours(0, 0, 0, 0);
+              break;
+            case 'week':
+              startDate.setDate(now.getDate() - 7);
+              break;
+            case 'month':
+              startDate.setMonth(now.getMonth() - 1);
+              break;
+            default:
+              return null;
+          }
+          return startDate.toISOString();
+        })(),
+        p_limit: pageSize,
+        p_offset: (currentPage - 1) * pageSize,
+        p_order: 'starts_at.desc'
+      });
 
       if (error) throw error;
 

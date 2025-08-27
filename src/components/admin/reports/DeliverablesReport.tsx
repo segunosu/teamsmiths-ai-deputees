@@ -52,26 +52,32 @@ const DeliverablesReport = () => {
     try {
       setLoading(true);
       
-      // Query both regular deliverables and project deliverables
+      // Query admin deliverables using secure RPCs
       const [regularDeliverables, projectDeliverables] = await Promise.all([
-        supabase
-          .from('admin_v_deliverables')
-          .select('*', { count: 'exact' })
-          .order('created_at', { ascending: false }),
-        supabase
-          .from('admin_v_project_deliverables')
-          .select('*', { count: 'exact' })
-          .order('created_at', { ascending: false })
+        supabase.rpc('admin_list_deliverables', {
+          p_status: filters.status || null,
+          p_q: filters.q || null,
+          p_limit: 1000,
+          p_offset: 0,
+          p_order: 'created_at.desc'
+        }),
+        supabase.rpc('admin_list_project_deliverables', {
+          p_status: filters.status || null,
+          p_q: filters.q || null,
+          p_limit: 1000,
+          p_offset: 0,
+          p_order: 'created_at.desc'
+        })
       ]);
 
       // Combine and transform data
       const combinedData: DeliverableData[] = [
-        ...(regularDeliverables.data || []).map(d => ({
+        ...(regularDeliverables.data || []).map((d: any) => ({
           ...d,
           versions: d.versions || 0,
           last_updated: d.last_updated || d.created_at
         })),
-        ...(projectDeliverables.data || []).map(d => ({
+        ...(projectDeliverables.data || []).map((d: any) => ({
           ...d,
           versions: 1, // Project deliverables have one version
           last_updated: d.submitted_at || d.created_at,

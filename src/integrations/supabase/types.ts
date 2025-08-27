@@ -3190,6 +3190,26 @@ export type Database = {
           urgency_level: string | null
         }[]
       }
+      admin_list_deliverables: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_order?: string
+          p_q?: string
+          p_status?: string
+        }
+        Returns: {
+          created_at: string | null
+          deliverable_id: string | null
+          last_qa_decision: string | null
+          last_updated: string | null
+          milestone_id: string | null
+          project_id: string | null
+          status: string | null
+          title: string | null
+          versions: number | null
+        }[]
+      }
       admin_list_freelancers: {
         Args: {
           p_filters?: Json
@@ -3210,6 +3230,70 @@ export type Database = {
           skills: string[]
           total: number
           user_id: string
+        }[]
+      }
+      admin_list_meetings: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_order?: string
+          p_provider?: string
+          p_q?: string
+          p_since?: string
+        }
+        Returns: {
+          created_at: string | null
+          ends_at: string | null
+          join_url: string | null
+          meeting_id: string | null
+          organizer_user_id: string | null
+          project_id: string | null
+          provider: string | null
+          recording_consent: boolean | null
+          starts_at: string | null
+          title: string | null
+        }[]
+      }
+      admin_list_milestones: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_order?: string
+          p_payment_status?: string
+          p_q?: string
+          p_status?: string
+        }
+        Returns: {
+          amount: number | null
+          created_at: string | null
+          due_date: string | null
+          milestone_id: string | null
+          payment_status: string | null
+          project_id: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          title: string | null
+        }[]
+      }
+      admin_list_project_deliverables: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_order?: string
+          p_q?: string
+          p_status?: string
+        }
+        Returns: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string | null
+          deliverable_id: string | null
+          milestone_id: string | null
+          project_id: string | null
+          rejection_reason: string | null
+          status: string | null
+          submitted_at: string | null
+          title: string | null
         }[]
       }
       admin_list_projects: {

@@ -52,24 +52,15 @@ const MilestonesReport = () => {
     try {
       setLoading(true);
       
-      // Since we don't have admin_list_milestones RPC yet, query the view directly
-      let query = supabase
-        .from('admin_v_milestones')
-        .select('*', { count: 'exact' })
-        .order('created_at', { ascending: false })
-        .range((currentPage - 1) * pageSize, currentPage * pageSize - 1);
-
-      if (filters.status) {
-        query = query.eq('status', filters.status);
-      }
-      if (filters.payment_status) {
-        query = query.eq('payment_status', filters.payment_status);
-      }
-      if (filters.q) {
-        query = query.ilike('title', `%${filters.q}%`);
-      }
-
-      const { data, error, count } = await query;
+      // Query admin milestones using secure RPC
+      const { data, error, count } = await supabase.rpc('admin_list_milestones', {
+        p_status: filters.status || null,
+        p_payment_status: filters.payment_status || null,
+        p_q: filters.q || null,
+        p_limit: pageSize,
+        p_offset: (currentPage - 1) * pageSize,
+        p_order: 'created_at.desc'
+      });
 
       if (error) throw error;
 
