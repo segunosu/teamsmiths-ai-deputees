@@ -3300,6 +3300,20 @@ export type Database = {
           versions: number | null
         }[]
       }
+      admin_list_experts: {
+        Args: { p_limit?: number; p_offset?: number; p_q?: string }
+        Returns: {
+          availability_weekly_hours: number
+          expert_id: string
+          full_name: string
+          industries: string[]
+          locales: string[]
+          price_band_max: number
+          price_band_min: number
+          skills: string[]
+          tools: string[]
+        }[]
+      }
       admin_list_freelancers: {
         Args: {
           p_filters?: Json
