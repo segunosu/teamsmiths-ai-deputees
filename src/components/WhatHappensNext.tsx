@@ -15,24 +15,18 @@ const WhatHappensNext = () => {
 
   const fetchSettings = async () => {
     try {
-      const { data, error } = await supabase
-        .from('admin_settings')
-        .select('setting_key, setting_value')
-        .in('setting_key', ['shortlist_size_default', 'invite_response_sla_hours']);
+      const { data, error } = await supabase.rpc('get_public_settings');
 
       if (error) throw error;
 
-      const settingsObj = data.reduce((acc, setting) => {
-        const value = setting.setting_value as any;
-        if (setting.setting_key === 'shortlist_size_default') {
-          acc.shortlist_size_default = value?.value || 3;
-        } else if (setting.setting_key === 'invite_response_sla_hours') {
-          acc.invite_response_sla_hours = value?.value || 24;
-        }
-        return acc;
-      }, { shortlist_size_default: 3, invite_response_sla_hours: 24 });
+      const settingsData = data as Record<string, any>;
+      const shortlistSetting = settingsData?.shortlist_size_default;
+      const slaSetting = settingsData?.invite_response_sla_hours;
 
-      setSettings(settingsObj);
+      setSettings({
+        shortlist_size_default: shortlistSetting?.value || 3,
+        invite_response_sla_hours: slaSetting?.value || 24,
+      });
     } catch (error) {
       console.error('Error fetching settings:', error);
       // Use defaults if error

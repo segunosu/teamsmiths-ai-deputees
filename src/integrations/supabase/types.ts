@@ -3265,6 +3265,10 @@ export type Database = {
           total_price: number | null
         }[]
       }
+      get_public_settings: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       is_admin: {
         Args: { _uid: string }
         Returns: boolean

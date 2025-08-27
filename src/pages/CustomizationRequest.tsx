@@ -59,13 +59,11 @@ const CustomizationRequest = () => {
 
   const checkAuthSettings = async () => {
     try {
-      const { data } = await supabase
-        .from('admin_settings')
-        .select('setting_value')
-        .eq('setting_key', 'allow_custom_request_without_login')
-        .single();
+      const { data } = await supabase.rpc('get_public_settings');
       
-      setAllowUnauthRequests(Boolean(data?.setting_value) || false);
+      const settingsData = data as Record<string, any>;
+      const authSetting = settingsData?.allow_custom_request_without_login;
+      setAllowUnauthRequests(authSetting?.enabled ?? false);
     } catch (error) {
       console.error('Error checking auth settings:', error);
     }
