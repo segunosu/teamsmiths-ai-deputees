@@ -246,7 +246,7 @@ const CapabilityGallery = () => {
                   </Badge>
                   {capability.qaInsurance && (
                     <Badge variant="outline" className="rounded-full border px-2.5 py-1 text-xs bg-green-50 text-green-700 border-green-200">
-                      QA + Insurance
+                      QA + Performance Safeguard
                     </Badge>
                   )}
                 </div>

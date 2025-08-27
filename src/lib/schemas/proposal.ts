@@ -55,7 +55,7 @@ export function createFallbackProposal(): Proposal {
         eta_days: 10
       }
     ],
-    assured_addon_note: "QA + replacement eligibility; ~12% uplift"
+    assured_addon_note: "QA + performance safeguard; ~12% uplift"
   };
 }
 

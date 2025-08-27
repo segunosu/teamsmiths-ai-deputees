@@ -414,7 +414,7 @@ const DeputeeAIBriefBuilder = () => {
                     <div>
                       <h4 className="font-semibold">Outcome Assurance™ Mode</h4>
                       <p className="text-sm text-muted-foreground">
-                        Additional monitoring + expert replacement insurance
+                        Additional monitoring + performance safeguard
                       </p>
                     </div>
                   </div>

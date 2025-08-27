@@ -38,7 +38,7 @@ const Pricing = () => {
         'Priority QA + human oversight',
         'Milestone + performance bonuses',
         'Full Outcome Assurance™',
-        'Expert replacement insurance'
+        'Performance Safeguard'
       ],
       popular: true
     },
@@ -69,7 +69,7 @@ const Pricing = () => {
         'Dedicated QA manager',
         'ROI-based success metrics',
         'Enterprise Outcome Assurance™',
-        'Unlimited expert replacement',
+        'Unlimited performance safeguards',
         'Ongoing optimization & support',
         'Strategic consultation included'
       ],
@@ -193,7 +193,7 @@ const Pricing = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">How does the expert replacement work?</CardTitle>
+                <CardTitle className="text-lg">How does the Performance Safeguard work?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">

@@ -80,6 +80,12 @@ verify_jwt = false
 [functions.compute-matches]
 verify_jwt = false
 
+[functions.send-invitations]
+verify_jwt = false
+
+[functions.auto-match-pending-briefs]
+verify_jwt = false
+
 [functions.create-brief-from-catalog]
 verify_jwt = false
 

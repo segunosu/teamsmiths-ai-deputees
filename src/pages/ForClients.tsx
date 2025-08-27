@@ -9,8 +9,8 @@ const ForClients = () => {
   const benefits = [
     {
       icon: <Shield className="h-8 w-8 text-primary" />,
-      title: "Risk-Free Delivery",
-      description: "Escrow payments by milestone. Only pay when you approve deliverables.",
+      title: "Performance Safeguard",
+      description: "We actively monitor delivery and step in if momentum stalls—adjust scope, provide coaching, or swap in additional help when it's clearly the fastest path to your outcome.",
     },
     {
       icon: <Users className="h-8 w-8 text-primary" />,
@@ -309,7 +309,7 @@ const ForClients = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-            Ready to Try Risk-Free?
+            Ready to Get Started?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
             Start with a proven outcome pack, customize as needed. Escrow protection included.

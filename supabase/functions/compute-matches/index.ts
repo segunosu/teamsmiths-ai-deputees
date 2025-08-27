@@ -50,13 +50,10 @@ serve(async (req) => {
       });
     }
 
-    // Get all freelancer profiles including shadow experts
+    // Get all experts using the resilient view
     const { data: freelancers, error: freelancersError } = await supabase
-      .from("freelancer_profiles")
-      .select(`
-        *,
-        profiles!freelancer_profiles_user_id_fkey(full_name, email)
-      `);
+      .from("v_experts")
+      .select("*");
 
     if (freelancersError) {
       return new Response(JSON.stringify({
@@ -155,8 +152,8 @@ serve(async (req) => {
         red_flags.push("Limited availability");
       }
 
-      // Use shadow_user_id as fallback for expert_user_id
-      const expert_user_id = freelancer.user_id || freelancer.shadow_user_id;
+      // expert_id is already computed in the view
+      const expert_user_id = freelancer.expert_id;
       
       return {
         expert_user_id,
@@ -164,8 +161,8 @@ serve(async (req) => {
         reasons,
         red_flags,
         profile: {
-          full_name: freelancer.profiles?.full_name || `Expert ${expert_user_id.slice(0, 8)}`,
-          email: freelancer.profiles?.email || 'shadow@expert.com',
+          full_name: freelancer.full_name,
+          email: freelancer.email,
           skills: freelancer.skills,
           price_range: `£${Math.floor(freelancer.price_band_min/100)}-${Math.floor(freelancer.price_band_max/100)}`,
           availability: `${freelancer.availability_weekly_hours}h/week`
@@ -181,20 +178,30 @@ serve(async (req) => {
 
     console.log(`Found ${eligibleCandidates.length} eligible candidates (≥${min_score})`);
 
-    // Log matching event
-    await supabase.from('brief_events').insert({
-      brief_id,
-      type: 'matching_computed',
-      payload: {
-        total_evaluated: scoredCandidates.length,
-        eligible_count: eligibleCandidates.length,
+    // Log matching event to both tables
+    await Promise.all([
+      supabase.from('brief_events').insert({
+        brief_id,
+        type: 'matching_computed',
+        payload: {
+          total_evaluated: scoredCandidates.length,
+          eligible_count: eligibleCandidates.length,
+          min_score,
+          max_results
+        }
+      }),
+      supabase.from('matching_runs').insert({
+        brief_id,
+        candidates_found: eligibleCandidates.length,
         min_score,
-        max_results
-      }
-    });
+        max_invites: max_results,
+        metadata: { total_evaluated: scoredCandidates.length }
+      })
+    ]);
 
     return new Response(JSON.stringify({
-      status: "ok",
+      ok: true,
+      brief_id,
       candidates: eligibleCandidates
     }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

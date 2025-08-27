@@ -350,7 +350,7 @@ const ExpertsSection = () => {
                   </Badge>
                   {expert.insuranceEligible && (
                     <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/20 hover:bg-primary/10">
-                      🛡️ Insurance Eligible
+                      🛡️ Performance Safeguard
                     </Badge>
                   )}
                   <Badge variant="outline" className="text-xs">

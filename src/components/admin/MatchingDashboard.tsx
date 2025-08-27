@@ -130,7 +130,7 @@ const MatchingDashboard = () => {
 
       if (error) throw error;
 
-      if (data?.status === "ok" && data.candidates) {
+      if (data?.ok && data.candidates) {
         setMatchingResults({ candidates: data.candidates });
         toast({
           title: "Matching Complete",
@@ -170,12 +170,10 @@ const MatchingDashboard = () => {
         return;
       }
 
-      const { data, error } = await supabase.functions.invoke('manage-invitations', {
+      const { data, error } = await supabase.functions.invoke('send-invitations', {
         body: {
-          action: 'send_invites',
           brief_id: selectedBrief,
-          user_ids: targetUserIds,
-          min_score: minScore,
+          candidate_ids: targetUserIds,
           max_invites: maxInvites
         }
       });
