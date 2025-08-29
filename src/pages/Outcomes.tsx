@@ -3,6 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import CapabilityGallery from '@/components/CapabilityGallery';
 import Catalog from './Catalog';
 import OutcomesHeader from '@/components/outcomes/OutcomesHeader';
+import OutcomeCard from '@/components/outcomes/OutcomeCard';
+import { getOutcomeCards } from '@/lib/api';
+import { toast } from 'sonner';
 
 const Outcomes = () => {
   const [searchParams, setSearchParams] = useSearchParams();
