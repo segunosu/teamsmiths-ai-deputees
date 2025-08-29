@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import CapabilityGallery from '@/components/CapabilityGallery';
 
 const Home = () => {
+  // Ensure proper component loading
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
