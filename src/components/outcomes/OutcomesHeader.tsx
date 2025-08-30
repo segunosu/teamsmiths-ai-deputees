@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ScrollText, Info } from 'lucide-react';
-import CRModal from '@/components/cr/CRModal';
+import { Link } from 'react-router-dom';
 import AnonymityInfoModal from '@/components/common/AnonymityInfoModal';
 
 interface OutcomesHeaderProps {
@@ -15,7 +15,6 @@ const OutcomesHeader: React.FC<OutcomesHeaderProps> = ({
   onViewChange,
   onBrowsePacks
 }) => {
-  const [showCRModal, setShowCRModal] = useState(false);
   const [showAnonymityModal, setShowAnonymityModal] = useState(false);
 
   const handleBrowsePacks = () => {
@@ -51,11 +50,13 @@ const OutcomesHeader: React.FC<OutcomesHeaderProps> = ({
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
               <Button 
                 size="lg"
-                onClick={() => setShowCRModal(true)}
+                asChild
                 className="min-w-[200px]"
               >
-                <ScrollText className="mr-2 h-5 w-5" />
-                Request a custom quote
+                <Link to="/customize">
+                  <ScrollText className="mr-2 h-5 w-5" />
+                  Request a custom quote
+                </Link>
               </Button>
               
               <Button 
@@ -110,11 +111,6 @@ const OutcomesHeader: React.FC<OutcomesHeaderProps> = ({
       </div>
 
       {/* Modals */}
-      <CRModal 
-        isOpen={showCRModal}
-        onClose={() => setShowCRModal(false)}
-      />
-      
       <AnonymityInfoModal
         isOpen={showAnonymityModal}
         onClose={() => setShowAnonymityModal(false)}

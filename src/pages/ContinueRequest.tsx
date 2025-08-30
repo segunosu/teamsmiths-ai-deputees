@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { AlertCircle, CheckCircle, Clock } from 'lucide-react';
-import CRModal from '@/components/cr/CRModal';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-const ContinueRequest: React.FC = () => {
+const ContinueRequest = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [crData, setCrData] = useState<any>(null);
-  const [showCRModal, setShowCRModal] = useState(false);
 
   const token = searchParams.get('token');
   const crId = searchParams.get('cr');
@@ -73,11 +70,6 @@ const ContinueRequest: React.FC = () => {
 
         setCrData(reconstructedData);
         setLoading(false);
-        
-        // Auto-open the modal after a brief delay
-        setTimeout(() => {
-          setShowCRModal(true);
-        }, 500);
 
       } catch (err: any) {
         console.error('Error loading draft CR:', err);
@@ -89,18 +81,9 @@ const ContinueRequest: React.FC = () => {
     loadDraftCR();
   }, [token, crId]);
 
-  const handleCRSubmit = () => {
-    setShowCRModal(false);
-    toast.success('Request submitted successfully!');
-    navigate('/outcomes?view=proof');
-  };
-
-  const handleCRClose = () => {
-    setShowCRModal(false);
-  };
-
   const startOver = () => {
-    navigate('/outcomes');
+    // Navigate to outcomes page to start over
+    window.location.href = '/outcomes';
   };
 
   if (loading) {
@@ -193,22 +176,16 @@ const ContinueRequest: React.FC = () => {
               Start Over
             </Button>
             <Button 
-              onClick={() => setShowCRModal(true)}
+              asChild
               className="flex-1"
             >
-              Continue Request
+              <Link to={`/customize?continue=${token}&cr=${crId}`}>
+                Continue Request
+              </Link>
             </Button>
           </div>
         </CardContent>
       </Card>
-
-      {/* CR Modal */}
-      {showCRModal && crData && (
-        <CRModal
-          isOpen={showCRModal}
-          onClose={handleCRClose}
-        />
-      )}
     </div>
   );
 };

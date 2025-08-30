@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +18,6 @@ export type OutcomeCardProps = {
   tags?: string[];
   viewMode: 'proof' | 'catalog';
   onUseOutcome?: (id: string) => void;       // catalog primary
-  onRequestQuote: (id: string) => void;      // both views (secondary on catalog)
   onSeeProof?: (id: string) => void;
 };
 
@@ -33,7 +33,6 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
   tags = [],
   viewMode,
   onUseOutcome,
-  onRequestQuote,
   onSeeProof
 }) => {
   const formatPrice = (amount?: number, currency = 'gbp') => {
@@ -170,12 +169,14 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
         <div className="w-full space-y-2">
             {viewMode === 'proof' ? (
               <Button 
-                onClick={() => onRequestQuote(id)}
+                asChild
                 className="w-full"
                 size="lg"
                 aria-label={`Request expert quote for ${title}`}
               >
-                Request expert quote
+                <Link to={`/customize?outcome_id=${id}`}>
+                  Request expert quote
+                </Link>
               </Button>
             ) : (
               // Catalog view: Primary "Use this outcome" + secondary "Request expert quote"
@@ -190,11 +191,13 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
                 </Button>
                 <Button 
                   variant="outline"
-                  onClick={() => onRequestQuote(id)}
+                  asChild
                   className="w-full"
                   aria-label={`Request expert quote for ${title}`}
                 >
-                  Request expert quote
+                  <Link to={`/customize?outcome_id=${id}`}>
+                    Request expert quote
+                  </Link>
                 </Button>
               </div>
             )}

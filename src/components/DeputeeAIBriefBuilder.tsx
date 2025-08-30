@@ -43,7 +43,10 @@ const DeputeeAIBriefBuilder = () => {
   // Get prefill data from URL params
   const capabilityId = searchParams.get('capability_id');
   const packId = searchParams.get('pack_id');
-  const briefOrigin = capabilityId ? 'capability' : packId ? 'catalog' : null;
+  const outcomeId = searchParams.get('outcome_id');
+  const continueToken = searchParams.get('continue');
+  const continueCrId = searchParams.get('cr');
+  const briefOrigin = capabilityId ? 'capability' : packId ? 'catalog' : outcomeId ? 'outcome' : continueToken ? 'continue' : null;
 
   const [briefData, setBriefData] = useState({
     goal: '',
@@ -235,7 +238,7 @@ const DeputeeAIBriefBuilder = () => {
           proposal_json: proposal,
           assured_mode: proposal?.assuredMode || false,
           origin: briefOrigin || 'bespoke',
-          origin_id: capabilityId || packId
+          origin_id: capabilityId || packId || outcomeId || continueCrId
         }
       });
 
@@ -260,7 +263,7 @@ const DeputeeAIBriefBuilder = () => {
         brief_id: data.brief_id,
         authed: !!user?.id,
         origin: briefOrigin,
-        origin_id: capabilityId || packId 
+        origin_id: capabilityId || packId || outcomeId || continueCrId
       });
 
       // Auth-aware routing: logged in users go to dashboard, guests get thank-you page
@@ -316,7 +319,42 @@ const DeputeeAIBriefBuilder = () => {
     if (briefOrigin) {
       trackAnalyticsEvent('experts.intent_select', { intent: briefOrigin });
     }
-  }, [briefOrigin, trackAnalyticsEvent]);
+
+    // Handle continue flow - load existing CR data
+    if (continueToken && continueCrId) {
+      loadContinueData();
+    }
+  }, [briefOrigin, continueToken, continueCrId]);
+
+  const loadContinueData = useCallback(async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('guest-save-continue', {
+        body: { token: continueToken, cr_id: continueCrId, action: 'load' }
+      });
+
+      if (error) throw error;
+
+      // Pre-fill form with existing data
+      if (data?.brief_data) {
+        setBriefData(prev => ({ ...prev, ...data.brief_data }));
+      }
+      if (data?.contact_data) {
+        setContactData(prev => ({ ...prev, ...data.contact_data }));
+      }
+      
+      toast({
+        title: "Request Loaded",
+        description: "Your previous request has been loaded. Continue where you left off."
+      });
+    } catch (error) {
+      console.error('Error loading continue data:', error);
+      toast({
+        title: "Load Error", 
+        description: "Couldn't load your previous request. Starting fresh.",
+        variant: "destructive"
+      });
+    }
+  }, [continueToken, continueCrId, toast]);
 
   // Cleanup timers
   useEffect(() => {
