@@ -168,34 +168,36 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
       {/* Sticky footer with CTAs */}
       <CardFooter className="pt-0">
         <div className="w-full space-y-2">
-          {viewMode === 'proof' ? (
-            // Proof view: Only "Request expert quote"
-            <Button 
-              onClick={() => onRequestQuote(id)}
-              className="w-full"
-            >
-              Request expert quote
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          ) : (
-            // Catalog view: Primary "Use this outcome" + secondary "Request expert quote"
-            <div className="space-y-2">
+            {viewMode === 'proof' ? (
               <Button 
-                onClick={() => onUseOutcome?.(id)}
-                className="w-full"
-              >
-                Use this outcome
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button 
-                variant="outline"
                 onClick={() => onRequestQuote(id)}
                 className="w-full"
+                size="lg"
+                aria-label={`Request expert quote for ${title}`}
               >
                 Request expert quote
               </Button>
-            </div>
-          )}
+            ) : (
+              // Catalog view: Primary "Use this outcome" + secondary "Request expert quote"
+              <div className="space-y-2">
+                <Button 
+                  onClick={() => onUseOutcome?.(id)}
+                  className="w-full"
+                  aria-label={`Use outcome: ${title}`}
+                >
+                  Use this outcome
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                <Button 
+                  variant="outline"
+                  onClick={() => onRequestQuote(id)}
+                  className="w-full"
+                  aria-label={`Request expert quote for ${title}`}
+                >
+                  Request expert quote
+                </Button>
+              </div>
+            )}
           
           {/* Footer link */}
           {onSeeProof && (

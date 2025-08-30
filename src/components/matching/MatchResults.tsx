@@ -109,15 +109,25 @@ const MatchResults: React.FC<MatchResultsProps> = ({
   if (matches.length === 0) {
     return (
       <div className="max-w-4xl mx-auto p-6">
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-            <RefreshCw className="h-12 w-12 text-muted-foreground mb-4 animate-spin" />
-            <h3 className="text-lg font-semibold mb-2">Finding matching experts...</h3>
-            <p className="text-muted-foreground">
-              We'll notify you when ready. This usually takes 2-4 hours.
-            </p>
-          </CardContent>
-        </Card>
+          <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+            <RefreshCw className="animate-spin h-8 w-8 text-muted-foreground" />
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Finding matching experts...</h3>
+              <p className="text-muted-foreground">
+                No strong matches yet. We'll notify you when experts are found.
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Usually within 2 hours
+              </p>
+            </div>
+            <Button 
+              variant="outline" 
+              onClick={onRequestManualReview}
+              className="mt-4"
+            >
+              Request manual review
+            </Button>
+          </div>
       </div>
     );
   }

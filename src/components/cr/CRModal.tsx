@@ -186,8 +186,17 @@ const CRModal: React.FC<CRModalProps> = ({ isOpen, onClose }) => {
                   <FormItem>
                     <FormLabel>Project Title *</FormLabel>
                     <FormControl>
-                      <Input placeholder="Describe your project in a few words" {...field} />
+                      <Input 
+                        placeholder="Describe your project in a few words" 
+                        aria-label="Project title"
+                        aria-describedby="title-help"
+                        aria-required="true"
+                        {...field} 
+                      />
                     </FormControl>
+                    <div id="title-help" className="sr-only">
+                      Enter a clear, descriptive title for your project (5-120 characters)
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
