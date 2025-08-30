@@ -43,43 +43,8 @@ const OutcomesHeader: React.FC<OutcomesHeaderProps> = ({
               Outcomes
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              Explore proven capabilities and outcome packages from our expert network
+              Explore proven expert capabilities and outcome packages
             </p>
-            
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
-              <Button 
-                size="lg"
-                asChild
-                className="min-w-[200px]"
-              >
-                <Link to="/brief-builder">
-                  <ScrollText className="mr-2 h-5 w-5" />
-                  Request a custom quote
-                </Link>
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={handleBrowsePacks}
-                className="min-w-[180px]"
-              >
-                Browse outcome packs
-              </Button>
-            </div>
-
-            {/* Anonymity info */}
-            <div className="flex justify-center items-center gap-2 text-sm text-muted-foreground">
-              <span>Experts see only anonymised project details until you choose to reveal.</span>
-              <button
-                onClick={() => setShowAnonymityModal(true)}
-                className="inline-flex items-center gap-1 text-primary hover:underline"
-              >
-                <Info className="h-3 w-3" />
-                How anonymity works
-              </button>
-            </div>
           </div>
           
           {/* Toggle Pills */}
