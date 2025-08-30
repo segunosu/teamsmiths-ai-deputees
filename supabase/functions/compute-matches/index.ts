@@ -194,10 +194,23 @@ serve(async (req) => {
     }) || [];
 
     // Filter by minimum score and sort
-    const eligibleCandidates = scoredCandidates
+    let eligibleCandidates = scoredCandidates
       .filter(candidate => candidate.score >= min_score)
       .sort((a, b) => b.score - a.score)
       .slice(0, max_results);
+
+    // If no candidates meet the minimum score, provide fallback with lower threshold
+    if (eligibleCandidates.length === 0 && min_score > 0.1) {
+      console.log(`No candidates at threshold ${min_score}, trying fallback at 0.1`);
+      eligibleCandidates = scoredCandidates
+        .filter(candidate => candidate.score >= 0.1)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, Math.min(3, max_results)) // Limit fallback results
+        .map(candidate => ({
+          ...candidate,
+          flags: [...(candidate.flags || []), 'Lower confidence match']
+        }));
+    }
 
     console.log(`Found ${eligibleCandidates.length} eligible candidates (≥${min_score})`);
 

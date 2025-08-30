@@ -392,7 +392,7 @@ const AdminDashboard = () => {
             </TabsTrigger>
             <TabsTrigger value="matching" className="flex items-center gap-2">
               <Target className="h-4 w-4" />
-              Matching
+              Expert Matching
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
