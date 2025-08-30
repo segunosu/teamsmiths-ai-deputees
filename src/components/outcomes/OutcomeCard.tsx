@@ -175,7 +175,7 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
                 aria-label={`Request expert quote for ${title}`}
               >
                 <Link to={`/brief-builder?outcome_id=${id}`}>
-                  Request expert quote
+                  Customize this outcome
                 </Link>
               </Button>
             ) : (
@@ -196,7 +196,7 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
                   aria-label={`Request expert quote for ${title}`}
                 >
                   <Link to={`/brief-builder?outcome_id=${id}`}>
-                    Request expert quote
+                    Customize this outcome
                   </Link>
                 </Button>
               </div>

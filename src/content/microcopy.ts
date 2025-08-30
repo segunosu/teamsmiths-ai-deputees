@@ -29,7 +29,7 @@ export const MICROCOPY = {
   
   // Card CTAs
   CARD_USE_OUTCOME: "Use this outcome",
-  CARD_REQUEST_QUOTE: "Request expert quote",
+  CARD_REQUEST_QUOTE: "Customize this outcome",
   CARD_SEE_PROOF: "See proof / case studies",
   
   // Form Labels

@@ -319,7 +319,7 @@ const Catalog = () => {
                     </Button>
                     <Button asChild variant="outline" className="w-full">
                       <Link to={`/brief-builder?outcome_id=${product.id}`}>
-                        Request expert quote
+                        Customize this outcome
                       </Link>
                     </Button>
                   </div>
