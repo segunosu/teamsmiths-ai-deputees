@@ -18,7 +18,7 @@ export const ASSURANCE = {
     title: "Outcome Assurance™ — our QA promise",
     body: [
       "Every engagement is monitored by Deputee™ AI™ + human QA.",
-      "Optional Performance Safeguard keeps your project on track — we reinforce, we don't replace."
+      "Our Performance Safeguards keep your project on track."
     ]
   }
 };
