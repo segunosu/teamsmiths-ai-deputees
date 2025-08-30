@@ -110,7 +110,7 @@ serve(async (req) => {
           }
 
         } else if (metadata.product_id) {
-          // Handle product purchase - create project
+          // Handle product purchase - create brief for expert matching workflow
           const productId = metadata.product_id;
           const userId = metadata.user_id;
 
@@ -124,40 +124,46 @@ serve(async (req) => {
             logStep("Error updating order", { error: orderError });
           }
 
-          // Create project from product
+          // Get user profile for brief creation
+          const { data: profile } = await supabaseService
+            .from('profiles')
+            .select('email, full_name')
+            .eq('user_id', userId)
+            .single();
+
+          // Create brief from catalog purchase (follows expert matching workflow)
           try {
-            const { data, error } = await supabaseService.functions.invoke('create-project-from-quote', {
-              body: { session_id: session.id }
+            const { data, error } = await supabaseService.functions.invoke('create-brief-from-catalog', {
+              body: { 
+                product_id: productId,
+                user_id: userId,
+                contact_email: profile?.email || session.customer_details?.email,
+                contact_name: profile?.full_name || session.customer_details?.name
+              }
             });
 
             if (error) throw error;
-            logStep("Project created from product purchase", { projectId: data?.project_id });
-
-            // Get user email for confirmation
-            const { data: profile } = await supabaseService
-              .from('profiles')
-              .select('email, full_name')
-              .eq('user_id', userId)
-              .single();
+            logStep("Brief created from catalog purchase", { briefId: data?.brief_id });
 
             if (profile?.email) {
               // Send purchase confirmation email
               await resend.emails.send({
                 from: "Platform <onboarding@resend.dev>",
                 to: [profile.email],
-                subject: "Purchase Confirmed - Project Created",
+                subject: "Purchase Confirmed - Expert Matching Started",
                 html: `
                   <h2>Purchase Confirmed!</h2>
                   <p>Hi ${profile.full_name || 'there'},</p>
                   <p>Your purchase of ${metadata.product_title} for £${(session.amount_total! / 100).toLocaleString()} has been confirmed.</p>
-                  <p>Your project has been created and you can now track progress in your <a href="${Deno.env.get('SUPABASE_URL')?.replace('supabase.co', 'supabase.co')}/dashboard">dashboard</a>.</p>
-                  <p>We'll be in touch soon to begin delivery.</p>
+                  <p>We're now matching you with expert freelancers who will submit personalized proposals for your project.</p>
+                  <p>You'll be notified when proposals are ready for review in your <a href="${Deno.env.get('SUPABASE_URL')?.replace('supabase.co', 'supabase.co')}/dashboard">dashboard</a>.</p>
+                  <p>This ensures you get the best expert for your specific needs!</p>
                 `,
               });
               logStep("Purchase confirmation email sent");
             }
           } catch (error) {
-            logStep("Error creating project from purchase", { error });
+            logStep("Error creating brief from catalog purchase", { error });
           }
         }
         break;
