@@ -226,7 +226,7 @@ const CapabilityGallery = () => {
                   className="w-full"
                 >
                   <Link to={`/brief-builder?capability_id=${capability.id}`}>
-                    Request expert quote
+                    Customize this outcome
                   </Link>
                 </Button>
 
