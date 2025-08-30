@@ -131,9 +131,10 @@ export const MatchingDashboard: React.FC<MatchingDashboardProps> = ({
       {/* Header */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-3">
+            <div className="w-2 h-6 bg-purple-500 rounded-full"></div>
             <Brain className="h-5 w-5" />
-            Matching Algorithm Dashboard
+            Admin Matching Dashboard
           </CardTitle>
         </CardHeader>
         <CardContent>

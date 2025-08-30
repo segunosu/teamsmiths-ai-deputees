@@ -160,8 +160,13 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back, {user.email}</p>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-8 bg-primary rounded-full"></div>
+            <div>
+              <h1 className="text-3xl font-bold">Client Dashboard</h1>
+              <p className="text-muted-foreground">Welcome back, {user.email}</p>
+            </div>
+          </div>
         </div>
 
         {/* Quick Stats */}

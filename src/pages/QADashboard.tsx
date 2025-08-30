@@ -7,12 +7,15 @@ import { InfoIcon, CheckCircle, AlertTriangle } from 'lucide-react';
 const QADashboard: React.FC = () => {
   return (
     <div className="container mx-auto py-8 space-y-6">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold">QA/UAT Dashboard</h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Comprehensive quality assurance checklist for the Outcomes & Quotes system.
-          Items are separated between automated code verification and manual human testing.
-        </p>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-2 h-8 bg-orange-500 rounded-full"></div>
+        <div>
+          <h1 className="text-4xl font-bold">QA/UAT Dashboard</h1>
+          <p className="text-lg text-muted-foreground max-w-3xl">
+            Comprehensive quality assurance checklist for the Outcomes & Quotes system.
+            Items are separated between automated code verification and manual human testing.
+          </p>
+        </div>
       </div>
 
       <Alert>
