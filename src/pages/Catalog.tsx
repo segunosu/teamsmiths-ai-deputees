@@ -199,24 +199,11 @@ const Catalog = () => {
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
+        {/* Section Header */}
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-foreground mb-4">
             Outcome Packs
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Pre-scoped solutions. Delivered fast. Human QA. Pay by milestone.
-          </p>
-        </div>
-
-        {/* Primary CTA (above category tabs) */}
-        <div className="mb-6 flex flex-col sm:flex-row gap-3 justify-center">
-          <Button asChild size="sm">
-            <Link to="/customize">Discuss Customization</Link>
-          </Button>
-          <Button asChild variant="outline" size="sm">
-            <Link to="/auth">Book Consultation</Link>
-          </Button>
+          </h2>
         </div>
 
         {/* Category Filter */}
@@ -260,8 +247,8 @@ const Catalog = () => {
                       {product.category?.name}
                     </Badge>
                   </div>
-                  <div className="text-3xl font-bold text-primary">
-                    {formatPrice(product.base_price)}
+                  <div className="text-sm text-muted-foreground">
+                    From {formatPrice(Math.floor(product.base_price * 0.8))} · Typical {formatPrice(product.base_price)} · Up to {formatPrice(Math.floor(product.base_price * 1.2))}
                   </div>
                 </div>
                 <CardTitle className="text-xl">{product.title}</CardTitle>
@@ -323,15 +310,17 @@ const Catalog = () => {
                 <Separator className="my-4" />
                 
                   <div className="mt-auto">
-                  <div className="flex gap-3">
-                    <Button asChild className="flex-1">
-                      <Link to={`/product/${product.id}`}>
-                        See Details or Customize
+                  <div className="space-y-2">
+                    <Button asChild className="w-full">
+                      <Link to={`/brief-builder?pack_id=${product.id}`}>
+                        Use this pack
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
-                    <Button asChild variant="outline" className="flex-1">
-                      <Link to={`/brief-builder?pack_id=${product.id}`}>Buy Outcome Pack</Link>
+                    <Button asChild variant="outline" className="w-full">
+                      <Link to={`/brief-builder?outcome_id=${product.id}`}>
+                        Request expert quote
+                      </Link>
                     </Button>
                   </div>
                 </div>

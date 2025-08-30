@@ -63,12 +63,12 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <span>{parts.join(' • ')}</span>
+              <span>{parts.join(' · ')}</span>
               <Info className="h-3 w-3" />
             </div>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Price varies by scope. Request a quote for an exact price.</p>
+            <p>Price band reflects typical outcomes. Request a quote for an exact estimate.</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -143,7 +143,7 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
               <Clock className="h-4 w-4" />
               <span>{durationEstimate}</span>
             </div>
-            {renderPriceBand()}
+            {viewMode === 'catalog' && renderPriceBand()}
           </div>
 
           {/* Tags */}
@@ -174,19 +174,19 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
                 size="lg"
                 aria-label={`Request expert quote for ${title}`}
               >
-                <Link to={`/customize?outcome_id=${id}`}>
+                <Link to={`/brief-builder?outcome_id=${id}`}>
                   Request expert quote
                 </Link>
               </Button>
             ) : (
-              // Catalog view: Primary "Use this outcome" + secondary "Request expert quote"
+              // Catalog view: Primary "Use this pack" + secondary "Request expert quote"
               <div className="space-y-2">
                 <Button 
                   onClick={() => onUseOutcome?.(id)}
                   className="w-full"
-                  aria-label={`Use outcome: ${title}`}
+                  aria-label={`Use pack: ${title}`}
                 >
-                  Use this outcome
+                  Use this pack
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button 
@@ -195,7 +195,7 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
                   className="w-full"
                   aria-label={`Request expert quote for ${title}`}
                 >
-                  <Link to={`/customize?outcome_id=${id}`}>
+                  <Link to={`/brief-builder?outcome_id=${id}`}>
                     Request expert quote
                   </Link>
                 </Button>

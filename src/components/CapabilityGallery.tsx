@@ -152,13 +152,10 @@ const CapabilityGallery = () => {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
-            What Our Experts + Deputee™ AI Deliver
+          <h2 className="text-3xl font-bold text-foreground mb-4">
+            Proof in Action
           </h2>
-          <p className="text-xl text-muted-foreground max-w-4xl mx-auto mb-6">
-            Outcomes you can expect from our human-AI expert teams — proven, tool-powered, and QA-assured.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm">
+          <div className="flex flex-wrap justify-center gap-4 text-sm mb-6">
             <Badge variant="outline" className="px-3 py-1">
               <Shield className="h-3 w-3 mr-1" />
               Outcome Assurance™
@@ -171,36 +168,6 @@ const CapabilityGallery = () => {
               <Award className="h-3 w-3 mr-1" />
               Performance Safeguard
             </Badge>
-          </div>
-        </div>
-
-        {/* Intent Selector */}
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex rounded-lg bg-muted p-1 gap-1">
-            <Button
-              onClick={() => navigate('/brief-builder')}
-              variant="default"
-              size="sm"
-              className="rounded-md"
-            >
-              I have a business goal
-            </Button>
-            <Button
-              onClick={() => navigate('/catalog')}
-              variant="outline"
-              size="sm"
-              className="rounded-md"
-            >
-              Browse outcome packs
-            </Button>
-            <Button
-              onClick={() => window.open('https://calendly.com/osu/brief-chat', '_blank', 'noopener,noreferrer')}
-              variant="outline"
-              size="sm"
-              className="rounded-md"
-            >
-              Talk to a curator
-            </Button>
           </div>
         </div>
 
@@ -254,12 +221,12 @@ const CapabilityGallery = () => {
                 {/* CTA */}
                 <Button 
                   asChild 
-                  variant="secondary" 
+                  variant="default" 
                   size="sm"
                   className="w-full"
                 >
                   <Link to={`/brief-builder?capability_id=${capability.id}`}>
-                    Customize this outcome
+                    Request expert quote
                   </Link>
                 </Button>
 
@@ -323,32 +290,6 @@ const CapabilityGallery = () => {
           </div>
         )}
 
-        {/* Bottom CTAs */}
-        <div className="text-center space-y-4">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/brief-builder">
-                Start a Bespoke Brief
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-              <Link to="/catalog">
-                Browse Outcome Catalog
-              </Link>
-            </Button>
-          </div>
-          
-          {selectedIntent === 'curator' && (
-            <div className="mt-4">
-              <Button asChild variant="outline" size="sm">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  <HeartHandshake className="mr-2 h-4 w-4" />
-                  Talk to a Curator
-                </a>
-              </Button>
-            </div>
-          )}
-        </div>
       </div>
     </section>
   );

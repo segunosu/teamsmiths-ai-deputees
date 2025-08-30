@@ -53,14 +53,14 @@ const OutcomesHeader: React.FC<OutcomesHeaderProps> = ({
                 asChild
                 className="min-w-[200px]"
               >
-                <Link to="/customize">
+                <Link to="/brief-builder">
                   <ScrollText className="mr-2 h-5 w-5" />
                   Request a custom quote
                 </Link>
               </Button>
               
               <Button 
-                variant="secondary" 
+                variant="outline" 
                 size="lg"
                 onClick={handleBrowsePacks}
                 className="min-w-[180px]"
