@@ -103,11 +103,7 @@ const App = () => (
                     <AdminMatchingSettings />
                   </AdminOnly>
                 } />
-                <Route path="/admin/reports" element={
-                  <AdminOnly>
-                    <AdminReports />
-                  </AdminOnly>
-                } />
+                <Route path="/admin/reports" element={<AdminReports />} />
                 <Route path="/admin/qa" element={<QADashboard />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />

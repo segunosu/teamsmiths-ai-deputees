@@ -94,8 +94,8 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
     tools: [],
     outcome_preferences: [],
     industries: [],
-    outcome_band_min: 5000,
-    outcome_band_max: 25000,
+    outcome_band_min: 0,
+    outcome_band_max: 0,
     locales: ['en-GB'],
     availability_weekly_hours: 40
   });
@@ -322,9 +322,14 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
       <CardContent className="space-y-6">
         <div>
           <Label className="text-base font-medium mb-4 block">Typical Project Band (GBP)</Label>
+          <p className="text-sm text-muted-foreground mb-4">
+            Enter your typical project band (outcome-based, not hourly).
+          </p>
           <div className="space-y-4">
             <div>
-              <Label className="text-sm">Minimum: £{wizardData.outcome_band_min.toLocaleString()}</Label>
+              <Label className="text-sm">
+                Minimum: {wizardData.outcome_band_min > 0 ? `£${wizardData.outcome_band_min.toLocaleString()}` : 'Not set'}
+              </Label>
               <Slider
                 value={[wizardData.outcome_band_min]}
                 onValueChange={(value) => updateRange('outcome_band_min', value[0])}
@@ -335,7 +340,9 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
               />
             </div>
             <div>
-              <Label className="text-sm">Maximum: £{wizardData.outcome_band_max.toLocaleString()}</Label>
+              <Label className="text-sm">
+                Maximum: {wizardData.outcome_band_max > 0 ? `£${wizardData.outcome_band_max.toLocaleString()}` : 'Not set'}
+              </Label>
               <Slider
                 value={[wizardData.outcome_band_max]}
                 onValueChange={(value) => updateRange('outcome_band_max', value[0])}

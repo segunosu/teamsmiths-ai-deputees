@@ -55,16 +55,29 @@ export default function AdminMatchingSettings() {
 
   const loadSettings = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('admin-get-matching-settings');
+      const { data, error } = await supabase.rpc('admin_get_matching_settings');
       
       if (error) throw error;
       
-      if (data?.success) {
-        const loadedSettings = { ...defaultSettings, ...data.settings };
-        setSettings(loadedSettings);
-        setSynonymsText(JSON.stringify(loadedSettings.tool_synonyms, null, 2));
-        setIndustrySynonymsText(JSON.stringify(loadedSettings.industry_synonyms, null, 2));
-      }
+      const settings = (data as any) || {};
+      setSettings({
+        outcome_weight: Number(settings.outcome_weight) || 0.40,
+        tools_weight: Number(settings.tools_weight) || 0.30,
+        industry_weight: Number(settings.industry_weight) || 0.15,
+        availability_weight: Number(settings.availability_weight) || 0.10,
+        history_weight: Number(settings.history_weight) || 0.05,
+        min_score_default: Number(settings.min_score_default) || 0.65,
+        max_invites_default: Number(settings.max_invites_default) || 5,
+        cert_boost: Number(settings.cert_boost) || 0.10,
+        boost_verified_certs: settings.boost_verified_certs !== false,
+        normalize_region_rates: settings.normalize_region_rates !== false,
+        hide_hourly_rates: settings.hide_hourly_rates !== false,
+        tool_synonyms: settings.tool_synonyms || {},
+        industry_synonyms: settings.industry_synonyms || {}
+      });
+
+      setSynonymsText(JSON.stringify(settings.tool_synonyms || {}, null, 2));
+      setIndustrySynonymsText(JSON.stringify(settings.industry_synonyms || {}, null, 2));
     } catch (error) {
       console.error('Error loading settings:', error);
       toast({
@@ -114,20 +127,14 @@ export default function AdminMatchingSettings() {
         industry_synonyms: industrySynonyms
       };
 
-      const { data, error } = await supabase.functions.invoke('admin-update-matching-settings', {
-        body: settingsToSave
-      });
+      const { data, error } = await supabase.rpc('admin_update_matching_settings', { p_settings: settingsToSave });
 
       if (error) throw error;
 
-      if (data?.success) {
-        toast({
-          title: 'Success',
-          description: 'Matching settings saved successfully',
-        });
-      } else {
-        throw new Error('Failed to save settings');
-      }
+      toast({
+        title: 'Success',
+        description: 'Matching settings saved successfully',
+      });
     } catch (error) {
       console.error('Error saving settings:', error);
       toast({

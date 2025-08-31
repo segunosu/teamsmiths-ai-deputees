@@ -124,6 +124,39 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_tool_suggestions: {
+        Row: {
+          created_at: string | null
+          id: string
+          rationale: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          tool_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          rationale?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          tool_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          rationale?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          tool_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       agencies: {
         Row: {
           created_at: string | null
@@ -3433,12 +3466,15 @@ export type Database = {
       v_experts: {
         Row: {
           availability_weekly_hours: number | null
-          email: string | null
           expert_id: string | null
           full_name: string | null
           industries: string[] | null
           locales: string[] | null
+          outcome_band_max: number | null
+          outcome_band_min: number | null
           outcome_history: Json | null
+          outcome_preferences: string[] | null
+          practical_skills: string[] | null
           price_band_max: number | null
           price_band_min: number | null
           skills: string[] | null

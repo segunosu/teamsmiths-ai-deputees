@@ -1,425 +1,456 @@
-import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.55.0';
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
 interface MatchingRequest {
   brief_id: string;
   min_score?: number;
-  max_results?: number;
-  widen?: {
-    tools?: boolean;
-    industry?: boolean;
-  };
+  max_invites?: number;
+  widen?: boolean;
+}
+
+interface MatchingCandidate {
+  expert_id: string;
+  score: number;
+  reasons: string[];
+  flags: string[];
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // Initialize Supabase client with service role
     const supabase = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-      { auth: { persistSession: false } }
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { brief_id, min_score = 0.65, max_results = 5, widen }: MatchingRequest = await req.json();
+    const { brief_id, min_score = 0.65, max_invites = 5, widen = false }: MatchingRequest = await req.json();
 
-    console.log(`Computing matches for brief ${brief_id}, min_score: ${min_score}, max_results: ${max_results}`);
+    console.log(`Computing matches for brief ${brief_id} with min_score=${min_score}, max_invites=${max_invites}`);
 
-    // Get the brief details
+    // Fetch brief details
     const { data: brief, error: briefError } = await supabase
-      .from("briefs")
-      .select("*")
-      .eq("id", brief_id)
+      .from('briefs')
+      .select('*')
+      .eq('id', brief_id)
       .single();
 
     if (briefError || !brief) {
-      return new Response(JSON.stringify({
-        status: "error",
-        message: "Brief not found",
-        debug_id: brief_id
-      }), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      throw new Error(`Brief not found: ${briefError?.message}`);
     }
 
-    // Get all experts using the resilient view
-    const { data: freelancers, error: freelancersError } = await supabase
-      .from("v_experts")
-      .select("*");
-
-    if (freelancersError) {
-      return new Response(JSON.stringify({
-        status: "error",
-        message: `Failed to fetch experts: ${freelancersError.message}`,
-        debug_id: brief_id
-      }), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    console.log(`Found ${freelancers?.length || 0} experts to evaluate`);
-
-    // Extract brief context from structured_brief
-    const structuredBrief = brief.structured_brief || {};
-    const requestSkills = extractSkillsFromText(
-      [
-        structuredBrief.goal?.interpreted || '',
-        structuredBrief.context?.interpreted || '',
-        structuredBrief.constraints?.interpreted || ''
-      ].join(' ')
-    );
+    // Fetch admin settings for weights and synonyms
+    const { data: settings, error: settingsError } = await supabase.rpc('admin_get_matching_settings');
     
-    // Apply widening if requested
-    if (widen?.tools) {
-      requestSkills.push(...['automation', 'integration', 'api', 'workflow']);
+    if (settingsError) {
+      console.error('Settings error:', settingsError);
     }
 
-    const requestBudget = parseBudgetRange(structuredBrief.budget_range || '');
-    const requestIndustries = extractIndustriesFromText(
-      [
-        structuredBrief.goal?.interpreted || '',
-        structuredBrief.context?.interpreted || ''
-      ].join(' ')
-    );
-
-    // Get matching weights
-    const { data: adminSettings } = await supabase
-      .from("admin_settings")
-      .select("setting_value")
-      .eq("setting_key", "matching_config")
-      .single();
-
-    const config = adminSettings?.setting_value || {};
-    const weights = config.matching_weights || {
-      skills: 0.25,
-      domain: 0.15,
-      outcomes: 0.20,
-      availability: 0.15,
-      locale: 0.05,
-      price: 0.10,
-      vetting: 0.07,
-      history: 0.03
-    };
-
-  // Get synonyms for better matching
-  const { data: matchingSettings } = await supabase.rpc('admin_get_matching_settings');
-  const toolSynonyms = matchingSettings?.tool_synonyms || {};
-  const industrySynonyms = matchingSettings?.industry_synonyms || {};
-  
-  // Apply synonyms to normalize skills and tools
-  const normalizedSkills = normalizeWithSynonyms(requestSkills, toolSynonyms);
-  const normalizedIndustries = normalizeWithSynonyms(requestIndustries, industrySynonyms);
-
-  // Score each freelancer
-  const scoredCandidates = freelancers?.map((freelancer: any) => {
-    const scores = {
-      tools: calculateToolsScore(freelancer.tools, normalizedSkills, toolSynonyms),
-      skills: calculateSkillsScore(freelancer.skills, normalizedSkills),
-      industry: calculateIndustryScore(freelancer.industries, normalizedIndustries, industrySynonyms),
-      availability: calculateAvailabilityScore(freelancer.availability_weekly_hours),
-      price: calculatePriceScore(freelancer.price_band_min, freelancer.price_band_max, requestBudget)
-    };
-
-    // Updated weighted scoring to match spec
-    const weights_updated = {
-      tools: 0.35,
-      skills: 0.25, 
-      industry: 0.20,
+    const weights = {
+      outcomes: 0.40,
+      tools: 0.30,
+      industries: 0.15,
       availability: 0.10,
-      price: 0.10
+      history: 0.05,
+      cert_bonus: 0.10,
+      ...settings
     };
 
-    const totalScore = Object.entries(scores).reduce((sum, [key, score]) => {
-      return sum + (weights_updated[key as keyof typeof weights_updated] * score);
-    }, 0);
+    const toolSynonyms = settings?.tool_synonyms || {};
+    const industrySynonyms = settings?.industry_synonyms || {};
 
-    // Create detailed reasons array
-    const reasons = [];
-    const flags = [];
-    
-    if (scores.tools > 0.6) {
-      const matchedTools = freelancer.tools?.filter((tool: string) =>
-        normalizedSkills.some(skill => tool.toLowerCase().includes(skill.toLowerCase()) ||
-          Object.keys(toolSynonyms).some(syn => syn.toLowerCase() === skill.toLowerCase() && 
-            toolSynonyms[syn].toLowerCase() === tool.toLowerCase()))
-      ) || [];
-      if (matchedTools.length > 0) {
-        reasons.push(`Tools: ${matchedTools.slice(0, 2).join(', ')}`);
+    // Extract requirements from brief
+    const outcomes = extractOutcomesFromBrief(brief);
+    const tools = extractToolsFromBrief(brief);
+    const industries = extractIndustriesFromBrief(brief);
+    const budgetRange = parseBudgetRange(brief.budget_range);
+
+    console.log(`Brief requirements - Outcomes: ${outcomes.length}, Tools: ${tools.length}, Industries: ${industries.length}`);
+
+    // Fetch all experts with their data using service role
+    const { data: experts, error: expertsError } = await supabase
+      .from('v_experts')
+      .select('*');
+
+    if (expertsError) {
+      console.error('Error fetching experts:', expertsError);
+      throw new Error(`Failed to fetch experts: ${expertsError.message}`);
+    }
+
+    // Also fetch certifications and case studies for scoring
+    const { data: certifications } = await supabase
+      .from('freelancer_certifications')
+      .select('user_id, cert_code, status')
+      .eq('status', 'verified');
+
+    const { data: caseStudies } = await supabase
+      .from('case_studies')
+      .select('user_id, tools, industries, is_verified')
+      .eq('is_verified', true);
+
+    // Group by user_id for efficient lookup
+    const certsByUser = new Map<string, string[]>();
+    certifications?.forEach(cert => {
+      if (!certsByUser.has(cert.user_id)) {
+        certsByUser.set(cert.user_id, []);
       }
-    }
-    
-    if (scores.industry > 0.5) {
-      reasons.push("Industry: SaaS experience");
-    }
-    
-    if (scores.availability >= 0.8) {
-      reasons.push(`Availability: ${freelancer.availability_weekly_hours}h/week`);
-    }
-    
-    if (scores.price < 0.4) {
-      flags.push("Rate slightly high");
-    }
-    
-    if (scores.availability < 0.5) {
-      flags.push("Limited availability");
-    }
+      certsByUser.get(cert.user_id)?.push(cert.cert_code);
+    });
 
-    // expert_id is already computed in the view
-    const expert_user_id = freelancer.expert_id;
-      
-    return {
-      expert_id: expert_user_id,
-      expert_user_id, // Keep for backward compatibility
-      score: Math.round(totalScore * 100) / 100,
-      reasons,
-      flags,
-      profile: {
-        full_name: freelancer.full_name,
-        email: freelancer.email,
-        skills: freelancer.skills,
-        tools: freelancer.tools,
-        price_range: `£${Math.floor((freelancer.price_band_min || 0)/100)}-${Math.floor((freelancer.price_band_max || 0)/100)}`,
-        availability: `${freelancer.availability_weekly_hours || 0}h/week`
+    const caseStudiesByUser = new Map<string, any[]>();
+    caseStudies?.forEach(cs => {
+      if (!caseStudiesByUser.has(cs.user_id)) {
+        caseStudiesByUser.set(cs.user_id, []);
       }
-    };
-    }) || [];
+      caseStudiesByUser.get(cs.user_id)?.push(cs);
+    });
 
-    // Filter by minimum score and sort
-    let eligibleCandidates = scoredCandidates
-      .filter(candidate => candidate.score >= min_score)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, max_results);
+    const candidates: MatchingCandidate[] = [];
 
-    // If no candidates meet the minimum score, provide fallback with lower threshold
-    if (eligibleCandidates.length === 0 && min_score > 0.1) {
-      console.log(`No candidates at threshold ${min_score}, trying fallback at 0.1`);
-      eligibleCandidates = scoredCandidates
-        .filter(candidate => candidate.score >= 0.1)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, Math.min(3, max_results)) // Limit fallback results
-        .map(candidate => ({
-          ...candidate,
-          flags: [...(candidate.flags || []), 'Lower confidence match']
-        }));
-    }
+    // Score each expert
+    for (const expert of experts || []) {
+      try {
+        const reasons: string[] = [];
+        const flags: string[] = [];
+        
+        // Calculate individual scores
+        const outcomeScore = calculateOutcomeScore(outcomes, expert.outcome_preferences || [], toolSynonyms);
+        const toolsScore = calculateToolsScore(tools, [...(expert.tools || []), ...(expert.practical_skills || [])], toolSynonyms);
+        const industryScore = calculateIndustryScore(industries, expert.industries || [], industrySynonyms);
+        const availabilityScore = calculateAvailabilityScore(expert.availability_weekly_hours, brief.urgency_level);
+        const historyScore = calculateHistoryScore(caseStudiesByUser.get(expert.expert_id) || [], outcomes, tools);
+        
+        // Calculate weighted total
+        let totalScore = (
+          outcomeScore * weights.outcomes +
+          toolsScore * weights.tools +
+          industryScore * weights.industries +
+          availabilityScore * weights.availability +
+          historyScore * weights.history
+        );
 
-    console.log(`Found ${eligibleCandidates.length} eligible candidates (≥${min_score})`);
-
-    // Log matching event to both tables
-    await Promise.all([
-      supabase.from('brief_events').insert({
-        brief_id,
-        type: 'matching_computed',
-        payload: {
-          total_evaluated: scoredCandidates.length,
-          eligible_count: eligibleCandidates.length,
-          min_score,
-          max_results
+        // Add certification bonus
+        const expertCerts = certsByUser.get(expert.expert_id) || [];
+        let certBonus = 0;
+        if (expertCerts.length > 0 && settings?.boost_verified_certs) {
+          certBonus = Math.min(expertCerts.length * 0.05, weights.cert_bonus);
+          totalScore = Math.min(1.0, totalScore + certBonus);
         }
-      }),
-      supabase.from('matching_runs').insert({
+
+        // Generate reasons
+        if (outcomeScore > 0.5) {
+          const matchedOutcomes = outcomes.filter(outcome => 
+            expert.outcome_preferences?.some(pref => 
+              normalizeWithSynonyms(outcome, toolSynonyms).toLowerCase().includes(
+                normalizeWithSynonyms(pref, toolSynonyms).toLowerCase()
+              )
+            )
+          );
+          if (matchedOutcomes.length > 0) {
+            reasons.push(`Outcome fit: ${matchedOutcomes.slice(0, 2).join(', ')}`);
+          }
+        }
+
+        if (toolsScore > 0.5) {
+          const matchedTools = tools.filter(tool =>
+            [...(expert.tools || []), ...(expert.practical_skills || [])].some(expertTool =>
+              normalizeWithSynonyms(tool, toolSynonyms).toLowerCase().includes(
+                normalizeWithSynonyms(expertTool, toolSynonyms).toLowerCase()
+              )
+            )
+          );
+          if (matchedTools.length > 0) {
+            reasons.push(`Tools: ${matchedTools.slice(0, 3).join(', ')}`);
+          }
+        }
+
+        if (availabilityScore > 0.5) {
+          reasons.push(`Availability OK`);
+        }
+
+        if (certBonus > 0) {
+          reasons.push(`${expertCerts.length} verified cert${expertCerts.length > 1 ? 's' : ''}`);
+        }
+
+        // Generate flags
+        if (budgetRange.min && expert.outcome_band_min && expert.outcome_band_min > budgetRange.max) {
+          flags.push('Budget band misaligned');
+        }
+
+        if (outcomes.length > 0 && outcomeScore < 0.3) {
+          flags.push('Limited outcome match');
+        }
+
+        if (tools.length > 0 && toolsScore < 0.3) {
+          const missingTools = tools.filter(tool =>
+            ![...(expert.tools || []), ...(expert.practical_skills || [])].some(expertTool =>
+              normalizeWithSynonyms(tool, toolSynonyms).toLowerCase().includes(
+                normalizeWithSynonyms(expertTool, toolSynonyms).toLowerCase()
+              )
+            )
+          );
+          if (missingTools.length > 0) {
+            flags.push(`Missing: ${missingTools.slice(0, 2).join(', ')}`);
+          }
+        }
+
+        // Only include if meets minimum score
+        if (totalScore >= min_score) {
+          candidates.push({
+            expert_id: expert.expert_id,
+            score: Math.round(totalScore * 100) / 100,
+            reasons: reasons.slice(0, 3), // Limit to top 3 reasons
+            flags: flags.slice(0, 2)     // Limit to top 2 flags
+          });
+        }
+
+      } catch (error) {
+        console.error(`Error scoring expert ${expert.expert_id}:`, error);
+        continue;
+      }
+    }
+
+    // Sort by score descending and limit results
+    const sortedCandidates = candidates
+      .sort((a, b) => b.score - a.score)
+      .slice(0, max_invites);
+
+    console.log(`Found ${candidates.length} eligible candidates, returning top ${sortedCandidates.length}`);
+
+    // Log the matching run
+    await supabase
+      .from('matching_runs')
+      .insert({
         brief_id,
-        candidates_found: eligibleCandidates.length,
+        candidates_found: sortedCandidates.length,
         min_score,
-        max_invites: max_results,
-        metadata: { total_evaluated: scoredCandidates.length }
-      })
-    ]);
+        max_invites,
+        metadata: { 
+          total_experts: experts?.length || 0,
+          weights,
+          widen_applied: widen
+        }
+      });
 
     return new Response(JSON.stringify({
       ok: true,
       brief_id,
-      candidates: eligibleCandidates
+      candidates: sortedCandidates,
+      metadata: {
+        total_evaluated: experts?.length || 0,
+        candidates_found: sortedCandidates.length,
+        min_score_used: min_score
+      }
     }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 
-  } catch (error: any) {
-    console.error("Error in compute-matches:", error);
-    
-    return new Response(JSON.stringify({
-      status: "error",
-      message: error.message || "Matching computation failed",
-      debug_id: `error-${Date.now()}`
+  } catch (error) {
+    console.error('Error in compute-matches function:', error);
+    return new Response(JSON.stringify({ 
+      ok: false, 
+      error: error.message 
     }), {
-      status: 200,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 });
 
 // Helper functions
-function normalizeWithSynonyms(items: string[], synonyms: Record<string, string>): string[] {
-  return items.map(item => {
-    const normalized = item.toLowerCase();
-    return synonyms[normalized] || item;
+function normalizeWithSynonyms(term: string, synonyms: Record<string, string[]>): string {
+  const normalized = term.toLowerCase().trim();
+  
+  // Check if any synonym maps to this term
+  for (const [key, values] of Object.entries(synonyms)) {
+    if (values.some(v => v.toLowerCase() === normalized)) {
+      return key.toLowerCase();
+    }
+    if (key.toLowerCase() === normalized) {
+      return key.toLowerCase();
+    }
+  }
+  
+  return normalized;
+}
+
+function extractOutcomesFromBrief(brief: any): string[] {
+  const outcomes: string[] = [];
+  
+  if (brief.structured_brief?.outcomes) {
+    outcomes.push(...brief.structured_brief.outcomes);
+  }
+  
+  // Extract from other fields using keyword matching
+  const outcomeKeywords = [
+    'Sales Uplift', 'Lead Gen', 'Support Automation', 'Back-Office Automation',
+    'Marketing Content', 'Ops Efficiency', 'Data Extraction', 'Recruiting',
+    'Finance Automation', 'Knowledge Base', 'Sales Playbooks', 'Quality Assurance'
+  ];
+  
+  const briefText = `${brief.project_title || ''} ${JSON.stringify(brief.structured_brief || {})}`.toLowerCase();
+  
+  outcomeKeywords.forEach(keyword => {
+    if (briefText.includes(keyword.toLowerCase())) {
+      outcomes.push(keyword);
+    }
   });
+  
+  return [...new Set(outcomes)];
 }
 
-function extractSkillsFromText(text: string): string[] {
-  const commonSkills = [
-    'react', 'vue', 'angular', 'javascript', 'typescript', 'python', 'java',
-    'ui/ux', 'design', 'marketing', 'seo', 'content', 'copywriting',
-    'project management', 'agile', 'scrum', 'analytics', 'data',
-    'automation', 'crm', 'hubspot', 'salesforce', 'stripe', 'payment',
-    'notion', 'zapier', 'integration', 'api', 'workflow', 'hubspot ai',
-    'notion ai', 'openai', 'chatgpt', 'claude'
-  ];
+function extractToolsFromBrief(brief: any): string[] {
+  const tools: string[] = [];
   
-  const found = commonSkills.filter(skill => 
-    text.toLowerCase().includes(skill.toLowerCase())
-  );
-  
-  return found.length ? found : ['general'];
-}
-
-function calculateToolsScore(freelancerTools: string[], requestSkills: string[], synonyms: Record<string, string>): number {
-  if (!requestSkills.length || !freelancerTools?.length) return 0.3;
-  
-  let matches = 0;
-  for (const skill of requestSkills) {
-    const normalized = skill.toLowerCase();
-    const synonym = synonyms[normalized] || skill;
-    
-    if (freelancerTools.some(tool => 
-      tool.toLowerCase().includes(normalized) ||
-      tool.toLowerCase().includes(synonym.toLowerCase())
-    )) {
-      matches++;
-    }
+  if (brief.structured_brief?.tools) {
+    tools.push(...brief.structured_brief.tools);
   }
   
-  return Math.min(matches / requestSkills.length, 1.0);
-}
-
-function calculateIndustryScore(freelancerIndustries: string[], requestIndustries: string[], synonyms: Record<string, string>): number {
-  if (!requestIndustries.length) return 0.5;
-  if (!freelancerIndustries?.length) return 0.2;
-  
-  let matches = 0;
-  for (const industry of requestIndustries) {
-    const normalized = industry.toLowerCase();
-    const synonym = synonyms[normalized] || industry;
-    
-    if (freelancerIndustries.some(fi => 
-      fi.toLowerCase().includes(normalized) ||
-      fi.toLowerCase().includes(synonym.toLowerCase())
-    )) {
-      matches++;
-    }
-  }
-  
-  return Math.min(matches / requestIndustries.length, 1.0);
-}
-
-function extractIndustriesFromText(text: string): string[] {
-  const industries = [
-    'fintech', 'healthcare', 'education', 'ecommerce', 'saas',
-    'consulting', 'agency', 'startup', 'enterprise', 'nonprofit'
+  // Extract from text using common tool names
+  const toolKeywords = [
+    'N8N', 'MCP', 'OpenAI', 'Anthropic', 'Claude', 'GPT', 'ElevenLabs',
+    'Whisper', 'Pinecone', 'LangChain', 'Supabase', 'Airtable', 'Zapier',
+    'Make', 'Retool', 'Bubble'
   ];
   
-  return industries.filter(industry => 
-    text.toLowerCase().includes(industry.toLowerCase())
-  );
+  const briefText = `${brief.project_title || ''} ${JSON.stringify(brief.structured_brief || {})}`.toLowerCase();
+  
+  toolKeywords.forEach(tool => {
+    if (briefText.includes(tool.toLowerCase())) {
+      tools.push(tool);
+    }
+  });
+  
+  return [...new Set(tools)];
 }
 
-function parseBudgetRange(budgetRange: string): { min: number; max: number } {
+function extractIndustriesFromBrief(brief: any): string[] {
+  const industries: string[] = [];
+  
+  if (brief.structured_brief?.industries) {
+    industries.push(...brief.structured_brief.industries);
+  }
+  
+  return [...new Set(industries)];
+}
+
+function parseBudgetRange(budgetRange: string | null): { min: number; max: number } {
+  if (!budgetRange) return { min: 0, max: Infinity };
+  
   const matches = budgetRange.match(/[\d,]+/g);
-  if (!matches) return { min: 0, max: 999999 };
+  if (!matches) return { min: 0, max: Infinity };
   
-  const numbers = matches.map(m => parseInt(m.replace(/,/g, '')) * 100);
+  const numbers = matches.map(m => parseInt(m.replace(/,/g, '')));
+  
   return {
-    min: Math.min(...numbers),
-    max: Math.max(...numbers)
+    min: numbers[0] || 0,
+    max: numbers[1] || numbers[0] || Infinity
   };
 }
 
-function calculateSkillsScore(freelancerSkills: string[], requestSkills: string[]): number {
-  if (!requestSkills.length) return 0.5;
+function calculateOutcomeScore(briefOutcomes: string[], expertOutcomes: string[], synonyms: Record<string, string[]>): number {
+  if (briefOutcomes.length === 0 || expertOutcomes.length === 0) return 0;
   
-  const matches = requestSkills.filter(skill => 
-    freelancerSkills?.some(fs => fs.toLowerCase().includes(skill.toLowerCase()))
-  );
+  let matches = 0;
+  briefOutcomes.forEach(briefOutcome => {
+    const normalizedBrief = normalizeWithSynonyms(briefOutcome, synonyms);
+    const hasMatch = expertOutcomes.some(expertOutcome => {
+      const normalizedExpert = normalizeWithSynonyms(expertOutcome, synonyms);
+      return normalizedBrief === normalizedExpert || 
+             normalizedBrief.includes(normalizedExpert) ||
+             normalizedExpert.includes(normalizedBrief);
+    });
+    if (hasMatch) matches++;
+  });
   
-  return Math.min(matches.length / requestSkills.length, 1.0);
+  return Math.min(1.0, matches / briefOutcomes.length);
 }
 
-function calculateDomainScore(industries: string[], tools: string[], requestIndustries: string[]): number {
-  let score = 0;
+function calculateToolsScore(briefTools: string[], expertTools: string[], synonyms: Record<string, string[]>): number {
+  if (briefTools.length === 0) return 1; // No specific tools required
+  if (expertTools.length === 0) return 0;
   
-  if (requestIndustries.length) {
-    const industryMatches = requestIndustries.filter(ri => 
-      industries?.some(i => i.toLowerCase().includes(ri.toLowerCase()))
+  let matches = 0;
+  briefTools.forEach(briefTool => {
+    const normalizedBrief = normalizeWithSynonyms(briefTool, synonyms);
+    const hasMatch = expertTools.some(expertTool => {
+      const normalizedExpert = normalizeWithSynonyms(expertTool, synonyms);
+      return normalizedBrief === normalizedExpert || 
+             normalizedBrief.includes(normalizedExpert) ||
+             normalizedExpert.includes(normalizedBrief);
+    });
+    if (hasMatch) matches++;
+  });
+  
+  return Math.min(1.0, matches / briefTools.length);
+}
+
+function calculateIndustryScore(briefIndustries: string[], expertIndustries: string[], synonyms: Record<string, string[]>): number {
+  if (briefIndustries.length === 0) return 1; // No specific industry required
+  if (expertIndustries.length === 0) return 0.5; // Neutral if expert has no industry specified
+  
+  let matches = 0;
+  briefIndustries.forEach(briefIndustry => {
+    const normalizedBrief = normalizeWithSynonyms(briefIndustry, synonyms);
+    const hasMatch = expertIndustries.some(expertIndustry => {
+      const normalizedExpert = normalizeWithSynonyms(expertIndustry, synonyms);
+      return normalizedBrief === normalizedExpert || 
+             normalizedBrief.includes(normalizedExpert) ||
+             normalizedExpert.includes(normalizedBrief);
+    });
+    if (hasMatch) matches++;
+  });
+  
+  return Math.min(1.0, matches / briefIndustries.length);
+}
+
+function calculateAvailabilityScore(weeklyHours: number | null, urgency: string | null): number {
+  if (!weeklyHours) return 0.5; // Neutral if not specified
+  
+  const urgencyThresholds = {
+    'urgent': 30,
+    'standard': 20,
+    'flexible': 10
+  };
+  
+  const threshold = urgencyThresholds[urgency?.toLowerCase() as keyof typeof urgencyThresholds] || 20;
+  
+  return weeklyHours >= threshold ? 1.0 : Math.max(0.2, weeklyHours / threshold);
+}
+
+function calculateHistoryScore(caseStudies: any[], briefOutcomes: string[], briefTools: string[]): number {
+  if (caseStudies.length === 0) return 0.3; // Neutral score for no case studies
+  
+  let relevantCases = 0;
+  
+  caseStudies.forEach(cs => {
+    const hasRelevantOutcome = briefOutcomes.some(outcome =>
+      cs.industries?.some((industry: string) => 
+        industry.toLowerCase().includes(outcome.toLowerCase())
+      )
     );
-    score += (industryMatches.length / requestIndustries.length) * 0.7;
-  }
+    
+    const hasRelevantTool = briefTools.some(tool =>
+      cs.tools?.some((csTool: string) => 
+        csTool.toLowerCase().includes(tool.toLowerCase()) ||
+        tool.toLowerCase().includes(csTool.toLowerCase())
+      )
+    );
+    
+    if (hasRelevantOutcome || hasRelevantTool) {
+      relevantCases++;
+    }
+  });
   
-  score += Math.min((tools?.length || 0) / 10, 0.3);
-  
-  return Math.min(score, 1.0);
-}
-
-function calculateOutcomesScore(history: any): number {
-  if (!history) return 0.5;
-  
-  let score = 0;
-  let count = 0;
-  
-  if (history.csat_score) {
-    score += history.csat_score / 5;
-    count++;
-  }
-  if (history.on_time_rate) {
-    score += history.on_time_rate;
-    count++;
-  }
-  if (history.pass_at_qa_rate) {
-    score += history.pass_at_qa_rate;
-    count++;
-  }
-  if (history.revision_rate) {
-    score += (1 - history.revision_rate);
-    count++;
-  }
-  
-  return count > 0 ? score / count : 0.5;
-}
-
-function calculateAvailabilityScore(weeklyHours: number): number {
-  if (weeklyHours >= 20 && weeklyHours <= 40) return 1.0;
-  if (weeklyHours < 10) return 0.2;
-  if (weeklyHours > 50) return 0.6;
-  return 0.8;
-}
-
-function calculateLocaleScore(locales: string[]): number {
-  return (locales?.length || 0) > 0 ? 0.8 : 0.5;
-}
-
-function calculatePriceScore(minPrice: number, maxPrice: number, requestBudget: { min: number; max: number }): number {
-  if (!minPrice || !maxPrice) return 0.5;
-  
-  const overlapMin = Math.max(minPrice, requestBudget.min);
-  const overlapMax = Math.min(maxPrice, requestBudget.max);
-  
-  if (overlapMin > overlapMax) return 0.1;
-  
-  const overlapSize = overlapMax - overlapMin;
-  const freelancerRange = maxPrice - minPrice;
-  const requestRange = requestBudget.max - requestBudget.min;
-  
-  return Math.min(overlapSize / Math.min(freelancerRange, requestRange), 1.0);
-}
-
-function calculateVettingScore(certifications: string[]): number {
-  return Math.min((certifications?.length || 0) / 3, 1.0);
+  return Math.min(1.0, 0.3 + (relevantCases / caseStudies.length) * 0.7);
 }
