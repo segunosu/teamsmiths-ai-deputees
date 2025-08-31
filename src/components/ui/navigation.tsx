@@ -68,7 +68,7 @@ export const Navigation = () => {
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
               <img 
-                src="/lovable-uploads/29da066d-8b44-4742-89e3-d1ac53ba299b.png" 
+                src="/lovable-uploads/5ab267bc-fb45-4d08-8cf8-3812cb6a83b8.png" 
                 alt="Team Smiths AI Logo" 
                 className="w-auto" 
                 style={{ height: '48.6px' }}
