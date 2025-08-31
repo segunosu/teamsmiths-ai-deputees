@@ -197,7 +197,7 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
       <CardHeader>
         <CardTitle>Your hands-on AI skills</CardTitle>
         <CardDescription>
-          We prioritize builders who make things work in the real world.
+          <strong>Click to select</strong> the AI skills you've used in real projects. We prioritize builders who make things work in the real world.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -223,7 +223,7 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
       <CardHeader>
         <CardTitle>Tools you can ship with</CardTitle>
         <CardDescription>
-          Pick what you've actually used in production. You can suggest a tool if it's missing.
+          <strong>Click to select</strong> the tools you've actually used in production. You can suggest a tool if it's missing.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -270,7 +270,7 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
       <CardHeader>
         <CardTitle>What outcomes do you deliver?</CardTitle>
         <CardDescription>
-          Clients choose by outcome, not hours.
+          <strong>Click to select</strong> the outcomes you deliver and industries you work in. Clients choose by outcome, not hours.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -316,7 +316,7 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
       <CardHeader>
         <CardTitle>Outcome band & working language</CardTitle>
         <CardDescription>
-          Choose your typical project band. We price by outcome, not timesheets.
+          <strong>Set your project band</strong> and <strong>select your working languages</strong>. We price by outcome, not timesheets.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
