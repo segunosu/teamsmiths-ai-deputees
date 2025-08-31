@@ -38,6 +38,18 @@ interface FreelancerProfile {
   };
 }
 
+const PRACTICAL_SKILLS = [
+  'Project Management', 'UX Research', 'Data Analysis', 'Technical Writing',
+  'Quality Assurance', 'Business Analysis', 'Content Strategy', 'SEO',
+  'Digital Marketing', 'Social Media Management', 'Community Management',
+  'Customer Support', 'Sales', 'Account Management', 'Consulting'
+];
+
+const OUTCOME_PREFERENCES = [
+  'Brand Awareness', 'Lead Generation', 'Sales Growth', 'User Engagement',
+  'Cost Reduction', 'Process Optimization', 'Market Expansion', 'Customer Satisfaction'
+];
+
 const COMMON_SKILLS = [
   'React', 'Vue', 'Angular', 'JavaScript', 'TypeScript', 'Python', 'Java',
   'UI/UX Design', 'Graphic Design', 'Web Design', 'Product Design',
@@ -349,6 +361,38 @@ export function FreelancerProfile() {
             </div>
 
             <div>
+              <Label>Practical Skills</Label>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                {PRACTICAL_SKILLS.map(skill => (
+                  <div key={skill} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`practical-${skill}`}
+                      checked={profile.practical_skills?.includes(skill) || false}
+                      onCheckedChange={() => toggleArrayItem(profile.practical_skills || [], skill, 'practical_skills')}
+                    />
+                    <Label htmlFor={`practical-${skill}`} className="text-sm">{skill}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <Label>Outcome Preferences</Label>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                {OUTCOME_PREFERENCES.map(outcome => (
+                  <div key={outcome} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`outcome-${outcome}`}
+                      checked={profile.outcome_preferences?.includes(outcome) || false}
+                      onCheckedChange={() => toggleArrayItem(profile.outcome_preferences || [], outcome, 'outcome_preferences')}
+                    />
+                    <Label htmlFor={`outcome-${outcome}`} className="text-sm">{outcome}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
               <Label>Tools & Platforms</Label>
               <div className="grid grid-cols-2 gap-2 mt-2">
                 {TOOLS.slice(0, 10).map(tool => (
@@ -401,6 +445,33 @@ export function FreelancerProfile() {
                     price_band_max: e.target.value ? parseInt(e.target.value) : null
                   })}
                   placeholder="150"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Min Outcome (£)</Label>
+                <Input
+                  type="number"
+                  value={profile.outcome_band_min || ''}
+                  onChange={(e) => setProfile({
+                    ...profile,
+                    outcome_band_min: e.target.value ? parseInt(e.target.value) : undefined
+                  })}
+                  placeholder="5000"
+                />
+              </div>
+              <div>
+                <Label>Max Outcome (£)</Label>
+                <Input
+                  type="number"
+                  value={profile.outcome_band_max || ''}
+                  onChange={(e) => setProfile({
+                    ...profile,
+                    outcome_band_max: e.target.value ? parseInt(e.target.value) : undefined
+                  })}
+                  placeholder="25000"
                 />
               </div>
             </div>
