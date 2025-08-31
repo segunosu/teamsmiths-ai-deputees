@@ -182,12 +182,14 @@ const OutcomeCard: React.FC<OutcomeCardProps> = ({
               // Catalog view: Primary "Use this pack" + secondary "Request expert quote"
               <div className="space-y-2">
                 <Button 
-                  onClick={() => onUseOutcome?.(id)}
+                  asChild
                   className="w-full"
                   aria-label={`Use pack: ${title}`}
                 >
-                  Use this pack
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <Link to={`/product/${id}`}>
+                    Use this pack
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </Button>
                 <Button 
                   variant="outline"

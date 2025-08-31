@@ -312,7 +312,7 @@ const Catalog = () => {
                   <div className="mt-auto">
                   <div className="space-y-2">
                     <Button asChild className="w-full">
-                      <Link to={`/brief-builder?pack_id=${product.id}`}>
+                      <Link to={`/product/${product.id}`}>
                         Use this pack
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
