@@ -92,7 +92,7 @@ const App = () => (
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-canceled" element={<PaymentCanceled />} />
                 <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/reports" element={<AdminReports />} />
+                <Route path="/admin/matching-settings" element={<AdminMatchingSettings />} />
                 <Route path="/admin/qa" element={<QADashboard />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />

@@ -60,7 +60,7 @@ serve(async (req) => {
       certifications
     } = requestData;
 
-    // Upsert freelancer profile
+    // Upsert freelancer profile with proper conflict handling
     const { data: profile, error: profileError } = await supabase
       .from('freelancer_profiles')
       .upsert({
@@ -73,7 +73,11 @@ serve(async (req) => {
         locales: locales || [],
         industries: industries || [],
         availability_weekly_hours: availability_weekly_hours || 40,
+        price_band_min: requestData.price_band_min || null,
+        price_band_max: requestData.price_band_max || null,
         updated_at: new Date().toISOString()
+      }, { 
+        onConflict: 'user_id'
       })
       .select()
       .single();

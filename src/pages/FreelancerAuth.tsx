@@ -25,7 +25,7 @@ const FreelancerAuth = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/freelancer-dashboard');
+      navigate('/freelancer-onboarding');
     }
   }, [user, navigate]);
 

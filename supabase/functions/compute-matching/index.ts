@@ -1,387 +1,446 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.55.0';
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
 interface MatchingRequest {
   brief_id: string;
-  force_recompute?: boolean;
+  min_score?: number;
+  max_results?: number;
+  widen?: boolean;
 }
 
-interface FreelancerProfile {
-  user_id: string;
-  skills: string[];
-  industries: string[];
+interface MatchingCandidate {
+  expert_id: string;
+  full_name: string;
+  score: number;
+  reasons: string[];
+  flags: string[];
+  outcome_band_min?: number;
+  outcome_band_max?: number;
   tools: string[];
-  price_band_min: number;
-  price_band_max: number;
-  certifications: string[];
-  locales: string[];
-  availability_weekly_hours: number;
-  outcome_history: {
-    csat_score?: number;
-    on_time_rate?: number;
-    revision_rate?: number;
-    pass_at_qa_rate?: number;
-    dispute_rate?: number;
-  };
+  certifications?: Array<{ code: string; status: string; title?: string }>;
 }
 
-interface CustomizationRequest {
-  id: string;
-  project_title: string;
-  custom_requirements: string;
-  budget_range: string;
-  timeline_preference: string;
-}
-
-interface MatchingWeights {
-  skills: number;
-  domain: number;
-  outcomes: number;
-  availability: number;
-  locale: number;
-  price: number;
-  vetting: number;
-  history: number;
-}
-
-serve(async (req) => {
-  if (req.method === "OPTIONS") {
+serve(async (req: Request) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const supabase = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-      { auth: { persistSession: false } }
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { brief_id, force_recompute = false }: MatchingRequest = await req.json();
+    const { brief_id, min_score = 0.65, max_results = 5, widen = false }: MatchingRequest = await req.json();
 
-    console.log(`Computing matches for brief ${brief_id}`);
+    console.log(`Computing matches for brief ${brief_id} with min_score=${min_score}, max_results=${max_results}`);
 
-    // Check if we already have recent matching results (unless forced)
-    if (!force_recompute) {
-      const { data: existingBrief } = await supabase
-        .from("briefs")
-        .select("matching_results, matched_at")
-        .eq("id", brief_id)
-        .single();
-
-      if (existingBrief?.matching_results && 
-          existingBrief.matching_results.length > 0 &&
-          existingBrief.matched_at &&
-          new Date(existingBrief.matched_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)) {
-        return new Response(JSON.stringify({ 
-          status: "success",
-          brief_id,
-          candidates: existingBrief.matching_results,
-          message: "Using cached matching results from less than 24h ago"
-        }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-    }
-
-    // Get matching configuration from admin settings
-    const { data: adminSettings } = await supabase
-      .from("admin_settings")
-      .select("setting_value")
-      .eq("setting_key", "matching_config")
-      .single();
-
-    const config = adminSettings?.setting_value || {};
-    const weights: MatchingWeights = config.matching_weights || {
-      skills: 0.25,
-      domain: 0.15,
-      outcomes: 0.20,
-      availability: 0.15,
-      locale: 0.05,
-      price: 0.10,
-      vetting: 0.07,
-      history: 0.03
-    };
-
-    // Get the brief details
+    // Get brief details
     const { data: brief, error: briefError } = await supabase
-      .from("briefs")
-      .select("*")
-      .eq("id", brief_id)
+      .from('briefs')
+      .select('*')
+      .eq('id', brief_id)
       .single();
 
     if (briefError || !brief) {
-      return new Response(JSON.stringify({
-        status: "error",
-        message: "Brief not found",
-        brief_id
+      console.error('Brief not found:', briefError);
+      return new Response(JSON.stringify({ 
+        ok: true, 
+        candidates: [],
+        error: 'Brief not found' 
       }), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    // Get all freelancer profiles
+    // Get matching settings from admin_settings
+    const { data: settingsData } = await supabase
+      .from('admin_settings')
+      .select('setting_key, setting_value')
+      .in('setting_key', [
+        'outcome_weight', 'tools_weight', 'industry_weight', 'availability_weight', 
+        'history_weight', 'cert_boost', 'tool_synonyms', 'industry_synonyms'
+      ]);
+
+    // Default weights matching specification
+    const settings = settingsData?.reduce((acc, s) => ({
+      ...acc,
+      [s.setting_key]: s.setting_value
+    }), {}) || {};
+
+    const weights = {
+      outcomes: Number(settings.outcome_weight) || 0.40,
+      tools: Number(settings.tools_weight) || 0.30,
+      industry: Number(settings.industry_weight) || 0.15,
+      availability: Number(settings.availability_weight) || 0.10,
+      history: Number(settings.history_weight) || 0.05
+    };
+
+    const certBoost = Number(settings.cert_boost) || 0.10;
+    const toolSynonyms = settings.tool_synonyms || {};
+    const industrySynonyms = settings.industry_synonyms || {};
+
+    console.log('Using weights:', weights);
+
+    // Extract requirements from brief
+    const structuredBrief = brief.structured_brief || {};
+    const requiredOutcomes = extractOutcomesFromBrief(structuredBrief);
+    const requiredTools = extractToolsFromBrief(structuredBrief);
+    const requiredIndustries = extractIndustriesFromBrief(structuredBrief);
+    const budgetRange = parseBudgetRange(structuredBrief.budget?.range || '');
+
+    console.log('Brief requirements:', { requiredOutcomes, requiredTools, requiredIndustries, budgetRange });
+
+    // Get all freelancer profiles with related data
     const { data: freelancers, error: freelancersError } = await supabase
-      .from("freelancer_profiles")
+      .from('freelancer_profiles')
       .select(`
         *,
-        profiles!freelancer_profiles_user_id_fkey(full_name, email)
+        profiles:profiles!inner(full_name, email),
+        freelancer_certifications(
+          cert_code,
+          status,
+          academy_certifications(title, tool_slug)
+        ),
+        case_studies(
+          outcome_preferences,
+          tools,
+          industries,
+          is_verified
+        )
       `);
 
     if (freelancersError) {
-      return new Response(JSON.stringify({
-        status: "error",
-        message: `Failed to fetch freelancers: ${freelancersError.message}`,
-        brief_id
+      console.error('Error fetching freelancers:', freelancersError);
+      return new Response(JSON.stringify({ 
+        ok: true, 
+        candidates: [],
+        error: 'Failed to fetch freelancers' 
       }), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log(`Found ${freelancers?.length || 0} freelancers to evaluate`);
+    const candidates: MatchingCandidate[] = [];
 
-    // Extract brief context for matching from structured_brief
-    const structuredBrief = brief.structured_brief || {};
-    const requestSkills = extractSkillsFromText(
-      [
-        structuredBrief.goal?.interpreted || '',
-        structuredBrief.context?.interpreted || '',
-        structuredBrief.constraints?.interpreted || ''
-      ].join(' ')
-    );
-    const requestBudget = parseBudgetRange(structuredBrief.budget_range || '');
-    const requestIndustries = extractIndustriesFromText(
-      [
-        structuredBrief.goal?.interpreted || '',
-        structuredBrief.context?.interpreted || ''
-      ].join(' ')
-    );
+    for (const freelancer of freelancers || []) {
+      const outcomeScore = calculateOutcomeScore(
+        requiredOutcomes,
+        freelancer.outcome_preferences || [],
+        industrySynonyms
+      );
 
-    // Score each freelancer
-    const scoredCandidates = freelancers?.map((freelancer: any) => {
-      const profile: FreelancerProfile = freelancer;
+      const toolsScore = calculateToolsScore(
+        requiredTools,
+        freelancer.tools || [],
+        toolSynonyms
+      );
+
+      const industryScore = calculateIndustryScore(
+        requiredIndustries,
+        freelancer.industries || [],
+        industrySynonyms
+      );
+
+      const availabilityScore = calculateAvailabilityScore(
+        structuredBrief.timeline?.urgency || 'standard',
+        freelancer.availability_weekly_hours || 40
+      );
+
+      const historyScore = calculateHistoryScore(
+        requiredOutcomes,
+        freelancer.case_studies || []
+      );
+
+      // Check for verified certifications
+      const verifiedCerts = (freelancer.freelancer_certifications || [])
+        .filter(cert => cert.status === 'verified');
       
-      const scores = {
-        skills: calculateSkillsScore(profile.skills, requestSkills),
-        domain: calculateDomainScore(profile.industries, profile.tools, requestIndustries),
-        outcomes: calculateOutcomesScore(profile.outcome_history),
-        availability: calculateAvailabilityScore(profile.availability_weekly_hours),
-        locale: calculateLocaleScore(profile.locales),
-        price: calculatePriceScore(profile.price_band_min, profile.price_band_max, requestBudget),
-        vetting: calculateVettingScore(profile.certifications),
-        history: 0.5 // Placeholder for client history
-      };
+      const certificationBonus = verifiedCerts.some(cert => 
+        requiredTools.some(tool => 
+          normalizeWithSynonyms(tool, toolSynonyms).includes(
+            normalizeWithSynonyms(cert.academy_certifications?.tool_slug || '', toolSynonyms)
+          )
+        )
+      ) ? certBoost : 0;
 
-      const totalScore = Object.entries(scores).reduce((sum, [key, score]) => {
-        return sum + (weights[key as keyof MatchingWeights] * score);
-      }, 0);
+      // Calculate total score
+      const totalScore = 
+        weights.outcomes * outcomeScore +
+        weights.tools * toolsScore +
+        weights.industry * industryScore +
+        weights.availability * availabilityScore +
+        weights.history * historyScore +
+        certificationBonus;
 
-      return {
-        user_id: profile.user_id,
-        score: Math.round(totalScore * 100) / 100,
-        breakdown: scores,
-        profile: {
-          full_name: freelancer.profiles?.full_name,
-          email: freelancer.profiles?.email,
-          skills: profile.skills,
-          price_range: `£${profile.price_band_min/100}-${profile.price_band_max/100}`,
-          availability: `${profile.availability_weekly_hours}h/week`
-        }
-      };
-    }) || [];
+      if (totalScore >= min_score) {
+        const reasons = [];
+        const flags = [];
 
-    // Sort by score descending
-    scoredCandidates.sort((a, b) => b.score - a.score);
-
-    const shortlistSize = config.shortlist_size_default || 3;
-    const shortlist = scoredCandidates.slice(0, shortlistSize);
-
-    console.log(`Created shortlist of ${shortlist.length} candidates`);
-
-    // Store results in brief
-    const { error: updateError } = await supabase
-      .from("briefs")
-      .update({
-        matching_results: shortlist,
-        matched_at: new Date().toISOString()
-      })
-      .eq("id", brief_id);
-
-    if (updateError) {
-      console.error('Error updating brief with matching results:', updateError);
-    }
-
-    console.log(`Generated ${shortlist.length} candidates for brief ${brief_id}`);
-
-    return new Response(JSON.stringify({
-      status: "success",
-      brief_id,
-      candidates: shortlist,
-      weights_used: weights,
-      shortlist_size: shortlistSize,
-      message: `Successfully matched ${shortlist.length} candidates`
-    }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-
-  } catch (error: any) {
-    console.error("Error in compute-matching:", error);
-    
-    // Log error to brief_events table if we have a brief_id
-    const body = await req.json().catch(() => ({}));
-    if (body.brief_id) {
-      try {
-        await supabase.from('brief_events').insert({
-          brief_id: body.brief_id,
-          type: 'matching_error',
-          payload: { 
-            error: error.message,
-            timestamp: new Date().toISOString()
+        // Build reasons (max 4)
+        if (outcomeScore > 0.5) {
+          const matchingOutcomes = requiredOutcomes.filter(ro => 
+            (freelancer.outcome_preferences || []).some(fp => 
+              normalizeWithSynonyms(ro, industrySynonyms).includes(normalizeWithSynonyms(fp, industrySynonyms))
+            )
+          );
+          if (matchingOutcomes.length > 0) {
+            reasons.push(`Outcome focus matches: ${matchingOutcomes.join(', ')}`);
           }
+        }
+
+        if (toolsScore > 0.5) {
+          const matchingTools = requiredTools.filter(rt =>
+            (freelancer.tools || []).some(ft =>
+              normalizeWithSynonyms(rt, toolSynonyms).includes(normalizeWithSynonyms(ft, toolSynonyms))
+            )
+          );
+          if (matchingTools.length > 0) {
+            reasons.push(`Hands-on tools: ${matchingTools.join(', ')}`);
+          }
+        }
+
+        if (industryScore > 0.5) {
+          const matchingIndustries = requiredIndustries.filter(ri =>
+            (freelancer.industries || []).some(fi =>
+              normalizeWithSynonyms(ri, industrySynonyms).includes(normalizeWithSynonyms(fi, industrySynonyms))
+            )
+          );
+          if (matchingIndustries.length > 0) {
+            reasons.push(`Industry match: ${matchingIndustries.join(', ')}`);
+          }
+        }
+
+        if (certificationBonus > 0) {
+          const verifiedTools = verifiedCerts
+            .map(cert => cert.academy_certifications?.tool_slug)
+            .filter(Boolean);
+          if (verifiedTools.length > 0) {
+            reasons.push(`Verified on ${verifiedTools.join(', ')} (Teamsmiths)`);
+          }
+        }
+
+        // Build flags
+        if (budgetRange.max && freelancer.outcome_band_min && freelancer.outcome_band_min > budgetRange.max) {
+          flags.push('Outcome band may exceed brief budget');
+        }
+
+        if (availabilityScore < 0.5) {
+          flags.push('Availability < requested window');
+        }
+
+        const hasUnverifiedTools = requiredTools.some(tool =>
+          (freelancer.tools || []).includes(tool) &&
+          !verifiedCerts.some(cert => cert.academy_certifications?.tool_slug === tool)
+        );
+
+        if (hasUnverifiedTools) {
+          flags.push('Tool familiarity is declared, not verified');
+        }
+
+        candidates.push({
+          expert_id: freelancer.user_id,
+          full_name: freelancer.profiles?.full_name || 'Unknown',
+          score: Math.round(totalScore * 1000) / 1000,
+          reasons: reasons.slice(0, 4),
+          flags,
+          outcome_band_min: freelancer.outcome_band_min,
+          outcome_band_max: freelancer.outcome_band_max,
+          tools: freelancer.tools || [],
+          certifications: freelancer.freelancer_certifications?.map(cert => ({
+            code: cert.cert_code,
+            status: cert.status,
+            title: cert.academy_certifications?.title
+          })) || []
         });
-      } catch (logError) {
-        console.error('Failed to log error:', logError);
       }
     }
 
-    return new Response(JSON.stringify({ 
-      status: "error",
-      message: error.message || 'Failed to compute matching results',
-      brief_id: body.brief_id
+    // Sort by score (descending) and limit results
+    candidates.sort((a, b) => b.score - a.score);
+    const finalCandidates = candidates.slice(0, max_results);
+
+    // Log matching run
+    await supabase.from('matching_runs').insert({
+      brief_id,
+      min_score,
+      max_invites: max_results,
+      candidates_found: finalCandidates.length,
+      metadata: {
+        weights,
+        total_evaluated: freelancers?.length || 0,
+        widen_applied: widen
+      }
+    });
+
+    console.log(`Found ${finalCandidates.length} candidates for brief ${brief_id}`);
+
+    return new Response(JSON.stringify({
+      ok: true,
+      candidates: finalCandidates,
+      metadata: {
+        total_evaluated: freelancers?.length || 0,
+        candidates_found: finalCandidates.length,
+        weights_used: weights
+      }
     }), {
-      status: 200,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+
+  } catch (error) {
+    console.error('Error in compute-matching:', error);
+    return new Response(JSON.stringify({ 
+      ok: true, 
+      candidates: [],
+      error: 'Internal server error' 
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }
 });
 
-// Helper functions for scoring
-function extractSkillsFromText(text: string): string[] {
-  const commonSkills = [
-    'react', 'vue', 'angular', 'javascript', 'typescript', 'python', 'java',
-    'ui/ux', 'design', 'marketing', 'seo', 'content', 'copywriting',
-    'project management', 'agile', 'scrum', 'analytics', 'data',
-    'automation', 'crm', 'hubspot', 'salesforce', 'stripe', 'payment'
-  ];
+// Helper functions
+function normalizeWithSynonyms(term: string, synonyms: Record<string, string[]>): string[] {
+  const normalized = term.toLowerCase().trim();
+  const result = [normalized];
   
-  const found = commonSkills.filter(skill => 
-    text.toLowerCase().includes(skill.toLowerCase())
-  );
+  for (const [key, syns] of Object.entries(synonyms)) {
+    if (key.toLowerCase() === normalized || syns.map(s => s.toLowerCase()).includes(normalized)) {
+      result.push(key.toLowerCase(), ...syns.map(s => s.toLowerCase()));
+    }
+  }
   
-  return found.length ? found : ['general'];
+  return [...new Set(result)];
 }
 
-function extractIndustriesFromText(text: string): string[] {
-  const industries = [
-    'fintech', 'healthcare', 'education', 'ecommerce', 'saas',
-    'consulting', 'agency', 'startup', 'enterprise', 'nonprofit'
-  ];
+function extractOutcomesFromBrief(structuredBrief: any): string[] {
+  const outcomes = [];
   
-  return industries.filter(industry => 
-    text.toLowerCase().includes(industry.toLowerCase())
-  );
+  if (structuredBrief.goal?.outcome_focus) {
+    outcomes.push(...structuredBrief.goal.outcome_focus);
+  }
+  
+  if (structuredBrief.goal?.interpreted) {
+    // Extract outcome keywords from goal text
+    const goalText = structuredBrief.goal.interpreted.toLowerCase();
+    const outcomeKeywords = [
+      'sales uplift', 'lead generation', 'customer support automation',
+      'ops automation', 'reporting & analytics', 'content scale-up',
+      'data cleanup', 'ai enablement'
+    ];
+    
+    outcomes.push(...outcomeKeywords.filter(keyword => goalText.includes(keyword)));
+  }
+  
+  return [...new Set(outcomes)];
 }
 
-function parseBudgetRange(budgetRange: string): { min: number; max: number } {
-  const matches = budgetRange.match(/[\d,]+/g);
-  if (!matches) return { min: 0, max: 999999 };
+function extractToolsFromBrief(structuredBrief: any): string[] {
+  const tools = [];
   
-  const numbers = matches.map(m => parseInt(m.replace(/,/g, '')) * 100); // Convert to pence
-  return {
-    min: Math.min(...numbers),
-    max: Math.max(...numbers)
+  if (structuredBrief.requirements?.tools) {
+    tools.push(...structuredBrief.requirements.tools);
+  }
+  
+  if (structuredBrief.technical?.tools) {
+    tools.push(...structuredBrief.technical.tools);
+  }
+  
+  return [...new Set(tools)];
+}
+
+function extractIndustriesFromBrief(structuredBrief: any): string[] {
+  const industries = [];
+  
+  if (structuredBrief.context?.industry) {
+    industries.push(structuredBrief.context.industry);
+  }
+  
+  return [...new Set(industries)];
+}
+
+function parseBudgetRange(budgetString: string): { min?: number; max?: number } {
+  const match = budgetString.match(/£?(\d+(?:,\d+)*)\s*-\s*£?(\d+(?:,\d+)*)/);
+  if (match) {
+    return {
+      min: parseInt(match[1].replace(/,/g, '')),
+      max: parseInt(match[2].replace(/,/g, ''))
+    };
+  }
+  return {};
+}
+
+function calculateOutcomeScore(requiredOutcomes: string[], candidateOutcomes: string[], synonyms: Record<string, string[]>): number {
+  if (requiredOutcomes.length === 0) return 0.5;
+  
+  const matches = requiredOutcomes.filter(ro =>
+    candidateOutcomes.some(co =>
+      normalizeWithSynonyms(ro, synonyms).some(norm =>
+        normalizeWithSynonyms(co, synonyms).includes(norm)
+      )
+    )
+  );
+  
+  return matches.length / requiredOutcomes.length;
+}
+
+function calculateToolsScore(requiredTools: string[], candidateTools: string[], synonyms: Record<string, string[]>): number {
+  if (requiredTools.length === 0) return 0.5;
+  
+  const matches = requiredTools.filter(rt =>
+    candidateTools.some(ct =>
+      normalizeWithSynonyms(rt, synonyms).some(norm =>
+        normalizeWithSynonyms(ct, synonyms).includes(norm)
+      )
+    )
+  );
+  
+  return matches.length / requiredTools.length;
+}
+
+function calculateIndustryScore(requiredIndustries: string[], candidateIndustries: string[], synonyms: Record<string, string[]>): number {
+  if (requiredIndustries.length === 0) return 0.5;
+  
+  const matches = requiredIndustries.filter(ri =>
+    candidateIndustries.some(ci =>
+      normalizeWithSynonyms(ri, synonyms).some(norm =>
+        normalizeWithSynonyms(ci, synonyms).includes(norm)
+      )
+    )
+  );
+  
+  return matches.length / requiredIndustries.length;
+}
+
+function calculateAvailabilityScore(urgency: string, weeklyHours: number): number {
+  const urgencyMap = {
+    'asap': 50,
+    'urgent': 40,
+    'standard': 30,
+    'flexible': 20
   };
+  
+  const requiredHours = urgencyMap[urgency as keyof typeof urgencyMap] || 30;
+  return Math.min(weeklyHours / requiredHours, 1);
 }
 
-function calculateSkillsScore(freelancerSkills: string[], requestSkills: string[]): number {
-  if (!requestSkills.length) return 0.5;
+function calculateHistoryScore(requiredOutcomes: string[], caseStudies: any[]): number {
+  if (requiredOutcomes.length === 0 || caseStudies.length === 0) return 0;
   
-  const matches = requestSkills.filter(skill => 
-    freelancerSkills.some(fs => fs.toLowerCase().includes(skill.toLowerCase()))
+  const verifiedCases = caseStudies.filter(cs => cs.is_verified);
+  if (verifiedCases.length === 0) return 0;
+  
+  const relevantCases = verifiedCases.filter(cs =>
+    requiredOutcomes.some(ro =>
+      (cs.outcome_preferences || []).includes(ro)
+    )
   );
   
-  return Math.min(matches.length / requestSkills.length, 1.0);
-}
-
-function calculateDomainScore(industries: string[], tools: string[], requestIndustries: string[]): number {
-  let score = 0;
-  
-  // Industry match
-  if (requestIndustries.length) {
-    const industryMatches = requestIndustries.filter(ri => 
-      industries.some(i => i.toLowerCase().includes(ri.toLowerCase()))
-    );
-    score += (industryMatches.length / requestIndustries.length) * 0.7;
-  }
-  
-  // Tools bonus
-  score += Math.min(tools.length / 10, 0.3);
-  
-  return Math.min(score, 1.0);
-}
-
-function calculateOutcomesScore(history: any): number {
-  if (!history) return 0.5;
-  
-  let score = 0;
-  let count = 0;
-  
-  if (history.csat_score) {
-    score += history.csat_score / 5; // Assume 5-point scale
-    count++;
-  }
-  if (history.on_time_rate) {
-    score += history.on_time_rate;
-    count++;
-  }
-  if (history.pass_at_qa_rate) {
-    score += history.pass_at_qa_rate;
-    count++;
-  }
-  if (history.revision_rate) {
-    score += (1 - history.revision_rate); // Lower revision rate is better
-    count++;
-  }
-  
-  return count > 0 ? score / count : 0.5;
-}
-
-function calculateAvailabilityScore(weeklyHours: number): number {
-  // Optimal range is 20-40 hours per week
-  if (weeklyHours >= 20 && weeklyHours <= 40) return 1.0;
-  if (weeklyHours < 10) return 0.2;
-  if (weeklyHours > 50) return 0.6;
-  return 0.8;
-}
-
-function calculateLocaleScore(locales: string[]): number {
-  // For now, just check if they have any locale preference
-  return locales.length > 0 ? 0.8 : 0.5;
-}
-
-function calculatePriceScore(minPrice: number, maxPrice: number, requestBudget: { min: number; max: number }): number {
-  if (!minPrice || !maxPrice) return 0.5;
-  
-  // Check overlap between freelancer range and request budget
-  const overlapMin = Math.max(minPrice, requestBudget.min);
-  const overlapMax = Math.min(maxPrice, requestBudget.max);
-  
-  if (overlapMin > overlapMax) return 0.1; // No overlap
-  
-  const overlapSize = overlapMax - overlapMin;
-  const freelancerRange = maxPrice - minPrice;
-  const requestRange = requestBudget.max - requestBudget.min;
-  
-  return Math.min(overlapSize / Math.min(freelancerRange, requestRange), 1.0);
-}
-
-function calculateVettingScore(certifications: string[]): number {
-  // Basic vetting score based on certifications
-  return Math.min(certifications.length / 3, 1.0);
+  return relevantCases.length > 0 ? 0.5 : 0;
 }

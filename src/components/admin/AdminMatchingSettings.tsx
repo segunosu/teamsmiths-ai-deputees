@@ -1,36 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Save, RotateCcw } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { Loader2, Settings } from 'lucide-react';
 
 interface MatchingSettings {
+  outcome_weight: number;
+  tools_weight: number;
+  industry_weight: number;
+  availability_weight: number;
+  history_weight: number;
   min_score_default: number;
   max_invites_default: number;
-  auto_match_enabled: boolean;
-  tool_synonyms: Record<string, string>;
-  industry_synonyms: Record<string, string>;
+  cert_boost: number;
+  boost_verified_certs: boolean;
+  normalize_region_rates: boolean;
+  hide_hourly_rates: boolean;
+  tool_synonyms: Record<string, string[]>;
+  industry_synonyms: Record<string, string[]>;
 }
 
-const AdminMatchingSettings = () => {
-  const { toast } = useToast();
+const defaultSettings: MatchingSettings = {
+  outcome_weight: 0.40,
+  tools_weight: 0.30,
+  industry_weight: 0.15,
+  availability_weight: 0.10,
+  history_weight: 0.05,
+  min_score_default: 0.65,
+  max_invites_default: 5,
+  cert_boost: 0.10,
+  boost_verified_certs: true,
+  normalize_region_rates: true,
+  hide_hourly_rates: true,
+  tool_synonyms: {},
+  industry_synonyms: {}
+};
+
+export function AdminMatchingSettings() {
+  const [settings, setSettings] = useState<MatchingSettings>(defaultSettings);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [settings, setSettings] = useState<MatchingSettings>({
-    min_score_default: 0.65,
-    max_invites_default: 5,
-    auto_match_enabled: false,
-    tool_synonyms: {},
-    industry_synonyms: {}
-  });
-  const [toolSynonymsText, setToolSynonymsText] = useState('');
-  const [industrySynonymsText, setIndustrySynonymsText] = useState('');
+  const [synonymsText, setSynonymsText] = useState('{}');
+  const [industrySynonymsText, setIndustrySynonymsText] = useState('{}');
+  const { toast } = useToast();
 
   useEffect(() => {
     loadSettings();
@@ -38,22 +55,21 @@ const AdminMatchingSettings = () => {
 
   const loadSettings = async () => {
     try {
-      const { data, error } = await supabase.rpc('admin_get_matching_settings');
+      const { data, error } = await supabase.functions.invoke('admin-get-matching-settings');
       
       if (error) throw error;
-
-      if (data && typeof data === 'object' && !Array.isArray(data)) {
-        const settingsData = data as unknown as MatchingSettings;
-        setSettings(settingsData);
-        
-        // Convert JSON objects to readable text format
-        setToolSynonymsText(JSON.stringify(settingsData.tool_synonyms || {}, null, 2));
-        setIndustrySynonymsText(JSON.stringify(settingsData.industry_synonyms || {}, null, 2));
+      
+      if (data?.success) {
+        const loadedSettings = { ...defaultSettings, ...data.settings };
+        setSettings(loadedSettings);
+        setSynonymsText(JSON.stringify(loadedSettings.tool_synonyms, null, 2));
+        setIndustrySynonymsText(JSON.stringify(loadedSettings.industry_synonyms, null, 2));
       }
-    } catch (error: any) {
+    } catch (error) {
+      console.error('Error loading settings:', error);
       toast({
-        title: 'Error loading settings',
-        description: error.message,
+        title: 'Error',
+        description: 'Failed to load matching settings',
         variant: 'destructive',
       });
     } finally {
@@ -64,20 +80,32 @@ const AdminMatchingSettings = () => {
   const saveSettings = async () => {
     setSaving(true);
     try {
-      // Parse JSON text inputs
+      // Parse synonyms JSON
       let toolSynonyms = {};
       let industrySynonyms = {};
       
       try {
-        toolSynonyms = toolSynonymsText ? JSON.parse(toolSynonymsText) : {};
+        toolSynonyms = JSON.parse(synonymsText);
       } catch {
-        throw new Error('Invalid JSON format in tool synonyms');
+        toast({
+          title: 'Error',
+          description: 'Invalid JSON in tool synonyms',
+          variant: 'destructive',
+        });
+        setSaving(false);
+        return;
       }
       
       try {
-        industrySynonyms = industrySynonymsText ? JSON.parse(industrySynonymsText) : {};
+        industrySynonyms = JSON.parse(industrySynonymsText);
       } catch {
-        throw new Error('Invalid JSON format in industry synonyms');
+        toast({
+          title: 'Error',
+          description: 'Invalid JSON in industry synonyms',
+          variant: 'destructive',
+        });
+        setSaving(false);
+        return;
       }
 
       const settingsToSave = {
@@ -86,24 +114,25 @@ const AdminMatchingSettings = () => {
         industry_synonyms: industrySynonyms
       };
 
-      const { error } = await supabase.rpc('admin_update_matching_settings', {
-        p_settings: settingsToSave
+      const { data, error } = await supabase.functions.invoke('admin-update-matching-settings', {
+        body: settingsToSave
       });
 
       if (error) throw error;
 
+      if (data?.success) {
+        toast({
+          title: 'Success',
+          description: 'Matching settings saved successfully',
+        });
+      } else {
+        throw new Error('Failed to save settings');
+      }
+    } catch (error) {
+      console.error('Error saving settings:', error);
       toast({
-        title: 'Settings saved',
-        description: 'Matching settings have been updated successfully.',
-      });
-      
-      // Reload to confirm changes
-      await loadSettings();
-      
-    } catch (error: any) {
-      toast({
-        title: 'Error saving settings',
-        description: error.message,
+        title: 'Error',
+        description: 'Failed to save matching settings',
         variant: 'destructive',
       });
     } finally {
@@ -111,182 +140,249 @@ const AdminMatchingSettings = () => {
     }
   };
 
-  const restoreDefaults = () => {
-    setSettings({
-      min_score_default: 0.65,
-      max_invites_default: 5,
-      auto_match_enabled: false,
-      tool_synonyms: {
-        "hubspot ai": "hubspot",
-        "notion ai": "notion", 
-        "zapier": "automation",
-        "chatgpt": "openai",
-        "claude": "anthropic"
-      },
-      industry_synonyms: {
-        "construction & trades": "construction",
-        "e-commerce": "ecommerce",
-        "software as a service": "saas"
-      }
-    });
-    
-    setToolSynonymsText(JSON.stringify({
-      "hubspot ai": "hubspot",
-      "notion ai": "notion",
-      "zapier": "automation", 
-      "chatgpt": "openai",
-      "claude": "anthropic"
-    }, null, 2));
-    
-    setIndustrySynonymsText(JSON.stringify({
-      "construction & trades": "construction",
-      "e-commerce": "ecommerce", 
-      "software as a service": "saas"
-    }, null, 2));
+  const handleWeightChange = (key: keyof MatchingSettings, value: number[]) => {
+    setSettings(prev => ({ ...prev, [key]: value[0] }));
+  };
+
+  const handleSwitchChange = (key: keyof MatchingSettings, checked: boolean) => {
+    setSettings(prev => ({ ...prev, [key]: checked }));
+  };
+
+  const resetToDefaults = () => {
+    setSettings(defaultSettings);
+    setSynonymsText('{}');
+    setIndustrySynonymsText('{}');
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin mr-2" />
-        Loading settings...
+        <Loader2 className="h-6 w-6 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Basic Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Basic Settings</CardTitle>
-            <CardDescription>Core matching parameters</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label htmlFor="min-score">
-                Min Score Default: {settings.min_score_default}
-              </Label>
-              <input
-                id="min-score"
-                type="range"
-                min="0.1"
-                max="1.0"
-                step="0.05"
-                value={settings.min_score_default}
-                onChange={(e) => setSettings(prev => ({
-                  ...prev,
-                  min_score_default: parseFloat(e.target.value)
-                }))}
-                className="w-full mt-2"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                <span>0.1</span>
-                <span>1.0</span>
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="max-invites">
-                Max Invites Default: {settings.max_invites_default}
-              </Label>
-              <input
-                id="max-invites"
-                type="range"
-                min="1"
-                max="10"
-                step="1"
-                value={settings.max_invites_default}
-                onChange={(e) => setSettings(prev => ({
-                  ...prev,
-                  max_invites_default: parseInt(e.target.value)
-                }))}
-                className="w-full mt-2"
-              />
-              <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                <span>1</span>
-                <span>10</span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <Label htmlFor="auto-match">Auto-Match Enabled</Label>
-                <p className="text-sm text-muted-foreground">
-                  Automatically match and invite experts every 15 minutes
-                </p>
-              </div>
-              <Switch
-                id="auto-match"
-                checked={settings.auto_match_enabled}
-                onCheckedChange={(checked) => setSettings(prev => ({
-                  ...prev,
-                  auto_match_enabled: checked
-                }))}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* AI Enhancement */}
-        <Card>
-          <CardHeader>
-            <CardTitle>AI Enhancement</CardTitle>
-            <CardDescription>Improve matching accuracy with synonyms</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label htmlFor="tool-synonyms">Tool Synonyms (JSON)</Label>
-              <Textarea
-                id="tool-synonyms"
-                value={toolSynonymsText}
-                onChange={(e) => setToolSynonymsText(e.target.value)}
-                placeholder='{"hubspot ai": "hubspot", "notion ai": "notion"}'
-                className="mt-2 font-mono text-sm"
-                rows={6}
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Map alternative tool names to standard terms
-              </p>
-            </div>
-
-            <div>
-              <Label htmlFor="industry-synonyms">Industry Synonyms (JSON)</Label>
-              <Textarea
-                id="industry-synonyms"
-                value={industrySynonymsText}
-                onChange={(e) => setIndustrySynonymsText(e.target.value)}
-                placeholder='{"construction & trades": "construction"}'
-                className="mt-2 font-mono text-sm"
-                rows={4}
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Map industry variations to standard categories
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+    <div className="max-w-4xl mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <Settings className="h-6 w-6" />
+            Matching Settings
+          </h1>
+          <p className="text-muted-foreground">
+            Configure matching algorithm weights and behavior
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={resetToDefaults}>
+            Reset to Defaults
+          </Button>
+          <Button onClick={saveSettings} disabled={saving}>
+            {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save Settings
+          </Button>
+        </div>
       </div>
 
-      <Separator />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Weight Configuration */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Algorithm Weights</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <Label>Outcomes ({settings.outcome_weight.toFixed(2)})</Label>
+              <Slider
+                value={[settings.outcome_weight]}
+                onValueChange={(value) => handleWeightChange('outcome_weight', value)}
+                min={0}
+                max={1}
+                step={0.05}
+                className="w-full"
+              />
+            </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-end">
-        <Button variant="outline" onClick={restoreDefaults}>
-          <RotateCcw className="h-4 w-4 mr-2" />
-          Restore Defaults
-        </Button>
-        <Button onClick={saveSettings} disabled={saving}>
-          {saving ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
-          ) : (
-            <Save className="h-4 w-4 mr-2" />
-          )}
-          Save Settings
-        </Button>
+            <div className="space-y-2">
+              <Label>Tools ({settings.tools_weight.toFixed(2)})</Label>
+              <Slider
+                value={[settings.tools_weight]}
+                onValueChange={(value) => handleWeightChange('tools_weight', value)}
+                min={0}
+                max={1}
+                step={0.05}
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Industry ({settings.industry_weight.toFixed(2)})</Label>
+              <Slider
+                value={[settings.industry_weight]}
+                onValueChange={(value) => handleWeightChange('industry_weight', value)}
+                min={0}
+                max={1}
+                step={0.05}
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Availability ({settings.availability_weight.toFixed(2)})</Label>
+              <Slider
+                value={[settings.availability_weight]}
+                onValueChange={(value) => handleWeightChange('availability_weight', value)}
+                min={0}
+                max={1}
+                step={0.05}
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Case Study History ({settings.history_weight.toFixed(2)})</Label>
+              <Slider
+                value={[settings.history_weight]}
+                onValueChange={(value) => handleWeightChange('history_weight', value)}
+                min={0}
+                max={1}
+                step={0.05}
+                className="w-full"
+              />
+            </div>
+
+            <div className="pt-2 border-t">
+              <p className="text-sm text-muted-foreground">
+                Total: {(settings.outcome_weight + settings.tools_weight + settings.industry_weight + settings.availability_weight + settings.history_weight).toFixed(2)}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Matching Defaults & Toggles */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Matching Defaults & Features</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <Label>Default Min Score ({settings.min_score_default})</Label>
+              <Slider
+                value={[settings.min_score_default]}
+                onValueChange={(value) => handleWeightChange('min_score_default', value)}
+                min={0}
+                max={1}
+                step={0.05}
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Default Max Invites ({settings.max_invites_default})</Label>
+              <Slider
+                value={[settings.max_invites_default]}
+                onValueChange={(value) => handleWeightChange('max_invites_default', value)}
+                min={1}
+                max={20}
+                step={1}
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Certification Boost (+{settings.cert_boost.toFixed(2)})</Label>
+              <Slider
+                value={[settings.cert_boost]}
+                onValueChange={(value) => handleWeightChange('cert_boost', value)}
+                min={0}
+                max={0.20}
+                step={0.01}
+                className="w-full"
+              />
+            </div>
+
+            <div className="space-y-4 pt-4 border-t">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Boost verified certifications</Label>
+                  <p className="text-sm text-muted-foreground">Add score boost for verified certs</p>
+                </div>
+                <Switch
+                  checked={settings.boost_verified_certs}
+                  onCheckedChange={(checked) => handleSwitchChange('boost_verified_certs', checked)}
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Normalize region rates</Label>
+                  <p className="text-sm text-muted-foreground">Don't penalize by geographic cost differences</p>
+                </div>
+                <Switch
+                  checked={settings.normalize_region_rates}
+                  onCheckedChange={(checked) => handleSwitchChange('normalize_region_rates', checked)}
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Hide hourly rates</Label>
+                  <p className="text-sm text-muted-foreground">Show outcome bands instead of hourly rates</p>
+                </div>
+                <Switch
+                  checked={settings.hide_hourly_rates}
+                  onCheckedChange={(checked) => handleSwitchChange('hide_hourly_rates', checked)}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Tool Synonyms */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Tool Synonyms</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <Label>Tool Synonyms (JSON)</Label>
+              <Textarea
+                value={synonymsText}
+                onChange={(e) => setSynonymsText(e.target.value)}
+                placeholder='{"OpenAI": ["GPT", "ChatGPT"], "N8N": ["n8n.io"]}'
+                rows={6}
+                className="font-mono text-sm"
+              />
+              <p className="text-xs text-muted-foreground">
+                Define tool aliases for better matching. Format: {`{"tool": ["synonym1", "synonym2"]}`}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Industry Synonyms */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Industry Synonyms</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <Label>Industry Synonyms (JSON)</Label>
+              <Textarea
+                value={industrySynonymsText}
+                onChange={(e) => setIndustrySynonymsText(e.target.value)}
+                placeholder='{"SaaS": ["Software", "Tech"], "E-commerce": ["eCommerce", "Online Retail"]}'
+                rows={6}
+                className="font-mono text-sm"
+              />
+              <p className="text-xs text-muted-foreground">
+                Define industry aliases for better matching. Format: {`{"industry": ["synonym1", "synonym2"]}`}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
-};
-
-export default AdminMatchingSettings;
+}
