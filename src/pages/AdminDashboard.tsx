@@ -16,7 +16,7 @@ import MatchingDashboard from '@/components/admin/MatchingDashboard';
 import AdminMeetingsSettings from '@/components/AdminMeetingsSettings';
 import AdminIntakeSettings from '@/components/AdminIntakeSettings';
 import AnalyticsMonitor from '@/components/admin/AnalyticsMonitor';
-import { AdminMatchingSettings } from '@/components/admin/AdminMatchingSettings';
+import AdminMatchingSettings from '@/components/admin/AdminMatchingSettings';
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };

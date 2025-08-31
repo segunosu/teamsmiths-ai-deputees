@@ -41,7 +41,7 @@ const defaultSettings: MatchingSettings = {
   industry_synonyms: {}
 };
 
-export function AdminMatchingSettings() {
+export default function AdminMatchingSettings() {
   const [settings, setSettings] = useState<MatchingSettings>(defaultSettings);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

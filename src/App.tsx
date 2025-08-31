@@ -8,7 +8,8 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/Footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { AdminMatchingSettings } from "@/components/admin/AdminMatchingSettings";
+import AdminMatchingSettings from "@/components/admin/AdminMatchingSettings";
+import AdminOnly from "@/components/admin/AdminOnly";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
@@ -92,8 +93,21 @@ const App = () => (
                 <Route path="/for-agencies" element={<ForAgencies />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-canceled" element={<PaymentCanceled />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/matching-settings" element={<AdminMatchingSettings />} />
+                <Route path="/admin" element={
+                  <AdminOnly>
+                    <AdminDashboard />
+                  </AdminOnly>
+                } />
+                <Route path="/admin/matching/settings" element={
+                  <AdminOnly>
+                    <AdminMatchingSettings />
+                  </AdminOnly>
+                } />
+                <Route path="/admin/reports" element={
+                  <AdminOnly>
+                    <AdminReports />
+                  </AdminOnly>
+                } />
                 <Route path="/admin/qa" element={<QADashboard />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
