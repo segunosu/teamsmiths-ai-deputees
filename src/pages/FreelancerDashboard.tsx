@@ -49,6 +49,7 @@ const FreelancerDashboard = () => {
     averageScore: 0
   });
   const [loading, setLoading] = useState(true);
+  const [profileLoaded, setProfileLoaded] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -69,6 +70,8 @@ const FreelancerDashboard = () => {
       .select('user_type')
       .eq('user_id', user.id)
       .single();
+    
+    setProfileLoaded(true);
     
     if (profile?.user_type !== 'freelancer') {
       toast({
@@ -159,7 +162,7 @@ const FreelancerDashboard = () => {
     }
   };
 
-  if (loading) {
+  if (loading || !profileLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">

@@ -20,21 +20,23 @@ export const Navigation = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userType, setUserType] = useState<string | null>(null);
 
   useEffect(() => {
-    const checkAdminStatus = async () => {
+    const checkUserProfile = async () => {
       if (user) {
         const { data } = await supabase
           .from('profiles')
-          .select('is_admin')
+          .select('is_admin, user_type')
           .eq('user_id', user.id)
           .single();
         
         setIsAdmin(data?.is_admin || false);
+        setUserType(data?.user_type || null);
       }
     };
 
-    checkAdminStatus();
+    checkUserProfile();
   }, [user]);
 
   const navItems = [
@@ -50,7 +52,8 @@ export const Navigation = () => {
   ];
 
   if (user) {
-    navItems.push({ label: 'Dashboard', path: '/dashboard' });
+    const dashboardPath = userType === 'freelancer' ? '/freelancer-dashboard' : '/dashboard';
+    navItems.push({ label: 'Dashboard', path: dashboardPath });
   }
 
   const isActive = (path: string) => {
@@ -134,7 +137,7 @@ export const Navigation = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end">
                     <DropdownMenuItem asChild>
-                      <Link to="/dashboard" className="w-full">
+                      <Link to={userType === 'freelancer' ? '/freelancer-dashboard' : '/dashboard'} className="w-full">
                         <User className="mr-2 h-4 w-4" />
                         Dashboard
                       </Link>
