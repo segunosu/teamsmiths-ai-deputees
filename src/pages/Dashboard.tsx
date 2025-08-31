@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -42,9 +42,9 @@ interface CustomQuote {
 const Dashboard = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
-  
   const [customQuotes, setCustomQuotes] = useState<CustomQuote[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -61,8 +61,20 @@ const Dashboard = () => {
   useEffect(() => {
     if (!user) return;
     
-    const fetchData = async () => {
+    const checkUserTypeAndFetchData = async () => {
       try {
+        // First check if user is a freelancer
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('user_type')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (profile?.user_type === 'freelancer') {
+          navigate('/freelancer-dashboard');
+          return;
+        }
+        
         // Fetch user's projects using secure RPC to prevent parsing issues
         const { data: projectsData, error: projectsError } = await supabase
           .rpc('get_projects_for_user', { _uid: user.id });
@@ -102,8 +114,8 @@ const Dashboard = () => {
       }
     };
 
-    fetchData();
-  }, [user, toast]);
+    checkUserTypeAndFetchData();
+  }, [user, toast, navigate]);
 
   const getStatusBadge = (status: string) => {
     const colors: Record<string, string> = {
