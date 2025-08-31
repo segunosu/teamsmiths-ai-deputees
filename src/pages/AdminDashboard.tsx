@@ -12,11 +12,10 @@ import { toast } from 'sonner';
 import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign, Target, Activity } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import MatchingDashboard from '@/components/admin/MatchingDashboard';
-import AdminMeetingsSettings from '@/components/AdminMeetingsSettings';
-import AdminIntakeSettings from '@/components/AdminIntakeSettings';
-import AnalyticsMonitor from '@/components/admin/AnalyticsMonitor';
 import AdminMatchingSettings from '@/components/admin/AdminMatchingSettings';
+import MatchingDashboard from '@/components/admin/MatchingDashboard';
+import InvitationManager from '@/components/admin/InvitationManager';
+import ToolSuggestionManager from '@/components/admin/ToolSuggestionManager';
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };
@@ -533,116 +532,23 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="analytics">
-            <AnalyticsMonitor />
-          </TabsContent>
-
-          <TabsContent value="settings">
             <Card>
               <CardHeader>
-                <CardTitle>System Settings</CardTitle>
+                <CardTitle>Analytics</CardTitle>
                 <CardDescription>
-                  Configure platform behavior and thresholds
+                  Analytics dashboard coming soon
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-4">Quote Approval</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="threshold">Approval Threshold (£)</Label>
-                        <Input
-                          id="threshold"
-                          type="number"
-                          value={settings.quote_approval_threshold.amount}
-                          onChange={(e) => setSettings(prev => ({
-                            ...prev,
-                            quote_approval_threshold: {
-                              ...prev.quote_approval_threshold,
-                              amount: parseInt(e.target.value) || 0
-                            }
-                          }))}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-4">Intake Settings</h3>
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <Label>Allow requests without login</Label>
-                          <p className="text-sm text-muted-foreground">
-                            Let visitors submit requests without creating an account
-                          </p>
-                        </div>
-                        <Switch
-                          checked={settings.allow_custom_request_without_login.enabled}
-                          onCheckedChange={(checked) => setSettings(prev => ({
-                            ...prev,
-                            allow_custom_request_without_login: { enabled: checked }
-                          }))}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="pt-4">
-                  <h3 className="text-lg font-medium mb-4">Matching Configuration</h3>
-                  <AdminMatchingSettings />
-                </div>
-                
-                <Button onClick={updateSettings} className="w-full">
-                  Save All Settings
-                </Button>
+              <CardContent>
+                <p className="text-muted-foreground text-center py-8">Analytics features will be available soon</p>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="settings">
             <div className="space-y-6">
-              <AdminIntakeSettings />
-              <AdminMeetingsSettings />
-
-              {/* Quote Settings */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quote Settings</CardTitle>
-                  <CardDescription>
-                    Configure platform thresholds and approval workflows
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="threshold">Quote Approval Threshold (£)</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        id="threshold"
-                        type="number"
-                        value={settings.quote_approval_threshold?.amount || 5000}
-                        onChange={(e) => 
-                          setSettings({
-                            ...settings,
-                            quote_approval_threshold: {
-                              ...settings.quote_approval_threshold,
-                              amount: parseInt(e.target.value)
-                            }
-                          })
-                        }
-                        className="w-32"
-                      />
-                      <Button onClick={updateSettings}>
-                        Update Settings
-                      </Button>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Quotes above this amount require admin approval before being sent to clients.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <AdminMatchingSettings />
+              <ToolSuggestionManager />
             </div>
           </TabsContent>
         </Tabs>

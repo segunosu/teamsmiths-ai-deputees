@@ -1,10 +1,16 @@
-import { serve } from "https://deno.land/std@0.208.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.55.0';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+interface ToolSuggestionRequest {
+  tool_name: string;
+  rationale?: string;
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -12,133 +18,104 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  if (req.method !== 'POST') {
-    return new Response(
-      JSON.stringify({ error: 'Method not allowed' }),
-      { status: 405, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
-  }
-
   try {
-    // Initialize Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+    );
 
-    // Get the authorization header
-    const authHeader = req.headers.get('authorization');
+    // Get the user from the authorization header
+    const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: 'Authorization required' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      throw new Error('No authorization header');
     }
 
-    // Get user from auth token
-    const { data: { user }, error: userError } = await supabase.auth.getUser(
+    const { data: { user }, error: authError } = await supabase.auth.getUser(
       authHeader.replace('Bearer ', '')
     );
 
-    if (userError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'Invalid authorization' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    if (authError || !user) {
+      throw new Error('Unauthorized');
     }
 
-    // Parse request body
-    const { tool_name, category, description, use_case } = await req.json();
+    const { tool_name, rationale }: ToolSuggestionRequest = await req.json();
 
-    if (!tool_name || !category) {
-      return new Response(
-        JSON.stringify({ error: 'Tool name and category are required' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    if (!tool_name) {
+      throw new Error('Tool name is required');
     }
 
-    // Create admin_tool_suggestions table if it doesn't exist, then insert suggestion
-    const { error: createError } = await supabase.rpc('exec_sql', {
-      sql: `
-        CREATE TABLE IF NOT EXISTS public.admin_tool_suggestions (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          suggested_by UUID NOT NULL,
-          tool_name TEXT NOT NULL,
-          category TEXT NOT NULL,
-          description TEXT,
-          use_case TEXT,
-          status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
-          created_at TIMESTAMPTZ DEFAULT now(),
-          reviewed_at TIMESTAMPTZ,
-          reviewed_by UUID
-        );
+    console.log(`Tool suggestion from user ${user.id}: ${tool_name}`);
 
-        ALTER TABLE public.admin_tool_suggestions ENABLE ROW LEVEL SECURITY;
-        
-        DROP POLICY IF EXISTS ats_insert ON public.admin_tool_suggestions;
-        CREATE POLICY ats_insert ON public.admin_tool_suggestions
-          FOR INSERT WITH CHECK (suggested_by = auth.uid());
-          
-        DROP POLICY IF EXISTS ats_select ON public.admin_tool_suggestions
-          FOR SELECT USING (suggested_by = auth.uid() OR public.is_admin(auth.uid()));
-      `
-    });
+    // Check if this tool already exists
+    const { data: existingTool } = await supabase
+      .from('tools_master')
+      .select('id')
+      .ilike('name', tool_name)
+      .single();
+
+    if (existingTool) {
+      return new Response(JSON.stringify({
+        ok: false,
+        error: 'Tool already exists in our catalog'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Check if user already suggested this tool
+    const { data: existingSuggestion } = await supabase
+      .from('admin_tool_suggestions')
+      .select('id')
+      .eq('user_id', user.id)
+      .ilike('tool_name', tool_name)
+      .single();
+
+    if (existingSuggestion) {
+      return new Response(JSON.stringify({
+        ok: false,
+        error: 'You have already suggested this tool'
+      }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
 
     // Insert the suggestion
-    const { data: suggestion, error: insertError } = await supabase
+    const { data, error } = await supabase
       .from('admin_tool_suggestions')
       .insert({
-        suggested_by: user.id,
-        tool_name,
-        category,
-        description: description || null,
-        use_case: use_case || null
+        user_id: user.id,
+        tool_name: tool_name.trim(),
+        rationale: rationale?.trim(),
+        status: 'pending'
       })
       .select()
       .single();
 
-    if (insertError) {
-      console.error('Error inserting tool suggestion:', insertError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to save tool suggestion' }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    if (error) {
+      console.error('Error inserting tool suggestion:', error);
+      throw new Error('Failed to submit suggestion');
     }
 
-    // Create a notification for admins (simple approach)
-    const { error: notificationError } = await supabase
-      .from('notifications')
-      .insert({
-        user_id: null, // System notification for admins
-        type: 'tool_suggestion',
-        title: 'New Tool Suggestion',
-        message: `${tool_name} suggested for ${category} category`,
-        related_id: suggestion.id
-      });
+    console.log(`Tool suggestion submitted successfully: ${data.id}`);
 
-    if (notificationError) {
-      console.warn('Failed to create notification:', notificationError);
-    }
-
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        suggestion,
-        message: 'Tool suggestion submitted successfully' 
-      }),
-      { 
-        status: 200, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
-    );
+    return new Response(JSON.stringify({
+      ok: true,
+      suggestion_id: data.id,
+      message: 'Thank you for your suggestion! Our team will review it.'
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
 
   } catch (error) {
-    console.error('Unexpected error:', error);
-    return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
-    );
+    console.error('Error in suggest-tool function:', error);
+    return new Response(JSON.stringify({ 
+      ok: false, 
+      error: error.message 
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
   }
 });
