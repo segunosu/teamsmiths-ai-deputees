@@ -113,5 +113,17 @@ verify_jwt = false
 [functions.guest-save-continue]
 verify_jwt = false
 
+[functions.list-tools]
+verify_jwt = false
+
+[functions.save-freelancer-profile]
+verify_jwt = true
+
+[functions.suggest-tool]
+verify_jwt = true
+
+[functions.add-case-study]
+verify_jwt = true
+
 [edge_runtime]
 enabled = true

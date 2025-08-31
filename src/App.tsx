@@ -21,6 +21,7 @@ import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
 import FreelancerAuth from "./pages/FreelancerAuth";
 import FreelancerDashboard from "./pages/FreelancerDashboard";
+import FreelancerOnboarding from "./pages/FreelancerOnboarding";
 import ForAgencies from "./pages/ForAgencies";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCanceled from "./pages/PaymentCanceled";
@@ -85,6 +86,7 @@ const App = () => (
                 <Route path="/for-clients" element={<ForClients />} />
                 <Route path="/for-freelancers" element={<ForFreelancers />} />
                 <Route path="/freelancer-auth" element={<FreelancerAuth />} />
+                <Route path="/freelancer-onboarding" element={<FreelancerOnboarding />} />
                 <Route path="/freelancer-dashboard" element={<FreelancerDashboard />} />
                 <Route path="/for-agencies" element={<ForAgencies />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />

@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      academy_certifications: {
+        Row: {
+          code: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          title: string
+          tool_slug: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          title: string
+          tool_slug?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          title?: string
+          tool_slug?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academy_certifications_tool_slug_fkey"
+            columns: ["tool_slug"]
+            isOneToOne: false
+            referencedRelation: "tools_master"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
       admin_scheduled_reports: {
         Row: {
           cadence: string
@@ -420,6 +455,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      case_studies: {
+        Row: {
+          created_at: string | null
+          evidence_url: string | null
+          id: string
+          industries: string[] | null
+          is_verified: boolean | null
+          metrics: Json | null
+          source: string
+          summary: string | null
+          title: string
+          tools: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          evidence_url?: string | null
+          id?: string
+          industries?: string[] | null
+          is_verified?: boolean | null
+          metrics?: Json | null
+          source: string
+          summary?: string | null
+          title: string
+          tools?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          evidence_url?: string | null
+          id?: string
+          industries?: string[] | null
+          is_verified?: boolean | null
+          metrics?: Json | null
+          source?: string
+          summary?: string | null
+          title?: string
+          tools?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       categories: {
         Row: {
@@ -1099,6 +1179,44 @@ export type Database = {
           },
         ]
       }
+      freelancer_certifications: {
+        Row: {
+          cert_code: string
+          created_at: string | null
+          evidence_url: string | null
+          id: string
+          issued_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          cert_code: string
+          created_at?: string | null
+          evidence_url?: string | null
+          id?: string
+          issued_at?: string | null
+          status: string
+          user_id: string
+        }
+        Update: {
+          cert_code?: string
+          created_at?: string | null
+          evidence_url?: string | null
+          id?: string
+          issued_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "freelancer_certifications_cert_code_fkey"
+            columns: ["cert_code"]
+            isOneToOne: false
+            referencedRelation: "academy_certifications"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       freelancer_profiles: {
         Row: {
           availability_weekly_hours: number | null
@@ -1108,7 +1226,11 @@ export type Database = {
           id: string
           industries: string[] | null
           locales: string[] | null
+          outcome_band_max: number | null
+          outcome_band_min: number | null
           outcome_history: Json | null
+          outcome_preferences: string[] | null
+          practical_skills: string[] | null
           price_band_max: number | null
           price_band_min: number | null
           pto_ranges: Json | null
@@ -1126,7 +1248,11 @@ export type Database = {
           id?: string
           industries?: string[] | null
           locales?: string[] | null
+          outcome_band_max?: number | null
+          outcome_band_min?: number | null
           outcome_history?: Json | null
+          outcome_preferences?: string[] | null
+          practical_skills?: string[] | null
           price_band_max?: number | null
           price_band_min?: number | null
           pto_ranges?: Json | null
@@ -1144,7 +1270,11 @@ export type Database = {
           id?: string
           industries?: string[] | null
           locales?: string[] | null
+          outcome_band_max?: number | null
+          outcome_band_min?: number | null
           outcome_history?: Json | null
+          outcome_preferences?: string[] | null
+          practical_skills?: string[] | null
           price_band_max?: number | null
           price_band_min?: number | null
           pto_ranges?: Json | null
@@ -2562,6 +2692,39 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      tools_master: {
+        Row: {
+          category: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          is_certifiable: boolean | null
+          name: string
+          slug: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_certifiable?: boolean | null
+          name: string
+          slug?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_certifiable?: boolean | null
+          name?: string
+          slug?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       transcripts: {
         Row: {

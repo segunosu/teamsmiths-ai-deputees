@@ -16,10 +16,14 @@ interface FreelancerProfile {
   id?: string;
   user_id: string;
   skills: string[];
+  practical_skills?: string[];
   industries: string[];
   tools: string[];
   price_band_min: number | null;
   price_band_max: number | null;
+  outcome_band_min?: number;
+  outcome_band_max?: number;
+  outcome_preferences?: string[];
   certifications: string[];
   locales: string[];
   availability_weekly_hours: number;
@@ -60,33 +64,26 @@ const LOCALES = [
   'en-GB', 'en-US', 'es-ES', 'fr-FR', 'de-DE', 'it-IT', 'pt-PT', 'nl-NL'
 ];
 
-const FreelancerProfile = () => {
+export function FreelancerProfile() {
   const { user } = useAuth();
-  const { toast } = useToast();
-  const [profile, setProfile] = useState<FreelancerProfile>({
-    user_id: user?.id || '',
-    skills: [],
-    industries: [],
-    tools: [],
-    price_band_min: null,
-    price_band_max: null,
-    certifications: [],
-    locales: ['en-GB'],
-    availability_weekly_hours: 40,
-    pto_ranges: [],
-    connected_calendar: false,
-    outcome_history: {}
-  });
+  const [profile, setProfile] = useState<FreelancerProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [tools, setTools] = useState<any[]>([]);
+  const [caseStudies, setCaseStudies] = useState<any[]>([]);
+  const [certifications, setCertifications] = useState<any[]>([]);
   const [newSkill, setNewSkill] = useState('');
   const [newCertification, setNewCertification] = useState('');
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user?.id) {
       loadProfile();
+      loadTools();
+      loadCaseStudies();
+      loadCertifications();
     }
-  }, [user]);
+  }, [user?.id]);
 
   const loadProfile = async () => {
     try {
@@ -105,14 +102,12 @@ const FreelancerProfile = () => {
           ...data,
           price_band_min: data.price_band_min || null,
           price_band_max: data.price_band_max || null,
+          outcome_band_min: data.outcome_band_min || 5000,
+          outcome_band_max: data.outcome_band_max || 25000,
+          practical_skills: data.practical_skills || [],
+          outcome_preferences: data.outcome_preferences || [],
           pto_ranges: Array.isArray(data.pto_ranges) ? data.pto_ranges : [],
-          outcome_history: (data.outcome_history as any) || {
-            csat_score: null,
-            on_time_rate: null,
-            revision_rate: null,
-            pass_at_qa_rate: null,
-            dispute_rate: null
-          }
+          outcome_history: (data.outcome_history as any) || {}
         });
       }
     } catch (error: any) {
@@ -121,38 +116,87 @@ const FreelancerProfile = () => {
         description: error.message,
         variant: 'destructive',
       });
-    } finally {
-      setLoading(false);
+    }
+    setLoading(false);
+  };
+
+  const loadTools = async () => {
+    try {
+      const { data } = await supabase.functions.invoke('list-tools');
+      if (data?.success) {
+        setTools(data.tools);
+      }
+    } catch (error) {
+      console.error('Error loading tools:', error);
+    }
+  };
+
+  const loadCaseStudies = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('case_studies')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('created_at', { ascending: false });
+      
+      if (!error) {
+        setCaseStudies(data || []);
+      }
+    } catch (error) {
+      console.error('Error loading case studies:', error);
+    }
+  };
+
+  const loadCertifications = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('freelancer_certifications')
+        .select(`
+          *,
+          academy_certifications(title, tool_slug)
+        `)
+        .eq('user_id', user?.id);
+      
+      if (!error) {
+        setCertifications(data || []);
+      }
+    } catch (error) {
+      console.error('Error loading certifications:', error);
     }
   };
 
   const saveProfile = async () => {
-    if (!user?.id) return;
+    if (!user?.id || !profile) return;
 
     setSaving(true);
     try {
-      const profileData = {
-        ...profile,
-        user_id: user.id,
-        // Convert price bands to pence
-        price_band_min: profile.price_band_min ? profile.price_band_min * 100 : null,
-        price_band_max: profile.price_band_max ? profile.price_band_max * 100 : null,
-      };
-
-      const { error } = await supabase
-        .from('freelancer_profiles')
-        .upsert(profileData, { onConflict: 'user_id' });
-
-      if (error) throw error;
-
-      toast({
-        title: 'Profile saved',
-        description: 'Your freelancer profile has been updated successfully.',
+      const { data } = await supabase.functions.invoke('save-freelancer-profile', {
+        body: {
+          practical_skills: profile.practical_skills || [],
+          tools: profile.tools || [],
+          outcome_preferences: profile.outcome_preferences || [],
+          industries: profile.industries || [],
+          outcome_band_min: profile.outcome_band_min,
+          outcome_band_max: profile.outcome_band_max,
+          locales: profile.locales || [],
+          availability_weekly_hours: profile.availability_weekly_hours || 40,
+          price_band_min: profile.price_band_min,
+          price_band_max: profile.price_band_max
+        }
       });
+
+      if (data?.success) {
+        toast({
+          title: 'Profile saved',
+          description: 'Your freelancer profile has been updated successfully.',
+        });
+      } else {
+        throw new Error('Failed to save profile');
+      }
     } catch (error: any) {
       toast({
         title: 'Error saving profile',
-        description: error.message,
+        description: error.message || 'Failed to save profile',
         variant: 'destructive',
       });
     } finally {
@@ -161,7 +205,7 @@ const FreelancerProfile = () => {
   };
 
   const addSkill = (skill: string) => {
-    if (skill && !profile.skills.includes(skill)) {
+    if (skill && profile && !profile.skills.includes(skill)) {
       setProfile({
         ...profile,
         skills: [...profile.skills, skill]
@@ -171,14 +215,16 @@ const FreelancerProfile = () => {
   };
 
   const removeSkill = (skill: string) => {
-    setProfile({
-      ...profile,
-      skills: profile.skills.filter(s => s !== skill)
-    });
+    if (profile) {
+      setProfile({
+        ...profile,
+        skills: profile.skills.filter(s => s !== skill)
+      });
+    }
   };
 
   const addCertification = () => {
-    if (newCertification && !profile.certifications.includes(newCertification)) {
+    if (newCertification && profile && !profile.certifications.includes(newCertification)) {
       setProfile({
         ...profile,
         certifications: [...profile.certifications, newCertification]
@@ -188,21 +234,25 @@ const FreelancerProfile = () => {
   };
 
   const removeCertification = (cert: string) => {
-    setProfile({
-      ...profile,
-      certifications: profile.certifications.filter(c => c !== cert)
-    });
+    if (profile) {
+      setProfile({
+        ...profile,
+        certifications: profile.certifications.filter(c => c !== cert)
+      });
+    }
   };
 
   const toggleArrayItem = (array: string[], item: string, field: keyof FreelancerProfile) => {
-    const newArray = array.includes(item)
-      ? array.filter(i => i !== item)
-      : [...array, item];
-    
-    setProfile({
-      ...profile,
-      [field]: newArray
-    });
+    if (profile) {
+      const newArray = array.includes(item)
+        ? array.filter(i => i !== item)
+        : [...array, item];
+      
+      setProfile({
+        ...profile,
+        [field]: newArray
+      });
+    }
   };
 
   if (loading) {
@@ -211,6 +261,10 @@ const FreelancerProfile = () => {
         Loading profile...
       </div>
     );
+  }
+
+  if (!profile) {
+    return null;
   }
 
   return (

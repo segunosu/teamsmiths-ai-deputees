@@ -31,7 +31,7 @@ const FreelancerAuth = () => {
 
   const signUpAsFreelancer = async (email: string, password: string, fullName?: string) => {
     try {
-      const redirectUrl = `${window.location.origin}/freelancer-dashboard`;
+      const redirectUrl = `${window.location.origin}/freelancer-onboarding`;
       
       const { error } = await supabase.auth.signUp({
         email,
@@ -86,7 +86,7 @@ const FreelancerAuth = () => {
             ]);
 
             if (profile?.user_type === 'freelancer' || userMetaType === 'freelancer') {
-              navigate('/freelancer-dashboard');
+              navigate('/freelancer-onboarding');
               return;
             }
 
@@ -111,7 +111,7 @@ const FreelancerAuth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/freelancer-dashboard`,
+          redirectTo: `${window.location.origin}/freelancer-onboarding`,
           queryParams: {
             user_type: 'freelancer'
           }
