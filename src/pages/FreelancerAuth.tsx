@@ -74,24 +74,30 @@ const FreelancerAuth = () => {
         result = await signUpAsFreelancer(email, password, fullName);
       } else {
         result = await signIn(email, password);
-        // Check if user is actually a freelancer after signin
         if (!result.error) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('user_type')
-            .eq('user_id', user?.id)
-            .single();
-          
-          if (profile?.user_type !== 'freelancer') {
+          // Safely get the signed-in user and verify type
+          const { data: userData } = await supabase.auth.getUser();
+          const signedInUser = userData?.user;
+
+          if (signedInUser) {
+            const [{ data: profile }, userMetaType] = await Promise.all([
+              supabase.from('profiles').select('user_type').eq('user_id', signedInUser.id).single(),
+              Promise.resolve(signedInUser.user_metadata?.user_type as string | undefined)
+            ]);
+
+            if (profile?.user_type === 'freelancer' || userMetaType === 'freelancer') {
+              navigate('/freelancer-dashboard');
+              return;
+            }
+
             toast({
-              title: "Access denied",
-              description: "This is the freelancer login. Please use the client login instead.",
-              variant: "destructive",
+              title: 'Access denied',
+              description: 'This is the freelancer login. Please use the client login instead.',
+              variant: 'destructive',
             });
             await supabase.auth.signOut();
             return;
           }
-          navigate('/freelancer-dashboard');
         }
       }
     } finally {

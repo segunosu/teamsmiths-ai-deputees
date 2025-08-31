@@ -64,20 +64,32 @@ const FreelancerDashboard = () => {
 
   const checkUserType = async () => {
     if (!user) return;
-    
+
     const { data: profile } = await supabase
       .from('profiles')
       .select('user_type')
       .eq('user_id', user.id)
       .single();
-    
+
+    // If profile hasn't been set but metadata says freelancer, fix it on the fly
+    if (profile?.user_type !== 'freelancer' && user.user_metadata?.user_type === 'freelancer') {
+      await supabase.from('profiles').update({ user_type: 'freelancer' }).eq('user_id', user.id);
+      const { data: fp } = await supabase
+        .from('freelancer_profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      if (!fp) await supabase.from('freelancer_profiles').insert({ user_id: user.id });
+    }
+
     setProfileLoaded(true);
-    
-    if (profile?.user_type !== 'freelancer') {
+
+    const effectiveType = profile?.user_type ?? (user.user_metadata?.user_type as string | undefined);
+    if (effectiveType !== 'freelancer') {
       toast({
-        title: "Access denied",
-        description: "This dashboard is for freelancers only.",
-        variant: "destructive",
+        title: 'Access denied',
+        description: 'This dashboard is for freelancers only.',
+        variant: 'destructive',
       });
       navigate('/');
     }

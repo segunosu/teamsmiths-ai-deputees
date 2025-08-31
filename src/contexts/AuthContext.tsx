@@ -76,34 +76,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setupUserProfile = async (user: User) => {
     try {
-      // Check if user already has a profile
+      const userType = user.user_metadata?.user_type as string | undefined;
+
+      // Get existing profile (created by trigger) if present
       const { data: existingProfile } = await supabase
         .from('profiles')
         .select('user_type')
         .eq('user_id', user.id)
         .single();
 
-      // If user signed up with user_type metadata and doesn't have a profile, set their type
-      if (!existingProfile && user.user_metadata?.user_type) {
-        const userType = user.user_metadata.user_type;
-        
-        // Update their profile with the correct user type
-        await supabase
-          .from('profiles')
-          .update({ user_type: userType })
-          .eq('user_id', user.id);
+      if (userType) {
+        if (existingProfile) {
+          // Set or correct the user_type if missing or different
+          if (existingProfile.user_type !== userType) {
+            await supabase
+              .from('profiles')
+              .update({ user_type: userType })
+              .eq('user_id', user.id);
+          }
+        } else {
+          // Fallback: create a profile row if for some reason it doesn't exist yet
+          await supabase.from('profiles').insert({
+            user_id: user.id,
+            email: user.email,
+            full_name: user.user_metadata?.full_name,
+            user_type: userType,
+          });
+        }
 
-        // If they're a freelancer, create a freelancer profile
+        // Ensure freelancer specific record exists
         if (userType === 'freelancer') {
-          await supabase
+          const { data: fp } = await supabase
             .from('freelancer_profiles')
-            .insert({
-              user_id: user.id,
-              skills: [],
-              industries: [],
-              tools: [],
-              locales: []
-            });
+            .select('id')
+            .eq('user_id', user.id)
+            .maybeSingle();
+
+          if (!fp) {
+            await supabase.from('freelancer_profiles').insert({ user_id: user.id });
+          }
         }
       }
     } catch (error) {
