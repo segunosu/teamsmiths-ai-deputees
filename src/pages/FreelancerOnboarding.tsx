@@ -24,11 +24,17 @@ export default function FreelancerOnboarding() {
     try {
       const { data, error } = await supabase
         .from('freelancer_profiles')
-        .select('id')
+        .select('id, practical_skills, outcome_preferences, outcome_band_min, outcome_band_max')
         .eq('user_id', user?.id)
         .single();
 
-      setHasProfile(!!data && !error);
+      // Check if profile exists AND has the new required fields
+      const hasCompleteProfile = !!(data && !error && 
+        data.practical_skills?.length > 0 && 
+        data.outcome_preferences?.length > 0 &&
+        (data.outcome_band_min || data.outcome_band_max));
+
+      setHasProfile(hasCompleteProfile);
     } catch (error) {
       setHasProfile(false);
     } finally {
