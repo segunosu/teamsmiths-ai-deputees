@@ -1609,6 +1609,35 @@ export type Database = {
         }
         Relationships: []
       }
+      participants: {
+        Row: {
+          email: string | null
+          id: string
+          name: string | null
+          transcript_id: string | null
+        }
+        Insert: {
+          email?: string | null
+          id?: string
+          name?: string | null
+          transcript_id?: string | null
+        }
+        Update: {
+          email?: string | null
+          id?: string
+          name?: string | null
+          transcript_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "participants_transcript_id_fkey"
+            columns: ["transcript_id"]
+            isOneToOne: false
+            referencedRelation: "transcripts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_intents: {
         Row: {
           created_at: string | null
@@ -1787,6 +1816,7 @@ export type Database = {
           full_name: string | null
           is_admin: boolean | null
           user_id: string
+          user_type: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -1795,6 +1825,7 @@ export type Database = {
           full_name?: string | null
           is_admin?: boolean | null
           user_id: string
+          user_type?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -1803,6 +1834,7 @@ export type Database = {
           full_name?: string | null
           is_admin?: boolean | null
           user_id?: string
+          user_type?: string | null
         }
         Relationships: []
       }
@@ -2534,6 +2566,7 @@ export type Database = {
       transcripts: {
         Row: {
           created_at: string | null
+          date: string | null
           id: string
           json: Json | null
           project_id: string | null
@@ -2542,6 +2575,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          date?: string | null
           id?: string
           json?: Json | null
           project_id?: string | null
@@ -2550,6 +2584,7 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          date?: string | null
           id?: string
           json?: Json | null
           project_id?: string | null

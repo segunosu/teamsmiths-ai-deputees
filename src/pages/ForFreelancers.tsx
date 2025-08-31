@@ -67,10 +67,10 @@ const ForFreelancers = () => {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
             <Button asChild size="lg" className="text-xl px-12 py-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-              <Link to="/auth">Apply to Join</Link>
+              <Link to="/freelancer-auth">Apply to Join</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-xl px-12 py-8 rounded-xl border-2 hover:bg-accent/5 transition-all duration-300">
-              <Link to="/auth">Learn More</Link>
+              <Link to="/freelancer-auth">Learn More</Link>
             </Button>
           </div>
 
@@ -224,13 +224,13 @@ const ForFreelancers = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/auth">
+              <Link to="/freelancer-auth">
                 Start Application
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-              <Link to="/auth">Schedule Info Call</Link>
+              <Link to="/contact">Schedule Info Call</Link>
             </Button>
           </div>
 

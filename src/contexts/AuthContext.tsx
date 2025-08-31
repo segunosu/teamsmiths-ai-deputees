@@ -38,10 +38,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Link briefs to user when they sign in
+        // Link briefs to user and handle user type setup when they sign in
         if (event === 'SIGNED_IN' && session?.user) {
           setTimeout(() => {
             linkBriefsToUser(session.user);
+            setupUserProfile(session.user);
           }, 0);
         }
       }
@@ -70,6 +71,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error) {
       console.error('Error linking briefs to user:', error);
       // Don't throw error, just log it
+    }
+  };
+
+  const setupUserProfile = async (user: User) => {
+    try {
+      // Check if user already has a profile
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('user_type')
+        .eq('user_id', user.id)
+        .single();
+
+      // If user signed up with user_type metadata and doesn't have a profile, set their type
+      if (!existingProfile && user.user_metadata?.user_type) {
+        const userType = user.user_metadata.user_type;
+        
+        // Update their profile with the correct user type
+        await supabase
+          .from('profiles')
+          .update({ user_type: userType })
+          .eq('user_id', user.id);
+
+        // If they're a freelancer, create a freelancer profile
+        if (userType === 'freelancer') {
+          await supabase
+            .from('freelancer_profiles')
+            .insert({
+              user_id: user.id,
+              skills: [],
+              industries: [],
+              tools: [],
+              locales: []
+            });
+        }
+      }
+    } catch (error) {
+      console.error('Error setting up user profile:', error);
     }
   };
 

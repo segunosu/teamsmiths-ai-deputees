@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,30 +9,61 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
-import GoogleOneTap from '@/components/auth/GoogleOneTap';
-
-const Auth = () => {
+const FreelancerAuth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const { user, signIn, signUp, signInWithGoogle } = useAuth();
+  const { user, signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { toast } = useToast();
   
   const redirectReason = searchParams.get('redirect');
-  const expertName = searchParams.get('expert');
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate('/freelancer-dashboard');
     }
   }, [user, navigate]);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const signUpAsFreelancer = async (email: string, password: string, fullName?: string) => {
+    try {
+      const redirectUrl = `${window.location.origin}/freelancer-dashboard`;
+      
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: { 
+            full_name: fullName,
+            user_type: 'freelancer'
+          }
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Sign up failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return { error };
+      }
+
+      toast({
+        title: "Check your email",
+        description: "We've sent you a confirmation link to complete your freelancer registration.",
+      });
+
+      return {};
+    } catch (error: any) {
+      return { error };
+    }
+  };
 
   const handleEmailAuth = async (mode: 'signin' | 'signup') => {
     setLoading(true);
@@ -39,13 +71,28 @@ const Auth = () => {
     try {
       let result;
       if (mode === 'signup') {
-        result = await signUp(email, password, fullName);
+        result = await signUpAsFreelancer(email, password, fullName);
       } else {
         result = await signIn(email, password);
-      }
-
-      if (!result.error && mode === 'signin') {
-        navigate('/');
+        // Check if user is actually a freelancer after signin
+        if (!result.error) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('user_type')
+            .eq('user_id', user?.id)
+            .single();
+          
+          if (profile?.user_type !== 'freelancer') {
+            toast({
+              title: "Access denied",
+              description: "This is the freelancer login. Please use the client login instead.",
+              variant: "destructive",
+            });
+            await supabase.auth.signOut();
+            return;
+          }
+          navigate('/freelancer-dashboard');
+        }
       }
     } finally {
       setLoading(false);
@@ -55,7 +102,23 @@ const Auth = () => {
   const handleGoogleAuth = async () => {
     setLoading(true);
     try {
-      await signInWithGoogle();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/freelancer-dashboard`,
+          queryParams: {
+            user_type: 'freelancer'
+          }
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Google sign in failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -63,17 +126,13 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted p-4">
-      <GoogleOneTap />
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
-            {redirectReason === 'shortlist' ? 'Sign in to Save Expert' : 'Welcome to Teamsmiths - Clients'}
+            Join as a Freelancer
           </CardTitle>
           <CardDescription className="text-center">
-            {redirectReason === 'shortlist' && expertName 
-              ? `Sign in to add ${expertName} to your shortlist and get matched with similar experts`
-              : 'Sign in to your client account or create one to hire expert freelancers'
-            }
+            Sign in to your freelancer account or create a new one to start receiving project invitations
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -111,7 +170,7 @@ const Auth = () => {
                 disabled={loading || !email || !password}
               >
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Sign In
+                Sign In as Freelancer
               </Button>
             </TabsContent>
             
@@ -154,7 +213,7 @@ const Auth = () => {
                 disabled={loading || !email || !password}
               >
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Create Account
+                Create Freelancer Account
               </Button>
             </TabsContent>
           </Tabs>
@@ -197,9 +256,9 @@ const Auth = () => {
           </Button>
           
           <div className="mt-4 text-center text-sm text-muted-foreground">
-            Are you a freelancer?{' '}
-            <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/freelancer-auth')}>
-              Sign up here
+            Looking to hire experts?{' '}
+            <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/auth')}>
+              Sign up as a client
             </Button>
           </div>
         </CardContent>
@@ -208,4 +267,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default FreelancerAuth;
