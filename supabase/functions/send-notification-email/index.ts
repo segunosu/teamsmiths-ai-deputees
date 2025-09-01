@@ -75,6 +75,22 @@ serve(async (req) => {
         subject = `Admin Review Required - ${data.projectTitle || data.quoteNumber}`;
         html = generateAdminReviewEmail(data);
         break;
+      case 'freelancer_invited':
+        subject = `You've been invited to a new project`;
+        html = generateFreelancerInvitedEmail(data);
+        break;
+      case 'client_confirmation':
+        subject = `Your project is being matched with experts`;
+        html = generateClientConfirmationEmail(data);
+        break;
+      case 'freelancer_reminder':
+        subject = `Reminder: Your project invitation is waiting`;
+        html = generateFreelancerReminderEmail(data);
+        break;
+      case 'client_reminder':
+        subject = `Still waiting for proposals`;
+        html = generateClientReminderEmail(data);
+        break;
       default:
         subject = data.title;
         html = generateGenericEmail(data);
@@ -609,6 +625,204 @@ function generateProposalReadyEmail(data: any): string {
       <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b; font-size: 14px;">
         <p>Questions? Book a curator call to discuss your proposal</p>
         <p>Best regards,<br>The Deputee Team</p>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+function generateFreelancerInvitedEmail(data: any): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Project Invitation</title>
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background: linear-gradient(135deg, #1e40af, #7c3aed); padding: 30px; border-radius: 12px; text-align: center; color: white; margin-bottom: 30px;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: bold;">🎯 You've Been Invited!</h1>
+        <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">A new project matches your expertise</p>
+      </div>
+
+      <div style="background: #eff6ff; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #3b82f6;">
+        <h2 style="margin: 0 0 15px 0; color: #1e40af; font-size: 20px;">Project Invitation</h2>
+        <p style="margin: 8px 0;">Hi ${data.freelancerName || 'there'},</p>
+        <p style="margin: 8px 0;">You've been invited to work on <strong>${data.projectTitle}</strong> because your skills match the client's needs.</p>
+        ${data.matchReasons ? `<p style="margin: 8px 0;"><strong>Why you're a great fit:</strong> ${data.matchReasons}</p>` : ''}
+      </div>
+
+      <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #10b981;">
+        <h3 style="margin: 0 0 10px 0; color: #059669;">Next Steps</h3>
+        <ul style="margin: 5px 0; padding-left: 20px; color: #166534;">
+          <li>Review the project brief and requirements</li>
+          <li>Accept or decline the invitation within 48 hours</li>
+          <li>If accepted, you'll be contacted by the client</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center; margin: 30px 0;">
+        ${data.actionUrl ? `
+          <a href="${data.actionUrl}" style="background: #1e40af; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block; margin-right: 10px;">
+            View Brief
+          </a>
+          <a href="${data.acceptUrl || data.actionUrl}" style="background: #059669; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            Accept Invitation
+          </a>
+        ` : ''}
+      </div>
+
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b; font-size: 14px;">
+        <p>This invitation expires in 48 hours</p>
+        <p>Best regards,<br>The Teamsmiths Team</p>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+function generateClientConfirmationEmail(data: any): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Project Matching Update</title>
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background: linear-gradient(135deg, #059669, #10b981); padding: 30px; border-radius: 12px; text-align: center; color: white; margin-bottom: 30px;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: bold;">🤝 Experts Matched!</h1>
+        <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Your project is being matched with qualified experts</p>
+      </div>
+
+      <div style="background: #f0fdf4; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #10b981;">
+        <h2 style="margin: 0 0 15px 0; color: #059669; font-size: 20px;">Good News!</h2>
+        <p style="margin: 8px 0;">We've invited <strong>${data.expertCount} experts</strong> who match your requirements for <strong>${data.projectTitle}</strong>.</p>
+        <p style="margin: 8px 0;">These professionals have been carefully selected based on their skills, experience, and availability.</p>
+      </div>
+
+      <div style="background: #fffbeb; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #f59e0b;">
+        <h3 style="margin: 0 0 10px 0; color: #d97706;">What to Expect</h3>
+        <ul style="margin: 5px 0; padding-left: 20px; color: #92400e;">
+          <li>Experts will review your brief within 24 hours</li>
+          <li>You'll receive proposals within 48 hours</li>
+          <li>Each proposal includes pricing and timeline</li>
+          <li>You can interview candidates before deciding</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center; margin: 30px 0;">
+        ${data.actionUrl ? `
+          <a href="${data.actionUrl}" style="background: #059669; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            Track Progress
+          </a>
+        ` : ''}
+      </div>
+
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b; font-size: 14px;">
+        <p>We'll notify you as soon as proposals arrive</p>
+        <p>Best regards,<br>The Teamsmiths Team</p>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+function generateFreelancerReminderEmail(data: any): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Invitation Reminder</title>
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background: linear-gradient(135deg, #f59e0b, #eab308); padding: 30px; border-radius: 12px; text-align: center; color: white; margin-bottom: 30px;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: bold;">⏰ Gentle Reminder</h1>
+        <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Your project invitation is waiting for a response</p>
+      </div>
+
+      <div style="background: #fffbeb; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #f59e0b;">
+        <h2 style="margin: 0 0 15px 0; color: #d97706; font-size: 20px;">Action Needed</h2>
+        <p style="margin: 8px 0;">Hi ${data.freelancerName || 'there'},</p>
+        <p style="margin: 8px 0;">You've been invited to work on <strong>${data.projectTitle}</strong> but haven't responded yet.</p>
+        <p style="margin: 8px 0;">Please accept or decline so we can notify the client and move forward.</p>
+      </div>
+
+      <div style="background: #fef2f2; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #ef4444;">
+        <h3 style="margin: 0 0 10px 0; color: #dc2626;">Time Sensitive</h3>
+        <p style="margin: 5px 0; color: #991b1b;">This invitation expires soon. Respond now to avoid missing this opportunity.</p>
+      </div>
+
+      <div style="text-align: center; margin: 30px 0;">
+        ${data.actionUrl ? `
+          <a href="${data.actionUrl}" style="background: #059669; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block; margin-right: 10px;">
+            Accept
+          </a>
+          <a href="${data.declineUrl || data.actionUrl}" style="background: #dc2626; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            Decline
+          </a>
+        ` : ''}
+      </div>
+
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b; font-size: 14px;">
+        <p>Please respond within 24 hours</p>
+        <p>Best regards,<br>The Teamsmiths Team</p>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+function generateClientReminderEmail(data: any): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Project Update</title>
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background: linear-gradient(135deg, #7c2d12, #ea580c); padding: 30px; border-radius: 12px; text-align: center; color: white; margin-bottom: 30px;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: bold;">📋 Project Update</h1>
+        <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Still waiting for expert proposals</p>
+      </div>
+
+      <div style="background: #fffbeb; padding: 25px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #f59e0b;">
+        <h2 style="margin: 0 0 15px 0; color: #d97706; font-size: 20px;">Update on ${data.projectTitle}</h2>
+        <p style="margin: 8px 0;">We're still waiting for expert responses on your project. This sometimes happens when:</p>
+        <ul style="margin: 8px 0; padding-left: 20px; color: #92400e;">
+          <li>Experts are reviewing detailed requirements</li>
+          <li>The project requires specialized expertise</li>
+          <li>Current high demand for certain skills</li>
+        </ul>
+      </div>
+
+      <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #10b981;">
+        <h3 style="margin: 0 0 10px 0; color: #059669;">What We're Doing</h3>
+        <ul style="margin: 5px 0; padding-left: 20px; color: #166534;">
+          <li>Extending invitations to additional experts</li>
+          <li>Reaching out to our top-tier specialists</li>
+          <li>Optimizing your project requirements if needed</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center; margin: 30px 0;">
+        ${data.actionUrl ? `
+          <a href="${data.actionUrl}" style="background: #ea580c; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+            View Project Status
+          </a>
+        ` : ''}
+      </div>
+
+      <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; color: #64748b; font-size: 14px;">
+        <p>We'll update you as soon as we have proposals</p>
+        <p>Questions? Reply to this email anytime</p>
+        <p>Best regards,<br>The Teamsmiths Team</p>
       </div>
     </body>
     </html>
