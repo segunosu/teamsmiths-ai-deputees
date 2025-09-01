@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowRight, ArrowLeft, Plus, Check } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Plus, Check, Award } from 'lucide-react';
 
 interface Tool {
   id: string;
@@ -151,7 +151,7 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
   };
 
   const handleNext = () => {
-    if (currentStep < 4) {
+    if (currentStep < 6) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -375,18 +375,54 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
     </Card>
   );
 
+  const renderStep5 = () => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Certifications</CardTitle>
+        <CardDescription>
+          Add your certifications to boost your matching score. Teamsmiths Academy certifications will soon be available.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="text-center py-8 text-muted-foreground">
+          <Award className="w-12 h-12 mx-auto mb-4 opacity-50" />
+          <p>Teamsmiths Academy certifications coming soon!</p>
+          <p className="text-sm">Verified badges will boost your matching score.</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const renderStep6 = () => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Case Studies</CardTitle>
+        <CardDescription>
+          Showcase your successful AI implementations to stand out to clients.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="text-center py-8 text-muted-foreground">
+          <Award className="w-12 h-12 mx-auto mb-4 opacity-50" />
+          <p>Add case studies after completing your profile!</p>
+          <p className="text-sm">Share your successful AI projects with metrics and evidence.</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
       {/* Progress Indicator */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Setup Your Profile</h1>
         <div className="text-sm text-muted-foreground">
-          Step {currentStep} of 4
+          Step {currentStep} of 6
         </div>
       </div>
 
       <div className="flex space-x-2 mb-6">
-        {[1, 2, 3, 4].map(step => (
+        {[1, 2, 3, 4, 5, 6].map(step => (
           <div
             key={step}
             className={`flex-1 h-2 rounded-full ${
@@ -401,6 +437,8 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
       {currentStep === 2 && renderStep2()}
       {currentStep === 3 && renderStep3()}
       {currentStep === 4 && renderStep4()}
+      {currentStep === 5 && renderStep5()}
+      {currentStep === 6 && renderStep6()}
 
       {/* Navigation */}
       <div className="flex justify-between">
@@ -413,7 +451,7 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
           Previous
         </Button>
 
-        {currentStep < 4 ? (
+        {currentStep < 6 ? (
           <Button onClick={handleNext}>
             Continue
             <ArrowRight className="w-4 h-4 ml-2" />

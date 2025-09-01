@@ -39,15 +39,24 @@ interface FreelancerProfile {
 }
 
 const PRACTICAL_SKILLS = [
-  'Project Management', 'UX Research', 'Data Analysis', 'Technical Writing',
-  'Quality Assurance', 'Business Analysis', 'Content Strategy', 'SEO',
-  'Digital Marketing', 'Social Media Management', 'Community Management',
-  'Customer Support', 'Sales', 'Account Management', 'Consulting'
+  'Agent Orchestration (N8N, LangChain, MCP, etc.)',
+  'RAG (Retrieval-Augmented Generation)',
+  'Voice Agents (Whisper, ElevenLabs, etc.)',
+  'Automation (Zapier, Make, Retool, etc.)',
+  'API & Integrations (OpenAI, Anthropic, Supabase, etc.)',
+  'Gen Media (AI video, AI image, text-to-speech, etc.)',
+  'Data & Analytics (Pinecone, Airtable, dashboards, etc.)'
 ];
 
 const OUTCOME_PREFERENCES = [
-  'Brand Awareness', 'Lead Generation', 'Sales Growth', 'User Engagement',
-  'Cost Reduction', 'Process Optimization', 'Market Expansion', 'Customer Satisfaction'
+  'Sales Uplift',
+  'Lead Generation',
+  'Operations Automation',
+  'Customer Experience Improvement',
+  'Cost Reduction',
+  'Decision Support / Insights',
+  'Compliance / Risk Mitigation',
+  'Knowledge Management'
 ];
 
 const COMMON_SKILLS = [
@@ -60,9 +69,15 @@ const COMMON_SKILLS = [
 ];
 
 const INDUSTRIES = [
-  'FinTech', 'Healthcare', 'Education', 'E-commerce', 'SaaS',
-  'Consulting', 'Agency', 'Startup', 'Enterprise', 'Non-profit',
-  'Real Estate', 'Automotive', 'Travel', 'Food & Beverage'
+  'SaaS',
+  'E-commerce',
+  'Construction',
+  'Healthcare',
+  'Finance',
+  'Education',
+  'Professional Services',
+  'Manufacturing',
+  'Public Sector'
 ];
 
 const TOOLS = [
@@ -361,8 +376,8 @@ export function FreelancerProfile() {
             </div>
 
             <div>
-              <Label>Practical Skills</Label>
-              <div className="grid grid-cols-2 gap-2 mt-2">
+              <Label>Practical AI Skills</Label>
+              <div className="space-y-2 mt-2">
                 {PRACTICAL_SKILLS.map(skill => (
                   <div key={skill} className="flex items-center space-x-2">
                     <Checkbox
@@ -410,48 +425,21 @@ export function FreelancerProfile() {
           </CardContent>
         </Card>
 
-        {/* Pricing & Availability */}
+        {/* Outcome Bands & Availability */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="h-4 w-4" />
-              Pricing & Availability
+              Outcome Bands & Availability
             </CardTitle>
             <CardDescription>
-              Set your rates and availability for better matching
+              Set your typical project range (outcome-based, not hourly) and availability
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Min Rate (£/hour)</Label>
-                <Input
-                  type="number"
-                  value={profile.price_band_min || ''}
-                  onChange={(e) => setProfile({
-                    ...profile,
-                    price_band_min: e.target.value ? parseInt(e.target.value) : null
-                  })}
-                  placeholder="50"
-                />
-              </div>
-              <div>
-                <Label>Max Rate (£/hour)</Label>
-                <Input
-                  type="number"
-                  value={profile.price_band_max || ''}
-                  onChange={(e) => setProfile({
-                    ...profile,
-                    price_band_max: e.target.value ? parseInt(e.target.value) : null
-                  })}
-                  placeholder="150"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Min Outcome (£)</Label>
+                <Label>Typical Outcome Band Min (£)</Label>
                 <Input
                   type="number"
                   value={profile.outcome_band_min || ''}
@@ -463,7 +451,7 @@ export function FreelancerProfile() {
                 />
               </div>
               <div>
-                <Label>Max Outcome (£)</Label>
+                <Label>Typical Outcome Band Max (£)</Label>
                 <Input
                   type="number"
                   value={profile.outcome_band_max || ''}
@@ -475,6 +463,9 @@ export function FreelancerProfile() {
                 />
               </div>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Enter the typical budget range for projects you deliver (outcome-based, not hourly). e.g., 5,000 – 25,000
+            </p>
 
             <div>
               <Label>Weekly Availability (hours)</Label>
@@ -516,13 +507,39 @@ export function FreelancerProfile() {
               Certifications
             </CardTitle>
             <CardDescription>
-              Add certifications to boost your vetting score
+              Teamsmiths Academy certifications boost your matching score
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <div className="text-sm font-medium">✅ Verified</div>
+              {certifications.filter(cert => cert.status === 'verified').map(cert => (
+                <div key={cert.id} className="flex items-center justify-between p-2 bg-green-50 border border-green-200 rounded">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span>{cert.academy_certifications?.title || cert.cert_code}</span>
+                  </div>
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">Verified</Badge>
+                </div>
+              ))}
+            </div>
+            
+            <div className="space-y-2">
+              <div className="text-sm font-medium">📝 Declared</div>
+              {certifications.filter(cert => cert.status === 'declared').map(cert => (
+                <div key={cert.id} className="flex items-center justify-between p-2 bg-gray-50 border border-gray-200 rounded">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                    <span>{cert.academy_certifications?.title || cert.cert_code}</span>
+                  </div>
+                  <Badge variant="outline">Declared</Badge>
+                </div>
+              ))}
+            </div>
+
             <div className="flex gap-2">
               <Input
-                placeholder="Add certification"
+                placeholder="Add certification code or URL"
                 value={newCertification}
                 onChange={(e) => setNewCertification(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && addCertification()}
@@ -532,20 +549,61 @@ export function FreelancerProfile() {
               </Button>
             </div>
             
-            <div className="space-y-2">
-              {profile.certifications.map(cert => (
-                <div key={cert} className="flex items-center justify-between p-2 bg-muted rounded">
-                  <span>{cert}</span>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => removeCertification(cert)}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
+            <p className="text-xs text-muted-foreground">
+              Teamsmiths Academy certifications will soon be available. Verified badges boost your matching score.
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Case Studies */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Award className="h-4 w-4" />
+              Case Studies
+            </CardTitle>
+            <CardDescription>
+              Showcase your successful AI implementations
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-3">
+              {caseStudies.map(study => (
+                <div key={study.id} className="p-3 border rounded-lg">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h4 className="font-medium">{study.title}</h4>
+                      <p className="text-sm text-muted-foreground mt-1">{study.summary}</p>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {study.tools?.map((tool: string) => (
+                          <Badge key={tool} variant="outline" className="text-xs">{tool}</Badge>
+                        ))}
+                      </div>
+                      {study.metrics && Object.keys(study.metrics).length > 0 && (
+                        <div className="text-sm text-primary font-medium mt-2">
+                          {Object.entries(study.metrics).map(([key, value]) => (
+                            <span key={key} className="mr-3">{key}: {String(value)}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {study.is_verified && (
+                      <Badge className="bg-blue-100 text-blue-800">Teamsmiths Verified</Badge>
+                    )}
+                  </div>
                 </div>
               ))}
+              {caseStudies.length === 0 && (
+                <div className="text-center py-4 text-muted-foreground">
+                  No case studies yet. Add your first successful AI implementation!
+                </div>
+              )}
             </div>
+            
+            <Button variant="outline" className="w-full">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Case Study
+            </Button>
           </CardContent>
         </Card>
 
