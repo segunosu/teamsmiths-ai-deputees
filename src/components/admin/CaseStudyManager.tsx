@@ -6,6 +6,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle, XCircle, ExternalLink, User, TrendingUp } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 interface CaseStudyWithProfile {
   id: string;
@@ -28,6 +30,7 @@ interface CaseStudyWithProfile {
 export default function CaseStudyManager() {
   const [caseStudies, setCaseStudies] = useState<CaseStudyWithProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [notifyByEmail, setNotifyByEmail] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -57,7 +60,7 @@ export default function CaseStudyManager() {
     }
   };
 
-  const handleVerify = async (caseStudyId: string) => {
+  const handleVerify = async (study: CaseStudyWithProfile) => {
     try {
       const { error } = await supabase
         .from('case_studies')
@@ -65,36 +68,40 @@ export default function CaseStudyManager() {
           is_verified: true,
           updated_at: new Date().toISOString()
         })
-        .eq('id', caseStudyId);
+        .eq('id', study.id);
 
       if (error) throw error;
 
-      // Log admin action
       await supabase.functions.invoke('audit-admin-action', {
-        body: {
-          entity: 'case_studies',
-          action: 'verify',
-          entity_id: caseStudyId,
-          meta: { is_verified: true }
-        }
+        body: { entity: 'case_studies', action: 'verify', entity_id: study.id, meta: { is_verified: true } }
       });
 
-      toast({
-        title: 'Success',
-        description: 'Case study verified successfully. This will boost the freelancer\'s credibility in client views.',
+      await supabase.rpc('create_notification', {
+        p_user_id: study.user_id,
+        p_type: 'case_study_update',
+        p_title: 'Case study verified',
+        p_message: `Your case study "${study.title}" has been verified by Teamsmiths.`,
+        p_related_id: study.id
       });
 
+      if (notifyByEmail && study.profiles?.email) {
+        await supabase.functions.invoke('send-notification-email', {
+          body: {
+            to: study.profiles.email,
+            type: 'case_study_verified',
+            data: { title: 'Case Study Verified', freelancerName: study.profiles.full_name || 'there', caseStudyTitle: study.title }
+          }
+        });
+      }
+
+      toast({ title: 'Success', description: 'Case study verified.' });
       fetchCaseStudies();
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: 'Failed to verify case study',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'Failed to verify case study', variant: 'destructive' });
     }
   };
 
-  const handleReject = async (caseStudyId: string) => {
+  const handleReject = async (study: CaseStudyWithProfile) => {
     try {
       const { error } = await supabase
         .from('case_studies')
@@ -102,32 +109,36 @@ export default function CaseStudyManager() {
           is_verified: false,
           updated_at: new Date().toISOString()
         })
-        .eq('id', caseStudyId);
+        .eq('id', study.id);
 
       if (error) throw error;
 
-      // Log admin action
       await supabase.functions.invoke('audit-admin-action', {
-        body: {
-          entity: 'case_studies',
-          action: 'reject',
-          entity_id: caseStudyId,
-          meta: { is_verified: false }
-        }
+        body: { entity: 'case_studies', action: 'reject', entity_id: study.id, meta: { is_verified: false } }
       });
 
-      toast({
-        title: 'Success',
-        description: 'Case study rejected. It will remain private to the freelancer.',
+      await supabase.rpc('create_notification', {
+        p_user_id: study.user_id,
+        p_type: 'case_study_update',
+        p_title: 'Case study update',
+        p_message: `Update on your case study "${study.title}". It was not verified at this time.`,
+        p_related_id: study.id
       });
 
+      if (notifyByEmail && study.profiles?.email) {
+        await supabase.functions.invoke('send-notification-email', {
+          body: {
+            to: study.profiles.email,
+            type: 'case_study_rejected',
+            data: { title: 'Case Study Update', freelancerName: study.profiles.full_name || 'there', caseStudyTitle: study.title }
+          }
+        });
+      }
+
+      toast({ title: 'Success', description: 'Case study rejected.' });
       fetchCaseStudies();
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: 'Failed to reject case study',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'Failed to reject case study', variant: 'destructive' });
     }
   };
 
@@ -170,10 +181,18 @@ export default function CaseStudyManager() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Case Study Verification</CardTitle>
-        <CardDescription>
-          Review and verify freelancer case studies to boost their credibility in client-facing views
-        </CardDescription>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <CardTitle>Case Study Verification</CardTitle>
+            <CardDescription>
+              Review and verify freelancer case studies to boost their credibility in client-facing views
+            </CardDescription>
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="notify-email-cs" checked={notifyByEmail} onCheckedChange={(v) => setNotifyByEmail(Boolean(v))} />
+            <Label htmlFor="notify-email-cs" className="text-sm">Notify freelancer by email</Label>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         {caseStudies.length === 0 ? (
@@ -238,11 +257,11 @@ export default function CaseStudyManager() {
                         
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button
-                              size="sm"
-                              onClick={() => handleVerify(study.id)}
-                              className="bg-green-600 hover:bg-green-700"
-                            >
+                      <Button
+                        size="sm"
+                        onClick={() => handleVerify(study)}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
                               <CheckCircle className="h-3 w-3" />
                             </Button>
                           </TooltipTrigger>

@@ -6,6 +6,8 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle, XCircle, Clock, ExternalLink, User } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 interface CertificationWithProfile {
   id: string;
@@ -28,6 +30,7 @@ interface CertificationWithProfile {
 export default function CertificationManager() {
   const [certifications, setCertifications] = useState<CertificationWithProfile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [notifyByEmail, setNotifyByEmail] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -58,7 +61,7 @@ export default function CertificationManager() {
     }
   };
 
-  const handleVerify = async (certificationId: string) => {
+  const handleVerify = async (cert: CertificationWithProfile) => {
     try {
       const { error } = await supabase
         .from('freelancer_certifications')
@@ -66,7 +69,7 @@ export default function CertificationManager() {
           status: 'verified',
           issued_at: new Date().toISOString()
         })
-        .eq('id', certificationId);
+        .eq('id', cert.id);
 
       if (error) throw error;
 
@@ -75,10 +78,35 @@ export default function CertificationManager() {
         body: {
           entity: 'freelancer_certifications',
           action: 'verify',
-          entity_id: certificationId,
+          entity_id: cert.id,
           meta: { status: 'verified' }
         }
       });
+
+      // Create in-app notification
+      await supabase.rpc('create_notification', {
+        p_user_id: cert.user_id,
+        p_type: 'certification_update',
+        p_title: 'Certification verified',
+        p_message: `Your certification ${cert.academy_certifications?.title || cert.cert_code} has been verified by Teamsmiths.`,
+        p_related_id: cert.id
+      });
+
+      // Optional email
+      if (notifyByEmail && cert.profiles?.email) {
+        await supabase.functions.invoke('send-notification-email', {
+          body: {
+            to: cert.profiles.email,
+            type: 'certification_verified',
+            data: {
+              title: 'Certification Verified',
+              message: '',
+              freelancerName: cert.profiles.full_name || 'there',
+              certificationTitle: cert.academy_certifications?.title || cert.cert_code
+            }
+          }
+        });
+      }
 
       toast({
         title: 'Success',
@@ -95,14 +123,14 @@ export default function CertificationManager() {
     }
   };
 
-  const handleReject = async (certificationId: string) => {
+  const handleReject = async (cert: CertificationWithProfile) => {
     try {
       const { error } = await supabase
         .from('freelancer_certifications')
         .update({
           status: 'declared'
         })
-        .eq('id', certificationId);
+        .eq('id', cert.id);
 
       if (error) throw error;
 
@@ -111,10 +139,34 @@ export default function CertificationManager() {
         body: {
           entity: 'freelancer_certifications',
           action: 'reject',
-          entity_id: certificationId,
+          entity_id: cert.id,
           meta: { status: 'declared' }
         }
       });
+
+      // Create in-app notification
+      await supabase.rpc('create_notification', {
+        p_user_id: cert.user_id,
+        p_type: 'certification_update',
+        p_title: 'Certification update',
+        p_message: `Update on your certification ${cert.academy_certifications?.title || cert.cert_code}. We couldn\'t verify it at this time.`,
+        p_related_id: cert.id
+      });
+
+      if (notifyByEmail && cert.profiles?.email) {
+        await supabase.functions.invoke('send-notification-email', {
+          body: {
+            to: cert.profiles.email,
+            type: 'certification_rejected',
+            data: {
+              title: 'Certification Update',
+              message: '',
+              freelancerName: cert.profiles.full_name || 'there',
+              certificationTitle: cert.academy_certifications?.title || cert.cert_code
+            }
+          }
+        });
+      }
 
       toast({
         title: 'Success',
@@ -161,10 +213,18 @@ export default function CertificationManager() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Certification Verification</CardTitle>
-        <CardDescription>
-          Review and verify freelancer certifications to boost their credibility and matching scores
-        </CardDescription>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <CardTitle>Certification Verification</CardTitle>
+            <CardDescription>
+              Review and verify freelancer certifications to boost their credibility and matching scores
+            </CardDescription>
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="notify-email" checked={notifyByEmail} onCheckedChange={(v) => setNotifyByEmail(Boolean(v))} />
+            <Label htmlFor="notify-email" className="text-sm">Notify freelancer by email</Label>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         {certifications.length === 0 ? (
@@ -232,7 +292,7 @@ export default function CertificationManager() {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => handleReject(cert.id)}
+                                onClick={() => handleReject(cert)}
                                 className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
                               >
                                 <XCircle className="h-3 w-3" />
@@ -247,7 +307,7 @@ export default function CertificationManager() {
                             <TooltipTrigger asChild>
                               <Button
                                 size="sm"
-                                onClick={() => handleVerify(cert.id)}
+                                onClick={() => handleVerify(cert)}
                                 className="bg-green-600 hover:bg-green-700"
                               >
                                 <CheckCircle className="h-3 w-3" />

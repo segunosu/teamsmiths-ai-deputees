@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 interface ToolSuggestion {
   id: string;
@@ -15,11 +17,13 @@ interface ToolSuggestion {
   created_at: string;
   reviewed_at: string | null;
   reviewed_by: string | null;
+  profiles?: { full_name: string; email: string } | null;
 }
 
 export default function ToolSuggestionManager() {
   const [suggestions, setSuggestions] = useState<ToolSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
+  const [notifyByEmail, setNotifyByEmail] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -30,7 +34,7 @@ export default function ToolSuggestionManager() {
     try {
       const { data, error } = await supabase
         .from('admin_tool_suggestions')
-        .select('*')
+        .select('*, profiles:user_id(full_name, email)')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -133,10 +137,18 @@ export default function ToolSuggestionManager() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Tool Suggestions</CardTitle>
-        <CardDescription>
-          Review and manage tool suggestions from freelancers
-        </CardDescription>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>Tool Suggestions</CardTitle>
+            <CardDescription>
+              Review and manage tool suggestions from freelancers
+            </CardDescription>
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox id="notify-email-tools" checked={notifyByEmail} onCheckedChange={(v) => setNotifyByEmail(Boolean(v))} />
+            <Label htmlFor="notify-email-tools" className="text-sm">Notify freelancer by email</Label>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         {suggestions.length === 0 ? (
