@@ -34,11 +34,14 @@ export default function ToolSuggestionManager() {
     try {
       const { data, error } = await supabase
         .from('admin_tool_suggestions')
-        .select('*, profiles:user_id(full_name, email)')
+        .select(`
+          *,
+          profiles!admin_tool_suggestions_user_id_fkey(full_name, email)
+        `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setSuggestions((data || []) as ToolSuggestion[]);
+      setSuggestions((data || []) as unknown as ToolSuggestion[]);
     } catch (error: any) {
       toast({
         title: 'Error',
@@ -52,6 +55,9 @@ export default function ToolSuggestionManager() {
 
   const handleReview = async (suggestionId: string, newStatus: 'approved' | 'rejected', toolName?: string) => {
     try {
+      // Find suggestion context
+      const suggestion = suggestions.find(s => s.id === suggestionId);
+
       // Update suggestion status
       const { error: updateError } = await supabase
         .from('admin_tool_suggestions')
@@ -74,11 +80,30 @@ export default function ToolSuggestionManager() {
             is_active: true
           });
 
-        if (toolError) {
-          // Check if it's a unique constraint error (tool already exists)
-          if (!toolError.message.includes('duplicate key')) {
-            throw toolError;
-          }
+        if (toolError && !toolError.message.includes('duplicate key')) {
+          throw toolError;
+        }
+      }
+
+      // In-app notification
+      if (suggestion) {
+        await supabase.rpc('create_notification', {
+          p_user_id: suggestion.user_id,
+          p_type: 'tool_suggestion_update',
+          p_title: newStatus === 'approved' ? 'Tool suggestion approved' : 'Tool suggestion update',
+          p_message: newStatus === 'approved' ? `Your tool ${toolName} has been approved and added to the catalog.` : `Update on your tool suggestion ${toolName}. Not added at this time.`,
+          p_related_id: suggestionId
+        });
+
+        // Optional email
+        if (notifyByEmail && suggestion.profiles?.email) {
+          await supabase.functions.invoke('send-notification-email', {
+            body: {
+              to: suggestion.profiles.email,
+              type: newStatus === 'approved' ? 'tool_suggestion_approved' : 'tool_suggestion_rejected',
+              data: { title: 'Tool Suggestion Update', freelancerName: suggestion.profiles.full_name || 'there', toolName }
+            }
+          });
         }
       }
 
@@ -164,6 +189,11 @@ export default function ToolSuggestionManager() {
               >
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">
+                        By: {suggestion.profiles?.full_name || 'Unknown User'}
+                      </span>
+                    </div>
                     <div className="flex items-center gap-2">
                       <h4 className="font-medium">{suggestion.tool_name}</h4>
                       {getStatusIcon(suggestion.status)}

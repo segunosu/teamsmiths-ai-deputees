@@ -241,12 +241,12 @@ export default function CaseStudyManager() {
                       <div className="flex gap-1">
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleReject(study.id)}
-                              className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
-                            >
+                             <Button
+                               variant="outline"
+                               size="sm"
+                               onClick={() => handleReject(study)}
+                               className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+                             >
                               <XCircle className="h-3 w-3" />
                             </Button>
                           </TooltipTrigger>
