@@ -310,6 +310,16 @@ const FreelancerDashboard = () => {
                           View Details
                         </Button>
                         
+                        {invite.status === 'accepted' && (
+                          <Button 
+                            size="sm"
+                            onClick={() => navigate(`/dashboard/briefs/${invite.brief_id}`)}
+                          >
+                            <MessageSquare className="h-4 w-4 mr-2" />
+                            Chat with Client
+                          </Button>
+                        )}
+                        
                         {invite.status === 'sent' && (
                           <>
                             <Button 

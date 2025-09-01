@@ -125,5 +125,11 @@ verify_jwt = true
 [functions.add-case-study]
 verify_jwt = true
 
+[functions.expert-selection-notifications]
+verify_jwt = false
+
+[functions.schedule-intro-call]
+verify_jwt = true
+
 [edge_runtime]
 enabled = true
