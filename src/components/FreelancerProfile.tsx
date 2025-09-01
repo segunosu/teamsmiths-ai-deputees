@@ -11,6 +11,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, X, User, DollarSign, Clock, Award, MapPin } from 'lucide-react';
+import { CaseStudyDialog } from './CaseStudyDialog';
 
 interface FreelancerProfile {
   id?: string;
@@ -600,10 +601,12 @@ export function FreelancerProfile() {
               )}
             </div>
             
-            <Button variant="outline" className="w-full">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Case Study
-            </Button>
+            <CaseStudyDialog onSuccess={loadCaseStudies}>
+              <Button variant="outline" className="w-full">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Case Study
+              </Button>
+            </CaseStudyDialog>
           </CardContent>
         </Card>
 

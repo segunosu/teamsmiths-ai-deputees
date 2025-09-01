@@ -152,6 +152,12 @@ const NotificationSystem = () => {
         return '🔍';
       case 'need_more_experts':
         return '🔄';
+      case 'certification_update':
+        return '🏆';
+      case 'case_study_update':
+        return '📊';
+      case 'tool_suggestion_update':
+        return '🛠️';
       default:
         return '📢';
     }
@@ -175,6 +181,10 @@ const NotificationSystem = () => {
       case 'expert_declined':
       case 'need_more_experts':
         return 'bg-warning/10 text-warning-foreground';
+      case 'certification_update':
+      case 'case_study_update':
+      case 'tool_suggestion_update':
+        return 'bg-info/10 text-info-foreground';
       default:
         return 'bg-primary/10 text-primary-foreground';
     }
