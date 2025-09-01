@@ -220,11 +220,12 @@ const Dashboard = () => {
         </div>
         
         <Tabs defaultValue="projects" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="orders">Orders</TabsTrigger>
-            <TabsTrigger value="quotes">Quotes</TabsTrigger>
-          </TabsList>
+            <TabsList>
+              <TabsTrigger value="projects">Projects</TabsTrigger>
+              <TabsTrigger value="orders">Orders</TabsTrigger>
+              <TabsTrigger value="quotes">Quotes</TabsTrigger>
+              <TabsTrigger value="briefs">Your Requests</TabsTrigger>
+            </TabsList>
 
           <TabsContent value="projects" className="space-y-4">
             <div className="flex justify-between items-center">
@@ -395,6 +396,10 @@ const Dashboard = () => {
                 })}
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="briefs">
+            <BriefsDashboard />
           </TabsContent>
 
         </Tabs>

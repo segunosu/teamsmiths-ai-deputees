@@ -361,6 +361,60 @@ export type Database = {
           },
         ]
       }
+      brief_chat_messages: {
+        Row: {
+          brief_id: string
+          created_at: string
+          flagged_for_review: boolean | null
+          id: string
+          message: string
+          message_type: string
+          metadata: Json | null
+          sender_id: string
+          sender_role: string
+          updated_at: string
+        }
+        Insert: {
+          brief_id: string
+          created_at?: string
+          flagged_for_review?: boolean | null
+          id?: string
+          message: string
+          message_type?: string
+          metadata?: Json | null
+          sender_id: string
+          sender_role: string
+          updated_at?: string
+        }
+        Update: {
+          brief_id?: string
+          created_at?: string
+          flagged_for_review?: boolean | null
+          id?: string
+          message?: string
+          message_type?: string
+          metadata?: Json | null
+          sender_id?: string
+          sender_role?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brief_chat_messages_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_briefs"
+            referencedColumns: ["brief_id"]
+          },
+          {
+            foreignKeyName: "brief_chat_messages_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "briefs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       brief_events: {
         Row: {
           brief_id: string
@@ -400,6 +454,51 @@ export type Database = {
           },
         ]
       }
+      brief_participants: {
+        Row: {
+          brief_id: string
+          created_at: string
+          id: string
+          role: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          brief_id: string
+          created_at?: string
+          id?: string
+          role: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          brief_id?: string
+          created_at?: string
+          id?: string
+          role?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brief_participants_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_briefs"
+            referencedColumns: ["brief_id"]
+          },
+          {
+            foreignKeyName: "brief_participants_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "briefs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       briefs: {
         Row: {
           assured_mode: boolean | null
@@ -415,6 +514,7 @@ export type Database = {
           origin: string
           origin_id: string | null
           proposal_json: Json | null
+          selected_expert_id: string | null
           status: string | null
           structured_brief: Json | null
           updated_at: string | null
@@ -434,6 +534,7 @@ export type Database = {
           origin: string
           origin_id?: string | null
           proposal_json?: Json | null
+          selected_expert_id?: string | null
           status?: string | null
           structured_brief?: Json | null
           updated_at?: string | null
@@ -453,6 +554,7 @@ export type Database = {
           origin?: string
           origin_id?: string | null
           proposal_json?: Json | null
+          selected_expert_id?: string | null
           status?: string | null
           structured_brief?: Json | null
           updated_at?: string | null
@@ -3759,6 +3861,10 @@ export type Database = {
       link_briefs_to_user_by_email: {
         Args: { _email: string; _user_id: string }
         Returns: undefined
+      }
+      select_expert_for_brief: {
+        Args: { p_brief_id: string; p_expert_user_id: string }
+        Returns: Json
       }
       update_admin_setting: {
         Args: { p_key: string; p_value: Json }

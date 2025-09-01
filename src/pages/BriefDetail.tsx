@@ -1,201 +1,146 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { createClient } from '@supabase/supabase-js';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';  
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, ArrowLeft, CheckCircle, Calendar, DollarSign, Users, Target } from 'lucide-react';
-import { BriefSection } from '@/components/BriefSection';
-import { safeText } from '@/lib/safeRender';
-import { useAnalytics } from '@/hooks/useAnalytics';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import { ArrowLeft, FileText, Users, MessageSquare, Calendar } from 'lucide-react';
+import { format } from 'date-fns';
+import ClientShortlist from '@/components/ClientShortlist';
+import BriefChat from '@/components/BriefChat';
 
-type Brief = {
+interface Brief {
   id: string;
-  status: 'draft'|'submitted'|'proposal_ready'|'qa_in_review'|'qa_passed'|'accepted'|'archived';
-  contact_email: string | null;
-  contact_name: string | null;
-  contact_phone: string | null;
-  structured_brief: Record<string, unknown> | null;
-  proposal_json: Record<string, unknown> | null;
   origin: string;
-  origin_id: string | null;
-  assured_mode: boolean | null;
+  status: string;
+  contact_name: string;
+  contact_email: string;
+  structured_brief: any;
+  proposal_json: any;
+  assured_mode: boolean;
+  selected_expert_id: string | null;
   created_at: string;
-};
+  updated_at: string;
+}
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-const SUPABASE_URL = "https://iyqsbjawaampgcavsgcz.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5cXNiamF3YWFtcGdjYXZzZ2N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1OTI2MTgsImV4cCI6MjA2NjE2ODYxOH0.yOhYxzUyFYbxdu1neuagXqa2xXuhIAoWBYr3w0acNb0";
-
-export default function BriefDetail() {
-  const { id } = useParams<{ id: string }>();
+const BriefDetail = () => {
+  const { id: briefId } = useParams<{ id: string }>();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const analytics = useAnalytics();
-  const supabase = useMemo(() => createClient(SUPABASE_URL, SUPABASE_KEY), []);
-  const [state, setState] = useState<'idle'|'loading'|'ready'|'not_found'|'error'>('idle');
+  const { toast } = useToast();
   const [brief, setBrief] = useState<Brief | null>(null);
-  const [err, setErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    console.log('BriefDetail mounted with id:', id);
-    
-    if (!id || !UUID_RE.test(id)) {
-      console.log('Invalid ID, setting not_found');
-      setState('not_found');
-      return;
+    if (briefId && user) {
+      loadBrief();
     }
-    
-    let cancelled = false;
-    setState('loading');
-    
-    (async () => {
-      try {
-        console.log('Fetching brief with id:', id);
-        const { data, error } = await supabase
-          .from('briefs')
-          .select('id,status,contact_email,contact_name,structured_brief,proposal_json,created_at')
-          .eq('id', id)
-          .maybeSingle();
+  }, [briefId, user]);
 
-        if (cancelled) return;
+  const loadBrief = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('briefs')
+        .select('*')
+        .eq('id', briefId)
+        .single();
 
-        console.log('Brief fetch result:', { data, error });
+      if (error) throw error;
 
-        if (error) {
-          console.error('BriefDetail.select.error', { error, id });
-          // Distinguish not found vs real error
-          if (String(error.code || '').startsWith('PGRST1') || error.details?.includes('Results contain 0 rows')) {
-            setState('not_found');
-          } else {
-            setErr(error.message || 'Failed to load brief.');
-            setState('error');
-          }
-          return;
-        }
-        
-        if (!data) {
-          console.log('No data returned, setting not_found');
-          setState('not_found');
-          return;
-        }
-        
-        console.log('Brief loaded successfully:', data);
-        setBrief(data as Brief);
-        setState('ready');
-        
-        // Analytics: track detail page open
-        analytics.trackEvent('detail.open', { 
-          brief_id: id, 
-          status: data.status 
-        });
-      } catch (e: any) {
-        console.error('BriefDetail.select.catch', e);
-        if (!cancelled) {
-          setErr(e?.message || 'Unexpected error.');
-          setState('error');
-          
-          // Analytics: track detail page error
-          analytics.trackEvent('detail.error', { 
-            brief_id: id, 
-            code: e?.code || 'unknown',
-            message: e?.message || 'Unexpected error'
+      // Check if user has access to this brief
+      if (data.user_id !== user?.id && data.contact_email !== user?.email) {
+        // Check if user is admin
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_admin')
+          .eq('user_id', user?.id)
+          .single();
+
+        if (!profile?.is_admin) {
+          toast({
+            title: "Access Denied",
+            description: "You don't have permission to view this brief.",
+            variant: "destructive",
           });
+          navigate('/dashboard');
+          return;
         }
       }
-    })();
-    
-    return () => { cancelled = true; };
-  }, [id, supabase]);
 
-  const statusColors: Record<string, string> = {
-    draft: 'bg-muted text-muted-foreground',
-    submitted: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
-    proposal_ready: 'bg-green-100 text-green-800 hover:bg-green-200',
-    qa_in_review: 'bg-purple-100 text-purple-800 hover:bg-purple-200',
-    qa_passed: 'bg-teal-100 text-teal-800 hover:bg-teal-200',
-    accepted: 'bg-indigo-100 text-indigo-800 hover:bg-indigo-200',
-    archived: 'bg-slate-100 text-slate-600 hover:bg-slate-200',
-  };
-
-  const getStatusMessage = (status: string) => {
-    switch (status) {
-      case 'submitted':
-        return 'Proposal generating — QA validation <2h.';
-      case 'proposal_ready':
-        return 'Your proposal is ready for review.';
-      case 'qa_in_review':
-        return 'QA reviewing proposal…';
-      case 'qa_passed':
-        return 'Proposal has passed quality assurance.';
-      case 'accepted':
-        return 'Proposal accepted. Project setup in progress.';
-      case 'archived':
-        return 'This brief has been archived.';
-      default:
-        return '';
-    }
-  };
-
-  const handleAcceptProposal = async () => {
-    try {
-      analytics.trackEvent('proposal.accepted', { 
-        brief_id: id, 
-        assured_mode: brief?.assured_mode || false 
-      });
+      setBrief(data);
       
-      // TODO: Implement proposal acceptance flow
-      console.log('Accept proposal for brief:', id);
+      // Set active tab based on brief status
+      if (data.status === 'expert_selected' || data.selected_expert_id) {
+        setActiveTab('chat');
+      } else if (data.status === 'proposal_ready' || data.status === 'invitations_sent') {
+        setActiveTab('shortlist');
+      }
+
     } catch (error) {
-      console.error('Error accepting proposal:', error);
+      console.error('Error loading brief:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load brief details.",
+        variant: "destructive",
+      });
+      navigate('/dashboard');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleBookCurator = () => {
-    analytics.trackEvent('curator.booking_clicked', { brief_id: id });
-    // TODO: Open Calendly with brief_id param
-    window.open(`https://calendly.com/teamsmiths?brief_id=${id}`, '_blank');
+  const getStatusBadge = (status: string) => {
+    const colors: Record<string, string> = {
+      draft: 'bg-gray-100 text-gray-800',
+      submitted: 'bg-blue-100 text-blue-800',
+      proposal_ready: 'bg-green-100 text-green-800',
+      invitations_sent: 'bg-purple-100 text-purple-800',
+      expert_selected: 'bg-emerald-100 text-emerald-800',
+      qa_in_review: 'bg-yellow-100 text-yellow-800',
+      qa_passed: 'bg-emerald-100 text-emerald-800',
+      accepted: 'bg-purple-100 text-purple-800',
+      archived: 'bg-gray-100 text-gray-500'
+    };
+    return <Badge className={colors[status] || colors.draft}>{status.replace('_', ' ')}</Badge>;
   };
 
-  if (state === 'loading' || state === 'idle') {
+  const formatBudget = (budgetRange: string) => {
+    if (!budgetRange) return 'Budget not specified';
+    return `Budget: ${budgetRange}`;
+  };
+
+  const handleExpertSelected = (expertId: string) => {
+    setBrief(prev => prev ? { ...prev, selected_expert_id: expertId, status: 'expert_selected' } : null);
+    setActiveTab('chat');
+  };
+
+  if (loading) {
     return (
-      <div className="mx-auto max-w-3xl p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-muted rounded w-1/3"></div>
-          <div className="h-4 bg-muted rounded w-1/4"></div>
-          <div className="h-64 bg-muted rounded"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading brief details...</p>
         </div>
-        <p className="text-sm text-muted-foreground mt-4">Loading your brief…</p>
       </div>
     );
   }
 
-  if (state === 'not_found') {
+  if (!brief) {
     return (
-      <div className="mx-auto max-w-2xl p-8">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <AlertCircle className="h-5 w-5 text-muted-foreground" />
-              <CardTitle>Brief Not Found</CardTitle>
-            </div>
-            <CardDescription>
-              We can't find that brief. The ID might be wrong or you don't have access.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {id && (
-              <div className="p-3 bg-muted rounded text-sm font-mono">
-                Brief ID: {id}
-              </div>
-            )}
-            <div className="flex gap-2">
-              <Button onClick={() => navigate('/dashboard')} variant="outline">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Dashboard
-              </Button>
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <h3 className="text-lg font-medium mb-2">Brief Not Found</h3>
+              <p className="text-muted-foreground mb-4">
+                The brief you're looking for doesn't exist or you don't have access to it.
+              </p>
               <Button onClick={() => navigate('/dashboard')}>
-                Go to My Requests
+                Return to Dashboard
               </Button>
             </div>
           </CardContent>
@@ -204,300 +149,182 @@ export default function BriefDetail() {
     );
   }
 
-  if (state === 'error') {
-    return (
-      <div className="mx-auto max-w-2xl p-8">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <AlertCircle className="h-5 w-5 text-destructive" />
-              <CardTitle>Error Loading Brief</CardTitle>
-            </div>
-            <CardDescription>
-              We hit a snag loading your brief. Please try again.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {err && (
-              <div className="p-3 bg-destructive/10 border border-destructive/20 rounded text-sm">
-                {err}
-              </div>
-            )}
-            <div className="flex gap-2">
-              <Button onClick={() => window.location.reload()} variant="outline">
-                Retry
-              </Button>
-              <Button onClick={() => navigate('/dashboard')}>
-                Back to Dashboard
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // READY state - render the brief
-  const sb = brief?.structured_brief ?? {};
-  const proposal = brief?.proposal_json ?? null;
-  const missing = Array.isArray(sb.missing) ? sb.missing : [];
+  const projectTitle = brief.structured_brief?.project_title || 
+                      brief.structured_brief?.goal?.interpreted || 
+                      'Custom Brief';
 
   return (
-    <div className="mx-auto max-w-4xl p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button onClick={() => navigate('/dashboard')} variant="outline" size="sm">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Dashboard
-        </Button>
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold">Brief Details</h1>
-          <div className="flex items-center gap-2 mt-1">
-            <Badge className={statusColors[brief!.status] || statusColors.draft}>
-              {brief!.status.replace('_', ' ')}
-            </Badge>
-            <span className="text-sm text-muted-foreground">
-              Created {new Date(brief!.created_at).toLocaleDateString()}
-            </span>
-            {brief!.assured_mode && (
-              <Badge variant="outline" className="text-xs">
-                Assured Mode
-              </Badge>
-            )}
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <Button variant="outline" onClick={() => navigate('/dashboard')} className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Button>
           </div>
-          {getStatusMessage(brief!.status) && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {getStatusMessage(brief!.status)}
-            </p>
-          )}
-        </div>
-      </div>
-
-          {missing.length > 0 && brief!.status === 'submitted' && (
-        <Card className="border-amber-200 bg-amber-50">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <AlertCircle className="h-5 w-5 text-amber-600" />
-              Complete Your Brief
-            </CardTitle>
-            <CardDescription>
-              We need a few more details to generate your proposal:
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {missing.map((field: string) => (
-              <div key={field} className="p-3 bg-background rounded border">
-                <p className="text-sm font-medium mb-2">
-                  {field.replace('_', ' ')}:
-                </p>
-                {/* TODO: Add inline form fields for missing data */}
-                <p className="text-xs text-muted-foreground">
-                  Field completion form will be implemented here
-                </p>
-              </div>
-            ))}
-            <div className="flex gap-2">
-              <Button size="sm">Update Brief</Button>
-              <Button variant="outline" size="sm" onClick={handleBookCurator}>
-                Book a Curator
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Contact Information */}
-      {(brief!.contact_name || brief!.contact_email) && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Contact Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {brief!.contact_name && (
-              <p><span className="font-medium">Name:</span> {safeText(brief!.contact_name)}</p>
-            )}
-            {brief!.contact_email && (
-              <p><span className="font-medium">Email:</span> {safeText(brief!.contact_email)}</p>
-            )}
-            {brief!.contact_phone && (
-              <p><span className="font-medium">Phone:</span> {safeText(brief!.contact_phone)}</p>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Brief Sections */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold flex items-center gap-2">
-          <Target className="h-5 w-5" />
-          Brief Analysis
-        </h2>
-        
-        {/* AI-processed sections */}
-        {sb.goal && <BriefSection title="Goal" data={sb.goal} type="goal" />}
-        {sb.context && <BriefSection title="Context" data={sb.context} type="context" />}
-        {sb.constraints && <BriefSection title="Constraints" data={sb.constraints} type="constraints" />}
-        
-        {/* Scalar fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Project Details</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {sb.timeline && <BriefSection title="Timeline" data={sb.timeline} type="scalar" />}
-              {sb.urgency && <BriefSection title="Urgency" data={sb.urgency} type="scalar" />}
-              {sb.budget_range && <BriefSection title="Budget Range" data={sb.budget_range} type="scalar" />}
-              {sb.expert_style && <BriefSection title="Expert Style" data={sb.expert_style} type="scalar" />}
-            </CardContent>
-          </Card>
           
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Brief Origin</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <BriefSection title="Origin" data={brief!.origin || 'Direct submission'} type="scalar" />
-              {brief!.origin_id && <BriefSection title="Origin ID" data={brief!.origin_id} type="scalar" />}
-            </CardContent>
-          </Card>
+          <div className="flex items-start justify-between">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold">{projectTitle}</h1>
+              <div className="flex items-center gap-4 text-muted-foreground">
+                <span>Created {format(new Date(brief.created_at), 'MMM d, yyyy')}</span>
+                <span>•</span>
+                <span>Origin: {brief.origin}</span>
+                {brief.assured_mode && (
+                  <>
+                    <span>•</span>
+                    <Badge variant="outline">Assured Mode</Badge>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {getStatusBadge(brief.status)}
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Proposal Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <CheckCircle className="h-5 w-5" />
-            Deputee™ AI Proposal
-          </CardTitle>
-          <CardDescription>
-            {proposal ? 'Generated proposal based on your brief' : 'Proposal generation status'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {proposal ? (
-            <div className="space-y-6">
-              {/* Proposal Summary */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {proposal.timeline_weeks && (
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">{safeText(proposal.timeline_weeks)} weeks</span>
-                  </div>
-                )}
-                {proposal.budget_band && (
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">{safeText(proposal.budget_band)}</span>
-                  </div>
-                )}
-                {Array.isArray(proposal.roles) && (
-                  <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">{proposal.roles.length} expert{proposal.roles.length > 1 ? 's' : ''}</span>
-                  </div>
-                )}
-              </div>
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview" className="gap-2">
+              <FileText className="h-4 w-4" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger 
+              value="shortlist" 
+              className="gap-2"
+              disabled={brief.status === 'draft' || brief.status === 'submitted'}
+            >
+              <Users className="h-4 w-4" />
+              Shortlist
+            </TabsTrigger>
+            <TabsTrigger 
+              value="chat" 
+              className="gap-2"
+              disabled={!brief.selected_expert_id}
+            >
+              <MessageSquare className="h-4 w-4" />
+              Chat
+            </TabsTrigger>
+            <TabsTrigger 
+              value="meetings" 
+              className="gap-2"
+              disabled={!brief.selected_expert_id}
+            >
+              <Calendar className="h-4 w-4" />
+              Meetings
+            </TabsTrigger>
+          </TabsList>
 
-              {/* Expert Roles */}
-              {Array.isArray(proposal.roles) && proposal.roles.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-2">Expert Team</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {proposal.roles.map((role: any, index: number) => (
-                      <Badge key={index} variant="outline">
-                        {safeText(role)}
-                      </Badge>
-                    ))}
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Brief Summary */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Project Summary</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Goal</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {brief.structured_brief?.goal?.interpreted || 
+                       brief.structured_brief?.goal || 
+                       'No goal specified'}
+                    </p>
                   </div>
-                </div>
-              )}
+                  
+                  {brief.structured_brief?.context && (
+                    <div>
+                      <h4 className="font-medium mb-2">Context</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {typeof brief.structured_brief.context === 'string' 
+                          ? brief.structured_brief.context
+                          : brief.structured_brief.context?.interpreted || 'No context provided'}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {brief.structured_brief?.budget_range && (
+                    <div>
+                      <h4 className="font-medium mb-2">Budget</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {formatBudget(brief.structured_brief.budget_range)}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {brief.structured_brief?.timeline && (
+                    <div>
+                      <h4 className="font-medium mb-2">Timeline</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {brief.structured_brief.timeline}
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
 
-              {/* Milestones */}
-              <div>
-                <h3 className="font-semibold mb-3">Project Milestones</h3>
-                {Array.isArray(proposal.milestones) && proposal.milestones.length > 0 ? (
-                  <div className="space-y-3">
-                    {proposal.milestones.map((milestone: any, index: number) => (
-                      <div key={index} className="border rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-medium">{safeText(milestone.title || `Milestone ${index + 1}`)}</h4>
-                          {milestone.eta_days && (
-                            <Badge variant="secondary" className="text-xs">
-                              {safeText(milestone.eta_days)} days
-                            </Badge>
-                          )}
-                        </div>
-                        {Array.isArray(milestone.outcomes) && milestone.outcomes.length > 0 && (
-                          <ul className="text-sm text-muted-foreground space-y-1">
-                            {milestone.outcomes.map((outcome: any, outcomeIndex: number) => (
-                              <li key={outcomeIndex}>• {safeText(outcome)}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    ))}
+              {/* Contact Information */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Contact Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-medium mb-2">Contact Name</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {brief.contact_name || 'Not provided'}
+                    </p>
                   </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">
-                    Deputee™ AI is generating your proposal milestones. QA validation &lt;2h.
+                  <div>
+                    <h4 className="font-medium mb-2">Email</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {brief.contact_email}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium mb-2">Status</h4>
+                    {getStatusBadge(brief.status)}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="shortlist">
+            <ClientShortlist 
+              briefId={brief.id} 
+              onExpertSelected={handleExpertSelected}
+            />
+          </TabsContent>
+
+          <TabsContent value="chat">
+            <BriefChat briefId={brief.id} />
+          </TabsContent>
+
+          <TabsContent value="meetings">
+            <Card>
+              <CardHeader>
+                <CardTitle>Project Meetings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">No meetings scheduled</h3>
+                  <p className="text-muted-foreground">
+                    Meetings will appear here once scheduled.
                   </p>
-                )}
-              </div>
-
-              {/* Success Metrics */}
-              {Array.isArray(proposal.success_metrics) && proposal.success_metrics.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-2">Success Metrics</h3>
-                  <ul className="text-sm space-y-1">
-                    {proposal.success_metrics.map((metric: any, index: number) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                        {safeText(metric)}
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-              )}
-
-              {/* Assured Mode Note */}
-              {brief!.assured_mode && proposal.assured_addon_note && (
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h4 className="font-medium text-blue-900 mb-1">Assured Mode Benefits</h4>
-                  <p className="text-sm text-blue-800">{safeText(proposal.assured_addon_note)}</p>
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              {brief!.status === 'proposal_ready' && (
-                <div className="flex gap-3 pt-4 border-t">
-                  <Button onClick={handleAcceptProposal} className="flex-1">
-                    Accept Proposal
-                  </Button>
-                  <Button variant="outline" onClick={handleBookCurator}>
-                    Book a Curator
-                  </Button>
-                  <Button variant="outline">
-                    Ask a Question
-                  </Button>
-                </div>
-              )}
-
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <div className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-                <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse mr-2"></div>
-                Proposal Generation in Progress
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                Deputee™ AI is generating your proposal. QA validation in &lt;2h. You'll get an email when it's ready.
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
-}
+};
+
+export default BriefDetail;
