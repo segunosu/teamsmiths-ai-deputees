@@ -379,14 +379,22 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="quotes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9">
+          <TabsList className="grid w-full grid-cols-10">
             <TabsTrigger value="quotes" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
-              Quote Reviews
+              Quotes
+            </TabsTrigger>
+            <TabsTrigger value="proposals" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Proposals
             </TabsTrigger>
             <TabsTrigger value="deliverables" className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
               QA Queue
+            </TabsTrigger>
+            <TabsTrigger value="assurance" className="flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              Assurance
             </TabsTrigger>
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
@@ -407,10 +415,6 @@ const AdminDashboard = () => {
             <TabsTrigger value="workflow-test" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
               Workflow Test
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <Activity className="h-4 w-4" />
-              Analytics
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
