@@ -112,8 +112,8 @@ const ExpertSelectionMonitor = () => {
             email: 'unknown@email.com'
           }
         })),
-        chat_messages: brief.brief_chat_messages,
-        meetings: brief.meetings
+        chat_messages: brief.brief_chat_messages || [],
+        meetings: Array.isArray(brief.meetings) ? brief.meetings : []
       }));
 
       setBriefs(transformedBriefs);
