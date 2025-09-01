@@ -361,6 +361,30 @@ export type Database = {
           },
         ]
       }
+      automation_runs: {
+        Row: {
+          finished_at: string | null
+          id: string
+          job_name: string
+          result: Json | null
+          started_at: string | null
+        }
+        Insert: {
+          finished_at?: string | null
+          id?: string
+          job_name: string
+          result?: Json | null
+          started_at?: string | null
+        }
+        Update: {
+          finished_at?: string | null
+          id?: string
+          job_name?: string
+          result?: Json | null
+          started_at?: string | null
+        }
+        Relationships: []
+      }
       brief_chat_messages: {
         Row: {
           brief_id: string
@@ -1263,6 +1287,42 @@ export type Database = {
           },
         ]
       }
+      email_outbox: {
+        Row: {
+          created_at: string | null
+          error: string | null
+          id: string
+          payload: Json
+          provider_id: string | null
+          sent_at: string | null
+          status: string | null
+          template_code: string
+          to_email: string
+        }
+        Insert: {
+          created_at?: string | null
+          error?: string | null
+          id?: string
+          payload: Json
+          provider_id?: string | null
+          sent_at?: string | null
+          status?: string | null
+          template_code: string
+          to_email: string
+        }
+        Update: {
+          created_at?: string | null
+          error?: string | null
+          id?: string
+          payload?: Json
+          provider_id?: string | null
+          sent_at?: string | null
+          status?: string | null
+          template_code?: string
+          to_email?: string
+        }
+        Relationships: []
+      }
       expert_invites: {
         Row: {
           acceptance_metadata: Json | null
@@ -1769,7 +1829,10 @@ export type Database = {
       }
       notifications: {
         Row: {
+          body: string | null
           created_at: string
+          cta_text: string | null
+          cta_url: string | null
           id: string
           message: string
           read_at: string | null
@@ -1779,7 +1842,10 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          body?: string | null
           created_at?: string
+          cta_text?: string | null
+          cta_url?: string | null
           id?: string
           message: string
           read_at?: string | null
@@ -1789,7 +1855,10 @@ export type Database = {
           user_id: string
         }
         Update: {
+          body?: string | null
           created_at?: string
+          cta_text?: string | null
+          cta_url?: string | null
           id?: string
           message?: string
           read_at?: string | null

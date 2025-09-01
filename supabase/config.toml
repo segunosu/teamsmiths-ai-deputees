@@ -140,5 +140,8 @@ verify_jwt = false
 [functions.create-assurance-subscription]
 verify_jwt = true
 
+[functions.events-dispatch]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true
