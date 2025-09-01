@@ -786,8 +786,13 @@ export type Database = {
           id: string
           milestone_number: number
           paid_at: string | null
+          payment_status: string | null
           project_id: string | null
+          qa_checked_at: string | null
+          qa_checked_by: string | null
+          qa_status: string | null
           quote_id: string | null
+          released_at: string | null
           status: string | null
           stripe_payment_intent_id: string | null
           title: string
@@ -802,8 +807,13 @@ export type Database = {
           id?: string
           milestone_number: number
           paid_at?: string | null
+          payment_status?: string | null
           project_id?: string | null
+          qa_checked_at?: string | null
+          qa_checked_by?: string | null
+          qa_status?: string | null
           quote_id?: string | null
+          released_at?: string | null
           status?: string | null
           stripe_payment_intent_id?: string | null
           title: string
@@ -818,8 +828,13 @@ export type Database = {
           id?: string
           milestone_number?: number
           paid_at?: string | null
+          payment_status?: string | null
           project_id?: string | null
+          qa_checked_at?: string | null
+          qa_checked_by?: string | null
+          qa_status?: string | null
           quote_id?: string | null
+          released_at?: string | null
           status?: string | null
           stripe_payment_intent_id?: string | null
           title?: string
@@ -1693,8 +1708,14 @@ export type Database = {
           description: string | null
           due_date: string | null
           id: string
+          payment_status: string | null
           project_id: string | null
+          qa_checked_at: string | null
+          qa_checked_by: string | null
+          qa_status: string | null
+          released_at: string | null
           status: string | null
+          stripe_payment_intent_id: string | null
           title: string
         }
         Insert: {
@@ -1703,8 +1724,14 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
+          payment_status?: string | null
           project_id?: string | null
+          qa_checked_at?: string | null
+          qa_checked_by?: string | null
+          qa_status?: string | null
+          released_at?: string | null
           status?: string | null
+          stripe_payment_intent_id?: string | null
           title: string
         }
         Update: {
@@ -1713,8 +1740,14 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
+          payment_status?: string | null
           project_id?: string | null
+          qa_checked_at?: string | null
+          qa_checked_by?: string | null
+          qa_status?: string | null
+          released_at?: string | null
           status?: string | null
+          stripe_payment_intent_id?: string | null
           title?: string
         }
         Relationships: [
@@ -2418,9 +2451,63 @@ export type Database = {
           },
         ]
       }
+      project_proposals: {
+        Row: {
+          brief_id: string
+          created_at: string | null
+          expert_id: string
+          id: string
+          milestones: Json | null
+          price_total: number
+          scope: Json
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          brief_id: string
+          created_at?: string | null
+          expert_id: string
+          id?: string
+          milestones?: Json | null
+          price_total: number
+          scope: Json
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          brief_id?: string
+          created_at?: string | null
+          expert_id?: string
+          id?: string
+          milestones?: Json | null
+          price_total?: number
+          scope?: Json
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_proposals_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "admin_v_briefs"
+            referencedColumns: ["brief_id"]
+          },
+          {
+            foreignKeyName: "project_proposals_brief_id_fkey"
+            columns: ["brief_id"]
+            isOneToOne: false
+            referencedRelation: "briefs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
           agency_id: string | null
+          assurance_active: boolean | null
+          assurance_plan: string | null
+          assurance_started: string | null
           brief_id: string | null
           client_user_id: string | null
           created_at: string | null
@@ -2437,6 +2524,9 @@ export type Database = {
         }
         Insert: {
           agency_id?: string | null
+          assurance_active?: boolean | null
+          assurance_plan?: string | null
+          assurance_started?: string | null
           brief_id?: string | null
           client_user_id?: string | null
           created_at?: string | null
@@ -2453,6 +2543,9 @@ export type Database = {
         }
         Update: {
           agency_id?: string | null
+          assurance_active?: boolean | null
+          assurance_plan?: string | null
+          assurance_started?: string | null
           brief_id?: string | null
           client_user_id?: string | null
           created_at?: string | null
@@ -3827,6 +3920,9 @@ export type Database = {
         Args: { _uid: string }
         Returns: {
           agency_id: string | null
+          assurance_active: boolean | null
+          assurance_plan: string | null
+          assurance_started: string | null
           brief_id: string | null
           client_user_id: string | null
           created_at: string | null
