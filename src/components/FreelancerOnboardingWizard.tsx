@@ -31,27 +31,24 @@ interface WizardData {
 }
 
 const PRACTICAL_SKILLS = [
-  'Agent Orchestration',
-  'Workflow Automation',
-  'RAG / Knowledge Agents',
-  'Voice Agents',
-  'Vision & Multimodal',
-  'Data Pipelining',
-  'Prompt Engineering (applied)',
-  'Evaluation/Guardrails',
-  'Integrations (APIs/Webhooks)',
-  'MCP Servers & Tools'
+  'Agent Orchestration (N8N, LangChain, MCP, etc.)',
+  'RAG (Retrieval-Augmented Generation)',
+  'Voice Agents (Whisper, ElevenLabs, etc.)',
+  'Automation (Zapier, Make, Retool, etc.)',
+  'API & Integrations (OpenAI, Anthropic, Supabase, etc.)',
+  'Gen Media (AI video, AI image, text-to-speech, etc.)',
+  'Data & Analytics (Pinecone, Airtable, dashboards, etc.)'
 ];
 
 const OUTCOME_PREFERENCES = [
-  'Sales uplift',
-  'Lead generation',
-  'Customer support automation',
-  'Ops automation',
-  'Reporting & analytics',
-  'Content scale-up',
-  'Data cleanup/enrichment',
-  'AI enablement/training'
+  'Sales Uplift',
+  'Lead Generation',
+  'Operations Automation',
+  'Customer Experience Improvement',
+  'Cost Reduction',
+  'Decision Support / Insights',
+  'Compliance / Risk Mitigation',
+  'Knowledge Management'
 ];
 
 const INDUSTRIES = [
@@ -174,7 +171,7 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
 
       if (data?.success) {
         toast({
-          title: "Profile completed!",
+          title: "🎉 Great work! You're ready to start receiving AI-driven project invitations.",
           description: "Your freelancer profile has been set up successfully."
         });
         onComplete();
@@ -195,9 +192,9 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
   const renderStep1 = () => (
     <Card>
       <CardHeader>
-        <CardTitle>Your hands-on AI skills</CardTitle>
+        <CardTitle>Practical AI Skills</CardTitle>
         <CardDescription>
-          <strong>Click to select</strong> the AI skills you've used in real projects. We prioritize builders who make things work in the real world.
+          Choose the hands-on AI skills you're confident in. These are practical, not just strategic — real skills you'll use to build working solutions for clients.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -221,9 +218,9 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
   const renderStep2 = () => (
     <Card>
       <CardHeader>
-        <CardTitle>Tools you can ship with</CardTitle>
+        <CardTitle>Tools Mastery</CardTitle>
         <CardDescription>
-          <strong>Click to select</strong> the tools you've actually used in production. You can suggest a tool if it's missing.
+          Select the tools and platforms you actually use. If you don't see your tool, suggest it and our team may add it.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -268,9 +265,9 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
   const renderStep3 = () => (
     <Card>
       <CardHeader>
-        <CardTitle>What outcomes do you deliver?</CardTitle>
+        <CardTitle>Outcomes & Preferences</CardTitle>
         <CardDescription>
-          <strong>Click to select</strong> the outcomes you deliver and industries you work in. Clients choose by outcome, not hours.
+          Pick the business outcomes you're most interested in delivering. This helps us match you with clients who need real results.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -314,16 +311,16 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
   const renderStep4 = () => (
     <Card>
       <CardHeader>
-        <CardTitle>Outcome band & working language</CardTitle>
+        <CardTitle>Outcome Bands & Languages</CardTitle>
         <CardDescription>
-          <strong>Set your project band</strong> and <strong>select your working languages</strong>. We price by outcome, not timesheets.
+          Set your typical project range in £ (outcome-based, not hourly). Add the languages you can deliver in.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
-          <Label className="text-base font-medium mb-4 block">Typical Project Band (GBP)</Label>
+          <Label className="text-base font-medium mb-4 block">Typical Outcome Band (£)</Label>
           <p className="text-sm text-muted-foreground mb-4">
-            Enter your typical project band (outcome-based, not hourly).
+            Enter the typical budget range for projects you deliver (outcome-based, not hourly). e.g., 5,000 – 25,000
           </p>
           <div className="space-y-4">
             <div>
@@ -423,7 +420,7 @@ export function FreelancerOnboardingWizard({ onComplete }: Props) {
           </Button>
         ) : (
           <Button onClick={handleComplete} disabled={isLoading}>
-            {isLoading ? 'Saving...' : 'Save & Finish'}
+            {isLoading ? 'Saving...' : '🎉 Great work! Complete Profile'}
           </Button>
         )}
       </div>
