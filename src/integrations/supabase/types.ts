@@ -3697,6 +3697,18 @@ export type Database = {
         }
         Returns: string
       }
+      get_autopilot_history: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          algorithm_version: string
+          candidate_count: number
+          created_at: string
+          execution_time_ms: number
+          id: string
+          metadata: Json
+          parameters: Json
+        }[]
+      }
       get_project_id_from_deliverable: {
         Args: { _deliverable_id: string }
         Returns: string
