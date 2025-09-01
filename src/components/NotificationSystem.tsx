@@ -142,10 +142,20 @@ const NotificationSystem = () => {
         return '🎉';
       case 'admin_review_required':
         return '⚠️';
+      case 'expert_invited':
+        return '📧';
       case 'expert_accepted':
         return '✅';
       case 'expert_declined':
         return '❌';
+      case 'expert_selected':
+        return '🎯';
+      case 'expert_not_selected':
+        return '💼';
+      case 'expert_selected_client':
+        return '🤝';
+      case 'intro_call_scheduled':
+        return '📞';
       case 'project_created':
         return '🚀';
       case 'auto_matching_complete':
@@ -175,12 +185,18 @@ const NotificationSystem = () => {
       case 'admin_review_required':
         return 'bg-warning/10 text-warning-foreground';
       case 'expert_accepted':
+      case 'expert_selected':
+      case 'expert_selected_client':
       case 'project_created':
       case 'auto_matching_complete':
+      case 'intro_call_scheduled':
         return 'bg-success/10 text-success-foreground';
       case 'expert_declined':
+      case 'expert_not_selected':
       case 'need_more_experts':
         return 'bg-warning/10 text-warning-foreground';
+      case 'expert_invited':
+        return 'bg-info/10 text-info-foreground';
       case 'certification_update':
       case 'case_study_update':
       case 'tool_suggestion_update':

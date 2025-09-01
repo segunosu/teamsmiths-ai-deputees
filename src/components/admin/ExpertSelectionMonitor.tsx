@@ -131,7 +131,7 @@ const ExpertSelectionMonitor = () => {
 
   const reassignExpert = async (briefId: string, newExpertId: string) => {
     try {
-      const { error } = await supabase.functions.invoke('select-expert-for-brief', {
+      const { data, error } = await supabase.functions.invoke('select-expert-for-brief', {
         body: {
           brief_id: briefId,
           expert_user_id: newExpertId

@@ -18,6 +18,7 @@ import InvitationManager from '@/components/admin/InvitationManager';
 import ToolSuggestionManager from '@/components/admin/ToolSuggestionManager';
 import CertificationManager from '@/components/admin/CertificationManager';
 import CaseStudyManager from '@/components/admin/CaseStudyManager';
+import WorkflowTester from '@/components/admin/WorkflowTester';
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };
@@ -378,7 +379,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="quotes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-8">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="quotes" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Quote Reviews
@@ -402,6 +403,10 @@ const AdminDashboard = () => {
             <TabsTrigger value="matching" className="flex items-center gap-2">
               <Target className="h-4 w-4" />
               Expert Matching
+            </TabsTrigger>
+            <TabsTrigger value="workflow-test" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Workflow Test
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
@@ -543,6 +548,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="case-studies">
             <CaseStudyManager />
+          </TabsContent>
+          
+          <TabsContent value="workflow-test">
+            <WorkflowTester />
           </TabsContent>
 
           <TabsContent value="matching">

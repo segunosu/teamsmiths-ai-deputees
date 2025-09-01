@@ -95,6 +95,9 @@ verify_jwt = false
 [functions.respond-to-invite]
 verify_jwt = true
 
+[functions.select-expert-for-brief]
+verify_jwt = true
+
 [functions.create-project-from-acceptance]
 verify_jwt = false
 
