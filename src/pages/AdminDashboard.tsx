@@ -9,13 +9,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign, Target, Activity } from 'lucide-react';
+import { Shield, Settings, Users, FileText, AlertTriangle, DollarSign, Target, Activity, Award, BookOpen } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AdminMatchingSettings from '@/components/admin/AdminMatchingSettings';
 import MatchingDashboard from '@/components/admin/MatchingDashboard';
 import InvitationManager from '@/components/admin/InvitationManager';
 import ToolSuggestionManager from '@/components/admin/ToolSuggestionManager';
+import CertificationManager from '@/components/admin/CertificationManager';
+import CaseStudyManager from '@/components/admin/CaseStudyManager';
 
 interface AdminSettings {
   quote_approval_threshold: { amount: number; currency: string };
@@ -376,7 +378,7 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="quotes" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="quotes" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Quote Reviews
@@ -388,6 +390,14 @@ const AdminDashboard = () => {
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Projects
+            </TabsTrigger>
+            <TabsTrigger value="certifications" className="flex items-center gap-2">
+              <Award className="h-4 w-4" />
+              Certifications
+            </TabsTrigger>
+            <TabsTrigger value="case-studies" className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4" />
+              Case Studies
             </TabsTrigger>
             <TabsTrigger value="matching" className="flex items-center gap-2">
               <Target className="h-4 w-4" />
@@ -525,6 +535,14 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="certifications">
+            <CertificationManager />
+          </TabsContent>
+
+          <TabsContent value="case-studies">
+            <CaseStudyManager />
           </TabsContent>
 
           <TabsContent value="matching">

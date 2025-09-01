@@ -10,6 +10,9 @@ import { Footer } from "@/components/Footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import AdminMatchingSettings from "@/components/admin/AdminMatchingSettings";
 import AdminOnly from "@/components/admin/AdminOnly";
+import CertificationsPage from "./pages/admin/CertificationsPage";
+import CaseStudiesPage from "./pages/admin/CaseStudiesPage";
+import ToolSuggestionsPage from "./pages/admin/ToolSuggestionsPage";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
@@ -103,6 +106,9 @@ const App = () => (
                     <AdminMatchingSettings />
                   </AdminOnly>
                 } />
+                <Route path="/admin/certifications" element={<CertificationsPage />} />
+                <Route path="/admin/case-studies" element={<CaseStudiesPage />} />
+                <Route path="/admin/tools/suggestions" element={<ToolSuggestionsPage />} />
                 <Route path="/admin/reports" element={<AdminReports />} />
                 <Route path="/admin/qa" element={<QADashboard />} />
                 <Route path="/about" element={<About />} />
