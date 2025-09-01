@@ -140,7 +140,25 @@ verify_jwt = false
 [functions.create-assurance-subscription]
 verify_jwt = true
 
-[functions.events-dispatch]
+[functions.auto-nudge-proposals]
+verify_jwt = false
+
+[functions.auto-nudge-client-to-choose]
+verify_jwt = false
+
+[functions.auto-nudge-pay-m1]
+verify_jwt = false
+
+[functions.auto-qa-retry]
+verify_jwt = false
+
+[functions.retainer-offer-post-completion]
+verify_jwt = false
+
+[functions.stale-project-poke]
+verify_jwt = false
+
+[functions.enhanced-stripe-webhook]
 verify_jwt = false
 
 [edge_runtime]

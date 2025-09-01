@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import OpenAI from "https://esm.sh/openai@4.28.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -25,57 +26,69 @@ serve(async (req) => {
       { auth: { persistSession: false } }
     );
 
-    const { milestone_id, deliverable_id, project_id, type = 'milestone' } = await req.json();
-    logStep("Request body parsed", { milestone_id, deliverable_id, project_id, type });
+    const openai = new OpenAI({
+      apiKey: Deno.env.get("OPENAI_API_KEY"),
+    });
 
-    if (!project_id || (!milestone_id && !deliverable_id)) {
-      throw new Error("Missing required parameters: project_id and (milestone_id or deliverable_id)");
+    const { milestone_id } = await req.json();
+    logStep("Request body parsed", { milestone_id });
+
+    if (!milestone_id) {
+      throw new Error("Missing required parameter: milestone_id");
     }
 
+    // Get milestone and project details
+    const { data: milestone, error: milestoneError } = await supabaseClient
+      .from('milestones')
+      .select(`
+        id,
+        title,
+        project_id,
+        projects (
+          id,
+          title,
+          teamsmith_user_id,
+          project_participants (
+            user_id,
+            role
+          )
+        )
+      `)
+      .eq('id', milestone_id)
+      .single();
+
+    if (milestoneError || !milestone) {
+      throw new Error("Milestone not found");
+    }
+
+    const project_id = milestone.project_id;
+
     // Run automated QA checks
-    const qaResults = await runAutomatedQA(project_id, milestone_id || deliverable_id, type);
+    const qaResults = await runAutomatedQA(project_id, milestone_id, 'milestone');
     logStep("Automated QA completed", qaResults);
 
-    // Update the milestone or deliverable with QA results
-    const table = type === 'milestone' ? 'custom_project_milestones' : 'project_deliverables';
-    const id = milestone_id || deliverable_id;
-
+    // Update the milestone with QA results
     const { error: updateError } = await supabaseClient
-      .from(table)
+      .from('milestones')
       .update({
         qa_status: qaResults.overall_status,
         qa_notes: qaResults.summary,
-        qa_checklist: qaResults.checklist,
-        qa_score: qaResults.score,
-        guardrail_checks: qaResults.guardrails,
         qa_last_run: new Date().toISOString(),
       })
-      .eq('id', id);
+      .eq('id', milestone_id);
 
     if (updateError) {
       throw new Error(`Failed to update QA results: ${updateError.message}`);
     }
 
     // Get project and expert details for notifications
-    const { data: project } = await supabaseClient
-      .from('projects')
-      .select(`
-        title,
-        teamsmith_user_id,
-        project_participants!inner (
-          user_id,
-          role
-        )
-      `)
-      .eq('id', project_id)
-      .single();
-
+    const project = milestone.projects;
     if (!project) {
       throw new Error("Project not found");
     }
 
-    const expert = project.project_participants.find(p => p.role === 'expert');
-    const client = project.project_participants.find(p => p.role === 'client');
+    const expert = project.project_participants.find((p: any) => p.role === 'expert');
+    const client = project.project_participants.find((p: any) => p.role === 'client');
 
     // Create notifications based on QA results
     const notifications = [];
@@ -99,26 +112,24 @@ serve(async (req) => {
           type: 'qa_passed_expert',
           title: 'QA Passed! 🎉',
           message: `Your work on ${project.title} has passed QA review. Payment will be released.`,
-          related_id: id,
+          related_id: milestone_id,
         });
       }
 
       // If milestone and QA passed, release payment
-      if (type === 'milestone') {
-        const { error: releaseError } = await supabaseClient
-          .from('custom_project_milestones')
-          .update({
-            payment_status: 'released',
-            released_at: new Date().toISOString(),
-          })
-          .eq('id', milestone_id)
-          .eq('payment_status', 'paid'); // Only release if already paid
+      const { error: releaseError } = await supabaseClient
+        .from('milestones')
+        .update({
+          payment_status: 'released',
+          released_at: new Date().toISOString(),
+        })
+        .eq('id', milestone_id)
+        .eq('payment_status', 'paid'); // Only release if already paid
 
-        if (releaseError) {
-          logStep("Warning: Failed to release payment", releaseError);
-        } else {
-          logStep("Payment released successfully");
-        }
+      if (releaseError) {
+        logStep("Warning: Failed to release payment", releaseError);
+      } else {
+        logStep("Payment released successfully");
       }
 
     } else if (qaResults.overall_status === 'failed') {
@@ -129,7 +140,7 @@ serve(async (req) => {
           type: 'qa_failed',
           title: 'QA Review - Revisions Required',
           message: `Your submission for ${project.title} requires revisions. Please review the feedback and resubmit.`,
-          related_id: id,
+          related_id: milestone_id,
         });
       }
 
@@ -140,7 +151,7 @@ serve(async (req) => {
           type: 'qa_failed_client',
           title: 'QA Review Complete',
           message: `Quality review found issues with ${project.title}. Expert has been notified to make revisions.`,
-          related_id: id,
+          related_id: milestone_id,
         });
       }
     }
