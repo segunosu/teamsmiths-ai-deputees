@@ -1,11 +1,11 @@
-// Centralized Outcome Assurance™ messaging
+// Centralized AI Deputee™ messaging
 export const ASSURANCE = {
-  title: "Outcome Assurance™ powered by Deputee™ AI™",
+  title: "AI Deputee™ Assurance powered by Deputee™ AI™",
   body: [
-    "Every project benefits from continuous AI-driven insight, human validation, and structured QA.",
-    "It's not about promises — it's about proof."
+    "Every deployment is continuously monitored by AI Deputee™ and reviewed by human Teamsmiths.",
+    "We instrument KPIs, track results and use data to iterate weekly."
   ],
-  compact: "AI-driven insight, human validation, structured QA — proof over promise.",
+  compact: "AI Deputee™ powered insight, human validation, structured QA — proof over promise.",
   
   // New Performance Safeguard copy
   safeguard: {
@@ -15,10 +15,10 @@ export const ASSURANCE = {
   
   // New assurance block
   assurance_block: {
-    title: "Outcome Assurance™ — our QA promise",
+    title: "AI Deputee™ Assurance — our QA promise",
     body: [
-      "Every engagement is monitored by Deputee™ AI™ + human QA.",
-      "Our Performance Safeguards keep your project on track."
+      "Every deployment is continuously monitored by AI Deputee™ and reviewed by human Teamsmiths.",
+      "We instrument KPIs, track results and use data to iterate weekly."
     ]
   }
 };

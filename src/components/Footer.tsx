@@ -21,11 +21,11 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
-              <li><Link to="/for-clients" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Clients</Link></li>
-              <li><Link to="/for-freelancers" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Freelancers</Link></li>
+              <li><Link to="/for-clients" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For SMBs (AI Navigator)</Link></li>
+              <li><Link to="/for-freelancers" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For AI Specialists</Link></li>
               <li><Link to="/for-agencies" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Agencies</Link></li>
-              <li><Link to="/pricing" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Pricing</Link></li>
-              <li><Link to="/catalog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Browse Outcome Packs</Link></li>
+              <li><Link to="/plans" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Plans & Pricing</Link></li>
+              <li><Link to="/plans" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Plans</Link></li>
             </ul>
           </div>
 
@@ -75,7 +75,7 @@ export const Footer = () => {
         <div className="border-t border-primary-foreground/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div className="text-primary-foreground/70 text-sm">
-              © {new Date().getFullYear()} Teamsmiths AI Deputees™. All rights reserved.
+              © {new Date().getFullYear()} Teamsmiths AI Deputee™. All rights reserved.
             </div>
             
             {/* Social Media Icons */}

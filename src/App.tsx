@@ -40,6 +40,10 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Pricing from "./pages/Pricing";
 import Outcomes from "./pages/Outcomes";
+import Plans from "./pages/Plans";
+import AINavigator from "./pages/AINavigator";
+import ProofSprintCheckout from "./pages/ProofSprintCheckout";
+import ProofSprintSuccess from "./pages/ProofSprintSuccess";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import SecurityPolicy from "./pages/SecurityPolicy";
@@ -64,6 +68,10 @@ const App = () => (
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/outcomes" element={<Outcomes />} />
+                <Route path="/plans" element={<Plans />} />
+                <Route path="/ai-navigator" element={<AINavigator />} />
+                <Route path="/proof-sprints/checkout" element={<ProofSprintCheckout />} />
+                <Route path="/proof-sprints/success" element={<ProofSprintSuccess />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/customize" element={<DeputeeAIBriefBuilder />} />
