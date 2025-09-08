@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck, Award, Clock, UserCheck, Database, CreditCard, Brain, TrendingUp } from 'lucide-react';
+import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileCheck, Award, Clock, UserCheck, Database, CreditCard } from 'lucide-react';
 import { OutcomeAssurance } from '@/components/OutcomeAssurance';
 import { useEffect } from 'react';
 import CapabilityGallery from '@/components/CapabilityGallery';
-import AIDeputee from '@/components/AIDeputee';
 
 const Home = () => {
   // Ensure proper component loading
@@ -17,19 +16,19 @@ const Home = () => {
 
   const features = [
     {
-      icon: <Brain className="h-8 w-8 text-primary" />,
-      title: "AI Deputee™ Agents",
-      description: "Always-on AI copilots that automate proposals, follow-ups, cashflow nudges and more — tuned to your sector."
-    },
-    {
       icon: <Users className="h-8 w-8 text-primary" />,
-      title: "Human Strategists",
-      description: "A named Teamsmiths advisor who reviews outcomes weekly and runs the measurement process."
+      title: "Vetted Experts",
+      description: "Work with experienced experts who deliver results, not just outputs"
     },
     {
       icon: <Shield className="h-8 w-8 text-primary" />,
-      title: "Continuous Assurance",
-      description: "AI Deputee™ Assurance: ongoing monitoring, human QA and a performance dashboard that measures actual uplift."
+      title: "Human QA",
+      description: "Every deliverable passes mandatory human quality assurance before you see it"
+    },
+    {
+      icon: <Zap className="h-8 w-8 text-primary" />,
+      title: "AI Deputees™",
+      description: "Our AI agents accelerate work while humans ensure quality and strategy"
     }
   ];
 
@@ -73,24 +72,20 @@ const Home = () => {
         <div className="max-w-7xl mx-auto relative">
           <div className="text-center">
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
-              Build your AI team. Not a project.
+              Revenue Up. Waste Down. Fast
             </h1>
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
-              A single subscription gives you <AIDeputee /> agents + human Teamsmiths advisors — for less than the cost of a hire.
+              Accelerate performance without consulting overhead.
             </p>
             
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
             <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-              <Link to="/plans">Join AI Navigator — £195/mo</Link>
+              <Link to="/brief-builder">Start a Bespoke Brief</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a demo</a>
+              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Talk to a curator</a>
             </Button>
           </div>
-          
-          <p className="text-sm text-muted-foreground mb-12">
-            Navigator Lite from £195 / month. Core starts at £395 / month. Proof Sprints from £495.
-          </p>
 
             {/* Benefits Strip */}
             <div className="border-t border-[#E5E7EB] mt-8 pt-4 pb-4">
@@ -157,10 +152,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Navigator Packs
+              Outcome Packs
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Choose from four subscription tiers. Each pack combines <AIDeputee /> agents with human advisors for continuous results.
+              Choose from three proven pillars. Each pack combines vetted expertise with AI acceleration for guaranteed results.
             </p>
           </div>
 
@@ -192,8 +187,8 @@ const Home = () => {
 
           <div className="text-center mt-16">
             <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-              <Link to="/plans">
-                View All Plans
+              <Link to="/catalog">
+                Browse Outcome Catalog
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
@@ -212,21 +207,21 @@ const Home = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-            Ready to Build Your AI Team?
+            Ready to Get Started?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Start with Navigator Core or try a Proof Sprint first.
+            Browse our outcome packs or book a quick intro call to discuss your needs.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/plans">
-                Join AI Navigator — £195/mo
+              <Link to="/brief-builder">
+                Start a Bespoke Brief
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a demo</a>
+              <Link to="/catalog">Browse Outcome Catalog</Link>
             </Button>
           </div>
 

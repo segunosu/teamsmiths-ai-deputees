@@ -1,7 +1,6 @@
 import React from 'react';
 import { Shield, Lock } from 'lucide-react';
 import { ASSURANCE } from '@/content/assurance';
-import AIDeputee from '@/components/AIDeputee';
 
 interface OutcomeAssuranceProps {
   className?: string;
@@ -19,11 +18,11 @@ export const OutcomeAssurance: React.FC<OutcomeAssuranceProps> = ({ className = 
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-lg font-semibold text-foreground mb-2">
-            <AIDeputee /> Assurance — our QA promise
+            {ASSURANCE.assurance_block.title}
           </h3>
           <div className="space-y-1 text-sm text-muted-foreground">
-            <p>Every deployment is continuously monitored by <AIDeputee /> and reviewed by human Teamsmiths.</p>
-            <p>We instrument KPIs, track results and use data to iterate weekly.</p>
+            <p>{ASSURANCE.assurance_block.body[0]}</p>
+            <p>{ASSURANCE.assurance_block.body[1]}</p>
           </div>
         </div>
       </div>
