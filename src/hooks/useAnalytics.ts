@@ -16,6 +16,13 @@ export interface AnalyticsEvent {
   'curator.booking_clicked': { brief_id: string };
   'detail.open': { brief_id: string; status: string };
   'detail.error': { brief_id: string; code: string; message: string };
+  'hero_join_click': { plan: string };
+  'hero_demo_click': Record<string, never>;
+  'nav_ai_navigator_click': Record<string, never>;
+  'plan_subscribe_click': { plan_id: string; price: number };
+  'plan_request_bespoke_click': { plan_id: string };
+  'proof_purchase': { sprint_id: string; price: number };
+  'checkout_success': { product_id: string; amount: number; user_email: string };
 }
 
 export const useAnalytics = () => {

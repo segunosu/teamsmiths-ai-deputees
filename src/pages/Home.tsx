@@ -7,8 +7,12 @@ import { CheckCircle, ArrowRight, Users, Shield, Zap, Target, BarChart3, FileChe
 import { OutcomeAssurance } from '@/components/OutcomeAssurance';
 import { useEffect } from 'react';
 import CapabilityGallery from '@/components/CapabilityGallery';
+import { AIDeputee } from '@/components/AIDeputee';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 const Home = () => {
+  const { trackEvent } = useAnalytics();
+  
   // Ensure proper component loading
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -16,19 +20,19 @@ const Home = () => {
 
   const features = [
     {
+      icon: <Zap className="h-8 w-8 text-primary" />,
+      title: "AI Deputee™ Agents",
+      description: "Always-on AI copilots that automate proposals, follow-ups, cashflow nudges and more — tuned to your sector."
+    },
+    {
       icon: <Users className="h-8 w-8 text-primary" />,
-      title: "Vetted Experts",
-      description: "Work with experienced experts who deliver results, not just outputs"
+      title: "Human Strategists",
+      description: "A named Teamsmiths advisor who reviews outcomes weekly and runs the measurement process."
     },
     {
       icon: <Shield className="h-8 w-8 text-primary" />,
-      title: "Human QA",
-      description: "Every deliverable passes mandatory human quality assurance before you see it"
-    },
-    {
-      icon: <Zap className="h-8 w-8 text-primary" />,
-      title: "AI Deputees™",
-      description: "Our AI agents accelerate work while humans ensure quality and strategy"
+      title: "Continuous Assurance",
+      description: "AI Deputee™ Assurance: ongoing monitoring, human QA and a performance dashboard that measures actual uplift."
     }
   ];
 
@@ -72,31 +76,22 @@ const Home = () => {
         <div className="max-w-7xl mx-auto relative">
           <div className="text-center">
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
-              Revenue Up. Waste Down. Fast
+              Build your AI team to grow your business
             </h1>
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
-              Accelerate performance without consulting overhead.
+              Access <AIDeputee /> agents + human Teamsmiths advisors — for less than the cost of a hire.
             </p>
-            
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-            <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-              <Link to="/brief-builder">Start a Bespoke Brief</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Talk to a curator</a>
-            </Button>
-          </div>
 
             {/* Benefits Strip */}
-            <div className="border-t border-[#E5E7EB] mt-8 pt-4 pb-4">
-              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-[#111] max-w-4xl mx-auto">
+            <div className="mb-10">
+              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-foreground max-w-4xl mx-auto">
                 <div className="flex items-center gap-2 justify-center md:justify-start">
                   <Target className="h-4 w-4 text-primary" />
-                  <span>Precision matched experts</span>
+                  <span>Precision-matched experts</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <CreditCard className="h-4 w-4 text-primary" />
-                  <span>Milestone payments</span>
+                  <BarChart3 className="h-4 w-4 text-primary" />
+                  <span>Measured uplift</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
                   <Zap className="h-4 w-4 text-primary" />
@@ -104,10 +99,35 @@ const Home = () => {
                 </div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
                   <Shield className="h-4 w-4 text-primary" />
-                  <span>Quality assured</span>
+                  <span><AIDeputee /> Assurance</span>
                 </div>
               </div>
             </div>
+            
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
+            <Button 
+              asChild 
+              size="lg" 
+              className="text-lg px-10 py-6 h-auto"
+              onClick={() => trackEvent('hero_join_click', { plan: 'lite' })}
+            >
+              <Link to="/plans#lite">Join AI Navigator — £195 / month</Link>
+            </Button>
+            <Button 
+              asChild 
+              variant="outline" 
+              size="lg" 
+              className="text-lg px-10 py-6 h-auto"
+              onClick={() => trackEvent('hero_demo_click', {})}
+            >
+              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a demo</a>
+            </Button>
+          </div>
+
+          {/* Price anchor */}
+          <p className="text-sm text-muted-foreground">
+            Navigator Lite from £195 / month. Core from £395 / month. Proof Sprints from £495.
+          </p>
           </div>
         </div>
       </section>
@@ -152,10 +172,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Outcome Packs
+              Navigator Packs
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Choose from three proven pillars. Each pack combines vetted expertise with AI acceleration for guaranteed results.
+              Choose from proven subscription tiers. Each pack combines <AIDeputee /> agents with human expertise for guaranteed results.
             </p>
           </div>
 
@@ -187,8 +207,8 @@ const Home = () => {
 
           <div className="text-center mt-16">
             <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-              <Link to="/catalog">
-                Browse Outcome Catalog
+              <Link to="/plans">
+                View All Navigator Packs
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
@@ -210,18 +230,18 @@ const Home = () => {
             Ready to Get Started?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Browse our outcome packs or book a quick intro call to discuss your needs.
+            Join AI Navigator or book a quick intro call to discuss your needs.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/brief-builder">
-                Start a Bespoke Brief
+              <Link to="/plans">
+                Join AI Navigator
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-              <Link to="/catalog">Browse Outcome Catalog</Link>
+              <Link to="/brief-builder">Start a Bespoke Brief</Link>
             </Button>
           </div>
 

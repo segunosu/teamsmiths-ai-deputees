@@ -63,6 +63,26 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/plans" element={
+                  <ErrorBoundary>
+                    {React.createElement(React.lazy(() => import('./pages/Plans')))}
+                  </ErrorBoundary>
+                } />
+                <Route path="/ai-navigator" element={
+                  <ErrorBoundary>
+                    {React.createElement(React.lazy(() => import('./pages/AINavigator')))}
+                  </ErrorBoundary>
+                } />
+                <Route path="/proof-sprints" element={
+                  <ErrorBoundary>
+                    {React.createElement(React.lazy(() => import('./pages/ProofSprintCheckout')))}
+                  </ErrorBoundary>
+                } />
+                <Route path="/proof-sprint-success" element={
+                  <ErrorBoundary>
+                    {React.createElement(React.lazy(() => import('./pages/ProofSprintSuccess')))}
+                  </ErrorBoundary>
+                } />
                 <Route path="/outcomes" element={<Outcomes />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetail />} />

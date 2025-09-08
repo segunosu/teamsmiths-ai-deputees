@@ -42,15 +42,12 @@ export const Navigation = () => {
 
   const navItems = [
     { label: 'Home', path: '/' },
+    { label: 'Plans', path: '/plans' },
+    { label: 'AI Navigator', path: '/ai-navigator', tooltip: 'Your on-demand AI team — AI Deputee™ agents + Teamsmiths advisors, from £195/mo.' },
   ];
 
   // Add contact link to Calendly
   const contactLink = 'https://calendly.com/osu/brief-chat';
-
-  const outcomesItems = [
-    { label: 'Proof in Action', path: '/outcomes' },
-    { label: 'Outcome Catalog', path: '/catalog' },
-  ];
 
   if (user) {
     const dashboardPath = userType === 'freelancer' ? '/freelancer-dashboard' : '/dashboard';
@@ -92,22 +89,11 @@ export const Navigation = () => {
                       ? 'text-primary bg-primary/10'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}
+                  title={item.tooltip}
                 >
                   {item.label}
                 </Link>
               ))}
-              
-              {/* Outcomes Link */}
-              <Link
-                to="/outcomes"
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
-                  isActive('/outcomes') || isActive('/catalog')
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                }`}
-              >
-                Outcomes
-              </Link>
               
               {/* Contact Link */}
               <a
@@ -173,7 +159,7 @@ export const Navigation = () => {
                   <Link to="/auth">Sign In</Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/auth">Get Started</Link>
+                  <Link to="/plans">Join AI Navigator</Link>
                 </Button>
               </div>
             )}
@@ -199,7 +185,30 @@ export const Navigation = () => {
         {mobileMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-border">
-              {navItems.map((item) => (
+              {/* Ensure Plans and AI Navigator are first for mobile visibility */}
+              <Link
+                to="/plans"
+                className={`block px-3 py-2 rounded-md text-base font-medium transition-all ${
+                  isActive('/plans')
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Plans
+              </Link>
+              <Link
+                to="/ai-navigator"
+                className={`block px-3 py-2 rounded-md text-base font-medium transition-all ${
+                  isActive('/ai-navigator')
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                }`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                AI Navigator
+              </Link>
+              {navItems.filter(item => item.path === '/').map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
@@ -213,19 +222,6 @@ export const Navigation = () => {
                   {item.label}
                 </Link>
               ))}
-              
-              {/* Mobile Outcomes Link */}
-              <Link
-                to="/outcomes"
-                className={`block px-3 py-2 rounded-md text-base font-medium transition-all ${
-                  isActive('/outcomes') || isActive('/catalog')
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Outcomes
-              </Link>
               
               {/* Mobile Auth */}
               <div className="pt-4 border-t border-border">
@@ -270,8 +266,8 @@ export const Navigation = () => {
                       </Link>
                     </Button>
                     <Button asChild className="w-full justify-start">
-                      <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-                        Get Started
+                      <Link to="/plans" onClick={() => setMobileMenuOpen(false)}>
+                        Join AI Navigator
                       </Link>
                     </Button>
                   </div>
