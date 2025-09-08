@@ -79,7 +79,7 @@ const Home = () => {
               Build AI Teams. Grow Your Business
             </h1>
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
-              Access <AIDeputee /> agents + Human Strategists — with guaranteed business outcomes.
+              Access <AIDeputee /> agents + Human Strategists - with measurable outcomes.
             </p>
             
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
