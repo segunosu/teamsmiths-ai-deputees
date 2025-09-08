@@ -48,6 +48,12 @@ import DataProtection from "./pages/DataProtection";
 import Compliance from "./pages/Compliance";
 import NotFound from "./pages/NotFound";
 
+// Lazy load components
+const Plans = React.lazy(() => import('./pages/Plans'));
+const AINavigator = React.lazy(() => import('./pages/AINavigator'));
+const ProofSprintCheckout = React.lazy(() => import('./pages/ProofSprintCheckout'));
+const ProofSprintSuccess = React.lazy(() => import('./pages/ProofSprintSuccess'));
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -64,24 +70,32 @@ const App = () => (
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/plans" element={
-                  <ErrorBoundary>
-                    {React.createElement(React.lazy(() => import('./pages/Plans')))}
-                  </ErrorBoundary>
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    <ErrorBoundary>
+                      <Plans />
+                    </ErrorBoundary>
+                  </React.Suspense>
                 } />
                 <Route path="/ai-navigator" element={
-                  <ErrorBoundary>
-                    {React.createElement(React.lazy(() => import('./pages/AINavigator')))}
-                  </ErrorBoundary>
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    <ErrorBoundary>
+                      <AINavigator />
+                    </ErrorBoundary>
+                  </React.Suspense>
                 } />
                 <Route path="/proof-sprints" element={
-                  <ErrorBoundary>
-                    {React.createElement(React.lazy(() => import('./pages/ProofSprintCheckout')))}
-                  </ErrorBoundary>
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    <ErrorBoundary>
+                      <ProofSprintCheckout />
+                    </ErrorBoundary>
+                  </React.Suspense>
                 } />
                 <Route path="/proof-sprint-success" element={
-                  <ErrorBoundary>
-                    {React.createElement(React.lazy(() => import('./pages/ProofSprintSuccess')))}
-                  </ErrorBoundary>
+                  <React.Suspense fallback={<div>Loading...</div>}>
+                    <ErrorBoundary>
+                      <ProofSprintSuccess />
+                    </ErrorBoundary>
+                  </React.Suspense>
                 } />
                 <Route path="/outcomes" element={<Outcomes />} />
                 <Route path="/catalog" element={<Catalog />} />
