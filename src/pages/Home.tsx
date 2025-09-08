@@ -81,28 +81,6 @@ const Home = () => {
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
               Access <AIDeputee /> agents + human Teamsmiths advisors — for less than the cost of a hire.
             </p>
-
-            {/* Benefits Strip */}
-            <div className="mb-10">
-              <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-foreground max-w-4xl mx-auto">
-                <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <Target className="h-4 w-4 text-primary" />
-                  <span>Precision-matched experts</span>
-                </div>
-                <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <BarChart3 className="h-4 w-4 text-primary" />
-                  <span>Measured uplift</span>
-                </div>
-                <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <Zap className="h-4 w-4 text-primary" />
-                  <span>Faster outcomes</span>
-                </div>
-                <div className="flex items-center gap-2 justify-center md:justify-start">
-                  <Shield className="h-4 w-4 text-primary" />
-                  <span><AIDeputee /> Assurance</span>
-                </div>
-              </div>
-            </div>
             
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
             <Button 
@@ -125,9 +103,36 @@ const Home = () => {
           </div>
 
           {/* Price anchor */}
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground mb-10">
             Navigator Lite from £195 / month. Core from £395 / month. Proof Sprints from £495.
           </p>
+
+          {/* Separator line */}
+          <div className="w-full max-w-4xl mx-auto mb-8">
+            <hr className="border-t border-border" />
+          </div>
+
+          {/* Benefits Strip */}
+          <div className="mb-10">
+            <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-foreground max-w-4xl mx-auto">
+              <div className="flex items-center gap-2 justify-center md:justify-start">
+                <Target className="h-4 w-4 text-primary" />
+                <span>Precision-matched experts</span>
+              </div>
+              <div className="flex items-center gap-2 justify-center md:justify-start">
+                <BarChart3 className="h-4 w-4 text-primary" />
+                <span>Measured uplift</span>
+              </div>
+              <div className="flex items-center gap-2 justify-center md:justify-start">
+                <Zap className="h-4 w-4 text-primary" />
+                <span>Faster outcomes</span>
+              </div>
+              <div className="flex items-center gap-2 justify-center md:justify-start">
+                <Shield className="h-4 w-4 text-primary" />
+                <span><AIDeputee /> Assurance</span>
+              </div>
+            </div>
+          </div>
           </div>
         </div>
       </section>
