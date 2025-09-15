@@ -18,7 +18,7 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
-import CustomizationRequest from "./pages/CustomizationRequest";
+import BriefBuilder from "./pages/BriefBuilder";
 import BriefDetail from "./pages/BriefDetail";
 import { BriefSubmitted } from "./pages/BriefSubmitted";
 import DebugBrief from "./pages/DebugBrief";
@@ -97,7 +97,7 @@ const App = () => (
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
                   <Route path="/brief" element={<Navigate to="/brief-builder" replace />} />
-                  <Route path="/brief-builder" element={<CustomizationRequest />} />
+                  <Route path="/brief-builder" element={<BriefBuilder />} />
                   <Route path="/brief-submitted" element={<BriefSubmitted />} />
                   <Route path="/debug/brief" element={<DebugBrief />} />
                   <Route path="/dashboard/briefs/:id" element={

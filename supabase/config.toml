@@ -161,5 +161,11 @@ verify_jwt = false
 [functions.enhanced-stripe-webhook]
 verify_jwt = false
 
+[functions.submit-brief]
+verify_jwt = false
+
+[functions.brief-sensemaking]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true
