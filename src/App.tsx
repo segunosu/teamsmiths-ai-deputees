@@ -2,6 +2,7 @@ import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -63,92 +64,94 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <div className="min-h-screen flex flex-col">
-            <Navigation />
-            <main className="flex-1">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/plans" element={
-                  <React.Suspense fallback={<div>Loading...</div>}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <div className="min-h-screen flex flex-col">
+              <Navigation />
+              <main className="flex-1">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/plans" element={
+                    <React.Suspense fallback={<div>Loading...</div>}>
+                      <ErrorBoundary>
+                        <Plans />
+                      </ErrorBoundary>
+                    </React.Suspense>
+                  } />
+                  <Route path="/navigator" element={<Navigate to="/outcome-packs" replace />} />
+                  <Route path="/navigator-packs" element={<Navigate to="/outcome-packs" replace />} />
+                  <Route path="/ai-navigator" element={<Navigate to="/outcome-packs" replace />} />
+                  <Route path="/proof-sprints" element={<Navigate to="/outcome-packs" replace />} />
+                  <Route path="/proof-sprint-success" element={
+                    <React.Suspense fallback={<div>Loading...</div>}>
+                      <ErrorBoundary>
+                        <ProofSprintSuccess />
+                      </ErrorBoundary>
+                    </React.Suspense>
+                  } />
+                  <Route path="/outcome-packs" element={<OutcomePacks />} />
+                  <Route path="/audit" element={<Audit />} />
+                  <Route path="/work-with-us" element={<WorkWithUs />} />
+                  <Route path="/catalog" element={<Catalog />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/brief" element={<CustomizationRequest />} />
+                  <Route path="/brief-submitted" element={<BriefSubmitted />} />
+                  <Route path="/debug/brief" element={<DebugBrief />} />
+                  <Route path="/dashboard/briefs/:id" element={
                     <ErrorBoundary>
-                      <Plans />
+                      <BriefDetail />
                     </ErrorBoundary>
-                  </React.Suspense>
-                } />
-                <Route path="/navigator" element={<Navigate to="/outcome-packs" replace />} />
-                <Route path="/navigator-packs" element={<Navigate to="/outcome-packs" replace />} />
-                <Route path="/ai-navigator" element={<Navigate to="/outcome-packs" replace />} />
-                <Route path="/proof-sprints" element={<Navigate to="/outcome-packs" replace />} />
-                <Route path="/proof-sprint-success" element={
-                  <React.Suspense fallback={<div>Loading...</div>}>
+                  } />
+                  <Route path="/quote/:id" element={<QuoteDetail />} />
+                  <Route path="/dashboard" element={
                     <ErrorBoundary>
-                      <ProofSprintSuccess />
+                      <Dashboard />
                     </ErrorBoundary>
-                  </React.Suspense>
-                } />
-                <Route path="/outcome-packs" element={<OutcomePacks />} />
-                <Route path="/audit" element={<Audit />} />
-                <Route path="/work-with-us" element={<WorkWithUs />} />
-                <Route path="/catalog" element={<Catalog />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/brief" element={<CustomizationRequest />} />
-                <Route path="/brief-submitted" element={<BriefSubmitted />} />
-                <Route path="/debug/brief" element={<DebugBrief />} />
-                <Route path="/dashboard/briefs/:id" element={
-                  <ErrorBoundary>
-                    <BriefDetail />
-                  </ErrorBoundary>
-                } />
-                <Route path="/quote/:id" element={<QuoteDetail />} />
-                <Route path="/dashboard" element={
-                  <ErrorBoundary>
-                    <Dashboard />
-                  </ErrorBoundary>
-                } />
-                <Route path="/expert-invites" element={
-                  <ErrorBoundary>
-                    <ExpertInviteDashboard />
-                  </ErrorBoundary>
-                } />
-                <Route path="/project/:id" element={<ProjectDetail />} />
-                <Route path="/for-clients" element={<ForClients />} />
-                <Route path="/for-freelancers" element={<ForFreelancers />} />
-                <Route path="/freelancer-auth" element={<FreelancerAuth />} />
-                <Route path="/freelancer-onboarding" element={<FreelancerOnboarding />} />
-                <Route path="/freelancer-dashboard" element={<FreelancerDashboard />} />
-                <Route path="/for-agencies" element={<ForAgencies />} />
-                <Route path="/payment-success" element={<PaymentSuccess />} />
-                <Route path="/payment-canceled" element={<PaymentCanceled />} />
-                <Route path="/admin" element={
-                  <AdminOnly>
-                    <AdminDashboard />
-                  </AdminOnly>
-                } />
-                <Route path="/admin/matching/settings" element={
-                  <AdminOnly>
-                    <AdminMatchingSettings />
-                  </AdminOnly>
-                } />
-                <Route path="/admin/certifications" element={<CertificationsPage />} />
-                <Route path="/admin/case-studies" element={<CaseStudiesPage />} />
-                <Route path="/admin/tools/suggestions" element={<ToolSuggestionsPage />} />
-                <Route path="/admin/reports" element={<AdminReports />} />
-                <Route path="/admin/qa" element={<QADashboard />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="/legal/privacy" element={<PrivacyPolicy />} />
-                <Route path="/legal/terms" element={<TermsOfService />} />
-                <Route path="/compliance" element={<Compliance />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </BrowserRouter>
+                  } />
+                  <Route path="/expert-invites" element={
+                    <ErrorBoundary>
+                      <ExpertInviteDashboard />
+                    </ErrorBoundary>
+                  } />
+                  <Route path="/project/:id" element={<ProjectDetail />} />
+                  <Route path="/for-clients" element={<ForClients />} />
+                  <Route path="/for-freelancers" element={<ForFreelancers />} />
+                  <Route path="/freelancer-auth" element={<FreelancerAuth />} />
+                  <Route path="/freelancer-onboarding" element={<FreelancerOnboarding />} />
+                  <Route path="/freelancer-dashboard" element={<FreelancerDashboard />} />
+                  <Route path="/for-agencies" element={<ForAgencies />} />
+                  <Route path="/payment-success" element={<PaymentSuccess />} />
+                  <Route path="/payment-canceled" element={<PaymentCanceled />} />
+                  <Route path="/admin" element={
+                    <AdminOnly>
+                      <AdminDashboard />
+                    </AdminOnly>
+                  } />
+                  <Route path="/admin/matching/settings" element={
+                    <AdminOnly>
+                      <AdminMatchingSettings />
+                    </AdminOnly>
+                  } />
+                  <Route path="/admin/certifications" element={<CertificationsPage />} />
+                  <Route path="/admin/case-studies" element={<CaseStudiesPage />} />
+                  <Route path="/admin/tools/suggestions" element={<ToolSuggestionsPage />} />
+                  <Route path="/admin/reports" element={<AdminReports />} />
+                  <Route path="/admin/qa" element={<QADashboard />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+                  <Route path="/legal/terms" element={<TermsOfService />} />
+                  <Route path="/compliance" element={<Compliance />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </BrowserRouter>
+        </HelmetProvider>
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
