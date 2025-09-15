@@ -28,7 +28,7 @@ const CustomizationRequest = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [allowUnauthRequests, setAllowUnauthRequests] = useState(false);
+  const [allowUnauthRequests, setAllowUnauthRequests] = useState(true);
   const { toast } = useToast();
   const { user } = useAuth();
 
