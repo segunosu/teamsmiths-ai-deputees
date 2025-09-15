@@ -39,7 +39,9 @@ import QADashboard from "./pages/QADashboard";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Pricing from "./pages/Pricing";
-import Outcomes from "./pages/Outcomes";
+import OutcomePacks from "./pages/OutcomePacks";
+import Audit from "./pages/Audit";
+import WorkWithUs from "./pages/WorkWithUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import SecurityPolicy from "./pages/SecurityPolicy";
@@ -97,7 +99,9 @@ const App = () => (
                     </ErrorBoundary>
                   </React.Suspense>
                 } />
-                <Route path="/outcomes" element={<Outcomes />} />
+                <Route path="/outcome-packs" element={<OutcomePacks />} />
+                <Route path="/audit" element={<Audit />} />
+                <Route path="/work-with-us" element={<WorkWithUs />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/customize" element={<DeputeeAIBriefBuilder />} />

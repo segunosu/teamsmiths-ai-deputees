@@ -13,13 +13,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+
+const navigationItems = [
+  { label: 'Home', path: '/', tooltip: 'Start here — outcome-driven AI solutions for SMBs.' },
+  { label: 'Outcome Packs', path: '/outcome-packs', tooltip: 'Packaged solutions delivered in weeks — focused on revenue, speed, and cost.' },
+  { label: 'Audit', path: '/audit', tooltip: 'Quick diagnostic to find the fastest path to visible uplift.' },
+  { label: 'Results', path: '/#results', tooltip: 'Anonymous metrics and case studies from client engagements.' },
+  { label: 'About', path: '/about', tooltip: 'Learn about Teamsmiths and our mission to democratise world-class consulting.' },
+  { label: 'Blog', path: '/blog', tooltip: 'Insights and updates from the Teamsmiths team.' },
+  { label: 'Contact', path: '/contact', tooltip: 'Get in touch with our team.' },
+];
 
 export const Navigation = () => {
   const { user, signOut } = useAuth();
   const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userType, setUserType] = useState<string | null>(null);
 
@@ -39,20 +48,6 @@ export const Navigation = () => {
 
     checkUserProfile();
   }, [user]);
-
-  const navItems = [
-    { label: 'Home', path: '/' },
-    { label: 'Plans', path: '/plans' },
-    { label: 'AI Navigator', path: '/ai-navigator', tooltip: 'Your on-demand AI team — AI Deputee™ agents + Teamsmiths advisors, from £195/mo.' },
-  ];
-
-  // Add contact link to Calendly
-  const contactLink = 'https://calendly.com/osu/brief-chat';
-
-  if (user) {
-    const dashboardPath = userType === 'freelancer' ? '/freelancer-dashboard' : '/dashboard';
-    navItems.push({ label: 'Dashboard', path: dashboardPath });
-  }
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -78,9 +73,9 @@ export const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navItems.map((item) => (
+              {navigationItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
@@ -94,21 +89,11 @@ export const Navigation = () => {
                   {item.label}
                 </Link>
               ))}
-              
-              {/* Contact Link */}
-              <a
-                href={contactLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
-              >
-                Contact
-              </a>
             </div>
           </div>
 
           {/* Desktop Auth */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             {user ? (
               <div className="flex items-center gap-2">
                 <NotificationBell />
@@ -159,20 +144,20 @@ export const Navigation = () => {
                   <Link to="/auth">Sign In</Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/plans">Join AI Navigator</Link>
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a Call</a>
                 </Button>
               </div>
             )}
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {mobileMenuOpen ? (
+              {isMenuOpen ? (
                 <X className="h-6 w-6" />
               ) : (
                 <Menu className="h-6 w-6" />
@@ -182,33 +167,34 @@ export const Navigation = () => {
         </div>
 
         {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden">
+        {isMenuOpen && (
+          <div className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-border">
-              {/* Ensure Plans and AI Navigator are first for mobile visibility */}
-              <Link
-                to="/plans"
-                className={`block px-3 py-2 rounded-md text-base font-medium transition-all ${
-                  isActive('/plans')
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Plans
-              </Link>
-              <Link
-                to="/ai-navigator"
-                className={`block px-3 py-2 rounded-md text-base font-medium transition-all ${
-                  isActive('/ai-navigator')
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                AI Navigator
-              </Link>
-              {navItems.filter(item => item.path === '/').map((item) => (
+              {/* Primary CTAs for mobile visibility */}
+              <div className="grid grid-cols-2 gap-1 mb-4">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="justify-start h-10"
+                >
+                  <Link to="/outcome-packs">Outcome Packs</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"  
+                  size="sm"
+                  className="justify-start h-10"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                    Book a Call
+                  </a>
+                </Button>
+              </div>
+
+              {/* Navigation Items */}
+              {navigationItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
@@ -217,7 +203,7 @@ export const Navigation = () => {
                       ? 'text-primary bg-primary/10'
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
                 </Link>
@@ -233,13 +219,13 @@ export const Navigation = () => {
                     {isAdmin && (
                       <>
                         <Button asChild variant="ghost" className="w-full justify-start">
-                          <Link to="/admin" onClick={() => setMobileMenuOpen(false)}>
+                          <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
                             <Shield className="mr-2 h-4 w-4" />
                             Admin Panel
                           </Link>
                         </Button>
                         <Button asChild variant="ghost" className="w-full justify-start">
-                          <Link to="/admin/reports" onClick={() => setMobileMenuOpen(false)}>
+                          <Link to="/admin/reports" onClick={() => setIsMenuOpen(false)}>
                             <Shield className="mr-2 h-4 w-4" />
                             Admin Reports
                           </Link>
@@ -251,7 +237,7 @@ export const Navigation = () => {
                       className="w-full justify-start"
                       onClick={() => {
                         signOut();
-                        setMobileMenuOpen(false);
+                        setIsMenuOpen(false);
                       }}
                     >
                       <LogOut className="mr-2 h-4 w-4" />
@@ -261,14 +247,14 @@ export const Navigation = () => {
                 ) : (
                   <div className="space-y-1">
                     <Button asChild variant="ghost" className="w-full justify-start">
-                      <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
+                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                         Sign In
                       </Link>
                     </Button>
                     <Button asChild className="w-full justify-start">
-                      <Link to="/plans" onClick={() => setMobileMenuOpen(false)}>
-                        Join AI Navigator
-                      </Link>
+                      <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>
+                        Book a Call
+                      </a>
                     </Button>
                   </div>
                 )}

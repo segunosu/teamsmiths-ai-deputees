@@ -246,8 +246,26 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Rapid Audit Section */}
+      {/* Teamsmiths Academy™ */}
       <section className="py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
+            The Teamsmiths Academy™
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
+            Our Academy documents the approach, trains your team, and keeps results compounding. Clients get access to playbooks, templates, and short workshops.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+              <Link to="/academy">Explore the Academy</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+              <Link to="/blog">Join a workshop</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
@@ -293,7 +311,7 @@ const Home = () => {
       </section>
 
       {/* Results Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section id="results" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
@@ -378,10 +396,24 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Outcome Assurance */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <OutcomeAssurance />
+      {/* Teamsmiths Academy™ */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
+            The Teamsmiths Academy™
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
+            Our Academy documents the approach, trains your team, and keeps results compounding. Clients get access to playbooks, templates, and short workshops.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+              <Link to="/academy">Explore the Academy</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+              <Link to="/blog">Join a workshop</Link>
+            </Button>
+          </div>
         </div>
       </section>
 

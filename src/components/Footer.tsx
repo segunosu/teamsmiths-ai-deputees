@@ -10,10 +10,10 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Company</h3>
             <ul className="space-y-3">
-              <li><Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About Us</Link></li>
-              <li><Link to="/careers" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Careers</Link></li>
-              <li><Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact</Link></li>
+              <li><Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About</Link></li>
               <li><Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Blog</Link></li>
+              <li><Link to="/customize" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Brief</Link></li>
+              <li><Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact</Link></li>
             </ul>
           </div>
 
@@ -21,10 +21,10 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
-              <li><Link to="/for-clients" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For SMBs (AI Navigator)</Link></li>
-              <li><Link to="/for-freelancers" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For AI Specialists</Link></li>
-              <li><Link to="/plans" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Plans</Link></li>
-              <li><Link to="/plans" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Plans & Pricing</Link></li>
+              <li><Link to="/outcome-packs" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Outcome Packs</Link></li>
+              <li><Link to="/audit" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Audit</Link></li>
+              <li><Link to="/#results" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Results</Link></li>
+              <li><Link to="/work-with-us" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Work with Us</Link></li>
             </ul>
           </div>
 
