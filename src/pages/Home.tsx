@@ -88,7 +88,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto relative">
           <div className="text-center">
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
-              Build your AI team to grow your business
+              Your AI team grows your business
             </h1>
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
               More revenue. Lower costs. The speed of AI with Human Oversight.
