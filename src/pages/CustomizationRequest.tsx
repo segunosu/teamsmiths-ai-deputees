@@ -58,15 +58,8 @@ const CustomizationRequest = () => {
   }, [id]);
 
   const checkAuthSettings = async () => {
-    try {
-      const { data } = await supabase.rpc('get_public_settings');
-      
-      const settingsData = data as Record<string, any>;
-      const authSetting = settingsData?.allow_custom_request_without_login;
-      setAllowUnauthRequests(authSetting?.enabled ?? false);
-    } catch (error) {
-      console.error('Error checking auth settings:', error);
-    }
+    // Always allow guest submissions for the brief builder
+    setAllowUnauthRequests(true);
   };
 
   const fetchProduct = async () => {
@@ -180,30 +173,6 @@ const CustomizationRequest = () => {
   }
 
   // Check if user needs to login for requests
-  if (!user && !allowUnauthRequests) {
-    return (
-      <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <Card>
-            <CardHeader>
-              <CardTitle>Account Required</CardTitle>
-              <CardDescription>
-                Please create an account or sign in to submit a customization request
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Button asChild size="lg" className="w-full">
-                <Link to="/auth?flow=signup">Create Account</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="w-full">
-                <Link to="/auth">Sign In</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
