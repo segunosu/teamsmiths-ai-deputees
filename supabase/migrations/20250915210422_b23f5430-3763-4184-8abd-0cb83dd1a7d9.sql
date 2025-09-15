@@ -1,0 +1,1 @@
+UPDATE products SET base_price = 95000 WHERE title = 'AI Starter Audit';

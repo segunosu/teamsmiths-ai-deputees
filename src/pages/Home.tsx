@@ -276,7 +276,7 @@ const Home = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Rapid AI Uplift Audit — £750 — 5 business days
+              Rapid AI Uplift Audit — £950 — 5 business days
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               A quick, neutral diagnostic to find the fastest path to visible uplift.
