@@ -23,8 +23,7 @@ export const Footer = () => {
             <ul className="space-y-3">
               <li><Link to="/outcome-packs" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Outcome Packs</Link></li>
               <li><Link to="/audit" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Audit</Link></li>
-              <li><a href="/#results" onClick={() => document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Results</a></li>
-              <li><Link to="/work-with-us" rel="nofollow" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Work with Us</Link></li>
+              <li><Link to="/for-freelancers" rel="nofollow" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Work with Us</Link></li>
             </ul>
           </div>
 

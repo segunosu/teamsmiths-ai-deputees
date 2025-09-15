@@ -50,6 +50,7 @@ import CookiePolicy from "./pages/CookiePolicy";
 import DataProtection from "./pages/DataProtection";
 import Compliance from "./pages/Compliance";
 import NotFound from "./pages/NotFound";
+import Blog from "./pages/Blog";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
@@ -138,9 +139,10 @@ const App = () => (
                   <Route path="/admin/tools/suggestions" element={<ToolSuggestionsPage />} />
                   <Route path="/admin/reports" element={<AdminReports />} />
                   <Route path="/admin/qa" element={<QADashboard />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/pricing" element={<Pricing />} />
+                   <Route path="/about" element={<About />} />
+                   <Route path="/blog" element={<Blog />} />
+                   <Route path="/contact" element={<Contact />} />
+                   <Route path="/pricing" element={<Pricing />} />
                   <Route path="/legal/privacy" element={<PrivacyPolicy />} />
                   <Route path="/legal/terms" element={<TermsOfService />} />
                   <Route path="/compliance" element={<Compliance />} />

@@ -118,7 +118,7 @@ const OutcomePacks = () => {
                   <div className="flex flex-col gap-3">
                     <Button className="w-full" onClick={() => handleCheckout(pack.title)}>Book this Pack</Button>
                     <Button asChild variant="outline" className="w-full">
-                      <Link to={`/brief?origin=pack&pack_id=${slugify(pack.title)}`}>Start a Bespoke Brief</Link>
+                      <Link to={`/brief?product=${encodeURIComponent(pack.title)}`}>Customise this Brief</Link>
                     </Button>
                   </div>
                 </CardContent>
@@ -141,7 +141,12 @@ const OutcomePacks = () => {
               <Button asChild size="lg" className="text-lg px-8 py-6">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a Call</a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+              <Button 
+                asChild 
+                size="lg" 
+                className="text-lg px-8 py-6"
+                onClick={() => window.scrollTo(0, 0)}
+              >
                 <Link to="/audit">Start with an Audit</Link>
               </Button>
             </div>

@@ -27,12 +27,12 @@ const Home = () => {
     {
       icon: <Zap className="h-8 w-8 text-primary" />,
       title: "Deploy in weeks",
-      description: "Launch with <AIDeputee /> and expert QA for fast, reliable results."
+      description: "Deputee™ AI plus Human Oversight deliver fast, reliable results."
     },
     {
       icon: <BarChart3 className="h-8 w-8 text-primary" />,
       title: "Report uplift",
-      description: "Measure the improvement and keep compounding (optional +5% performance share)."
+      description: "Measure improvements and keep compounding."
     }
   ];
 
@@ -224,7 +224,7 @@ const Home = () => {
                       <Link to="/outcome-packs">Book this Pack</Link>
                     </Button>
                     <Button asChild variant="outline" className="w-full">
-                      <Link to="/brief?origin=home">Start a Bespoke Brief</Link>
+                      <Link to={`/brief?product=${encodeURIComponent(pack.title)}`}>Customise this Brief</Link>
                     </Button>
                   </div>
                 </CardContent>

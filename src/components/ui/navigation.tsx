@@ -19,7 +19,6 @@ const navigationItems = [
   { label: 'Home', path: '/', tooltip: 'Start here — outcome-driven AI solutions for SMBs.' },
   { label: 'Outcome Packs', path: '/outcome-packs', tooltip: 'Packaged solutions delivered in weeks — focused on revenue, speed, and cost.' },
   { label: 'Audit', path: '/audit', tooltip: 'Quick diagnostic to find the fastest path to visible uplift.' },
-  { label: 'Results', path: '/#results', tooltip: 'Anonymous metrics and case studies from client engagements.' },
   { label: 'About', path: '/about', tooltip: 'Learn about Teamsmiths and our mission to democratise world-class consulting.' },
   { label: 'Blog', path: '/blog', tooltip: 'Insights and updates from the Teamsmiths team.' },
   { label: 'Contact', path: '/contact', tooltip: 'Get in touch with our team.' },
