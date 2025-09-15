@@ -52,7 +52,6 @@ import NotFound from "./pages/NotFound";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
-const AINavigator = React.lazy(() => import('./pages/AINavigator'));
 const ProofSprintCheckout = React.lazy(() => import('./pages/ProofSprintCheckout'));
 const ProofSprintSuccess = React.lazy(() => import('./pages/ProofSprintSuccess'));
 
@@ -75,13 +74,6 @@ const App = () => (
                   <React.Suspense fallback={<div>Loading...</div>}>
                     <ErrorBoundary>
                       <Plans />
-                    </ErrorBoundary>
-                  </React.Suspense>
-                } />
-                <Route path="/ai-navigator" element={
-                  <React.Suspense fallback={<div>Loading...</div>}>
-                    <ErrorBoundary>
-                      <AINavigator />
                     </ErrorBoundary>
                   </React.Suspense>
                 } />

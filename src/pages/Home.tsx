@@ -91,7 +91,7 @@ const Home = () => {
               Build your AI team to grow your business
             </h1>
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
-              More revenue. Faster execution. Lower costs. Measurable results in weeks with <AIDeputee /> and expert oversight.
+              More revenue. Lower costs. The speed of AI with Human Oversight.
             </p>
             
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">

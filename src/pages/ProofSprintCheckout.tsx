@@ -100,7 +100,7 @@ const ProofSprintCheckout = () => {
         <div className="max-w-2xl mx-auto text-center">
           <h1 className="text-2xl font-bold text-foreground mb-4">Sprint Not Found</h1>
           <Button asChild>
-            <Link to="/ai-navigator">Back to AI Navigator</Link>
+            <Link to="/outcome-packs">Back to Outcome Packs</Link>
           </Button>
         </div>
       </div>
@@ -112,9 +112,9 @@ const ProofSprintCheckout = () => {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <Button asChild variant="ghost" className="mb-4">
-            <Link to="/ai-navigator">
+            <Link to="/outcome-packs">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to AI Navigator
+              Back to Outcome Packs
             </Link>
           </Button>
         </div>

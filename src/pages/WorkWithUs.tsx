@@ -38,7 +38,8 @@ const WorkWithUs = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Work with Teamsmiths - Expert Network Application</title>
+        <title>Work with Teamsmiths — Expert Network Application</title>
+        <meta name="description" content="Join our curated bench of specialists focused on measurable outcomes." />
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
       
