@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, ArrowRight, Target, BarChart3, Calendar } from 'lucide-react';
+import { CheckCircle, ArrowRight, Target, BarChart3, Calendar, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -23,8 +23,10 @@ const Audit = () => {
   ];
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleStartAudit = async () => {
+    setIsLoading(true);
     try {
       const { data: userData } = await supabase.auth.getUser();
       const user = userData?.user;
@@ -46,6 +48,8 @@ const Audit = () => {
       window.open(data.url, '_blank');
     } catch (e: any) {
       toast({ title: 'Checkout failed', description: e.message || 'Please try again.', variant: 'destructive' });
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -91,8 +95,20 @@ const Audit = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="w-full" size="lg" onClick={handleStartAudit}>
-                  Start Audit
+                <Button 
+                  className="w-full" 
+                  size="lg" 
+                  onClick={handleStartAudit}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    'Start Audit'
+                  )}
                 </Button>
                 <Button variant="outline" asChild className="w-full" size="lg">
                   <Link to="/outcome-packs">
