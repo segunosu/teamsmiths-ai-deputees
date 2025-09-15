@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/contexts/AuthContext';
-import { NotificationBell } from '@/components/notifications/NotificationBell';
 import { LogOut, User, Menu, X, Shield } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import NotificationSystem from '@/components/NotificationSystem';
@@ -95,7 +94,6 @@ export const Navigation = () => {
           <div className="hidden lg:block">
             {user ? (
               <div className="flex items-center gap-2">
-                <NotificationBell />
                 <NotificationSystem />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

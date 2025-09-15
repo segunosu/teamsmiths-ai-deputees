@@ -35,7 +35,7 @@ const Audit = () => {
       const { data: product, error: pErr } = await supabase
         .from('products')
         .select('id')
-        .eq('title', 'Rapid AI Uplift Audit')
+        .eq('title', 'AI Starter Audit')
         .eq('is_active', true)
         .single();
       if (pErr || !product) throw new Error('Audit product unavailable');
