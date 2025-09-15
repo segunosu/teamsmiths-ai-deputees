@@ -1,8 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, ArrowRight, Target, BarChart3, Calendar } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Audit = () => {
   const deliverables = [
@@ -19,7 +21,33 @@ const Audit = () => {
       title: "30/60/90 plan + recommended Pack"
     }
   ];
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
+  const handleStartAudit = async () => {
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData?.user;
+      if (!user?.email) {
+        navigate('/auth');
+        return;
+      }
+      const { data: product, error: pErr } = await supabase
+        .from('products')
+        .select('id')
+        .eq('title', 'Rapid AI Uplift Audit')
+        .eq('is_active', true)
+        .single();
+      if (pErr || !product) throw new Error('Audit product unavailable');
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: { product_id: product.id },
+      });
+      if (error || !data?.url) throw new Error(error?.message || 'Checkout failed');
+      window.open(data.url, '_blank');
+    } catch (e: any) {
+      toast({ title: 'Checkout failed', description: e.message || 'Please try again.', variant: 'destructive' });
+    }
+  };
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -63,7 +91,7 @@ const Audit = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="w-full" size="lg">
+                <Button className="w-full" size="lg" onClick={handleStartAudit}>
                   Start Audit
                 </Button>
                 <Button variant="outline" asChild className="w-full" size="lg">

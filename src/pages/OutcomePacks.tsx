@@ -1,11 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, FileCheck, BarChart3, CreditCard, ArrowRight } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const OutcomePacks = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const packs = [
     {
       icon: <FileCheck className="h-12 w-12 text-accent" />,
@@ -44,6 +48,33 @@ const OutcomePacks = () => {
       ]
     }
   ];
+
+  const slugify = (str: string) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+  const handleCheckout = async (title: string) => {
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData?.user;
+      if (!user?.email) {
+        navigate('/auth');
+        return;
+      }
+      const { data: product, error: pErr } = await supabase
+        .from('products')
+        .select('id')
+        .eq('title', title)
+        .eq('is_active', true)
+        .single();
+      if (pErr || !product) throw new Error('This pack is currently unavailable');
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: { product_id: product.id },
+      });
+      if (error || !data?.url) throw new Error(error?.message || 'Checkout failed');
+      window.open(data.url, '_blank');
+    } catch (e: any) {
+      toast({ title: 'Checkout failed', description: e.message || 'Please try again.', variant: 'destructive' });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,8 +116,10 @@ const OutcomePacks = () => {
                     ))}
                   </ul>
                   <div className="flex flex-col gap-3">
-                    <Button className="w-full">Book this Pack</Button>
-                    <Button variant="outline" className="w-full">Start a Bespoke Brief</Button>
+                    <Button className="w-full" onClick={() => handleCheckout(pack.title)}>Book this Pack</Button>
+                    <Button asChild variant="outline" className="w-full">
+                      <Link to={`/brief?origin=pack&pack_id=${slugify(pack.title)}`}>Start a Bespoke Brief</Link>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -104,14 +137,14 @@ const OutcomePacks = () => {
           </div>
 
           {/* Final CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8 py-6">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a Call</a>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
-              <Link to="/audit">Start with an Audit</Link>
-            </Button>
-          </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="text-lg px-8 py-6">
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a Call</a>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+                <Link to="/audit">Start with an Audit</Link>
+              </Button>
+            </div>
         </div>
       </section>
     </div>

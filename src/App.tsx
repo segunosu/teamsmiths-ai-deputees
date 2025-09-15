@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/Footer";
@@ -17,7 +17,7 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Catalog from "./pages/Catalog";
 import ProductDetail from "./pages/ProductDetail";
-import DeputeeAIBriefBuilder from "./components/DeputeeAIBriefBuilder";
+import CustomizationRequest from "./pages/CustomizationRequest";
 import BriefDetail from "./pages/BriefDetail";
 import { BriefSubmitted } from "./pages/BriefSubmitted";
 import DebugBrief from "./pages/DebugBrief";
@@ -77,13 +77,10 @@ const App = () => (
                     </ErrorBoundary>
                   </React.Suspense>
                 } />
-                <Route path="/proof-sprints" element={
-                  <React.Suspense fallback={<div>Loading...</div>}>
-                    <ErrorBoundary>
-                      <ProofSprintCheckout />
-                    </ErrorBoundary>
-                  </React.Suspense>
-                } />
+                <Route path="/navigator" element={<Navigate to="/outcome-packs" replace />} />
+                <Route path="/navigator-packs" element={<Navigate to="/outcome-packs" replace />} />
+                <Route path="/ai-navigator" element={<Navigate to="/outcome-packs" replace />} />
+                <Route path="/proof-sprints" element={<Navigate to="/outcome-packs" replace />} />
                 <Route path="/proof-sprint-success" element={
                   <React.Suspense fallback={<div>Loading...</div>}>
                     <ErrorBoundary>
@@ -96,9 +93,7 @@ const App = () => (
                 <Route path="/work-with-us" element={<WorkWithUs />} />
                 <Route path="/catalog" element={<Catalog />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/customize" element={<DeputeeAIBriefBuilder />} />
-                <Route path="/customize/:id" element={<DeputeeAIBriefBuilder />} />
-                <Route path="/brief-builder" element={<DeputeeAIBriefBuilder />} />
+                <Route path="/brief" element={<CustomizationRequest />} />
                 <Route path="/brief-submitted" element={<BriefSubmitted />} />
                 <Route path="/debug/brief" element={<DebugBrief />} />
                 <Route path="/dashboard/briefs/:id" element={
@@ -144,11 +139,8 @@ const App = () => (
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/pricing" element={<Pricing />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/terms-of-service" element={<TermsOfService />} />
-                <Route path="/security-policy" element={<SecurityPolicy />} />
-                <Route path="/cookie-policy" element={<CookiePolicy />} />
-                <Route path="/data-protection" element={<DataProtection />} />
+                <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+                <Route path="/legal/terms" element={<TermsOfService />} />
                 <Route path="/compliance" element={<Compliance />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

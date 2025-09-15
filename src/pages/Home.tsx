@@ -183,7 +183,7 @@ const Home = () => {
       <CapabilityGallery />
 
       {/* Three Pillars */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section id="offers" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-20">
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
@@ -220,8 +220,12 @@ const Home = () => {
                     ))}
                   </ul>
                   <div className="flex flex-col gap-3">
-                    <Button className="w-full">Book this Pack</Button>
-                    <Button variant="outline" className="w-full">Start a Bespoke Brief</Button>
+                    <Button asChild className="w-full">
+                      <Link to="/outcome-packs">Book this Pack</Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full">
+                      <Link to="/brief?origin=home">Start a Bespoke Brief</Link>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
