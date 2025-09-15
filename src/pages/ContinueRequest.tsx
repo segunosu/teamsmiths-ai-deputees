@@ -179,7 +179,7 @@ const ContinueRequest = () => {
               asChild
               className="flex-1"
             >
-              <Link to={`/customize?continue=${token}&cr=${crId}`}>
+              <Link to={`/brief-builder?continue=${token}&cr=${crId}`}>
                 Continue Request
               </Link>
             </Button>

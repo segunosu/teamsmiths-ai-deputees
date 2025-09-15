@@ -96,7 +96,8 @@ const App = () => (
                   <Route path="/work-with-us" element={<WorkWithUs />} />
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
-                  <Route path="/brief" element={<CustomizationRequest />} />
+                  <Route path="/brief" element={<Navigate to="/brief-builder" replace />} />
+                  <Route path="/brief-builder" element={<CustomizationRequest />} />
                   <Route path="/brief-submitted" element={<BriefSubmitted />} />
                   <Route path="/debug/brief" element={<DebugBrief />} />
                   <Route path="/dashboard/briefs/:id" element={

@@ -118,7 +118,7 @@ const OutcomePacks = () => {
                   <div className="flex flex-col gap-3">
                     <Button className="w-full" onClick={() => handleCheckout(pack.title)}>Book this Pack</Button>
                     <Button asChild variant="outline" className="w-full">
-                      <Link to={`/brief?product=${encodeURIComponent(pack.title)}`}>Customise this Brief</Link>
+                      <Link to={`/brief-builder?product=${encodeURIComponent(pack.title)}`}>Customise this Brief</Link>
                     </Button>
                   </div>
                 </CardContent>

@@ -12,7 +12,7 @@ export const Footer = () => {
             <ul className="space-y-3">
               <li><Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About</Link></li>
               <li><Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Blog</Link></li>
-              <li><Link to="/brief" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Brief</Link></li>
+              <li><Link to="/brief-builder" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Brief</Link></li>
               <li><Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact</Link></li>
             </ul>
           </div>
