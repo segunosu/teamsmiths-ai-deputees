@@ -39,7 +39,7 @@ const About = () => {
           
           <div className="max-w-3xl mx-auto mb-12">
             <p className="text-lg leading-relaxed text-foreground/80 mb-6">
-              We've helped startups and SMEs launch fast and scale efficiently, while driving measurable performance in large enterprises. As founders our platforms have delivered valuable services for 750 vendors, serving 25,000+ SMEs.  Our own plaform generated $1.5M within 18 months and have shipped MVPs with low-code to cut delivery costs by 55%+.
+              We've helped startups and SMEs launch fast and scale efficiently, while driving measurable performance in large enterprises. We've delivered valuable services for 750 vendors, serving 25,000+ SMEs.  Our solutions have generated $1.5M within 18 months and we've shipped MVPs for clients to cut delivery costs by 55%+.
             </p>
             <p className="text-lg leading-relaxed text-foreground/80 mb-8">
               In enterprise, we grew a Gartner unit from $3M → $10M, cut costs 30%, and delivered 40–45% team uplift at GSK/Haleon. We focus on one KPI at a time — practical, measurable, fast.
