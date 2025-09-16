@@ -51,6 +51,7 @@ import DataProtection from "./pages/DataProtection";
 import Compliance from "./pages/Compliance";
 import NotFound from "./pages/NotFound";
 import Blog from "./pages/Blog";
+import BusinessImpact from "./pages/BusinessImpact";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
@@ -91,8 +92,9 @@ const App = () => (
                       </ErrorBoundary>
                     </React.Suspense>
                   } />
-                  <Route path="/outcome-packs" element={<OutcomePacks />} />
-                  <Route path="/audit" element={<Audit />} />
+                   <Route path="/outcome-packs" element={<OutcomePacks />} />
+                   <Route path="/business-impact" element={<BusinessImpact />} />
+                   <Route path="/audit" element={<Audit />} />
                   <Route path="/work-with-us" element={<WorkWithUs />} />
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetail />} />

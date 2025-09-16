@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const navigationItems = [
   { label: 'Home', path: '/', tooltip: 'Start here — outcome-driven AI solutions for SMBs.' },
   { label: 'Outcome Packs', path: '/outcome-packs', tooltip: 'Packaged solutions delivered in weeks — focused on revenue, speed, and cost.' },
+  { label: 'Business Impact', path: '/business-impact', tooltip: 'Rapid, precise applications delivering tangible business results.' },
   { label: 'Audit', path: '/audit', tooltip: 'Quick diagnostic to find the fastest path to visible uplift.' },
   { label: 'About', path: '/about', tooltip: 'Learn about Teamsmiths and our mission to democratise world-class consulting.' },
   { label: 'Blog', path: '/blog', tooltip: 'Insights and updates from the Teamsmiths team.' },
