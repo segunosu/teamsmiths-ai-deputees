@@ -8,7 +8,7 @@ const About = () => {
   const achievements = [
     {
       icon: <Users className="h-8 w-8 text-primary" />,
-      title: "25,000+ SMEs served",
+      title: "750 Firms > 25,000+ SMEs",
       description: "As operators, we've worked with businesses across every sector"
     },
     {
@@ -34,7 +34,7 @@ const About = () => {
       <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
-            Boutique expertise. Business outcomes. ROI impact.
+            Boutique expertise. Practical outcomes.
           </h1>
           
           <div className="max-w-3xl mx-auto mb-12">
