@@ -33,6 +33,10 @@ export interface AnalyticsEvent {
   'checkout_start': { sku: string; origin?: string; ref?: string };
   'scroll_target_hit': { id: string; route: string };
   'nav_anchor_click': { label: string; href: string };
+  // About page analytics events
+  'about_section_view': { section_id: string };
+  'about_cta_click': { label: string; href: string };
+  'nav_click': { label: string };
 }
 
 export const useAnalytics = () => {
