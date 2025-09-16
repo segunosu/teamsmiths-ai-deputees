@@ -62,7 +62,7 @@ const Audit = () => {
               Business Audit
             </h1>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-              <span className="text-3xl font-bold text-primary">£750</span>
+              <span className="text-3xl font-bold text-primary">£950</span>
               <span className="text-xl text-muted-foreground">•</span>
               <span className="text-xl font-semibold">5 business days</span>
             </div>
