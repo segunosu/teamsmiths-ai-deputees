@@ -12,7 +12,9 @@ const BriefBuilder: React.FC = () => {
       </Helmet>
       <main>
         <h1 className="sr-only">AI Brief Builder</h1>
-        <DeputeeAIBriefBuilder />
+        <div id="form">
+          <DeputeeAIBriefBuilder />
+        </div>
       </main>
     </>
   );

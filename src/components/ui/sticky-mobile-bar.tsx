@@ -17,7 +17,7 @@ export const StickyMobileBar: React.FC<StickyMobileBarProps> = ({ briefOrigin })
             </a>
           </Button>
           <Button asChild className="flex-1">
-            <Link to={`/brief-builder?origin=${briefOrigin}`}>
+            <Link to={`/brief-builder?origin=${briefOrigin}#form`}>
               Start a Brief
             </Link>
           </Button>

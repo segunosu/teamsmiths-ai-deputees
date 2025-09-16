@@ -9,6 +9,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/Footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ScrollManager } from "@/components/ScrollManager";
 import AdminMatchingSettings from "@/components/admin/AdminMatchingSettings";
 import AdminOnly from "@/components/admin/AdminOnly";
 import CertificationsPage from "./pages/admin/CertificationsPage";
@@ -69,8 +70,9 @@ const App = () => (
         <HelmetProvider>
           <BrowserRouter>
             <div className="min-h-screen flex flex-col">
+              <ScrollManager />
               <Navigation />
-              <main className="flex-1">
+              <main id="main-content" className="flex-1" tabIndex={-1}>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/auth" element={<Auth />} />

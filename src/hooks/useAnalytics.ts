@@ -31,6 +31,8 @@ export interface AnalyticsEvent {
   'results_tile_view': { segment: string };
   'brief_start': { origin: string; ref?: string };
   'checkout_start': { sku: string; origin?: string; ref?: string };
+  'scroll_target_hit': { id: string; route: string };
+  'nav_anchor_click': { label: string; href: string };
 }
 
 export const useAnalytics = () => {

@@ -22,6 +22,7 @@ const navigationItems = [
   { label: 'About', path: '/about', tooltip: 'Learn about Teamsmiths and our mission to democratise world-class consulting.' },
   { label: 'Blog', path: '/blog', tooltip: 'Insights and updates from the Teamsmiths team.' },
   { label: 'Contact', path: '/contact', tooltip: 'Get in touch with our team.' },
+  { label: 'Results', path: '/#results', tooltip: 'View business results and success metrics' },
 ];
 
 export const Navigation = () => {

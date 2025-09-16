@@ -69,7 +69,7 @@ const BusinessImpact = () => {
         />
 
         {/* Impact Examples */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <section id="examples" className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Impact Examples</h2>
             
@@ -95,11 +95,11 @@ const BusinessImpact = () => {
                     },
                     secondary: {
                       label: "Customise this Brief",
-                      link: `/brief-builder?origin=impact&ref=${example.slug}`
+                      link: `/brief-builder?origin=impact&ref=${example.slug}#form`
                     },
                     tertiary: {
                       label: "Start an Audit",
-                      link: `/audit?origin=impact&ref=${example.slug}`
+                      link: `/audit?origin=impact&ref=${example.slug}#start`
                     }
                   }}
                 />
@@ -125,7 +125,7 @@ const BusinessImpact = () => {
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <Link to="/brief-builder?origin=impact">
+                <Link to="/brief-builder?origin=impact#form">
                   Start a Brief
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>

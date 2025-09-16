@@ -95,7 +95,7 @@ const BusinessOutcomes = () => {
         />
 
         {/* Packs Grid */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <section id="offers" className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-3 gap-8 mb-16">
               {packs.map((pack, index) => (
@@ -117,11 +117,11 @@ const BusinessOutcomes = () => {
                     },
                     secondary: {
                       label: "Customise this Brief",
-                      link: `/brief-builder?origin=outcomes&ref=${pack.slug}`
+                      link: `/brief-builder?origin=outcomes&ref=${pack.slug}#form`
                     },
                     tertiary: {
                       label: "Start an Audit",
-                      link: `/audit?origin=outcomes&ref=${pack.slug}`
+                      link: `/audit?origin=outcomes&ref=${pack.slug}#start`
                     }
                   }}
                 />

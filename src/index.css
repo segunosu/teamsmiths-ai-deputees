@@ -138,6 +138,12 @@ All colors MUST be HSL.
 
   html {
     overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* Offset anchor targets for the fixed header height */
+  [id] {
+    scroll-margin-top: 88px;
   }
 
   /* Responsive container classes */

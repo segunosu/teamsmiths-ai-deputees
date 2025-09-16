@@ -55,7 +55,7 @@ const Audit = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
+      <section id="start" className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
@@ -111,7 +111,7 @@ const Audit = () => {
                   )}
                 </Button>
                 <Button variant="outline" asChild className="w-full" size="lg">
-                  <Link to="/business-outcomes">
+                  <Link to="/business-outcomes#offers">
                     See Business Outcomes
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>

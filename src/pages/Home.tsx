@@ -43,22 +43,22 @@ const Home = () => {
       icon: <TrendingUp className="h-12 w-12 text-accent" />,
       title: "Audit",
       description: "A quick diagnostic to find the fastest path to visible uplift.",
-      primaryCTA: { label: "Start Audit", link: "/audit" },
-      secondaryCTA: { label: "Learn more", link: "/audit" }
+      primaryCTA: { label: "Start Audit", link: "/audit#start" },
+      secondaryCTA: { label: "Learn more", link: "/audit#start" }
     },
     {
       icon: <Target className="h-12 w-12 text-accent" />,
       title: "Outcomes",
       description: "Packaged, rapid solutions with clear KPIs and fixed fees.",
-      primaryCTA: { label: "See Business Outcomes", link: "/business-outcomes" },
-      secondaryCTA: { label: "Start a Brief", link: "/brief?origin=outcomes" }
+      primaryCTA: { label: "See Business Outcomes", link: "/business-outcomes#offers" },
+      secondaryCTA: { label: "Start a Brief", link: "/brief-builder?origin=outcomes#form" }
     },
     {
       icon: <Zap className="h-12 w-12 text-accent" />,
       title: "Impact",
       description: "Scoped application builds that move your numbers — fast.",
-      primaryCTA: { label: "See Impact", link: "/business-impact" },
-      secondaryCTA: { label: "Start a Brief", link: "/brief?origin=impact" }
+      primaryCTA: { label: "See Impact", link: "/business-impact#examples" },
+      secondaryCTA: { label: "Start a Brief", link: "/brief-builder?origin=impact#form" }
     }
   ];
 
@@ -198,7 +198,7 @@ const Home = () => {
                   className="text-lg px-10 py-6 h-auto"
                   onClick={() => handleHeroCTA('See Business Outcomes')}
                 >
-                  <Link to="/business-outcomes">See Business Outcomes</Link>
+                  <Link to="/business-outcomes#offers">See Business Outcomes</Link>
                 </Button>
                 <Button 
                   asChild 
@@ -207,7 +207,7 @@ const Home = () => {
                   className="text-lg px-10 py-6 h-auto"
                   onClick={() => handleHeroCTA('See Impact')}
                 >
-                  <Link to="/business-impact">See Impact</Link>
+                  <Link to="/business-impact#examples">See Impact</Link>
                 </Button>
               </div>
 
@@ -279,13 +279,13 @@ const Home = () => {
             {/* CTA row after How it works */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild variant="outline">
-                <Link to="/business-outcomes">Explore Outcomes</Link>
+                <Link to="/business-outcomes#offers">Explore Outcomes</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link to="/business-impact">Explore Impact</Link>
+                <Link to="/business-impact#examples">Explore Impact</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link to="/audit">Start an Audit</Link>
+                <Link to="/audit#start">Start an Audit</Link>
               </Button>
             </div>
           </div>
@@ -468,11 +468,11 @@ const Home = () => {
                     },
                     secondary: {
                       label: "Customise this Brief",
-                      link: `/brief?origin=outcomes&ref=${pack.slug}`
+                      link: `/brief-builder?origin=outcomes&ref=${pack.slug}#form`
                     },
                     tertiary: {
                       label: "Start an Audit",
-                      link: `/audit?origin=outcomes&ref=${pack.slug}`
+                      link: `/audit?origin=outcomes&ref=${pack.slug}#start`
                     }
                   }}
                 />
@@ -509,11 +509,11 @@ const Home = () => {
                     },
                     secondary: {
                       label: "Customise this Brief",
-                      link: `/brief?origin=impact&ref=${example.slug}`
+                      link: `/brief-builder?origin=impact&ref=${example.slug}#form`
                     },
                     tertiary: {
                       label: "Start an Audit",
-                      link: `/audit?origin=impact&ref=${example.slug}`
+                      link: `/audit?origin=impact&ref=${example.slug}#start`
                     }
                   }}
                 />
@@ -532,14 +532,14 @@ const Home = () => {
         </section>
 
         {/* Final CTA */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
+        <section id="home-final-cta" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-6">
               Ready to move a KPI in weeks?
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <Link to="/brief?origin=home">
+                <Link to="/brief-builder?origin=home#form">
                   Start a Brief
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>

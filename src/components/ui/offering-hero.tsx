@@ -28,7 +28,7 @@ export const OfferingHero: React.FC<OfferingHeroProps> = ({
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
           <Button size="lg" asChild>
-            <Link to={`/brief-builder?origin=${briefOrigin}`}>
+            <Link to={`/brief-builder?origin=${briefOrigin}#form`}>
               Start a Brief
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
