@@ -59,7 +59,7 @@ const Audit = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
-              Rapid AI Uplift Audit
+              Business Audit
             </h1>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <span className="text-3xl font-bold text-primary">£950</span>
