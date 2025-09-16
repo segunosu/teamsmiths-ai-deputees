@@ -1,10 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { MessageSquare, Workflow, Globe } from 'lucide-react';
+import { OfferingHero } from '@/components/ui/offering-hero';
+import { OfferingCard } from '@/components/ui/offering-card';
+import { StickyMobileBar } from '@/components/ui/sticky-mobile-bar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ArrowRight, MessageSquare, Workflow, Globe, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 const BusinessImpact = () => {
   const impactExamples = [
@@ -13,37 +15,39 @@ const BusinessImpact = () => {
       title: 'Customer FAQ Assistant',
       duration: '10 business days',
       price: '£3,500',
-      outcome: 'Fewer support emails; faster answers.',
-      features: [
+      benefit: 'Fewer support emails; faster answers.',
+      bullets: [
         'Web widget + CRM/email handoff',
         'Basic analytics dashboard'
-      ]
+      ],
+      slug: 'faq_assistant'
     },
     {
       icon: <Workflow className="h-12 w-12 text-accent" />,
       title: 'Internal Ops Micro-Workflow',
       duration: '2 weeks',
       price: '£6,000',
-      outcome: 'Less manual work; faster turnaround.',
-      features: [
+      benefit: 'Less manual work; faster turnaround.',
+      bullets: [
         'Intake → sheet → notifications',
         'Access controls + runbook'
-      ]
+      ],
+      slug: 'micro_workflow'
     },
     {
       icon: <Globe className="h-12 w-12 text-accent" />,
       title: 'Customer Portal MVP',
       duration: '4–6 weeks',
       price: '£12k–£18k',
-      outcome: 'Better self-serve; fewer back-and-forths.',
-      features: [
+      benefit: 'Better self-serve; fewer back-and-forths.',
+      bullets: [
         'Login, submissions, status, notifications',
         'Private repo + handover'
-      ]
+      ],
+      slug: 'customer_portal'
     }
   ];
 
-  const getSlug = (title: string) => title.toLowerCase().replace(/\s+/g, '_');
 
   return (
     <>
@@ -57,35 +61,12 @@ const BusinessImpact = () => {
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
-              Business Impact
-            </h1>
-            <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-16 max-w-3xl mx-auto leading-relaxed">
-              Rapid, scoped application builds that move your numbers—fast.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
-              <Button size="lg" asChild>
-                <Link to="/brief-builder?origin=impact">
-                  Start a Brief
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book a Call
-                </a>
-              </Button>
-            </div>
-            
-            <p className="text-sm text-muted-foreground">
-              Most builds start with a quick Audit.
-            </p>
-          </div>
-        </section>
+        <OfferingHero 
+          title="Business Impact"
+          subtitle="Rapid, scoped application builds that move your numbers—fast."
+          briefOrigin="impact"
+          helperText="Most builds start with a quick Audit."
+        />
 
         {/* Impact Examples */}
         <section className="py-16 px-4 sm:px-6 lg:px-8">
@@ -94,46 +75,34 @@ const BusinessImpact = () => {
             
             <div className="grid lg:grid-cols-3 gap-8 mb-16">
               {impactExamples.map((example, index) => (
-                <Card key={index} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80 text-left">
-                  <CardHeader className="pb-6">
-                    <div className="mb-6">
-                      {example.icon}
-                    </div>
-                    <CardTitle className="text-3xl font-bold">{example.title}</CardTitle>
-                    <div className="flex items-center gap-3 mt-3 mb-4">
-                      <Badge variant="secondary" className="text-base font-bold">{example.price}</Badge>
-                      <Badge variant="outline">{example.duration}</Badge>
-                    </div>
-                    <p className="text-lg font-semibold text-primary mb-4">{example.outcome}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3 mb-6">
-                      {example.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-success mt-1 flex-shrink-0" />
-                          <span className="text-base leading-relaxed">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <div className="flex flex-col gap-3">
-                      <Button className="w-full">
-                        Book this Build
-                      </Button>
-                      <Button asChild variant="outline" className="w-full">
-                        <Link to={`/brief-builder?origin=impact&example=${getSlug(example.title)}`}>
-                          Customise this Brief
-                        </Link>
-                      </Button>
-                      <Link 
-                        to={`/audit?origin=impact&ref=${getSlug(example.title)}`}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors text-center"
-                      >
-                        Start an Audit
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
+                <OfferingCard
+                  key={index}
+                  variant="impact"
+                  title={example.title}
+                  price={example.price}
+                  duration={example.duration}
+                  benefit={example.benefit}
+                  bullets={example.bullets}
+                  icon={example.icon}
+                  ctas={{
+                    primary: {
+                      label: "Book this Build",
+                      sku: `impact_${example.slug}_${example.price.replace('£', '').replace('k', '000').replace('–', '').split('–')[0]}`,
+                      onClick: () => {
+                        // TODO: Implement Stripe checkout for impact builds
+                        console.log(`Booking ${example.title}`);
+                      }
+                    },
+                    secondary: {
+                      label: "Customise this Brief",
+                      link: `/brief-builder?origin=impact&ref=${example.slug}`
+                    },
+                    tertiary: {
+                      label: "Start an Audit",
+                      link: `/audit?origin=impact&ref=${example.slug}`
+                    }
+                  }}
+                />
               ))}
             </div>
           </div>
@@ -169,6 +138,8 @@ const BusinessImpact = () => {
             </div>
           </div>
         </section>
+
+        <StickyMobileBar briefOrigin="impact" />
       </div>
     </>
   );
