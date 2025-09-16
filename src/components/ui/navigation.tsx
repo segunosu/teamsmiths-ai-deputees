@@ -19,9 +19,6 @@ const navigationItems = [
   { label: 'Audit', path: '/audit', tooltip: 'Quick diagnostic to find fastest uplift' },
   { label: 'Outcomes', path: '/business-outcomes', tooltip: 'Packaged solutions delivering measurable results' },
   { label: 'Impact', path: '/business-impact', tooltip: 'Scoped app builds that move your numbers' },
-  { label: 'About', path: '/about', tooltip: 'Learn about Teamsmiths and our mission to democratise world-class consulting.' },
-  { label: 'Blog', path: '/blog', tooltip: 'Insights and updates from the Teamsmiths team.' },
-  { label: 'Contact', path: '/contact', tooltip: 'Get in touch with our team.' },
   { label: 'Results', path: '/#results', tooltip: 'View business results and success metrics' },
 ];
 
