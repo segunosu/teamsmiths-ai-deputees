@@ -23,6 +23,14 @@ export interface AnalyticsEvent {
   'plan_request_bespoke_click': { plan_id: string };
   'proof_purchase': { sprint_id: string; price: number };
   'checkout_success': { product_id: string; amount: number; user_email: string };
+  // Home page analytics events
+  'offers_view': { page: string };
+  'hero_cta_click': { label: string };
+  'pillars_cta_click': { pillar: string; cta: string };
+  'card_cta_click': { section: string; slug: string; cta: string };
+  'results_tile_view': { segment: string };
+  'brief_start': { origin: string; ref?: string };
+  'checkout_start': { sku: string; origin?: string; ref?: string };
 }
 
 export const useAnalytics = () => {
