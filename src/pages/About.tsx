@@ -83,7 +83,7 @@ const About = () => {
         <title>About — Teamsmiths (Audit · Outcomes · Impact)</title>
         <meta 
           name="description" 
-          content="Boutique expertise delivering measurable uplift. Business Audit, Business Outcomes, and Business Impact builds with AI Deputee™ assurance and human QA." 
+          content="Business Audit, Business Outcomes, and Business Impact builds with AI Deputee™ assurance and human QA. More revenue, faster execution, lower costs — in weeks." 
         />
         <meta name="keywords" content="boutique consulting, business audit, outcomes, impact builds, AI deputee, SME consulting" />
       </Helmet>
@@ -94,29 +94,27 @@ const About = () => {
           <section className="py-24 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto text-center">
               <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
-                Boutique expertise. Practical outcomes.
+                Business Outcomes & Impact — in weeks
               </h1>
               <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-16 max-w-4xl mx-auto leading-relaxed">
-                We help SMEs and startups launch fast and scale efficiently—while improving revenue, speed, and costs. One KPI at a time, with <AIDeputee /> and expert oversight.
+                More revenue. Faster execution. Lower costs. Start with a Business Audit, deploy Business Outcomes, or build Business Impact when an app is the fastest path to ROI — all with <AIDeputee /> and expert oversight.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
                 <Button 
                   size="lg" 
                   asChild
-                  onClick={() => handleCTAClick('Book a Call', 'https://calendly.com/osu/brief-chat')}
+                  onClick={() => handleCTAClick('See Business Outcomes', '/business-outcomes#offers')}
                 >
-                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                    Book a Call
-                  </a>
+                  <Link to="/business-outcomes#offers">See Business Outcomes</Link>
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
                   asChild
-                  onClick={() => handleCTAClick('See Business Outcomes', '/business-outcomes#offers')}
+                  onClick={() => handleCTAClick('Start Audit', '/audit#start')}
                 >
-                  <Link to="/business-outcomes#offers">See Business Outcomes</Link>
+                  <Link to="/audit#start">Start Audit</Link>
                 </Button>
               </div>
             </div>
@@ -213,17 +211,17 @@ const About = () => {
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
                   <h3 className="text-xl font-semibold mb-3">Pick the KPI</h3>
-                  <p className="text-muted-foreground">Choose what matters most: revenue, speed, or cost reduction.</p>
+                  <p className="text-muted-foreground">Choose revenue, speed, or cost reduction.</p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
                   <h3 className="text-xl font-semibold mb-3">Deploy in weeks</h3>
-                  <p className="text-muted-foreground">Launch with <AIDeputee /> + human QA for fast, reliable results.</p>
+                  <p className="text-muted-foreground"><AIDeputee /> + human QA for fast, reliable results.</p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
                   <h3 className="text-xl font-semibold mb-3">Report uplift</h3>
-                  <p className="text-muted-foreground">Measure improvements and keep compounding—optionally with +5% performance share.</p>
+                  <p className="text-muted-foreground">Measure improvements and keep compounding (optional +5% performance share).</p>
                 </div>
               </div>
 
