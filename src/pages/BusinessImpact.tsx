@@ -3,45 +3,47 @@ import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Zap, Target, Users, Clock, CheckCircle } from 'lucide-react';
+import { ArrowRight, MessageSquare, Workflow, Globe, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const BusinessImpact = () => {
   const impactExamples = [
     {
+      icon: <MessageSquare className="h-12 w-12 text-accent" />,
       title: 'Customer FAQ Assistant',
+      duration: '10 business days',
+      price: '£3,500',
       outcome: 'Fewer support emails; faster answers.',
       features: [
         'Web widget + CRM/email handoff',
         'Basic analytics dashboard'
-      ],
-      duration: '10 business days',
-      price: '£3,500',
-      feasibilityPrice: '£1,250'
+      ]
     },
     {
+      icon: <Workflow className="h-12 w-12 text-accent" />,
       title: 'Internal Ops Micro-Workflow',
+      duration: '2 weeks',
+      price: '£6,000',
       outcome: 'Less manual work; faster turnaround.',
       features: [
         'Intake → sheet → notifications',
         'Access controls + runbook'
-      ],
-      duration: '2 weeks',
-      price: '£6,000',
-      feasibilityPrice: '£1,250'
+      ]
     },
     {
+      icon: <Globe className="h-12 w-12 text-accent" />,
       title: 'Customer Portal MVP',
+      duration: '4–6 weeks',
+      price: '£12k–£18k',
       outcome: 'Better self-serve; fewer back-and-forths.',
       features: [
         'Login, submissions, status, notifications',
         'Private repo + handover'
-      ],
-      duration: '4–6 weeks',
-      price: '£12k–£18k',
-      feasibilityPrice: '£1,250'
+      ]
     }
   ];
+
+  const getSlug = (title: string) => title.toLowerCase().replace(/\s+/g, '_');
 
   return (
     <>
@@ -56,12 +58,12 @@ const BusinessImpact = () => {
 
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="py-20 px-4">
+        <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+            <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
               Business Impact
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+            <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-16 max-w-3xl mx-auto leading-relaxed">
               Rapid, scoped application builds that move your numbers—fast.
             </p>
             
@@ -80,47 +82,55 @@ const BusinessImpact = () => {
             </div>
             
             <p className="text-sm text-muted-foreground">
-              Feasibility in 5 business days if needed.
+              Most builds start with a quick Audit.
             </p>
           </div>
         </section>
 
         {/* Impact Examples */}
-        <section className="py-16 px-4">
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Impact Examples</h2>
             
             <div className="grid lg:grid-cols-3 gap-8 mb-16">
               {impactExamples.map((example, index) => (
-                <Card key={index} className="text-left">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold">{example.title}</CardTitle>
-                    <p className="text-primary font-semibold">{example.outcome}</p>
+                <Card key={index} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80 text-left">
+                  <CardHeader className="pb-6">
+                    <div className="mb-6">
+                      {example.icon}
+                    </div>
+                    <CardTitle className="text-2xl font-bold">{example.title}</CardTitle>
+                    <div className="flex items-center gap-3 mt-3 mb-4">
+                      <Badge variant="secondary" className="text-base font-bold">{example.price}</Badge>
+                      <Badge variant="outline">{example.duration}</Badge>
+                    </div>
+                    <p className="text-lg font-semibold text-primary mb-4">{example.outcome}</p>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2 mb-6">
+                    <ul className="space-y-3 mb-6">
                       {example.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start gap-2">
-                          <span className="text-primary">•</span>
-                          <span className="text-sm">{feature}</span>
+                        <li key={featureIndex} className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-success mt-1 flex-shrink-0" />
+                          <span className="text-base leading-relaxed">{feature}</span>
                         </li>
                       ))}
                     </ul>
                     
-                    <div className="flex gap-2 mb-6">
-                      <Badge variant="secondary">{example.duration}</Badge>
-                      <Badge variant="outline">{example.price}</Badge>
-                    </div>
-                    
-                    <div className="flex flex-col gap-2">
-                      <Button asChild size="sm">
-                        <Link to={`/brief-builder?origin=impact&example=${example.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                          Start a Brief
+                    <div className="flex flex-col gap-3">
+                      <Button className="w-full">
+                        Book this Build
+                      </Button>
+                      <Button asChild variant="outline" className="w-full">
+                        <Link to={`/brief-builder?origin=impact&example=${getSlug(example.title)}`}>
+                          Customise this Brief
                         </Link>
                       </Button>
-                      <Button variant="outline" size="sm">
-                        Start Feasibility ({example.feasibilityPrice})
-                      </Button>
+                      <Link 
+                        to={`/audit?origin=impact&ref=${getSlug(example.title)}`}
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors text-center"
+                      >
+                        Start an Audit
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
@@ -129,28 +139,17 @@ const BusinessImpact = () => {
           </div>
         </section>
 
-        {/* Feasibility Section */}
-        <section className="py-16 px-4 bg-muted/30">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl font-bold mb-4">Build Feasibility Audit — £1,250 — 5 business days</h2>
-            <p className="text-muted-foreground mb-6">
-              Scope & risk check, data boundaries, go/no-go. Credited if a Build starts within 30 days.
-            </p>
-            <Button>Start Feasibility (£1,250)</Button>
-          </div>
-        </section>
-
         {/* Assurance Section */}
-        <section className="py-16 px-4">
-          <div className="max-w-4xl mx-auto">
-            <p className="text-center text-muted-foreground mb-8">
-              Confidential by default. You get code in your repo, a 30-day defects warranty, and the option of a light maintenance retainer (£500–£1,500/mo). We use modern AI agents with human QA. No regulated data or real-time payments builds—those go to partners.
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-base leading-relaxed text-muted-foreground">
+              Confidential by default. You get code in your repo, a 30-day defects warranty, and the option of a light maintenance retainer (£500–£1,500/mo). We use modern AI agents with human QA. Regulated data or real-time payments go to trusted partners.
             </p>
           </div>
         </section>
 
         {/* Final CTA */}
-        <section className="py-20 px-4 bg-gradient-to-br from-primary/10 to-secondary/10">
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-6">
               Ready to create impact?

@@ -40,7 +40,7 @@ import QADashboard from "./pages/QADashboard";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Pricing from "./pages/Pricing";
-import OutcomePacks from "./pages/OutcomePacks";
+import BusinessOutcomes from "./pages/BusinessOutcomes";
 import Audit from "./pages/Audit";
 import WorkWithUs from "./pages/WorkWithUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -92,7 +92,8 @@ const App = () => (
                       </ErrorBoundary>
                     </React.Suspense>
                   } />
-                   <Route path="/outcome-packs" element={<OutcomePacks />} />
+                   <Route path="/outcome-packs" element={<Navigate to="/business-outcomes" replace />} />
+                   <Route path="/business-outcomes" element={<BusinessOutcomes />} />
                    <Route path="/business-impact" element={<BusinessImpact />} />
                    <Route path="/audit" element={<Audit />} />
                   <Route path="/work-with-us" element={<WorkWithUs />} />

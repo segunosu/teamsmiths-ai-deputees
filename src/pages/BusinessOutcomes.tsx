@@ -7,7 +7,7 @@ import { CheckCircle, FileCheck, BarChart3, CreditCard, ArrowRight } from 'lucid
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-const OutcomePacks = () => {
+const BusinessOutcomes = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const packs = [
@@ -48,8 +48,6 @@ const OutcomePacks = () => {
       ]
     }
   ];
-
-  const slugify = (str: string) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
   const handleCheckout = async (title: string) => {
     try {
@@ -118,7 +116,7 @@ const OutcomePacks = () => {
                   <div className="flex flex-col gap-3">
                     <Button className="w-full" onClick={() => handleCheckout(pack.title)}>Book this Pack</Button>
                     <Button asChild variant="outline" className="w-full">
-                      <Link to={`/brief-builder?product=${encodeURIComponent(pack.title)}`}>Customise this Brief</Link>
+                      <Link to={`/brief-builder?origin=outcomes&pack_id=${pack.title.toLowerCase().replace(/\s+/g, '_')}`}>Customise this Brief</Link>
                     </Button>
                   </div>
                 </CardContent>
@@ -156,4 +154,4 @@ const OutcomePacks = () => {
   );
 };
 
-export default OutcomePacks;
+export default BusinessOutcomes;

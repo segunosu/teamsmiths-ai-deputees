@@ -18,7 +18,7 @@ const Audit = () => {
     },
     {
       icon: <Calendar className="h-6 w-6 text-primary" />,
-      title: "30/60/90 plan + recommended Pack"
+      title: "30/60/90 plan + recommended next step"
     }
   ];
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ const Audit = () => {
               Business Audit
             </h1>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-              <span className="text-3xl font-bold text-primary">£950</span>
+              <span className="text-3xl font-bold text-primary">£750</span>
               <span className="text-xl text-muted-foreground">•</span>
               <span className="text-xl font-semibold">5 business days</span>
             </div>
@@ -90,7 +90,7 @@ const Audit = () => {
               
               <div className="bg-muted/50 p-6 rounded-lg mb-8">
                 <p className="text-base font-medium text-center">
-                  <strong>Credit:</strong> Audit fee credited if you purchase a Pack within 30 days.
+                  <strong>Credit:</strong> Audit fee is credited if you purchase a Business Outcome or Business Impact within 30 days.
                 </p>
               </div>
 
@@ -111,8 +111,8 @@ const Audit = () => {
                   )}
                 </Button>
                 <Button variant="outline" asChild className="w-full" size="lg">
-                  <Link to="/outcome-packs">
-                    See Outcome Packs
+                  <Link to="/business-outcomes">
+                    See Business Outcomes
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -137,7 +137,7 @@ const Audit = () => {
               <div className="text-center">
                 <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
                 <h3 className="text-lg font-semibold mb-2">Roadmap</h3>
-                <p className="text-muted-foreground">Receive your prioritized plan and Pack recommendation</p>
+                <p className="text-muted-foreground">Receive your prioritized plan and Business Outcome recommendation</p>
               </div>
             </div>
           </div>

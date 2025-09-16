@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const navigationItems = [
   { label: 'Home', path: '/', tooltip: 'Start here — outcome-driven AI solutions for SMBs.' },
   { label: 'Business Audit', path: '/audit', tooltip: 'Quick diagnostic to find the fastest path to visible uplift.' },
-  { label: 'Business Outcomes', path: '/outcome-packs', tooltip: 'Packaged solutions delivered in weeks — focused on revenue, speed, and cost.' },
+  { label: 'Business Outcomes', path: '/business-outcomes', tooltip: 'Packaged solutions delivered in weeks — focused on revenue, speed, and cost.' },
   { label: 'Business Impact', path: '/business-impact', tooltip: 'Rapid, precise applications delivering tangible business results.' },
   { label: 'About', path: '/about', tooltip: 'Learn about Teamsmiths and our mission to democratise world-class consulting.' },
   { label: 'Blog', path: '/blog', tooltip: 'Insights and updates from the Teamsmiths team.' },
@@ -176,7 +176,7 @@ export const Navigation = () => {
                   size="sm"
                   className="justify-start h-10"
                 >
-                  <Link to="/outcome-packs">Business Outcomes</Link>
+                  <Link to="/business-outcomes">Business Outcomes</Link>
                 </Button>
                 <Button
                   asChild
