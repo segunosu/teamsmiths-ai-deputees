@@ -4,7 +4,7 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 
 export const ScrollManager = () => {
   const location = useLocation();
-  const { trackScrollTarget } = useAnalytics();
+  const { trackEvent } = useAnalytics();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,7 +17,7 @@ export const ScrollManager = () => {
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
             // Track the scroll target hit
-            trackScrollTarget(hash, location.pathname);
+            trackEvent('scroll_target_hit', { id: hash, route: location.pathname });
           }
         }, 100);
       } else {
@@ -37,24 +37,24 @@ export const ScrollManager = () => {
     handleScroll();
 
     // Also listen for hash changes within the same page
-      const handleHashChange = () => {
-        const hash = window.location.hash.replace('#', '');
-        if (hash) {
-          const element = document.getElementById(hash);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Track the scroll target hit
-            trackScrollTarget(hash, location.pathname);
-          }
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Track the scroll target hit
+          trackEvent('scroll_target_hit', { id: hash, route: location.pathname });
         }
-      };
+      }
+    };
 
     window.addEventListener('hashchange', handleHashChange);
 
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, [location]);
+  }, [location, trackEvent]);
 
   return null;
 };
