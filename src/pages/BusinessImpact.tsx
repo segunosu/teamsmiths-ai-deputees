@@ -99,7 +99,7 @@ const BusinessImpact = () => {
                     <div className="mb-6">
                       {example.icon}
                     </div>
-                    <CardTitle className="text-2xl font-bold">{example.title}</CardTitle>
+                    <CardTitle className="text-3xl font-bold">{example.title}</CardTitle>
                     <div className="flex items-center gap-3 mt-3 mb-4">
                       <Badge variant="secondary" className="text-base font-bold">{example.price}</Badge>
                       <Badge variant="outline">{example.duration}</Badge>

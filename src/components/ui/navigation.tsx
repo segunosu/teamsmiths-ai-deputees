@@ -16,9 +16,9 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const navigationItems = [
   { label: 'Home', path: '/', tooltip: 'Start here — outcome-driven AI solutions for SMBs.' },
-  { label: 'Business Audit', path: '/audit', tooltip: 'Quick diagnostic to find the fastest path to visible uplift.' },
-  { label: 'Business Outcomes', path: '/business-outcomes', tooltip: 'Packaged solutions delivered in weeks — focused on revenue, speed, and cost.' },
-  { label: 'Business Impact', path: '/business-impact', tooltip: 'Rapid, precise applications delivering tangible business results.' },
+  { label: 'Audit', path: '/audit', tooltip: 'Quick diagnostic to find fastest uplift' },
+  { label: 'Outcomes', path: '/business-outcomes', tooltip: 'Packaged solutions delivering measurable results' },
+  { label: 'Impact', path: '/business-impact', tooltip: 'Scoped app builds that move your numbers' },
   { label: 'About', path: '/about', tooltip: 'Learn about Teamsmiths and our mission to democratise world-class consulting.' },
   { label: 'Blog', path: '/blog', tooltip: 'Insights and updates from the Teamsmiths team.' },
   { label: 'Contact', path: '/contact', tooltip: 'Get in touch with our team.' },
@@ -56,7 +56,7 @@ export const Navigation = () => {
   };
 
   return (
-    <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border sticky top-0 z-50">
+    <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border sticky top-0 z-50" role="navigation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -84,6 +84,7 @@ export const Navigation = () => {
                       : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                   }`}
                   title={item.tooltip}
+                  aria-current={isActive(item.path) ? 'page' : undefined}
                 >
                   {item.label}
                 </Link>
