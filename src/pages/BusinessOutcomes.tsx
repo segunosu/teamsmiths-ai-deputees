@@ -53,15 +53,15 @@ const BusinessOutcomes = () => {
   const compliancePacks = [
     {
       icon: <ShieldCheck className="h-12 w-12 text-accent" />,
-      title: "Interaction QA & Complaint Compliance Pack",
+      title: "Interaction QA & Complaints",
       price: "£2,500",
       duration: "3 weeks",
-      benefit: "Catch risks in 100% of calls/chats, reduce escalations, and prove compliance.",
+      benefit: "Review 100% of calls/chats; cut escalations; prove compliance.",
       bullets: [
-        "Auto-review of customer interactions against your scripts/policies; risk flags + evidence pack routed to the right owner.",
-        "Complaint handling workflow (clock, templates, audit trail) to meet internal SLAs."
+        "Auto-check against script/policy; risk flags + evidence pack to the owner",
+        "Complaint clock, templates, audit trail to hit SLA"
       ],
-      kpis: "% interactions reviewed • escalations/month • average complaint time-to-resolution",
+      kpis: "% reviewed • escalations/month • avg complaint resolution time",
       slug: "interaction_qa"
     },
     {
@@ -69,25 +69,25 @@ const BusinessOutcomes = () => {
       title: "DSAR Fast-Track (UK GDPR)",
       price: "£1,950",
       duration: "2 weeks",
-      benefit: "Never miss the 1-month DSAR deadline—cut manual hours and reduce risk.",
+      benefit: "Hit the 1-month DSAR deadline; cut manual hours.",
       bullets: [
-        "DSAR inbox + intake across email/web/phone; identity checks, timer, and template responses.",
-        "Redaction checklist + evidence log (who searched what, when) for ICO readiness."
+        "DSAR inbox & timer with ID checks + response templates",
+        "Redaction checklist + evidence log (ICO-ready)"
       ],
       kpis: "DSAR on-time rate • staff hours per DSAR • rework/appeals",
       slug: "dsar"
     },
     {
       icon: <MegaphoneOff className="h-12 w-12 text-accent" />,
-      title: "PECR/TPS Marketing Compliance Starter",
+      title: "PECR/TPS Marketing Compliance",
       price: "£1,950",
       duration: "2 weeks",
-      benefit: "Stop unlawful calls/messages; protect budget from ICO penalties.",
+      benefit: "Stop unlawful calls/messages; avoid ICO hassle and fines.",
       bullets: [
-        "Campaign \"pre-flight\" checks: TPS/CTPS screening, consent proofs, suppression list automation.",
-        "PECR policy kit (simple rules, scripts, preference capture) + audit log for every send/call."
+        "TPS/CTPS screening, consent proof, suppression automation",
+        "Simple scripts & preference capture + send/call audit log"
       ],
-      kpis: "TPS/CTPS hit-rate • complaints/month • compliant contacts %",
+      kpis: "TPS hit-rate • complaints/month • compliant contacts %",
       slug: "pecr"
     }
   ];
