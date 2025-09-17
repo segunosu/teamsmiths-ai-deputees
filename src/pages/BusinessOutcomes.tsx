@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FileCheck, BarChart3, CreditCard } from 'lucide-react';
+import { FileCheck, BarChart3, CreditCard, ShieldCheck, FileLock, MegaphoneOff } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { OfferingHero } from '@/components/ui/offering-hero';
@@ -47,6 +47,48 @@ const BusinessOutcomes = () => {
       ],
       kpis: "DSO • £ aged >30/60 days • response rate",
       slug: "cashflow_control"
+    }
+  ];
+
+  const compliancePacks = [
+    {
+      icon: <ShieldCheck className="h-12 w-12 text-accent" />,
+      title: "Interaction QA & Complaint Compliance Pack",
+      price: "£2,500",
+      duration: "3 weeks",
+      benefit: "Catch risks in 100% of calls/chats, reduce escalations, and prove compliance.",
+      bullets: [
+        "Auto-review of customer interactions against your scripts/policies; risk flags + evidence pack routed to the right owner.",
+        "Complaint handling workflow (clock, templates, audit trail) to meet internal SLAs."
+      ],
+      kpis: "% interactions reviewed • escalations/month • average complaint time-to-resolution",
+      slug: "interaction_qa"
+    },
+    {
+      icon: <FileLock className="h-12 w-12 text-accent" />,
+      title: "DSAR Fast-Track (UK GDPR)",
+      price: "£1,950",
+      duration: "2 weeks",
+      benefit: "Never miss the 1-month DSAR deadline—cut manual hours and reduce risk.",
+      bullets: [
+        "DSAR inbox + intake across email/web/phone; identity checks, timer, and template responses.",
+        "Redaction checklist + evidence log (who searched what, when) for ICO readiness."
+      ],
+      kpis: "DSAR on-time rate • staff hours per DSAR • rework/appeals",
+      slug: "dsar"
+    },
+    {
+      icon: <MegaphoneOff className="h-12 w-12 text-accent" />,
+      title: "PECR/TPS Marketing Compliance Starter",
+      price: "£1,950",
+      duration: "2 weeks",
+      benefit: "Stop unlawful calls/messages; protect budget from ICO penalties.",
+      bullets: [
+        "Campaign \"pre-flight\" checks: TPS/CTPS screening, consent proofs, suppression list automation.",
+        "PECR policy kit (simple rules, scripts, preference capture) + audit log for every send/call."
+      ],
+      kpis: "TPS/CTPS hit-rate • complaints/month • compliant contacts %",
+      slug: "pecr"
     }
   ];
 
@@ -112,12 +154,12 @@ const BusinessOutcomes = () => {
                   ctas={{
                     primary: {
                       label: "Book this Pack",
-                      sku: `proof_${pack.slug}_${pack.price.replace('£', '').replace(',', '')}`,
+                      sku: `outcome_${pack.slug}_${pack.price.replace('£', '').replace(',', '')}`,
                       onClick: () => handleCheckout(pack.title)
                     },
                     secondary: {
                       label: "Customise this Brief",
-                      link: `/brief-builder?origin=outcomes&ref=${pack.slug}#form`
+                      link: `/brief?origin=outcomes&ref=${pack.slug}#form`
                     },
                     tertiary: {
                       label: "Start an Audit",
@@ -126,6 +168,40 @@ const BusinessOutcomes = () => {
                   }}
                 />
               ))}
+            </div>
+
+            {/* Compliance Outcomes */}
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-center mb-12">Compliance Outcomes</h2>
+              <div className="grid lg:grid-cols-3 gap-8">
+                {compliancePacks.map((pack, index) => (
+                  <OfferingCard
+                    key={`compliance-${index}`}
+                    variant="outcome"
+                    title={pack.title}
+                    price={pack.price}
+                    duration={pack.duration}
+                    benefit={pack.benefit}
+                    bullets={pack.bullets}
+                    kpis={pack.kpis}
+                    icon={pack.icon}
+                    ctas={{
+                      primary: {
+                        label: "Book this Pack",
+                        sku: `outcome_${pack.slug}_${pack.price.replace('£', '').replace(',', '')}`
+                      },
+                      secondary: {
+                        label: "Customise this Brief",
+                        link: `/brief?origin=outcomes&ref=${pack.slug}#form`
+                      },
+                      tertiary: {
+                        label: "Start an Audit",
+                        link: `/audit?origin=outcomes&ref=${pack.slug}#start`
+                      }
+                    }}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Bottom bands */}
