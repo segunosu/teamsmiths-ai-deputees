@@ -179,7 +179,7 @@ const Home = () => {
                 Revenue Up. Waste Down.
               </h1>
               <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
-                More revenue. Lower costs. The speed of AI with Human Oversight.
+                Fast growth. Lower costs. The speed of AI with Human Oversight.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
