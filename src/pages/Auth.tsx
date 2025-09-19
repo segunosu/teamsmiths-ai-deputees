@@ -72,7 +72,7 @@ const Auth = () => {
           <CardDescription className="text-center">
             {redirectReason === 'shortlist' && expertName 
               ? `Sign in to add ${expertName} to your shortlist and get matched with similar experts`
-              : 'Sign in to your client account or create one to hire expert freelancers'
+              : 'Sign in to your client account or create one to get started'
             }
           </CardDescription>
         </CardHeader>
