@@ -72,7 +72,7 @@ const Auth = () => {
           <CardDescription className="text-center">
             {redirectReason === 'shortlist' && expertName 
               ? `Sign in to add ${expertName} to your shortlist and get matched with similar experts`
-              : 'Sign in to your account or create one to get started'
+              : 'Sign in to your client account or create one to get started'
             }
           </CardDescription>
         </CardHeader>
@@ -197,9 +197,9 @@ const Auth = () => {
           </Button>
           
           <div className="mt-4 text-center text-sm text-muted-foreground">
-            Need a different account type?{' '}
+            Are you an expert associate?{' '}
             <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/freelancer-auth')}>
-              Switch here
+              Sign up here
             </Button>
           </div>
         </CardContent>

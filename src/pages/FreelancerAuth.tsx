@@ -138,7 +138,7 @@ const FreelancerAuth = () => {
             Welcome to Teamsmiths
           </CardTitle>
           <CardDescription className="text-center">
-            Sign in to your account or create a new one to get started
+            Sign in to your expert associate account or create one to get started
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -262,9 +262,9 @@ const FreelancerAuth = () => {
           </Button>
           
           <div className="mt-4 text-center text-sm text-muted-foreground">
-            Need a different account type?{' '}
+            Are you a client?{' '}
             <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/auth')}>
-              Switch here
+              Sign up here
             </Button>
           </div>
         </CardContent>
