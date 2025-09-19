@@ -67,12 +67,12 @@ const Auth = () => {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
-            {redirectReason === 'shortlist' ? 'Sign in to Save Expert' : 'Welcome to Teamsmiths - Clients'}
+            {redirectReason === 'shortlist' ? 'Sign in to Save Expert' : 'Welcome to Teamsmiths'}
           </CardTitle>
           <CardDescription className="text-center">
             {redirectReason === 'shortlist' && expertName 
               ? `Sign in to add ${expertName} to your shortlist and get matched with similar experts`
-              : 'Sign in to your client account or create one to get started'
+              : 'Sign in to your account or create one to get started'
             }
           </CardDescription>
         </CardHeader>
@@ -197,9 +197,9 @@ const Auth = () => {
           </Button>
           
           <div className="mt-4 text-center text-sm text-muted-foreground">
-            Are you a freelancer?{' '}
+            Need a different account type?{' '}
             <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/freelancer-auth')}>
-              Sign up here
+              Switch here
             </Button>
           </div>
         </CardContent>

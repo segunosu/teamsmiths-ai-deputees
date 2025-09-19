@@ -135,10 +135,10 @@ const FreelancerAuth = () => {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
-            Join as a Freelancer
+            Welcome to Teamsmiths
           </CardTitle>
           <CardDescription className="text-center">
-            Sign in to your freelancer account or create a new one to start receiving project invitations
+            Sign in to your account or create a new one to get started
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -176,7 +176,7 @@ const FreelancerAuth = () => {
                 disabled={loading || !email || !password}
               >
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Sign In as Freelancer
+                Sign In
               </Button>
             </TabsContent>
             
@@ -219,7 +219,7 @@ const FreelancerAuth = () => {
                 disabled={loading || !email || !password}
               >
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Create Freelancer Account
+                Create Account
               </Button>
             </TabsContent>
           </Tabs>
@@ -262,9 +262,9 @@ const FreelancerAuth = () => {
           </Button>
           
           <div className="mt-4 text-center text-sm text-muted-foreground">
-            Looking to hire experts?{' '}
+            Need a different account type?{' '}
             <Button variant="link" className="p-0 h-auto text-sm" onClick={() => navigate('/auth')}>
-              Sign up as a client
+              Switch here
             </Button>
           </div>
         </CardContent>
