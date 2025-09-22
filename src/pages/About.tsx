@@ -198,6 +198,45 @@ const About = () => {
             </div>
           </section>
 
+          {/* Our Model: PPP */}
+          <section id="ppp-model" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+            <div className="max-w-4xl mx-auto text-center">
+              <div onLoad={() => handleSectionView('ppp-model')}>
+                <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-8">
+                  Our Model: PPP
+                </h2>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-8 mb-12">
+                <div className="text-center">
+                  <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit mx-auto">
+                    <Target className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">Primed</h3>
+                  <p className="text-muted-foreground">Purpose confirmed, prowess focused, potential unlocked.</p>
+                </div>
+                <div className="text-center">
+                  <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit mx-auto">
+                    <Award className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">Principled</h3>
+                  <p className="text-muted-foreground">Values that steer with both guardrails and flexibility.</p>
+                </div>
+                <div className="text-center">
+                  <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit mx-auto">
+                    <TrendingUp className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">Practised</h3>
+                  <p className="text-muted-foreground">Intent refined into consistent execution and improvement.</p>
+                </div>
+              </div>
+
+              <p className="text-lg text-muted-foreground italic">
+                PPP is the compass behind every outcome we deliver.
+              </p>
+            </div>
+          </section>
+
           {/* Our Approach */}
           <section id="approach" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
             <div className="max-w-4xl mx-auto text-center">
