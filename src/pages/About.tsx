@@ -198,16 +198,16 @@ const About = () => {
             </div>
           </section>
 
-          {/* Our Model: PPP */}
+          {/* Our Model: PPP+P */}
           <section id="ppp-model" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
             <div className="max-w-4xl mx-auto text-center">
               <div onLoad={() => handleSectionView('ppp-model')}>
                 <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-8">
-                  Our Model: PPP
+                  Our Model: PPP+P
                 </h2>
               </div>
               
-              <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 <div className="text-center">
                   <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit mx-auto">
                     <Target className="h-8 w-8 text-primary" />
@@ -220,7 +220,7 @@ const About = () => {
                     <Award className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3">Principled</h3>
-                  <p className="text-muted-foreground">Values that steer with both guardrails and flexibility.</p>
+                  <p className="text-muted-foreground">Values that steer decisions with clarity, guardrails and flexibility.</p>
                 </div>
                 <div className="text-center">
                   <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit mx-auto">
@@ -229,10 +229,17 @@ const About = () => {
                   <h3 className="text-xl font-semibold mb-3">Practised</h3>
                   <p className="text-muted-foreground">Intent refined into consistent execution and improvement.</p>
                 </div>
+                <div className="text-center">
+                  <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit mx-auto">
+                    <BarChart3 className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">Protected</h3>
+                  <p className="text-muted-foreground">Knowledge, identity and well-being safeguarded for the long run.</p>
+                </div>
               </div>
 
               <p className="text-lg text-muted-foreground italic">
-                PPP is the compass behind every outcome we deliver.
+                This is our compass, giving clients confidence that results are clear, consistent and sustainable.
               </p>
             </div>
           </section>
