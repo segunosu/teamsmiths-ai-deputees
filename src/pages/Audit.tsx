@@ -61,9 +61,7 @@ const Audit = () => {
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
               Business Audit
             </h1>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-              <span className="text-3xl font-bold text-primary">£950</span>
-              <span className="text-xl text-muted-foreground">•</span>
+            <div className="flex items-center justify-center mb-8">
               <span className="text-xl font-semibold">5 business days</span>
             </div>
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium max-w-2xl mx-auto leading-relaxed">
@@ -94,7 +92,7 @@ const Audit = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col gap-4">
                 <Button 
                   className="w-full" 
                   size="lg" 
@@ -110,6 +108,16 @@ const Audit = () => {
                     'Start Audit'
                   )}
                 </Button>
+                <p className="text-sm text-muted-foreground text-center">
+                  Included in{' '}
+                  <Button asChild variant="link" className="p-0 h-auto text-sm underline">
+                    <Link to="/pricing">Business plans</Link>
+                  </Button>
+                  {' '}• Or get a{' '}
+                  <Button asChild variant="link" className="p-0 h-auto text-sm underline">
+                    <Link to="/brief?mode=quote&origin=audit&ref=business_audit#form">fixed price in 24h</Link>
+                  </Button>
+                </p>
                 <Button variant="outline" asChild className="w-full" size="lg">
                   <Link to="/business-outcomes#offers">
                     See Business Outcomes
