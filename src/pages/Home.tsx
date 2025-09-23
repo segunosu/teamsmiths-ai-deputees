@@ -40,7 +40,7 @@ const Home = () => {
     {
       icon: <Target className="h-8 w-8 text-primary" />,
       title: "Outcomes",
-      description: "Ready-solutions to known challenges, customised to your business, delivered in weeks.",
+      description: "Ready-solutions to challenges, customised to your business, delivered in weeks.",
       link: "/business-outcomes"
     },
     {
