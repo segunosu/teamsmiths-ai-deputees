@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle, TrendingUp, Clock, DollarSign, Calendar, Users, HelpCircle } from 'lucide-react';
+import { CheckCircle, TrendingUp, Clock, DollarSign, Users, HelpCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
@@ -36,7 +36,19 @@ const Start = () => {
     preferredTime: '',
     notes: ''
   });
+  const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  useEffect(() => {
+    trackEvent('start_page_view' as any, {} as any);
+    // Focus first option in Step 1
+    if (currentStep === 1) {
+      const firstOption = document.querySelector('input[name="focus"]');
+      if (firstOption) {
+        (firstOption as HTMLElement).focus();
+      }
+    }
+  }, [trackEvent, currentStep]);
 
   const progress = (currentStep / 3) * 100;
 
@@ -131,19 +143,8 @@ const Start = () => {
         engage: formData.engage
       } as any);
 
-      // Navigate to brief builder with prefilled data
-      const params = new URLSearchParams({
-        origin: 'start',
-        focus: formData.focus,
-        engage: formData.engage,
-        email: formData.email,
-        name: formData.name,
-        company: formData.company,
-        preferredTime: formData.preferredTime,
-        notes: formData.notes
-      });
-      
-      navigate(`/brief-builder?${params.toString()}#form`);
+      // Show success state instead of navigating
+      setSubmitted(true);
       
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -152,6 +153,32 @@ const Start = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <div className="mb-6">
+            <CheckCircle className="h-16 w-16 text-success mx-auto mb-4" />
+            <h2 className="text-2xl font-bold mb-2">Thanks!</h2>
+            <p className="text-muted-foreground mb-6">
+              We'll be in touch within 24 hours to get started.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button asChild size="lg">
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                  Book a call
+                </a>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link to="/">Return to site</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -337,23 +364,6 @@ const Start = () => {
                   </Button>
                 )}
               </div>
-
-              {/* Success state with calendar link - shown after form submission */}
-              {currentStep === 4 && (
-                <div className="text-center space-y-4">
-                  <CheckCircle className="h-12 w-12 text-success mx-auto" />
-                  <h3 className="text-xl font-semibold">Thank you!</h3>
-                  <p className="text-muted-foreground">
-                    We've received your details and you'll be redirected to create your brief.
-                  </p>
-                  <Button asChild>
-                    <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Or book a call instead
-                    </a>
-                  </Button>
-                </div>
-              )}
             </CardContent>
           </Card>
         </div>

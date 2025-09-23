@@ -22,44 +22,47 @@ const Pricing = () => {
   const plans = [
     {
       name: 'Professional',
-      price: '£175',
+      price: '£495',
       period: '/mo',
       description: 'Perfect for getting started',
       features: [
-        '1 Rapid Audit or Quick Outcome each month',
-        '1-month rollover',
-        'Email support'
+        '1 Rapid Audit or 1 Quick Outcome / month',
+        '1 KPI tracked',
+        'Email support',
+        '1-month rollover'
       ],
       icon: <Users className="h-6 w-6" />,
-      stripeId: 'sub_faio_175',
+      stripeId: 'sub_pro_495',
       popular: false
     },
     {
       name: 'Business',
-      price: '£495',
+      price: '£895',
       period: '/mo',
       description: 'Our most popular plan',
       features: [
         'Mini Audit each quarter',
-        '1 Quick Outcome/month', 
-        'Priority start + KPI summary'
+        '1 Quick Outcome / month',
+        'KPI dashboard + monthly 20-min review',
+        'Priority start (≤7 business days)'
       ],
       icon: <Target className="h-6 w-6" />,
-      stripeId: 'sub_faio_495',
+      stripeId: 'sub_bus_895',
       popular: true
     },
     {
       name: 'Business Plus',
-      price: '£795',
+      price: '£1,495',
       period: '/mo',
       description: 'For teams that need more',
       features: [
         'Full Audit included (annual)',
-        '2 live Outcomes at a time + quarterly micro-Impact',
+        '2 live Outcomes at a time',
+        'Quarterly micro-Impact',
         'Monthly advisory call'
       ],
       icon: <Crown className="h-6 w-6" />,
-      stripeId: 'sub_faio_795',
+      stripeId: 'sub_bus_plus_1495',
       popular: false
     }
   ];
@@ -82,6 +85,18 @@ const Pricing = () => {
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 leading-relaxed">
               Start small with a Rapid Audit or a Quick Outcome each month. Upgrade to bigger work anytime.
+            </p>
+          </div>
+        </section>
+
+        {/* Pricing ribbon */}
+        <section className="py-4 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-sm text-muted-foreground">
+              Most one-off Outcomes £1.9k–£2.5k · Impact builds from £3.5k · Audits £750. Prefer projects?{' '}
+              <Button asChild variant="link" className="p-0 h-auto text-sm">
+                <Link to="/brief?mode=quote#form">Get a fixed price in 24h</Link>
+              </Button>
             </p>
           </div>
         </section>
@@ -149,7 +164,7 @@ const Pricing = () => {
             {/* Additional info */}
             <div className="text-center mt-16 max-w-3xl mx-auto">
               <p className="text-muted-foreground mb-6">
-                • Prefer a one-off project? Most Outcomes £1.9k–£2.5k; Impact builds from £3.5k.
+                Subscription fees count as credit toward a Business Outcome within 90 days.
               </p>
               <Button asChild variant="outline">
                 <Link to="/brief-builder?mode=quote#form">

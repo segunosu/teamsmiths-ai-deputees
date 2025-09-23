@@ -15,6 +15,10 @@ export interface AnalyticsEvents {
   'plan_select': { plan: string };
   'brief_start': { mode?: string; origin?: string; ref?: string };
   
+  // Quote events
+  'quote_sent': { slug: string };
+  'quote_accepted': { slug: string };
+  
   // Start funnel events
   'start_step_complete': { step: number; choice: string };
   'start_submit': { origin: string; focus: string; engage: string };
