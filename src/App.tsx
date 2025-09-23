@@ -53,6 +53,7 @@ import Compliance from "./pages/Compliance";
 import NotFound from "./pages/NotFound";
 import Blog from "./pages/Blog";
 import BusinessImpact from "./pages/BusinessImpact";
+import Start from "./pages/Start";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
@@ -75,6 +76,7 @@ const App = () => (
               <main id="main-content" className="flex-1" tabIndex={-1}>
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/start" element={<Start />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/plans" element={
                     <React.Suspense fallback={<div>Loading...</div>}>

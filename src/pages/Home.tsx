@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Target, BarChart3, Zap, Shield, FileCheck, CreditCard, MessageSquare, Workflow, Globe, TrendingUp, Clock, Users } from 'lucide-react';
-import { OfferingHero } from '@/components/ui/offering-hero';
-import { OfferingCard } from '@/components/ui/offering-card';
+import { CheckCircle, ArrowRight, Target, BarChart3, Zap, Shield, FileCheck, CreditCard, MessageSquare, Workflow, Globe, TrendingUp, Clock, Users, Search, ArrowUp, DollarSign, Calendar, Mail, AlertCircle } from 'lucide-react';
 import { StickyMobileBar } from '@/components/ui/sticky-mobile-bar';
 import { AIDeputee } from '@/components/AIDeputee';
 import { useAnalytics } from '@/hooks/useAnalytics';
@@ -17,153 +15,89 @@ const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     // Track page view
-    trackEvent('offers_view', { page: 'home' });
+    trackEvent('outcomes_page_view' as any, { page: 'home' } as any);
   }, [trackEvent]);
 
-  const features = [
-    {
-      icon: <Target className="h-8 w-8 text-primary" />,
-      title: "Pick the KPI",
-      description: "Choose what matters most: revenue, speed, or cost reduction."
-    },
-    {
-      icon: <Zap className="h-8 w-8 text-primary" />,
-      title: "Deploy in weeks",
-      description: "AI Deputee™ + human oversight deliver fast, reliable results."
-    },
-    {
-      icon: <BarChart3 className="h-8 w-8 text-primary" />,
-      title: "Report uplift",
-      description: "Measure improvement and keep compounding."
-    }
-  ];
-
-  const pillarTiles = [
-    {
-      icon: <TrendingUp className="h-12 w-12 text-accent" />,
-      title: "Audit",
-      description: "A quick diagnostic to find the fastest path to visible uplift.",
-      primaryCTA: { label: "Start Audit", link: "/audit#start" },
-      secondaryCTA: { label: "Learn more", link: "/audit#start" }
-    },
-    {
-      icon: <Target className="h-12 w-12 text-accent" />,
-      title: "Outcomes",
-      description: "Packaged, rapid solutions with clear KPIs and fixed fees.",
-      primaryCTA: { label: "See Business Outcomes", link: "/business-outcomes#offers" },
-      secondaryCTA: { label: "Start a Brief", link: "/brief-builder?origin=outcomes#form" }
-    },
-    {
-      icon: <Zap className="h-12 w-12 text-accent" />,
-      title: "Impact",
-      description: "Scoped application builds that move your numbers — fast.",
-      primaryCTA: { label: "See Impact", link: "/business-impact#examples" },
-      secondaryCTA: { label: "Start a Brief", link: "/brief-builder?origin=impact#form" }
-    }
-  ];
-
-  // Outcomes data
-  const outcomePacks = [
-    {
-      icon: <FileCheck className="h-12 w-12 text-accent" />,
-      title: "Proposal Velocity Pack",
-      price: "£1,950",
-      duration: "2 weeks",
-      benefit: "More proposals, faster.",
-      bullets: [
-        "Two follow-up cadences included"
-      ],
-      kpis: "proposals/week • time-to-proposal • open rate",
-      slug: "proposal_velocity"
-    },
-    {
-      icon: <BarChart3 className="h-12 w-12 text-accent" />,
-      title: "Sales Uplift Pack", 
-      price: "£1,950",
-      duration: "2 weeks",
-      benefit: "Quotes out faster; more wins.",
-      bullets: [
-        "Simple pipeline tracker"
-      ],
-      kpis: "quotes/week • time-to-quote • conversion to job",
-      slug: "sales_uplift"
-    },
-    {
-      icon: <CreditCard className="h-12 w-12 text-accent" />,
-      title: "Cashflow Control Pack",
-      price: "£2,500", 
-      duration: "3 weeks",
-      benefit: "DSO down; cash in sooner.",
-      bullets: [
-        "Owner weekly cash digest"
-      ],
-      kpis: "DSO • £ aged >30/60 days • response rate",
-      slug: "cashflow_control"
-    }
-  ];
-
-  // Impact data
-  const impactExamples = [
-    {
-      icon: <MessageSquare className="h-12 w-12 text-accent" />,
-      title: 'Customer FAQ Assistant',
-      duration: '10 business days',
-      price: '£3,500',
-      benefit: 'Fewer support emails; faster answers.',
-      bullets: [
-        'Web widget + CRM/email handoff',
-        'Basic analytics dashboard'
-      ],
-      slug: 'faq_assistant'
-    },
-    {
-      icon: <Workflow className="h-12 w-12 text-accent" />,
-      title: 'Internal Ops Micro-Workflow',
-      duration: '2 weeks',
-      price: '£6,000',
-      benefit: 'Less manual work; faster turnaround.',
-      bullets: [
-        'Intake → sheet → notifications',
-        'Access controls + runbook'
-      ],
-      slug: 'micro_workflow'
-    },
-    {
-      icon: <Globe className="h-12 w-12 text-accent" />,
-      title: 'Customer Portal MVP',
-      duration: '4–6 weeks',
-      price: '£12k–£18k',
-      benefit: 'Better self-serve; fewer back-and-forths.',
-      bullets: [
-        'Login, submissions, status, notifications',
-        'Private repo + handover'
-      ],
-      slug: 'customer_portal'
-    }
-  ];
-
   const handleHeroCTA = (label: string) => {
-    trackEvent('hero_cta_click', { label });
+    trackEvent('home_cta_click' as any, { label } as any);
   };
 
-  const handlePillarCTA = (pillar: string, cta: string) => {
-    trackEvent('pillars_cta_click', { pillar, cta });
-  };
-
-  const handleCardCTA = (section: string, slug: string, cta: string) => {
-    trackEvent('card_cta_click', { section, slug, cta });
+  const handleQuickOutcomeClick = (slug: string) => {
+    trackEvent('quick_outcome_click' as any, { slug } as any);
   };
 
   const handleResultsTileView = (segment: string) => {
-    trackEvent('results_tile_view', { segment });
+    trackEvent('results_tile_view' as any, { segment } as any);
+  };
+
+  const whatWeDoTiles = [
+    {
+      icon: <Search className="h-8 w-8 text-primary" />,
+      title: "Audit",
+      description: "A quick diagnostic to find the fastest path to results.",
+      link: "/audit"
+    },
+    {
+      icon: <Target className="h-8 w-8 text-primary" />,
+      title: "Outcomes",
+      description: "Packaged solutions delivered in weeks.",
+      link: "/business-outcomes"
+    },
+    {
+      icon: <Zap className="h-8 w-8 text-primary" />,
+      title: "Impact",
+      description: "Scoped app builds that move your numbers.",
+      link: "/business-impact"
+    }
+  ];
+
+  const quickOutcomes = [
+    {
+      title: "Proposal speed-up",
+      benefit: "Send more proposals, faster.",
+      slug: "proposal_speedup"
+    },
+    {
+      title: "Quote booster",
+      benefit: "Faster quotes; higher win rate.",
+      slug: "quote_booster"
+    },
+    {
+      title: "Cashflow nudges",
+      benefit: "Reduce DSO with polite reminders.",
+      slug: "cashflow_nudges"
+    },
+    {
+      title: "DSAR intake (lite)",
+      benefit: "One-month clock, ID checks, templates.",
+      slug: "dsar_intake"
+    },
+    {
+      title: "PECR pre-flight",
+      benefit: "TPS/CTPS screening + consent proof.",
+      slug: "pecr_preflight"
+    },
+    {
+      title: "Team follow-ups",
+      benefit: "Automated follow-up cadence that sticks.",
+      slug: "team_followups"
+    }
+  ];
+
+  // Scroll to section function
+  const scrollToSection = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <>
       <Helmet>
-        <title>Revenue Up. Waste Down. | Teamsmiths</title>
-        <meta name="description" content="More revenue. Lower costs. The speed of AI with human oversight. Business Audit, Outcomes, and Impact solutions." />
-        <meta name="keywords" content="AI team, business growth, revenue, cost reduction, business audit, outcomes, impact" />
+        <title>Grow revenue, speed up delivery, cut costs — in weeks | Teamsmiths</title>
+        <meta name="description" content="We deliver Business Outcomes and Impact builds that move one KPI at a time, with AI Deputee™ and human QA." />
+        <meta name="keywords" content="business outcomes, revenue growth, delivery speed, cost reduction, AI, human QA" />
       </Helmet>
 
       <div className="min-h-screen">
@@ -176,160 +110,153 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
-                Revenue Up. Waste Down.
+                Grow revenue, speed up delivery, cut costs — in weeks.
               </h1>
               <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
-                Fast growth. Lower costs. The speed of AI with Human Oversight.
+                We deliver Business Outcomes and Impact builds that move one KPI at a time, with <AIDeputee /> and human QA.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
                 <Button 
-                  asChild 
                   size="lg" 
                   className="text-lg px-10 py-6 h-auto"
-                  onClick={() => handleHeroCTA('Book a Call')}
+                  onClick={() => {
+                    handleHeroCTA('See how we help');
+                    scrollToSection('how');
+                  }}
                 >
-                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book a Call</a>
+                  See how we help
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button 
                   asChild 
                   variant="outline" 
                   size="lg" 
                   className="text-lg px-10 py-6 h-auto"
-                  onClick={() => handleHeroCTA('See Business Outcomes')}
+                  onClick={() => handleHeroCTA('Start now')}
                 >
-                  <Link to="/business-outcomes#offers">See Business Outcomes</Link>
+                  <Link to="/start">Start now</Link>
                 </Button>
-                <Button 
-                  asChild 
-                  variant="outline" 
-                  size="lg" 
-                  className="text-lg px-10 py-6 h-auto"
-                  onClick={() => handleHeroCTA('See Impact')}
-                >
-                  <Link to="/business-impact#examples">See Impact</Link>
-                </Button>
-              </div>
-
-              {/* Price anchor */}
-              <p className="text-sm text-muted-foreground mb-10">
-                Outcomes from £1,950. Builds from £3,500. +5% uplift participation (eligible).
-              </p>
-
-              {/* Separator line */}
-              <div className="w-full max-w-4xl mx-auto mb-8">
-                <hr className="border-t border-border" />
-              </div>
-
-              {/* Benefits Strip */}
-              <div className="mb-10">
-                <div className="grid grid-cols-2 md:flex md:justify-between gap-4 md:gap-6 text-sm font-semibold text-foreground max-w-4xl mx-auto">
-                  <div className="flex items-center gap-2 justify-center md:justify-start">
-                    <Target className="h-4 w-4 text-primary" />
-                    <span>Precision-matched expertise</span>
-                  </div>
-                  <div className="flex items-center gap-2 justify-center md:justify-start">
-                    <BarChart3 className="h-4 w-4 text-primary" />
-                    <span>Measured uplift</span>
-                  </div>
-                  <div className="flex items-center gap-2 justify-center md:justify-start">
-                    <Zap className="h-4 w-4 text-primary" />
-                    <span>Faster outcomes</span>
-                  </div>
-                  <div className="flex items-center gap-2 justify-center md:justify-start">
-                    <Shield className="h-4 w-4 text-primary" />
-                    <span><AIDeputee /> Assurance</span>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* How It Works */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8">
+        {/* SECTION 1 — WHAT WE DO */}
+        <section id="what" className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                How it works
+                What we do
               </h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Outcomes you can trust — faster, safer, smarter.
-              </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-10 mb-16">
-              {features.map((feature, index) => (
+            <div className="grid md:grid-cols-3 gap-10">
+              {whatWeDoTiles.map((tile, index) => (
                 <Card key={index} className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
                   <CardHeader className="pb-6">
                     <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                      {feature.icon}
+                      {tile.icon}
                     </div>
-                    <CardTitle className="text-2xl font-semibold">{feature.title}</CardTitle>
+                    <CardTitle className="text-2xl font-semibold">{tile.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-lg leading-relaxed">
-                      {feature.description}
+                    <CardDescription className="text-lg leading-relaxed mb-4">
+                      {tile.description}
                     </CardDescription>
+                    <Button asChild className="w-full">
+                      <Link to={tile.link}>{tile.title}</Link>
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
-
-            {/* CTA row after How it works */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild variant="outline">
-                <Link to="/business-outcomes#offers">Explore Outcomes</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to="/business-impact#examples">Explore Impact</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to="/audit#start">Start an Audit</Link>
-              </Button>
-            </div>
           </div>
         </section>
 
-        {/* Our Three Pillars */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        {/* SECTION 2 — HOW WE OFFER IT */}
+        <section id="how" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                Choose your path
+                How we offer it
               </h2>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-10">
-              {pillarTiles.map((tile, index) => (
-                <Card key={index} className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80">
-                  <CardHeader className="pb-6">
-                    <div className="mb-6">
-                      {tile.icon}
-                    </div>
-                    <CardTitle className="text-3xl font-bold">{tile.title}</CardTitle>
-                    <CardDescription className="text-lg font-medium text-muted-foreground mt-4">
-                      {tile.description}
-                    </CardDescription>
+            <div className="grid lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
+              {/* Card A — Subscriptions */}
+              <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80">
+                <CardHeader className="text-center pb-6">
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <CardTitle className="text-2xl font-bold">Subscriptions</CardTitle>
+                    <Badge variant="secondary" className="text-xs">Recommended</Badge>
+                  </div>
+                  <CardDescription className="text-lg">
+                    Done-for-you each month. Pick one Quick Outcome or a Rapid Audit; upgrade to bigger work anytime.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button asChild className="w-full">
+                    <Link to="/pricing">See plans</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/start">Start now</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Card B — One-off projects */}
+              <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80">
+                <CardHeader className="text-center pb-6">
+                  <CardTitle className="text-2xl font-bold">One-off projects</CardTitle>
+                  <CardDescription className="text-lg">
+                    Fixed scope, fixed price in 24h. Ideal if you prefer a single Outcome or Impact build.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button asChild className="w-full">
+                    <Link to="/brief-builder?mode=quote#form">Get a fixed price</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/business-outcomes#offers">Explore Outcomes</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 3 — WHAT YOU GET THIS MONTH */}
+        <section id="menu" className="py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-20">
+              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
+                What you get this month
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                Examples of Quick Outcomes we can deliver inside your plan
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {quickOutcomes.map((outcome, index) => (
+                <Card key={index} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-semibold">{outcome.title}</CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="flex flex-col gap-3">
-                      <Button 
-                        asChild 
-                        className="w-full"
-                        onClick={() => handlePillarCTA(tile.title.toLowerCase(), 'primary')}
-                      >
-                        <Link to={tile.primaryCTA.link}>{tile.primaryCTA.label}</Link>
-                      </Button>
-                      <Button 
-                        asChild 
-                        variant="outline" 
-                        className="w-full"
-                        onClick={() => handlePillarCTA(tile.title.toLowerCase(), 'secondary')}
-                      >
-                        <Link to={tile.secondaryCTA.link}>{tile.secondaryCTA.label}</Link>
-                      </Button>
-                    </div>
+                  <CardContent>
+                    <CardDescription className="text-base mb-4">
+                      {outcome.benefit}
+                    </CardDescription>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => handleQuickOutcomeClick(outcome.slug)}
+                    >
+                      <Link to={`/start?ref=${outcome.slug}`}>Start now</Link>
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
@@ -337,8 +264,8 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Results in Numbers */}
-        <section id="results" className="py-24 px-4 sm:px-6 lg:px-8">
+        {/* SECTION 4 — RESULTS IN NUMBERS */}
+        <section id="results" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
@@ -348,7 +275,7 @@ const Home = () => {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               <Card 
-                className="text-center shadow-sm border-0 bg-card/80" 
+                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all" 
                 onClick={() => handleResultsTileView('agency_uk')}
               >
                 <CardHeader className="pb-4">
@@ -366,7 +293,7 @@ const Home = () => {
               </Card>
 
               <Card 
-                className="text-center shadow-sm border-0 bg-card/80"
+                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
                 onClick={() => handleResultsTileView('trades_uk')}
               >
                 <CardHeader className="pb-4">
@@ -384,7 +311,7 @@ const Home = () => {
               </Card>
 
               <Card 
-                className="text-center shadow-sm border-0 bg-card/80"
+                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
                 onClick={() => handleResultsTileView('pro_services_eu')}
               >
                 <CardHeader className="pb-4">
@@ -402,7 +329,7 @@ const Home = () => {
               </Card>
 
               <Card 
-                className="text-center shadow-sm border-0 bg-card/80"
+                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
                 onClick={() => handleResultsTileView('sme_ops_multi')}
               >
                 <CardHeader className="pb-4">
@@ -423,130 +350,32 @@ const Home = () => {
                 Metrics are anonymised, aggregated across engagements. Full details under NDA.
               </p>
             </div>
-
-            {/* CTA row under results */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild>
-                <Link to="/business-outcomes">See Business Outcomes</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to="/business-impact">See Impact</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link to="/audit">Start Audit</Link>
-              </Button>
-            </div>
           </div>
         </section>
 
-        {/* Featured Outcomes */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                Featured Outcomes
-              </h2>
-            </div>
-            
-            <div className="grid lg:grid-cols-3 gap-8 mb-16">
-              {outcomePacks.map((pack, index) => (
-                <OfferingCard
-                  key={index}
-                  variant="outcome"
-                  title={pack.title}
-                  price={pack.price}
-                  duration={pack.duration}
-                  benefit={pack.benefit}
-                  bullets={pack.bullets}
-                  kpis={pack.kpis}
-                  icon={pack.icon}
-                  ctas={{
-                    primary: {
-                      label: "Book this Pack",
-                      sku: `proof_${pack.slug}_${pack.price.replace('£', '').replace(',', '')}`,
-                      onClick: () => handleCardCTA('outcomes', pack.slug, 'book')
-                    },
-                    secondary: {
-                      label: "Customise this Brief",
-                      link: `/brief-builder?origin=outcomes&ref=${pack.slug}#form`
-                    },
-                    tertiary: {
-                      label: "Start an Audit",
-                      link: `/audit?origin=outcomes&ref=${pack.slug}#start`
-                    }
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Impact Builds */}
+        {/* SECTION 5 — READY BAND (FINAL CTA) */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                Featured Impact Builds
-              </h2>
-            </div>
-            
-            <div className="grid lg:grid-cols-3 gap-8 mb-16">
-              {impactExamples.map((example, index) => (
-                <OfferingCard
-                  key={index}
-                  variant="impact"
-                  title={example.title}
-                  price={example.price}
-                  duration={example.duration}
-                  benefit={example.benefit}
-                  bullets={example.bullets}
-                  icon={example.icon}
-                  ctas={{
-                    primary: {
-                      label: "Book this Build",
-                      sku: `impact_${example.slug}_${example.price.replace('£', '').replace('k', '000').replace('–', '').split('–')[0]}`,
-                      onClick: () => handleCardCTA('impact', example.slug, 'book')
-                    },
-                    secondary: {
-                      label: "Customise this Brief",
-                      link: `/brief-builder?origin=impact&ref=${example.slug}#form`
-                    },
-                    tertiary: {
-                      label: "Start an Audit",
-                      link: `/audit?origin=impact&ref=${example.slug}#start`
-                    }
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Confidentiality & Assurance */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto text-center">
-            <p className="text-base leading-relaxed text-muted-foreground">
-              Confidential by default. <AIDeputee /> assurance with human QA. On-platform delivery and audit trail. References under NDA.
-            </p>
-          </div>
-        </section>
-
-        {/* Final CTA */}
-        <section id="home-final-cta" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-6">
+            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-10">
               Ready to move a KPI in weeks?
             </h2>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <Link to="/brief-builder?origin=home#form">
-                  Start a Brief
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+            
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button 
+                asChild 
+                size="lg" 
+                className="text-lg px-10 py-6 h-auto"
+              >
+                <Link to="/start">Start now</Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
+              <Button 
+                asChild 
+                variant="outline" 
+                size="lg" 
+                className="text-lg px-10 py-6 h-auto"
+              >
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book a Call
+                  Or talk to us
                 </a>
               </Button>
             </div>

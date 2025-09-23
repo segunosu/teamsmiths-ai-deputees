@@ -14,7 +14,6 @@ const BusinessImpact = () => {
       icon: <MessageSquare className="h-12 w-12 text-accent" />,
       title: 'Customer FAQ Assistant',
       duration: '10 business days',
-      price: '£3,500',
       benefit: 'Fewer support emails; faster answers.',
       bullets: [
         'Web widget + CRM/email handoff',

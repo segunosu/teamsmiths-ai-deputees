@@ -1,233 +1,167 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Shield, Star, ArrowRight, Users } from 'lucide-react';
-import { OutcomeAssurance } from '@/components/OutcomeAssurance';
-import { ASSURANCE } from '@/content/assurance';
+import { CheckCircle, ArrowRight, Users, Target, Crown } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 const Pricing = () => {
+  const { trackEvent } = useAnalytics();
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    trackEvent('pricing_view' as any, {} as any);
+  }, [trackEvent]);
 
-  const pricingTiers = [
+  const handlePlanSelect = (plan: string) => {
+    trackEvent('plan_select' as any, { plan } as any);
+  };
+
+  const plans = [
     {
-      name: 'Starter Outcomes',
-      priceRange: '£3,950–£6,000',
-      timeline: '2–4 weeks',
-      description: 'Perfect for focused, single-function improvements',
+      name: 'Professional',
+      price: '£175',
+      period: '/mo',
+      description: 'Perfect for getting started',
       features: [
-        'Single expert assignment',
-        'Deputee™ AI acceleration',
-        'Human QA validation',
-        'Milestone-based payment',
-        'Basic Outcome Assurance™'
+        '1 Rapid Audit or Quick Outcome each month',
+        '1-month rollover',
+        'Email support'
       ],
+      icon: <Users className="h-6 w-6" />,
+      stripeId: 'sub_faio_175',
       popular: false
     },
     {
-      name: 'Growth Outcomes',
-      priceRange: '£6,000–£10,000',
-      timeline: '3–5 weeks',
-      description: 'Multi-function projects with integrated workflows',
+      name: 'Business',
+      price: '£495',
+      period: '/mo',
+      description: 'Our most popular plan',
       features: [
-        'Multi-expert team coordination',
-        'Advanced Deputee™ AI workflows',
-        'Priority QA + human oversight',
-        'Milestone + performance bonuses',
-        'Full Outcome Assurance™',
-        'Performance Safeguard'
+        'Mini Audit each quarter',
+        '1 Quick Outcome/month', 
+        'Priority start + KPI summary'
       ],
+      icon: <Target className="h-6 w-6" />,
+      stripeId: 'sub_faio_495',
       popular: true
     },
     {
-      name: 'Scale Outcomes',
-      priceRange: '£10,000–£20,000',
-      timeline: '4–8 weeks',
-      description: 'Complex, multi-system transformations',
+      name: 'Business Plus',
+      price: '£795',
+      period: '/mo',
+      description: 'For teams that need more',
       features: [
-        'Dedicated expert team',
-        'Custom Deputee™ AI implementation',
-        'White-glove QA management',
-        'Performance-based pricing options',
-        'Premium Outcome Assurance™',
-        'Performance Safeguard — reinforcement support',
-        'Post-project optimization support'
+        'Full Audit included (annual)',
+        '2 live Outcomes at a time + quarterly micro-Impact',
+        'Monthly advisory call'
       ],
-      popular: false
-    },
-    {
-      name: 'Enterprise Outcomes',
-      priceRange: '£20,000+',
-      timeline: '6+ weeks',
-      description: 'Strategic transformations with ongoing optimization',
-      features: [
-        'Senior expert leadership',
-        'Bespoke Deputee™ AI solutions',
-        'Dedicated QA manager',
-        'ROI-based success metrics',
-        'Enterprise Outcome Assurance™',
-        'Unlimited performance safeguards',
-        'Ongoing optimization & support',
-        'Strategic consultation included'
-      ],
+      icon: <Crown className="h-6 w-6" />,
+      stripeId: 'sub_faio_795',
       popular: false
     }
   ];
 
-  const assuranceFeatures = [
-    'AI-driven insight, human validation, structured QA',
-    'Milestone-based payments with satisfaction guarantees',
-    'Real-time progress tracking and quality metrics',
-    'Continuous optimization and support'
-  ];
-
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-            Outcome-Based Pricing
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Pay for results, not hours. Every engagement includes Deputee™ AI™ acceleration and human QA validation.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg">
-              <Link to="/brief-builder">Get Custom Quote</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                Talk to a Curator
-              </a>
-            </Button>
-          </div>
-        </div>
+    <>
+      <Helmet>
+        <title>Simple subscription, real results | Teamsmiths</title>
+        <meta name="description" content="Start small with a Rapid Audit or a Quick Outcome each month. Upgrade to bigger work anytime." />
+        <meta name="keywords" content="subscription, pricing, business outcomes, audit, monthly plans" />
+        <link rel="canonical" href={window.location.origin + '/pricing'} />
+      </Helmet>
 
-        {/* Pricing Grid */}
-        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8 mb-16">
-          {pricingTiers.map((tier, index) => (
-            <Card key={index} className={`relative shadow-lg hover:shadow-xl transition-all ${
-              tier.popular ? 'border-primary ring-2 ring-primary/20' : ''
-            }`}>
-              {tier.popular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-primary text-primary-foreground">
-                    <Star className="h-3 w-3 mr-1" />
-                    Most Popular
-                  </Badge>
-                </div>
-              )}
-              <CardHeader>
-                <CardTitle className="text-xl">{tier.name}</CardTitle>
-                <div className="text-3xl font-bold text-primary">{tier.priceRange}</div>
-                <CardDescription className="flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  {tier.timeline}
-                </CardDescription>
-                <p className="text-sm text-muted-foreground">{tier.description}</p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-2">
-                  {tier.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-2 text-sm">
-                      <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <div className="pt-4">
-                  <Button asChild className="w-full" variant={tier.popular ? "default" : "outline"}>
-                    <Link to="/brief-builder">
-                      Customize This Tier
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Outcome Assurance Section */}
-        <div className="py-12 px-8 bg-muted/30 rounded-2xl mb-16">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
-              <Shield className="h-8 w-8 text-primary" />
-              {ASSURANCE.title}
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Every engagement includes our comprehensive quality and outcome guarantee system.
+      <div className="min-h-screen bg-background">
+        {/* Hero Section */}
+        <section className="py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
+              Simple subscription, real results
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 leading-relaxed">
+              Start small with a Rapid Audit or a Quick Outcome each month. Upgrade to bigger work anytime.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {assuranceFeatures.map((feature, index) => (
-              <div key={index} className="flex items-start gap-3">
-                <Shield className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                <p className="text-sm">{feature}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <p className="font-semibold text-lg">{ASSURANCE.body[1]}</p>
-          </div>
-        </div>
+        </section>
 
-        {/* FAQ Section */}
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-8">Frequently Asked Questions</h2>
-          <div className="grid md:grid-cols-2 gap-8 text-left">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">What if I need something custom?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Every outcome can be fully customized. Our Brief Builder will capture your specific requirements 
-                  and Deputee™ AI™ will provide a tailored proposal within 2 hours.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">How does the Performance Safeguard work?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  If you're not satisfied with your assigned expert's work quality or approach, we'll replace them 
-                  at no additional cost and restart the work with a new expert.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">What makes Deputee™ AI different?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Deputee™ AI accelerates expert work by 2-3x while maintaining human quality control. 
-                  Every AI-generated output is validated by human experts before delivery.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Can I pay in installments?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Yes! All projects are structured with milestone-based payments. You only pay as work 
-                  is completed and validated to your satisfaction.
-                </p>
-              </CardContent>
-            </Card>
+        {/* Pricing Plans */}
+        <section className="pb-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {plans.map((plan, index) => (
+                <Card 
+                  key={index} 
+                  className={`relative shadow-lg hover:shadow-xl transition-all duration-300 ${
+                    plan.popular ? 'border-primary ring-2 ring-primary/20' : 'border-border'
+                  }`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-primary text-primary-foreground px-4 py-1">
+                        Most Popular
+                      </Badge>
+                    </div>
+                  )}
+                  
+                  <CardHeader className="text-center pb-8">
+                    <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-xl w-fit">
+                      {plan.icon}
+                    </div>
+                    <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
+                    <CardDescription className="text-base text-muted-foreground">
+                      {plan.description}
+                    </CardDescription>
+                    <div className="mt-6">
+                      <span className="text-4xl font-bold text-foreground">{plan.price}</span>
+                      <span className="text-muted-foreground">{plan.period}</span>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-6">
+                    <ul className="space-y-3">
+                      {plan.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                          <span className="text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <Button 
+                      className="w-full"
+                      size="lg"
+                      variant={plan.popular ? "default" : "outline"}
+                      onClick={() => handlePlanSelect(plan.name)}
+                      asChild
+                    >
+                      <a href={`#stripe-${plan.stripeId}`}>
+                        Start {plan.name}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            {/* Additional info */}
+            <div className="text-center mt-16 max-w-3xl mx-auto">
+              <p className="text-muted-foreground mb-6">
+                • Prefer a one-off project? Most Outcomes £1.9k–£2.5k; Impact builds from £3.5k.
+              </p>
+              <Button asChild variant="outline">
+                <Link to="/brief-builder?mode=quote#form">
+                  Get a fixed price in 24h
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
-    </div>
+    </>
   );
 };
 

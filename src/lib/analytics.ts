@@ -2,10 +2,25 @@
 
 export interface AnalyticsEvents {
   // Outcomes page events
-  'outcomes_page_view': { view: 'proof' | 'catalog' };
+  'outcomes_page_view': { view?: 'proof' | 'catalog'; page?: string };
   'outcome_card_view': { outcomeId: string };
   'card_use_outcome_click': { outcomeId: string };
   'card_request_quote_click': { outcomeId: string };
+  
+  // Home page events
+  'home_cta_click': { label: string };
+  'choose_path': { select: 'subscription' | 'project' | 'unsure' };
+  'quick_outcome_click': { slug: string };
+  'pricing_view': Record<string, never>;
+  'plan_select': { plan: string };
+  'brief_start': { mode?: string; origin?: string; ref?: string };
+  
+  // Start funnel events
+  'start_step_complete': { step: number; choice: string };
+  'start_submit': { origin: string; focus: string; engage: string };
+  
+  // Results tracking
+  'results_tile_view': { segment: string };
   
   // Customization Request events
   'cr_start': { crId: string; userType: 'guest' | 'user' };

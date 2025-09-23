@@ -15,7 +15,6 @@ const BusinessOutcomes = () => {
     {
       icon: <FileCheck className="h-12 w-12 text-accent" />,
       title: "Proposal Velocity Pack",
-      price: "£1,950",
       duration: "2 weeks",
       benefit: "More proposals, faster.",
       bullets: [
@@ -27,7 +26,6 @@ const BusinessOutcomes = () => {
     {
       icon: <BarChart3 className="h-12 w-12 text-accent" />,
       title: "Sales Uplift Pack", 
-      price: "£1,950",
       duration: "2 weeks",
       benefit: "Quotes out faster; more wins.",
       bullets: [
@@ -39,7 +37,6 @@ const BusinessOutcomes = () => {
     {
       icon: <CreditCard className="h-12 w-12 text-accent" />,
       title: "Cashflow Control Pack",
-      price: "£2,500", 
       duration: "3 weeks",
       benefit: "DSO down; cash in sooner.",
       bullets: [
