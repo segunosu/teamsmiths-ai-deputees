@@ -271,15 +271,6 @@ const About = () => {
                 </div>
               </div>
 
-              <div className="bg-muted/50 p-6 rounded-lg mb-8 max-w-2xl mx-auto">
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Confidential by default</h3>
-                <ul className="text-left space-y-2 text-muted-foreground text-sm">
-                  <li>• No public client names or logos</li>
-                  <li>• Metrics anonymised and aggregated</li>
-                  <li>• References and details shared under NDA</li>
-                  <li>• On-platform delivery with audit trail</li>
-                </ul>
-              </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
