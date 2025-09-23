@@ -213,7 +213,7 @@ const About = () => {
                     <Target className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3">Primed</h3>
-                  <p className="text-muted-foreground">Purpose confirmed, prowess focused, potential unlocked.</p>
+                  <p className="text-muted-foreground">Purpose confirmed, prowess focused, potential unlocked for dynamic growth.</p>
                 </div>
                 <div className="text-center">
                   <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit mx-auto">
