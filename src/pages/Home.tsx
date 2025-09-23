@@ -34,19 +34,19 @@ const Home = () => {
     {
       icon: <Search className="h-8 w-8 text-primary" />,
       title: "Audit",
-      description: "A quick diagnostic to find the fastest path to results.",
+      description: "A quick diagnostic to find the fastest path to sustainable and consistent results.",
       link: "/audit"
     },
     {
       icon: <Target className="h-8 w-8 text-primary" />,
       title: "Outcomes",
-      description: "Packaged solutions delivered in weeks.",
+      description: "Ready-solutions to known challenges, customised to your business, delivered in weeks.",
       link: "/business-outcomes"
     },
     {
       icon: <Zap className="h-8 w-8 text-primary" />,
       title: "Impact",
-      description: "Scoped app builds that move your numbers.",
+      description: "Scoped app builds, custom built for your business, designed to move your numbers.",
       link: "/business-impact"
     }
   ];
