@@ -257,7 +257,7 @@ const About = () => {
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
                   <h3 className="text-xl font-semibold mb-3">Pick the KPI</h3>
-                  <p className="text-muted-foreground">Choose revenue, speed, or cost reduction.</p>
+                  <p className="text-muted-foreground">Choose revenue, speed, cost reduction or other metrics.</p>
                 </div>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
@@ -267,7 +267,7 @@ const About = () => {
                 <div className="text-center">
                   <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
                   <h3 className="text-xl font-semibold mb-3">Report uplift</h3>
-                  <p className="text-muted-foreground">Measure improvements and keep compounding (optional +5% performance share).</p>
+                  <p className="text-muted-foreground">Measure improvements and keep compounding achievements.</p>
                 </div>
               </div>
 
