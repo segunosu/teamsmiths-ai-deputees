@@ -203,7 +203,7 @@ const About = () => {
             <div className="max-w-4xl mx-auto text-center">
               <div onLoad={() => handleSectionView('ppp-model')}>
                 <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-8">
-                  Our Model: PPP+P
+                  Our 4Ps Model
                 </h2>
               </div>
               
