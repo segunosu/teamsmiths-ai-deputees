@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, TrendingUp, Award, Globe, Target, BarChart3, Zap, ArrowRight } from 'lucide-react';
+import { Users, TrendingUp, Award, Globe, Target, Shield, Zap, ArrowRight } from 'lucide-react';
 import { OfferingHero } from '@/components/ui/offering-hero';
 import { StickyMobileBar } from '@/components/ui/sticky-mobile-bar';
 import { AIDeputee } from '@/components/AIDeputee';
@@ -231,7 +231,7 @@ const About = () => {
                 </div>
                 <div className="text-center">
                   <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit mx-auto">
-                    <BarChart3 className="h-8 w-8 text-primary" />
+                    <Shield className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3">Protected</h3>
                   <p className="text-muted-foreground">Knowledge, identity and well-being safeguarded for the long run.</p>
