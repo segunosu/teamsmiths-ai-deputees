@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, ArrowRight, Target, BarChart3, Calendar, Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Target, BarChart3, Calendar } from 'lucide-react';
 
 const Audit = () => {
   const deliverables = [
@@ -21,37 +19,7 @@ const Audit = () => {
       title: "30/60/90 plan + recommended next step"
     }
   ];
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleStartAudit = async () => {
-    setIsLoading(true);
-    try {
-      const { data: userData } = await supabase.auth.getUser();
-      const user = userData?.user;
-      if (!user?.email) {
-        navigate('/auth');
-        return;
-      }
-      const { data: product, error: pErr } = await supabase
-        .from('products')
-        .select('id')
-        .eq('title', 'AI Starter Audit')
-        .eq('is_active', true)
-        .single();
-      if (pErr || !product) throw new Error('Audit product unavailable');
-      const { data, error } = await supabase.functions.invoke('create-payment', {
-        body: { product_id: product.id },
-      });
-      if (error || !data?.url) throw new Error(error?.message || 'Checkout failed');
-      window.open(data.url, '_blank');
-    } catch (e: any) {
-      toast({ title: 'Checkout failed', description: e.message || 'Please try again.', variant: 'destructive' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -96,34 +64,23 @@ const Audit = () => {
                 <Button 
                   className="w-full" 
                   size="lg" 
-                  onClick={handleStartAudit}
-                  disabled={isLoading}
+                  onClick={() => window.location.href = '/start?customize=business_audit&origin=audit'}
                 >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    'Start Audit'
-                  )}
+                  Add to Plan
                 </Button>
-                <p className="text-sm text-muted-foreground text-center">
-                  Included in{' '}
-                  <Button asChild variant="link" className="p-0 h-auto text-sm underline">
-                    <Link to="/pricing">Business plans</Link>
-                  </Button>
-                  {' '}• Or get a{' '}
-                  <Button asChild variant="link" className="p-0 h-auto text-sm underline">
-                    <Link to="/brief?mode=quote&origin=audit&ref=business_audit#form">fixed price in 24h</Link>
-                  </Button>
-                </p>
-                <Button variant="outline" asChild className="w-full" size="lg">
-                  <Link to="/business-outcomes#offers">
-                    See Business Outcomes
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
+                <div className="text-sm text-muted-foreground text-center space-y-1">
+                  <p>Tailored to your business during onboarding.</p>
+                  <p>
+                    Or{' '}
+                    <Link 
+                      to="/brief?mode=quote&origin=audit&ref=business_audit#form"
+                      className="underline hover:no-underline"
+                    >
+                      buy one-off
+                    </Link>
+                    .
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
