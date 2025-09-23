@@ -82,36 +82,32 @@ const BusinessImpact = () => {
                   icon={example.icon}
                   ctas={{
                     primary: {
-                      label: "Book this Build",
-                      sku: `impact_${example.slug}`,
-                      onClick: () => {
-                        // TODO: Implement Stripe checkout for impact builds
-                        console.log(`Booking ${example.title}`);
-                      }
+                      label: "Add to Plan",
+                      onClick: () => window.location.href = `/start?customize=${example.slug}&origin=impact`
                     },
                     secondary: {
-                      label: "Customise this Brief",
-                      link: `/brief-builder?origin=impact&ref=${example.slug}#form`
+                      label: "", // Remove secondary button
+                      link: ""
                     },
                     tertiary: {
-                      label: "Start an Audit",
-                      link: `/audit?origin=impact&ref=${example.slug}#start`
+                      label: "", // Remove tertiary button
+                      link: ""
                     }
                   }}
                   microcopy={
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Included in{' '}
-                      <a href="/pricing" className="underline hover:no-underline">
-                        Business plans
-                      </a>
-                      {' '}• Or get a{' '}
-                      <a 
-                        href={`/brief?mode=quote&origin=impact&ref=${example.slug}#form`}
-                        className="underline hover:no-underline"
-                      >
-                        fixed price in 24h
-                      </a>
-                    </p>
+                    <div className="text-sm text-muted-foreground mt-2 space-y-1">
+                      <p>Tailored to your business during onboarding.</p>
+                      <p>
+                        Or{' '}
+                        <a 
+                          href={`/brief?mode=quote&origin=impact&ref=${example.slug}#form`}
+                          className="underline hover:no-underline"
+                        >
+                          buy one-off
+                        </a>
+                        .
+                      </p>
+                    </div>
                   }
                 />
               ))}

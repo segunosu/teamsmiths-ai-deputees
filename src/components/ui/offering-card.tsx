@@ -89,15 +89,19 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({
           >
             {ctas.primary.label}
           </Button>
-          <Button asChild variant="outline" className="w-full">
-            <Link to={ctas.secondary.link}>{ctas.secondary.label}</Link>
-          </Button>
-          <Link 
-            to={ctas.tertiary.link}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors text-center"
-          >
-            {ctas.tertiary.label}
-          </Link>
+          {ctas.secondary.label && (
+            <Button asChild variant="outline" className="w-full">
+              <Link to={ctas.secondary.link}>{ctas.secondary.label}</Link>
+            </Button>
+          )}
+          {ctas.tertiary.label && (
+            <Link 
+              to={ctas.tertiary.link}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors text-center"
+            >
+              {ctas.tertiary.label}
+            </Link>
+          )}
           {microcopy}
         </div>
       </CardContent>

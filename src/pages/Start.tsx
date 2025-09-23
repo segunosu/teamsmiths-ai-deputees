@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle, TrendingUp, Clock, DollarSign, Users, HelpCircle } from 'lucide-react';
+import { CheckCircle, TrendingUp, Clock, DollarSign, Users, HelpCircle, Target, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
@@ -21,36 +21,60 @@ interface FormData {
   company: string;
   preferredTime: string;
   notes: string;
+  // Customization fields
+  topPriorities: string;
+  kpiPreferences: string;
+  specialRequirements: string;
 }
 
 const Start = () => {
   const navigate = useNavigate();
   const { trackEvent } = useAnalytics();
-  const [currentStep, setCurrentStep] = useState(1);
+  const [searchParams] = useSearchParams();
+  const customizeSlug = searchParams.get('customize');
+  const origin = searchParams.get('origin');
+  
+  // If customizing, skip to step 3 (intake form)
+  const isCustomizing = !!customizeSlug;
+  const [currentStep, setCurrentStep] = useState(isCustomizing ? 3 : 1);
+  
   const [formData, setFormData] = useState<FormData>({
     focus: '',
-    engage: '',
+    engage: isCustomizing ? 'subscription' : '',
     email: '',
     name: '',
     company: '',
     preferredTime: '',
-    notes: ''
+    notes: '',
+    topPriorities: '',
+    kpiPreferences: '',
+    specialRequirements: ''
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   useEffect(() => {
-    trackEvent('start_page_view' as any, {} as any);
-    // Focus first option in Step 1
+    if (isCustomizing) {
+      trackEvent('customize_intake_view' as any, { slug: customizeSlug, origin } as any);
+    } else {
+      trackEvent('start_page_view' as any, {} as any);
+    }
+    
+    // Focus first option in Step 1 or first input in customization mode
     if (currentStep === 1) {
       const firstOption = document.querySelector('input[name="focus"]');
       if (firstOption) {
         (firstOption as HTMLElement).focus();
       }
+    } else if (isCustomizing && currentStep === 3) {
+      const emailInput = document.getElementById('email');
+      if (emailInput) {
+        (emailInput as HTMLElement).focus();
+      }
     }
-  }, [trackEvent, currentStep]);
+  }, [trackEvent, currentStep, isCustomizing, customizeSlug, origin]);
 
-  const progress = (currentStep / 3) * 100;
+  const progress = isCustomizing ? 100 : (currentStep / 3) * 100;
 
   const focusOptions = [
     {
@@ -133,15 +157,29 @@ const Start = () => {
       return;
     }
 
+    if (isCustomizing && !formData.topPriorities) {
+      toast.error('Please tell us your top business priorities');
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
       // Track submission
-      trackEvent('start_submit' as any, {
-        origin: 'start',
-        focus: formData.focus,
-        engage: formData.engage
-      } as any);
+      if (isCustomizing) {
+        trackEvent('customize_intake_submit' as any, {
+          slug: customizeSlug,
+          origin,
+          topPriorities: formData.topPriorities,
+          kpiPreferences: formData.kpiPreferences
+        } as any);
+      } else {
+        trackEvent('start_submit' as any, {
+          origin: 'start',
+          focus: formData.focus,
+          engage: formData.engage
+        } as any);
+      }
 
       // Show success state instead of navigating
       setSubmitted(true);
@@ -192,30 +230,41 @@ const Start = () => {
         <div className="max-w-2xl mx-auto">
           {/* Progress bar */}
           <div className="mb-8">
-            <div className="flex justify-between text-sm text-muted-foreground mb-2">
-              <span>Step {currentStep} of 3</span>
-              <span>{Math.round(progress)}% complete</span>
-            </div>
-            <Progress value={progress} className="h-2" />
+            {!isCustomizing && (
+              <>
+                <div className="flex justify-between text-sm text-muted-foreground mb-2">
+                  <span>Step {currentStep} of 3</span>
+                  <span>{Math.round(progress)}% complete</span>
+                </div>
+                <Progress value={progress} className="h-2" />
+              </>
+            )}
+            {isCustomizing && (
+              <div className="text-center text-sm text-muted-foreground mb-4">
+                <span>Customization Form</span>
+              </div>
+            )}
           </div>
 
           <Card className="shadow-lg">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl sm:text-3xl font-bold">
-                {currentStep === 1 && "What's your focus?"}
-                {currentStep === 2 && "How would you like to engage?"}
-                {currentStep === 3 && "Your details"}
-              </CardTitle>
-              <CardDescription className="text-lg">
-                {currentStep === 1 && "Pick the KPI you want to move first"}
-                {currentStep === 2 && "Choose the approach that fits your needs"}
-                {currentStep === 3 && "Almost there — just a few quick details"}
-              </CardDescription>
+            <CardTitle className="text-2xl sm:text-3xl font-bold">
+              {isCustomizing && "Customize Your Plan"}
+              {!isCustomizing && currentStep === 1 && "What's your focus?"}
+              {!isCustomizing && currentStep === 2 && "How would you like to engage?"}
+              {!isCustomizing && currentStep === 3 && "Your details"}
+            </CardTitle>
+            <CardDescription className="text-lg">
+              {isCustomizing && `Tell us about your business to tailor the ${customizeSlug?.replace('_', ' ')} solution`}
+              {!isCustomizing && currentStep === 1 && "Pick the KPI you want to move first"}
+              {!isCustomizing && currentStep === 2 && "Choose the approach that fits your needs"}
+              {!isCustomizing && currentStep === 3 && "Almost there — just a few quick details"}
+            </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {/* Step 1: Focus */}
-              {currentStep === 1 && (
+              {/* Step 1: Focus (skip if customizing) */}
+              {currentStep === 1 && !isCustomizing && (
                 <RadioGroup
                   value={formData.focus}
                   onValueChange={(value) => setFormData({ ...formData, focus: value as typeof formData.focus })}
@@ -241,8 +290,8 @@ const Start = () => {
                 </RadioGroup>
               )}
 
-              {/* Step 2: Engagement */}
-              {currentStep === 2 && (
+              {/* Step 2: Engagement (skip if customizing) */}
+              {currentStep === 2 && !isCustomizing && (
                 <RadioGroup
                   value={formData.engage}
                   onValueChange={(value) => setFormData({ ...formData, engage: value as typeof formData.engage })}
@@ -275,9 +324,21 @@ const Start = () => {
                 </RadioGroup>
               )}
 
-              {/* Step 3: Details */}
-              {currentStep === 3 && (
+              {/* Step 3: Details or Customization Form */}
+              {(currentStep === 3 || isCustomizing) && (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {isCustomizing && (
+                    <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Target className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold text-primary">Selected: {customizeSlug?.replace('_', ' ')}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        This will be included in your subscription and tailored to your business.
+                      </p>
+                    </div>
+                  )}
+                  
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="email">Email *</Label>
@@ -311,6 +372,44 @@ const Start = () => {
                     />
                   </div>
 
+                  {isCustomizing && (
+                    <>
+                      <div>
+                        <Label htmlFor="topPriorities">Top 1-2 business priorities *</Label>
+                        <Textarea
+                          id="topPriorities"
+                          value={formData.topPriorities}
+                          onChange={(e) => setFormData({ ...formData, topPriorities: e.target.value })}
+                          placeholder="e.g., Increase lead conversion, reduce proposal time..."
+                          rows={2}
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="kpiPreferences">Which KPIs matter most to you?</Label>
+                        <Textarea
+                          id="kpiPreferences"
+                          value={formData.kpiPreferences}
+                          onChange={(e) => setFormData({ ...formData, kpiPreferences: e.target.value })}
+                          placeholder="e.g., Time to quote, conversion rate, customer satisfaction..."
+                          rows={2}
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="specialRequirements">Any special requirements or constraints?</Label>
+                        <Textarea
+                          id="specialRequirements"
+                          value={formData.specialRequirements}
+                          onChange={(e) => setFormData({ ...formData, specialRequirements: e.target.value })}
+                          placeholder="e.g., Must integrate with Salesforce, GDPR compliance needed..."
+                          rows={2}
+                        />
+                      </div>
+                    </>
+                  )}
+
                   <div>
                     <Label htmlFor="preferredTime">Preferred time for a call</Label>
                     <Select value={formData.preferredTime} onValueChange={(value) => setFormData({ ...formData, preferredTime: value })}>
@@ -326,16 +425,18 @@ const Start = () => {
                     </Select>
                   </div>
 
-                  <div>
-                    <Label htmlFor="notes">Anything else we should know?</Label>
-                    <Textarea
-                      id="notes"
-                      value={formData.notes}
-                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="Optional: Tell us more about your goals or situation..."
-                      rows={3}
-                    />
-                  </div>
+                  {!isCustomizing && (
+                    <div>
+                      <Label htmlFor="notes">Anything else we should know?</Label>
+                      <Textarea
+                        id="notes"
+                        value={formData.notes}
+                        onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                        placeholder="Optional: Tell us more about your goals or situation..."
+                        rows={3}
+                      />
+                    </div>
+                  )}
                 </form>
               )}
 
@@ -344,13 +445,13 @@ const Start = () => {
                 <Button
                   variant="outline"
                   onClick={handleBack}
-                  disabled={currentStep === 1}
-                  className={currentStep === 1 ? 'invisible' : ''}
+                  disabled={currentStep === 1 || isCustomizing}
+                  className={currentStep === 1 || isCustomizing ? 'invisible' : ''}
                 >
                   Back
                 </Button>
 
-                {currentStep < 3 ? (
+                {(currentStep < 3 && !isCustomizing) ? (
                   <Button onClick={handleNext}>
                     Next
                   </Button>
@@ -360,7 +461,7 @@ const Start = () => {
                     onClick={handleSubmit}
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Submitting...' : 'Get Started'}
+                    {isSubmitting ? 'Submitting...' : (isCustomizing ? 'Customize My Plan' : 'Get Started')}
                   </Button>
                 )}
               </div>

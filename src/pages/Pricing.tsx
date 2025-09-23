@@ -83,8 +83,11 @@ const Pricing = () => {
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
               Simple subscription, real results
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-16 leading-relaxed">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
               Start small with a Rapid Audit or a Quick Outcome each month. Upgrade to bigger work anytime.
+            </p>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-16 leading-relaxed">
+              Each month, pick a Quick Outcome or Impact. We tailor every build to your business — nothing generic.
             </p>
           </div>
         </section>
