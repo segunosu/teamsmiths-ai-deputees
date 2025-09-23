@@ -142,7 +142,6 @@ const BusinessOutcomes = () => {
                   key={index}
                   variant="outcome"
                   title={pack.title}
-                  price={pack.price}
                   duration={pack.duration}
                   benefit={pack.benefit}
                   bullets={pack.bullets}
@@ -151,7 +150,7 @@ const BusinessOutcomes = () => {
                   ctas={{
                     primary: {
                       label: "Book this Pack",
-                      sku: `outcome_${pack.slug}_${pack.price.replace('£', '').replace(',', '')}`,
+                      sku: `outcome_${pack.slug}`,
                       onClick: () => handleCheckout(pack.title)
                     },
                     secondary: {
@@ -163,6 +162,21 @@ const BusinessOutcomes = () => {
                       link: `/audit?origin=outcomes&ref=${pack.slug}#start`
                     }
                   }}
+                  microcopy={
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Included in{' '}
+                      <a href="/pricing" className="underline hover:no-underline">
+                        Business plans
+                      </a>
+                      {' '}• Or get a{' '}
+                      <a 
+                        href={`/brief?mode=quote&origin=outcomes&ref=${pack.slug}#form`}
+                        className="underline hover:no-underline"
+                      >
+                        fixed price in 24h
+                      </a>
+                    </p>
+                  }
                 />
               ))}
             </div>
@@ -196,6 +210,21 @@ const BusinessOutcomes = () => {
                         link: `/audit?origin=outcomes&ref=${pack.slug}#start`
                       }
                     }}
+                    microcopy={
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Included in{' '}
+                        <a href="/pricing" className="underline hover:no-underline">
+                          Business plans
+                        </a>
+                        {' '}• Or get a{' '}
+                        <a 
+                          href={`/brief?mode=quote&origin=outcomes&ref=${pack.slug}#form`}
+                          className="underline hover:no-underline"
+                        >
+                          fixed price in 24h
+                        </a>
+                      </p>
+                    }
                   />
                 ))}
               </div>

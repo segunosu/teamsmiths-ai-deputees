@@ -25,7 +25,6 @@ const BusinessImpact = () => {
       icon: <Workflow className="h-12 w-12 text-accent" />,
       title: 'Internal Ops Micro-Workflow',
       duration: '2 weeks',
-      price: '£6,000',
       benefit: 'Less manual work; faster turnaround.',
       bullets: [
         'Intake → sheet → notifications',
@@ -37,7 +36,6 @@ const BusinessImpact = () => {
       icon: <Globe className="h-12 w-12 text-accent" />,
       title: 'Customer Portal MVP',
       duration: '4–6 weeks',
-      price: '£12k–£18k',
       benefit: 'Better self-serve; fewer back-and-forths.',
       bullets: [
         'Login, submissions, status, notifications',
@@ -78,7 +76,6 @@ const BusinessImpact = () => {
                   key={index}
                   variant="impact"
                   title={example.title}
-                  price={example.price}
                   duration={example.duration}
                   benefit={example.benefit}
                   bullets={example.bullets}
@@ -86,7 +83,7 @@ const BusinessImpact = () => {
                   ctas={{
                     primary: {
                       label: "Book this Build",
-                      sku: `impact_${example.slug}_${example.price.replace('£', '').replace('k', '000').replace('–', '').split('–')[0]}`,
+                      sku: `impact_${example.slug}`,
                       onClick: () => {
                         // TODO: Implement Stripe checkout for impact builds
                         console.log(`Booking ${example.title}`);
@@ -101,6 +98,21 @@ const BusinessImpact = () => {
                       link: `/audit?origin=impact&ref=${example.slug}#start`
                     }
                   }}
+                  microcopy={
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Included in{' '}
+                      <a href="/pricing" className="underline hover:no-underline">
+                        Business plans
+                      </a>
+                      {' '}• Or get a{' '}
+                      <a 
+                        href={`/brief?mode=quote&origin=impact&ref=${example.slug}#form`}
+                        className="underline hover:no-underline"
+                      >
+                        fixed price in 24h
+                      </a>
+                    </p>
+                  }
                 />
               ))}
             </div>

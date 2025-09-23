@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 interface OfferingCardProps {
   variant: "outcome" | "impact";
   title: string;
-  price: string;
+  price?: string;
   duration: string;
   benefit: string;
   bullets: string[];
@@ -29,6 +29,7 @@ interface OfferingCardProps {
       link: string;
     };
   };
+  microcopy?: React.ReactNode;
 }
 
 export const OfferingCard: React.FC<OfferingCardProps> = ({
@@ -40,7 +41,8 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({
   bullets,
   kpis,
   icon,
-  ctas
+  ctas,
+  microcopy
 }) => {
   return (
     <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80 text-left">
@@ -50,7 +52,7 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({
         </div>
         <CardTitle className="text-3xl font-bold">{title}</CardTitle>
         <div className="flex items-center gap-3 mt-3 mb-4">
-          <Badge variant="secondary" className="text-lg font-bold">{price}</Badge>
+          {price && <Badge variant="secondary" className="text-lg font-bold">{price}</Badge>}
           <Badge variant="outline">{duration}</Badge>
         </div>
         <p className="text-lg font-semibold text-primary mb-2">{benefit}</p>
@@ -96,6 +98,7 @@ export const OfferingCard: React.FC<OfferingCardProps> = ({
           >
             {ctas.tertiary.label}
           </Link>
+          {microcopy}
         </div>
       </CardContent>
     </Card>
