@@ -29,9 +29,6 @@ const Audit = () => {
             <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
               Business Audit
             </h1>
-            <div className="flex items-center justify-center mb-8">
-              <span className="text-xl font-semibold">5 business days</span>
-            </div>
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium max-w-2xl mx-auto leading-relaxed">
               A quick, neutral diagnostic - the fastest path to visible uplift.
             </p>
@@ -69,7 +66,7 @@ const Audit = () => {
                   Add to Plan
                 </Button>
                 <div className="text-sm text-muted-foreground text-center space-y-1">
-                  <p>Tailored to your business during onboarding.</p>
+                  <p>Included in your plan.</p>
                   <p>
                     Or{' '}
                     <Link 
