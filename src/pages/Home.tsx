@@ -230,7 +230,7 @@ const Home = () => {
                       className="w-full"
                       onClick={() => handleQuickOutcomeClick(outcome.slug)}
                     >
-                      <Link to={`/start?engage=subscription&ref=${outcome.slug}`}>Add to Plan</Link>
+                      <Link to={`/pricing?ref=${outcome.slug}`}>Get This Win</Link>
                     </Button>
                   </CardContent>
                 </Card>
