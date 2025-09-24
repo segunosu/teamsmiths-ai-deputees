@@ -145,9 +145,12 @@ const Plan = () => {
                     <Button 
                       className="w-full"
                       onClick={() => handlePlanSelect(plan.id)}
+                      asChild
                     >
-                      {plan.cta}
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <Link to={`/plan-confirmation?plan=${plan.id}`}>
+                        {plan.cta}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>

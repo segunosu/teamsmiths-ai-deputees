@@ -165,6 +165,13 @@ const App = () => (
                        </ErrorBoundary>
                      </React.Suspense>
                    } />
+                   <Route path="/plan-confirmation" element={
+                     <React.Suspense fallback={<div>Loading...</div>}>
+                       <ErrorBoundary>
+                         {React.createElement(React.lazy(() => import('./pages/PlanConfirmation')))}
+                       </ErrorBoundary>
+                     </React.Suspense>
+                   } />
                   <Route path="/legal/privacy" element={<PrivacyPolicy />} />
                   <Route path="/legal/terms" element={<TermsOfService />} />
                   <Route path="/compliance" element={<Compliance />} />
