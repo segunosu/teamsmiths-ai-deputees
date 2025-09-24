@@ -61,14 +61,14 @@ const Solutions = () => {
       {
         slug: 'proposal_speed_up',
         title: 'Proposal Speed-Up',
-        description: 'Draft proposals from meetings',
-        benefit: 'Send more proposals, faster.'
+        description: 'Draft proposals from meetings — delivered in 3–7 days',
+        benefit: 'Send 28% more proposals, 37% faster turnaround.'
       },
       {
         slug: 'quote_booster',
         title: 'Quote Booster',
-        description: 'Faster quotes; higher win rate',
-        benefit: 'Faster quotes; higher win rate.'
+        description: 'Faster quotes; higher win rate — delivered in 5–10 days',
+        benefit: '32% faster quotes, 11% higher win rate.'
       },
       {
         slug: 'follow_up_engine',
@@ -81,8 +81,8 @@ const Solutions = () => {
       {
         slug: 'cashflow_nudges',
         title: 'Cashflow Nudges',
-        description: 'Polite invoice reminders; lower DSO',
-        benefit: 'Reduce DSO with polite reminders.'
+        description: 'Polite invoice reminders; lower DSO — delivered in 3–5 days',
+        benefit: '17% reduction in DSO, 22% fewer aged invoices.'
       },
       {
         slug: 'expense_categorizer',
@@ -95,8 +95,8 @@ const Solutions = () => {
       {
         slug: 'onboarding_kit',
         title: 'New Hire Onboarding Kit',
-        description: '30-day ramp plan + SOPs',
-        benefit: 'Streamlined new hire process.'
+        description: '30-day ramp plan + SOPs — delivered in 7–10 days',
+        benefit: '45% faster time to productivity.'
       },
       {
         slug: 'team_focus_rhythm',
@@ -109,8 +109,8 @@ const Solutions = () => {
       {
         slug: 'meeting_to_minutes',
         title: 'Meeting-to-Minutes',
-        description: 'Clean actions + tasks in your tools',
-        benefit: 'Auto meeting notes and tasks.'
+        description: 'Clean actions + tasks in your tools — delivered in 3–7 days',
+        benefit: '15 hours saved per week, 45% better team efficiency.'
       },
       {
         slug: 'kb_starter',
@@ -156,9 +156,12 @@ const Solutions = () => {
         {/* Hero Section */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-12">
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
               Choose your next Business Uplift
             </h1>
+            <p className="text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
+              <strong>Business Uplift:</strong> A targeted business improvement—implemented, tested, and delivered in 3–10 days. No jargon, no delays.
+            </p>
 
             {/* Business Function Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">

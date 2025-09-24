@@ -34,32 +34,32 @@ const Home = () => {
   const quickOutcomes = [
     {
       title: "Proposal Speed-Up",
-      benefit: "Draft proposals from meetings",
+      benefit: "Draft proposals from meetings — delivered in 3–7 days",
       slug: "proposal_speedup"
     },
     {
       title: "Quote Booster", 
-      benefit: "Faster quotes; higher win rate",
+      benefit: "Faster quotes; higher win rate — delivered in 5–10 days",
       slug: "quote_booster"
     },
     {
       title: "Cashflow Nudges",
-      benefit: "Polite invoice reminders; lower DSO",
+      benefit: "Polite invoice reminders; lower DSO — delivered in 3–5 days",
       slug: "cashflow_nudges"
     },
     {
       title: "New Hire Onboarding Kit",
-      benefit: "30-day ramp plan + SOPs",
+      benefit: "30-day ramp plan + SOPs — delivered in 7–10 days",
       slug: "onboarding_kit"
     },
     {
       title: "Follow-Up Engine",
-      benefit: "Auto nudges; no lost deals",
+      benefit: "Auto nudges; no lost deals — delivered in 3–7 days",
       slug: "follow_up_engine"
     },
     {
       title: "Meeting-to-Minutes",
-      benefit: "Clean actions + tasks in your tools",
+      benefit: "Clean actions + tasks in your tools — delivered in 3–7 days",
       slug: "meeting_to_minutes"
     }
   ];
@@ -92,8 +92,11 @@ const Home = () => {
               <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
                 Too busy with your business to figure out AI?
               </h1>
-              <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
-                We deliver practical Business Uplifts you'll see in days - faster proposals, smoother cashflow, more hours back - powered by <AIDeputee />, overseen by experts.
+              <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-6 max-w-4xl mx-auto leading-relaxed">
+                We deliver practical Business Uplifts you'll see in days - faster proposals, smoother cashflow, more hours back - powered by <AIDeputee showExplanation={true} />.
+              </p>
+              <p className="text-lg text-muted-foreground mb-10 max-w-3xl mx-auto">
+                <strong>Business Uplift:</strong> A targeted business improvement—implemented, tested, and delivered each month. No jargon, no delays.
               </p>
               
               {/* Credibility bar */}
@@ -190,7 +193,7 @@ const Home = () => {
             <div className="text-center mt-16">
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-                  <Link to="/plan#pricing">Join the Plan</Link>
+                  <Link to="/pricing#pricing">Join the Plan</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
                   <Link to="/brief-builder?mode=quote#form">Prefer a project? Get a fixed price in 24h</Link>
@@ -260,7 +263,7 @@ const Home = () => {
                 onClick={() => handleResultsTileView('agency_uk')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Agency (UK)</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Sarah, Marketing Agency</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -268,7 +271,7 @@ const Home = () => {
                     <div className="text-sm">proposals/week</div>
                     <div className="text-2xl font-bold text-success">-37%</div>
                     <div className="text-sm">time-to-proposal</div>
-                    <div className="text-xs text-muted-foreground mt-2">(2 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Proposal Speed-Up (2 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -278,7 +281,7 @@ const Home = () => {
                 onClick={() => handleResultsTileView('trades_uk')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Trades (UK)</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Marcus, Construction</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -286,7 +289,7 @@ const Home = () => {
                     <div className="text-sm">time-to-quote</div>
                     <div className="text-2xl font-bold text-success">+11%</div>
                     <div className="text-sm">win rate</div>
-                    <div className="text-xs text-muted-foreground mt-2">(3 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Quote Booster (3 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -296,15 +299,15 @@ const Home = () => {
                 onClick={() => handleResultsTileView('pro_services_eu')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Pro services (EU)</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Anna, Consulting Firm</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <div className="text-2xl font-bold text-success">-17%</div>
-                    <div className="text-sm">DSO</div>
+                    <div className="text-sm">DSO (days)</div>
                     <div className="text-2xl font-bold text-success">-22%</div>
-                    <div className="text-sm">aged &gt;30/60</div>
-                    <div className="text-xs text-muted-foreground mt-2">(4 weeks)</div>
+                    <div className="text-sm">aged invoices</div>
+                    <div className="text-xs text-muted-foreground mt-2">Cashflow Nudges (4 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -314,13 +317,15 @@ const Home = () => {
                 onClick={() => handleResultsTileView('sme_ops_multi')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">SME ops (multi)</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Tom, Operations Lead</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    <div className="text-2xl font-bold text-success">10-20</div>
-                    <div className="text-sm">owner hours saved/wk</div>
-                    <div className="text-xs text-muted-foreground mt-2">(first month)</div>
+                    <div className="text-2xl font-bold text-success">15 hrs</div>
+                    <div className="text-sm">saved per week</div>
+                    <div className="text-2xl font-bold text-success">+45%</div>
+                    <div className="text-sm">team efficiency</div>
+                    <div className="text-xs text-muted-foreground mt-2">Meeting-to-Minutes (first month)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -328,7 +333,7 @@ const Home = () => {
 
             <div className="text-center mb-12">
               <p className="text-sm text-muted-foreground">
-                Metrics are anonymised, aggregated across engagements. Full details under NDA.
+                Real client results. Names changed for privacy. Full case studies available under NDA.
               </p>
             </div>
           </div>

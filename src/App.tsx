@@ -107,13 +107,7 @@ const App = () => (
                        </ErrorBoundary>
                      </React.Suspense>
                    } />
-                   <Route path="/plan" element={
-                     <React.Suspense fallback={<div>Loading...</div>}>
-                       <ErrorBoundary>
-                         {React.createElement(React.lazy(() => import('./pages/Plan')))}
-                       </ErrorBoundary>
-                     </React.Suspense>
-                   } />
+                    <Route path="/plan" element={<Navigate to="/pricing" replace />} />
                   <Route path="/work-with-us" element={<WorkWithUs />} />
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
@@ -164,7 +158,13 @@ const App = () => (
                    <Route path="/about" element={<About />} />
                    <Route path="/blog" element={<Blog />} />
                    <Route path="/contact" element={<Contact />} />
-                   <Route path="/pricing" element={<Pricing />} />
+                   <Route path="/pricing" element={
+                     <React.Suspense fallback={<div>Loading...</div>}>
+                       <ErrorBoundary>
+                         {React.createElement(React.lazy(() => import('./pages/Plan')))}
+                       </ErrorBoundary>
+                     </React.Suspense>
+                   } />
                   <Route path="/legal/privacy" element={<PrivacyPolicy />} />
                   <Route path="/legal/terms" element={<TermsOfService />} />
                   <Route path="/compliance" element={<Compliance />} />
