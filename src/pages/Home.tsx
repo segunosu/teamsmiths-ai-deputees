@@ -248,12 +248,12 @@ const Home = () => {
           </div>
         </section>
 
-        {/* REAL RESULTS SECTION */}
+        {/* POWERFUL RESULTS SECTION */}
         <section id="results" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                Real Results
+                Powerful Results
               </h2>
               <p className="text-lg text-muted-foreground">Measurable improvements delivered in weeks, not months</p>
             </div>
@@ -272,7 +272,7 @@ const Home = () => {
                     <div className="text-sm">proposals/week</div>
                     <div className="text-2xl font-bold text-success">-37%</div>
                     <div className="text-sm">time-to-proposal</div>
-                    <div className="text-xs text-muted-foreground mt-2">Proposal Speed-Up (2 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Proposal Speed-Up (10 days)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -290,7 +290,7 @@ const Home = () => {
                     <div className="text-sm">time-to-quote</div>
                     <div className="text-2xl font-bold text-success">+11%</div>
                     <div className="text-sm">win rate</div>
-                    <div className="text-xs text-muted-foreground mt-2">Quote Booster (2 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Quote Booster (3 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -308,7 +308,7 @@ const Home = () => {
                     <div className="text-sm">DSO (days)</div>
                     <div className="text-2xl font-bold text-success">-22%</div>
                     <div className="text-sm">aged invoices</div>
-                    <div className="text-xs text-muted-foreground mt-2">Cashflow Nudges (2 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Cashflow Nudges (2.5 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -326,7 +326,7 @@ const Home = () => {
                     <div className="text-sm">saved per week</div>
                     <div className="text-2xl font-bold text-success">+45%</div>
                     <div className="text-sm">team efficiency</div>
-                    <div className="text-xs text-muted-foreground mt-2">Meeting-to-Minutes (2 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Meeting-to-Minutes (1.5 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -347,7 +347,7 @@ const Home = () => {
                     <div className="text-sm">additional monthly revenue</div>
                     <div className="text-2xl font-bold text-success">-41%</div>
                     <div className="text-sm">admin hours</div>
-                    <div className="text-xs text-muted-foreground mt-2">New Hire Onboarding Kit (2 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">New Hire Onboarding Kit (3.5 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -365,7 +365,7 @@ const Home = () => {
                     <div className="text-sm">client response rate</div>
                     <div className="text-2xl font-bold text-success">12 hrs</div>
                     <div className="text-sm">saved weekly</div>
-                    <div className="text-xs text-muted-foreground mt-2">Follow-Up Engine (2 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Follow-Up Engine (8 days)</div>
                   </div>
                 </CardContent>
               </Card>
