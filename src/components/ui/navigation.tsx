@@ -17,8 +17,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const navigationItems = [
   { label: 'Home', path: '/', tooltip: 'Start here — outcome-driven AI solutions for SMBs.' },
   { label: 'Audit', path: '/audit', tooltip: 'Quick diagnostic to find fastest uplift' },
-  { label: 'Outcomes', path: '/business-outcomes', tooltip: 'Packaged solutions delivering measurable results' },
-  { label: 'Impact', path: '/business-impact', tooltip: 'Scoped app builds that move your numbers' },
+  { label: 'Business Uplift', path: '/solutions', tooltip: 'Targeted business improvements delivered monthly' },
+  { label: 'Plan', path: '/plan', tooltip: 'Simple subscription plans for monthly Business Uplifts' },
   { label: 'Results', path: '/#results', tooltip: 'View business results and success metrics' },
 ];
 
@@ -175,7 +175,7 @@ export const Navigation = () => {
                   size="sm"
                   className="justify-start h-10"
                 >
-                  <Link to="/business-outcomes">Business Outcomes</Link>
+                  <Link to="/solutions">Business Uplift</Link>
                 </Button>
                 <Button
                   asChild

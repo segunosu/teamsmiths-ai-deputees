@@ -21,11 +21,9 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
-              <li><Link to="/audit" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Business Audit</Link></li>
-              <li><Link to="/business-outcomes" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Business Outcomes</Link></li>
-              <li><Link to="/business-impact" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Business Impact</Link></li>
-              <li><a href="/#results" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Results</a></li>
-              <li><Link to="/work-with-us" rel="nofollow" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Work with Us</Link></li>
+              <li><Link to="/plan" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Plan</Link></li>
+              <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Business Uplift</Link></li>
+              <li><Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About</Link></li>
             </ul>
           </div>
 

@@ -96,10 +96,24 @@ const App = () => (
                       </ErrorBoundary>
                     </React.Suspense>
                   } />
-                   <Route path="/outcome-packs" element={<Navigate to="/business-outcomes" replace />} />
-                   <Route path="/business-outcomes" element={<BusinessOutcomes />} />
-                   <Route path="/business-impact" element={<BusinessImpact />} />
+                   <Route path="/outcome-packs" element={<Navigate to="/solutions" replace />} />
+                   <Route path="/business-outcomes" element={<Navigate to="/solutions" replace />} />
+                   <Route path="/business-impact" element={<Navigate to="/solutions" replace />} />
                    <Route path="/audit" element={<Audit />} />
+                   <Route path="/solutions" element={
+                     <React.Suspense fallback={<div>Loading...</div>}>
+                       <ErrorBoundary>
+                         {React.createElement(React.lazy(() => import('./pages/Solutions')))}
+                       </ErrorBoundary>
+                     </React.Suspense>
+                   } />
+                   <Route path="/plan" element={
+                     <React.Suspense fallback={<div>Loading...</div>}>
+                       <ErrorBoundary>
+                         {React.createElement(React.lazy(() => import('./pages/Plan')))}
+                       </ErrorBoundary>
+                     </React.Suspense>
+                   } />
                   <Route path="/work-with-us" element={<WorkWithUs />} />
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
