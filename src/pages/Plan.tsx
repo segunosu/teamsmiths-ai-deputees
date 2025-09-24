@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, ArrowRight } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 
@@ -57,7 +58,7 @@ const Plan = () => {
       period: '/mo',
       features: [
         '3 Business Uplifts / month OR',
-        '2 Uplifts + bank toward 1 Project Build/quarter',
+        '2 Uplifts + bank toward 1 Project Build*/quarter',
         'Named lead',
         'Monthly working session',
         'All Business plan benefits included'
@@ -80,7 +81,7 @@ const Plan = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Simple subscription. Monthly Business Uplifts. Bank for bigger Project Builds.
+              Simple subscription. Monthly Business Uplifts.
             </h1>
           </div>
         </section>
@@ -108,7 +109,23 @@ const Plan = () => {
                       {plan.features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-3">
                           <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{feature}</span>
+                          <span className="text-sm">
+                            {feature.includes('Project Build*') ? (
+                              <>
+                                {feature.replace('Project Build*', 'Project Build')}
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger className="text-primary cursor-help">*</TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>A larger app/automation you fund by banking Business Uplifts for bigger impact projects.</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              </>
+                            ) : (
+                              feature
+                            )}
+                          </span>
                         </li>
                       ))}
                     </ul>
