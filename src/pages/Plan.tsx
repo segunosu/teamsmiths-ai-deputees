@@ -26,7 +26,8 @@ const Plan = () => {
       period: '/mo',
       features: [
         '1 Business Uplift / month',
-        '1 KPI tracked',
+        'KPI dashboard',
+        'Fast start',
         'Email support',
         'Bank Uplifts (2-month cap)'
       ],
@@ -41,9 +42,10 @@ const Plan = () => {
       popular: true,
       features: [
         '2 Business Uplifts / month',
-        'KPI dashboard',
+        'Business KPI dashboard',
         'Weekly async check-ins',
-        'Start ≤7 business days'
+        'Start ≤4 business days',
+        'All Professional plan benefits included'
       ],
       cta: 'Join Business',
       stripe_id: 'sub_bus_895'
@@ -57,7 +59,8 @@ const Plan = () => {
         '3 Business Uplifts / month OR',
         '2 Uplifts + bank toward 1 Project Build/quarter',
         'Named lead',
-        'Monthly working session'
+        'Monthly working session',
+        'All Business plan benefits included'
       ],
       cta: 'Join Business Plus',
       stripe_id: 'sub_plus_1495'

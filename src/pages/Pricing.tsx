@@ -27,7 +27,8 @@ const Pricing = () => {
       description: 'Perfect for getting started',
       features: [
         '1 Rapid Audit or 1 Quick Outcome / month',
-        '1 KPI tracked',
+        'KPI dashboard',
+        'Fast start',
         'Email support',
         '1-month rollover'
       ],
@@ -43,8 +44,9 @@ const Pricing = () => {
       features: [
         'Mini Audit each quarter',
         '1 Quick Outcome / month',
-        'KPI dashboard + monthly 20-min review',
-        'Priority start (≤7 business days)'
+        'Business KPI dashboard + monthly 20-min review',
+        'Priority start (≤4 business days)',
+        'All Professional plan benefits included'
       ],
       icon: <Target className="h-6 w-6" />,
       stripeId: 'sub_bus_895',
@@ -59,7 +61,8 @@ const Pricing = () => {
         'Full Audit included (annual)',
         '2 live Outcomes at a time',
         'Quarterly micro-Impact',
-        'Monthly advisory call'
+        'Monthly advisory call',
+        'All Business plan benefits included'
       ],
       icon: <Crown className="h-6 w-6" />,
       stripeId: 'sub_bus_plus_1495',
