@@ -80,14 +80,12 @@ const Plan = () => {
         {/* Hero Section */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Simple subscription. Monthly{' '}
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 flex items-center justify-center gap-2">
+              Simple subscription. Monthly Business Uplifts
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="underline decoration-dotted decoration-2 underline-offset-4 cursor-help">
-                      Business Uplifts
-                    </span>
+                    <Info className="h-6 w-6 text-muted-foreground hover:text-primary cursor-help" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>A targeted business improvement—implemented, tested, and delivered.</p>
@@ -122,25 +120,25 @@ const Plan = () => {
                       {plan.features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-3">
                           <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                          <span className="text-sm flex items-center gap-1">
-                            {feature.includes('Project Build') && plan.id === 'business_plus' ? (
-                              <>
-                                {feature}
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <Info className="h-3 w-3 text-muted-foreground hover:text-primary cursor-help" />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p>A larger app/automation you fund by banking Business Uplifts for bigger impact projects.</p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              </>
-                            ) : (
-                              feature
-                            )}
-                          </span>
+                           <span className="text-sm flex items-center gap-1.5">
+                             {feature.includes('Project Build') && plan.id === 'business_plus' ? (
+                               <>
+                                 {feature}
+                                 <TooltipProvider>
+                                   <Tooltip>
+                                     <TooltipTrigger asChild>
+                                       <Info className="h-3.5 w-3.5 text-muted-foreground hover:text-primary cursor-help flex-shrink-0" />
+                                     </TooltipTrigger>
+                                     <TooltipContent>
+                                       <p>A larger app/automation you fund by banking Business Uplifts for bigger impact projects.</p>
+                                     </TooltipContent>
+                                   </Tooltip>
+                                 </TooltipProvider>
+                               </>
+                             ) : (
+                               feature
+                             )}
+                           </span>
                         </li>
                       ))}
                     </ul>
