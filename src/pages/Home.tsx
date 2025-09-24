@@ -255,7 +255,7 @@ const Home = () => {
               <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
                 Real Results
               </h2>
-              <p className="text-lg text-muted-foreground">Measurable improvements delivered in days, not months</p>
+              <p className="text-lg text-muted-foreground">Measurable improvements delivered in days or weeks, not months</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
