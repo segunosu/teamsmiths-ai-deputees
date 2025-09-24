@@ -93,10 +93,10 @@ const Home = () => {
                 Too busy with your business to figure out AI?
               </h1>
               <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-6 max-w-4xl mx-auto leading-relaxed">
-                We deliver practical Business Uplifts you'll see in days - faster proposals, smoother cashflow, more hours back - powered by <AIDeputee showExplanation={true} />.
+                We deliver practical Business Uplifts in days - faster proposals, smoother cashflow, more hours back, less admin.
               </p>
               <p className="text-lg text-muted-foreground mb-10 max-w-3xl mx-auto">
-                <strong>Business Uplift:</strong> A targeted business improvement—implemented, tested, and delivered each month. No jargon, no delays.
+                <strong>Business Uplift:</strong> A targeted business improvement—implemented, tested, and delivered.
               </p>
               
               {/* Credibility bar */}
