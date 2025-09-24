@@ -26,11 +26,11 @@ const Plan = () => {
       price: '£495',
       period: '/mo',
       features: [
-        '1 Business Uplift / month',
+        '1 business win / month',
         'KPI dashboard',
         'Fast start',
         'Email support',
-        'Bank Uplifts (2-month cap)'
+        'Bank wins (2-month cap)'
       ],
       cta: 'Join Professional',
       stripe_id: 'sub_pro_495'
@@ -42,7 +42,7 @@ const Plan = () => {
       period: '/mo',
       popular: true,
       features: [
-        '2 Business Uplifts / month',
+        '2 business wins / month',
         'Business KPI dashboard',
         'Weekly async check-ins',
         'Start ≤4 business days',
@@ -57,8 +57,8 @@ const Plan = () => {
       price: '£1,495',
       period: '/mo',
       features: [
-        '3 Business Uplifts / month OR',
-        '2 Uplifts + bank toward 1 Project Build/quarter',
+        '3 business wins / month OR',
+        '2 wins + bank toward 1 Project Build/quarter',
         'Named lead',
         'Monthly working session',
         'All Business plan benefits included'
@@ -71,9 +71,9 @@ const Plan = () => {
   return (
     <>
       <Helmet>
-        <title>Simple subscription. Monthly Business Uplifts. Bank for bigger Project Builds | Teamsmiths</title>
-        <meta name="description" content="Choose your Business Uplift subscription plan. Monthly targeted improvements delivered fast with AI Deputee™ and expert oversight." />
-        <meta name="keywords" content="business uplift, subscription plans, monthly improvements, AI deputee, business automation" />
+        <title>Simple subscription. Monthly business wins. Bank for bigger Project Builds | Teamsmiths</title>
+        <meta name="description" content="Choose your subscription plan. Monthly targeted improvements delivered fast with AI Deputee™ and expert oversight." />
+        <meta name="keywords" content="business wins, subscription plans, monthly improvements, AI deputee, business automation" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -81,7 +81,7 @@ const Plan = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 flex items-center justify-center gap-2">
-              Simple subscription. Monthly Business Uplifts
+              Simple subscription. Monthly business wins
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -130,7 +130,7 @@ const Plan = () => {
                                        <Info className="h-3.5 w-3.5 text-muted-foreground hover:text-primary cursor-help flex-shrink-0" />
                                      </TooltipTrigger>
                                      <TooltipContent>
-                                       <p>A larger app/automation you fund by banking Business Uplifts for bigger impact projects.</p>
+                                       <p>A larger app/automation you fund by banking business wins for bigger impact projects.</p>
                                      </TooltipContent>
                                    </Tooltip>
                                  </TooltipProvider>
@@ -174,7 +174,7 @@ const Plan = () => {
             <div className="grid md:grid-cols-2 gap-8">
               <Card className="shadow-sm border-0 bg-card/80">
                 <CardHeader>
-                  <CardTitle className="text-lg">What's a Business Uplift?</CardTitle>
+                  <CardTitle className="text-lg">What's included in each plan?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
@@ -189,14 +189,14 @@ const Plan = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    A larger app/automation you fund by banking Business Uplifts for bigger impact projects.
+                    A larger app/automation you fund by banking business wins for bigger impact projects.
                   </CardDescription>
                 </CardContent>
               </Card>
 
               <Card className="shadow-sm border-0 bg-card/80">
                 <CardHeader>
-                  <CardTitle className="text-lg">Do Business Uplifts roll over?</CardTitle>
+                  <CardTitle className="text-lg">Do business wins roll over?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>

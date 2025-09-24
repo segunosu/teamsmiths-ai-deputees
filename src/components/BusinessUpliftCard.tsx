@@ -58,7 +58,7 @@ export const BusinessUpliftCard: React.FC<BusinessUpliftCardProps> = ({
           <Link to={`/start?engage=subscription&ref=${uplift.slug}`}>Add to Plan</Link>
         </Button>
         <p className="text-xs text-muted-foreground text-center">
-          Tailored to your business during onboarding.
+          Included in your plan.
         </p>
         <Button 
           asChild 

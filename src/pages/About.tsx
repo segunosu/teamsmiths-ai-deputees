@@ -27,10 +27,10 @@ const About = () => {
   const whatWeDoItems = [
     {
       icon: <TrendingUp className="h-8 w-8 text-primary" />,
-      title: "Audit",
-      description: "A quick diagnostic to find the fastest path to visible uplift.",
+      title: "Diagnostic",
+      description: "A quick diagnostic to find the fastest path to visible results.",
       primaryLink: "/audit#start",
-      primaryLabel: "Start Audit",
+      primaryLabel: "Get Diagnostic",
       secondaryLink: "/audit",
       secondaryLabel: "Learn more"
     },
@@ -80,12 +80,12 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>About — Teamsmiths (Audit · Outcomes · Impact)</title>
+        <title>About — Teamsmiths (Diagnostic · Business Wins · Impact)</title>
         <meta 
           name="description" 
-          content="Business Audit, Business Outcomes, and Business Impact builds with AI Deputee™ assurance and human QA. More revenue, faster execution, lower costs — in weeks." 
+          content="Business diagnostic, business wins, and Business Impact builds with AI Deputee™ assurance and human QA. More revenue, faster execution, lower costs — in weeks." 
         />
-        <meta name="keywords" content="boutique consulting, business audit, outcomes, impact builds, AI deputee, SME consulting" />
+        <meta name="keywords" content="boutique consulting, business diagnostic, business wins, impact builds, AI deputee, SME consulting" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -97,7 +97,7 @@ const About = () => {
                 Business Outcomes & Impact — in weeks
               </h1>
               <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-16 max-w-4xl mx-auto leading-relaxed">
-                More revenue. Faster execution. Lower costs. Start with a Business Audit, deploy Business Outcomes, or build Business Impact when an app is the fastest path to ROI — all with <AIDeputee /> and expert oversight.
+                More revenue. Faster execution. Lower costs. Get a diagnostic, deploy business wins, or build Business Impact when an app is the fastest path to ROI — all with <AIDeputee /> and expert oversight.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
@@ -112,9 +112,9 @@ const About = () => {
                   variant="outline" 
                   size="lg" 
                   asChild
-                  onClick={() => handleCTAClick('Start Audit', '/audit#start')}
+                  onClick={() => handleCTAClick('Get Diagnostic', '/audit#start')}
                 >
-                  <Link to="/audit#start">Start Audit</Link>
+                  <Link to="/audit#start">Get Diagnostic</Link>
                 </Button>
               </div>
             </div>

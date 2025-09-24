@@ -22,37 +22,37 @@ const Solutions = () => {
   const businessFunctions = [
     {
       id: 'sales',
-      title: 'Sales Uplift',
+      title: 'Sales Wins',
       icon: <Target className="h-8 w-8 text-primary" />,
       anchor: '#sales'
     },
     {
       id: 'marketing',
-      title: 'Marketing Uplift',
+      title: 'Marketing Wins',
       icon: <BarChart3 className="h-8 w-8 text-primary" />,
       anchor: '#marketing'
     },
     {
       id: 'hr',
-      title: 'HR Uplift',
+      title: 'HR Wins',
       icon: <Users className="h-8 w-8 text-primary" />,
       anchor: '#hr'
     },
     {
       id: 'finance',
-      title: 'Finance Uplift',
+      title: 'Finance Wins',
       icon: <DollarSign className="h-8 w-8 text-primary" />,
       anchor: '#finance'
     },
     {
       id: 'operations',
-      title: 'Operations Uplift',
+      title: 'Operations Wins',
       icon: <Cog className="h-8 w-8 text-primary" />,
       anchor: '#operations'
     },
     {
       id: 'customer_service',
-      title: 'Customer Service Uplift',
+      title: 'Customer Service Wins',
       icon: <MessageSquare className="h-8 w-8 text-primary" />,
       anchor: '#customer-service'
     }
@@ -245,9 +245,9 @@ const Solutions = () => {
   return (
     <>
       <Helmet>
-        <title>Choose your next Business Uplift | Teamsmiths</title>
-        <meta name="description" content="Browse targeted Business Uplifts by function: Sales, Finance, HR, Operations, Marketing, and Customer Service. Add to your plan or get a fixed price." />
-        <meta name="keywords" content="business uplift, sales automation, finance optimization, HR tools, operations improvement, marketing automation, customer service" />
+        <title>Choose your next business win | Teamsmiths</title>
+        <meta name="description" content="Browse business wins by function: Sales, Finance, HR, Operations, Marketing, and Customer Service. Add to your plan or get a fixed price." />
+        <meta name="keywords" content="business wins, sales automation, finance optimization, HR tools, operations improvement, marketing automation, customer service" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -255,10 +255,10 @@ const Solutions = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Choose your next Business Uplift
+              Choose your next business win
             </h1>
             <p className="text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
-              <strong>Business Uplift:</strong> A targeted business improvement—implemented, tested, and delivered.
+              Browse targeted business improvements by area—each delivered fast, tested, and ready to use.
             </p>
 
             {/* Business Function Grid */}
@@ -281,13 +281,13 @@ const Solutions = () => {
           </div>
         </section>
 
-        {/* Business Uplift Sections */}
+        {/* Business Wins Sections */}
         <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto space-y-24">
             
-            {/* Sales Uplifts */}
+            {/* Sales Wins */}
             <div id="sales">
-              <h2 className="text-3xl font-bold text-center mb-12">Sales Uplift</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Sales Wins</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.sales.map((uplift) => (
                   <BusinessUpliftCard 
@@ -303,7 +303,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Sales Uplift?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Sales win?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -315,7 +315,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=sales#form">
-                        Request Custom Sales Uplift
+                        Request Custom Sales Win
                       </Link>
                     </Button>
                   </CardContent>
@@ -323,9 +323,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Finance Uplifts */}
+            {/* Finance Wins */}
             <div id="finance">
-              <h2 className="text-3xl font-bold text-center mb-12">Finance Uplift</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Finance Wins</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.finance.map((uplift) => (
                   <BusinessUpliftCard 
@@ -341,7 +341,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Finance Uplift?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Finance win?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -353,7 +353,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=finance#form">
-                        Request Custom Finance Uplift
+                        Request Custom Finance Win
                       </Link>
                     </Button>
                   </CardContent>
@@ -361,9 +361,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* HR Uplifts */}
+            {/* HR Wins */}
             <div id="hr">
-              <h2 className="text-3xl font-bold text-center mb-12">HR Uplift</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">HR Wins</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.hr.map((uplift) => (
                   <BusinessUpliftCard 
@@ -379,7 +379,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different HR Uplift?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different HR win?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -391,7 +391,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=hr#form">
-                        Request Custom HR Uplift
+                        Request Custom HR Win
                       </Link>
                     </Button>
                   </CardContent>
@@ -399,9 +399,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Operations Uplifts */}
+            {/* Operations Wins */}
             <div id="operations">
-              <h2 className="text-3xl font-bold text-center mb-12">Operations Uplift</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Operations Wins</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.operations.map((uplift) => (
                   <BusinessUpliftCard 
@@ -417,7 +417,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Operations Uplift?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Operations win?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -429,7 +429,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=operations#form">
-                        Request Custom Operations Uplift
+                        Request Custom Operations Win
                       </Link>
                     </Button>
                   </CardContent>
@@ -437,9 +437,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Marketing Uplifts */}
+            {/* Marketing Wins */}
             <div id="marketing">
-              <h2 className="text-3xl font-bold text-center mb-12">Marketing Uplift</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Marketing Wins</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.marketing.map((uplift) => (
                   <Card key={uplift.slug} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
@@ -481,7 +481,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Marketing Uplift?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Marketing win?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -493,7 +493,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=marketing#form">
-                        Request Custom Marketing Uplift
+                        Request Custom Marketing Win
                       </Link>
                     </Button>
                   </CardContent>
@@ -501,9 +501,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Customer Service Uplifts */}
+            {/* Customer Service Wins */}
             <div id="customer-service">
-              <h2 className="text-3xl font-bold text-center mb-12">Customer Service Uplift</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Customer Service Wins</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.customer_service.map((uplift) => (
                   <Card key={uplift.slug} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
@@ -545,7 +545,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Customer Service Uplift?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Customer Service win?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -557,7 +557,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=customer_service#form">
-                        Request Custom Customer Service Uplift
+                        Request Custom Customer Service Win
                       </Link>
                     </Button>
                   </CardContent>
@@ -569,11 +569,11 @@ const Solutions = () => {
             <div className="mt-24 text-center">
               <h2 className="text-3xl font-bold mb-6">Don't see what you need?</h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Every business is unique. Tell us about your specific challenge and we'll create a custom Business Uplift just for you.
+                Every business is unique. Tell us about your specific challenge and we'll create a custom business win just for you.
               </p>
               <Button asChild size="lg" className="mb-4">
                 <Link to="/brief-builder?mode=quote&origin=solutions&category=custom#form">
-                  Request Custom Business Uplift
+                  Request Custom Win
                 </Link>
               </Button>
               <p className="text-sm text-muted-foreground">
