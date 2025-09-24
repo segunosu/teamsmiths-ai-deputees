@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare } from 'lucide-react';
+import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 import { BusinessUpliftCard } from '@/components/BusinessUpliftCard';
@@ -233,6 +233,30 @@ const Solutions = () => {
                     onBusinessUpliftClick={handleBusinessUpliftClick}
                   />
                 ))}
+                
+                {/* Custom Sales Request Card */}
+                <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 border-dashed border-2 border-muted-foreground/30">
+                  <CardHeader className="pb-4">
+                    <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
+                      <Plus className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">Need a different Sales Uplift?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base text-center">
+                      Tell us about your specific sales challenge and we'll create a custom solution.
+                    </CardDescription>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      className="w-full"
+                    >
+                      <Link to="/brief-builder?mode=quote&origin=solutions&category=sales#form">
+                        Request Custom Sales Uplift
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
@@ -247,6 +271,30 @@ const Solutions = () => {
                     onBusinessUpliftClick={handleBusinessUpliftClick}
                   />
                 ))}
+                
+                {/* Custom Finance Request Card */}
+                <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 border-dashed border-2 border-muted-foreground/30">
+                  <CardHeader className="pb-4">
+                    <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
+                      <Plus className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">Need a different Finance Uplift?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base text-center">
+                      Tell us about your specific finance challenge and we'll create a custom solution.
+                    </CardDescription>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      className="w-full"
+                    >
+                      <Link to="/brief-builder?mode=quote&origin=solutions&category=finance#form">
+                        Request Custom Finance Uplift
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
@@ -261,6 +309,68 @@ const Solutions = () => {
                     onBusinessUpliftClick={handleBusinessUpliftClick}
                   />
                 ))}
+                
+                {/* Custom HR Request Card */}
+                <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 border-dashed border-2 border-muted-foreground/30">
+                  <CardHeader className="pb-4">
+                    <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
+                      <Plus className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">Need a different HR Uplift?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base text-center">
+                      Tell us about your specific HR challenge and we'll create a custom solution.
+                    </CardDescription>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      className="w-full"
+                    >
+                      <Link to="/brief-builder?mode=quote&origin=solutions&category=hr#form">
+                        Request Custom HR Uplift
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Operations Uplifts */}
+            <div id="operations">
+              <h2 className="text-3xl font-bold text-center mb-12">Operations Uplift</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {businessUplifts.operations.map((uplift) => (
+                  <BusinessUpliftCard 
+                    key={uplift.slug} 
+                    uplift={uplift}
+                    onBusinessUpliftClick={handleBusinessUpliftClick}
+                  />
+                ))}
+                
+                {/* Custom Operations Request Card */}
+                <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 border-dashed border-2 border-muted-foreground/30">
+                  <CardHeader className="pb-4">
+                    <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
+                      <Plus className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">Need a different Operations Uplift?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base text-center">
+                      Tell us about your specific operations challenge and we'll create a custom solution.
+                    </CardDescription>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      className="w-full"
+                    >
+                      <Link to="/brief-builder?mode=quote&origin=solutions&category=operations#form">
+                        Request Custom Operations Uplift
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
@@ -301,6 +411,30 @@ const Solutions = () => {
                     </CardContent>
                   </Card>
                 ))}
+                
+                {/* Custom Marketing Request Card */}
+                <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 border-dashed border-2 border-muted-foreground/30">
+                  <CardHeader className="pb-4">
+                    <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
+                      <Plus className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">Need a different Marketing Uplift?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base text-center">
+                      Tell us about your specific marketing challenge and we'll create a custom solution.
+                    </CardDescription>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      className="w-full"
+                    >
+                      <Link to="/brief-builder?mode=quote&origin=solutions&category=marketing#form">
+                        Request Custom Marketing Uplift
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
@@ -341,7 +475,47 @@ const Solutions = () => {
                     </CardContent>
                   </Card>
                 ))}
+                
+                {/* Custom Customer Service Request Card */}
+                <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 border-dashed border-2 border-muted-foreground/30">
+                  <CardHeader className="pb-4">
+                    <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
+                      <Plus className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">Need a different Customer Service Uplift?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base text-center">
+                      Tell us about your specific customer service challenge and we'll create a custom solution.
+                    </CardDescription>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      className="w-full"
+                    >
+                      <Link to="/brief-builder?mode=quote&origin=solutions&category=customer_service#form">
+                        Request Custom Customer Service Uplift
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
+            </div>
+
+            {/* General Custom Request Section */}
+            <div className="mt-24 text-center">
+              <h2 className="text-3xl font-bold mb-6">Don't see what you need?</h2>
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Every business is unique. Tell us about your specific challenge and we'll create a custom Business Uplift just for you.
+              </p>
+              <Button asChild size="lg" className="mb-4">
+                <Link to="/brief-builder?mode=quote&origin=solutions&category=custom#form">
+                  Request Custom Business Uplift
+                </Link>
+              </Button>
+              <p className="text-sm text-muted-foreground">
+                Fixed price quote delivered in 24 hours
+              </p>
             </div>
 
           </div>
