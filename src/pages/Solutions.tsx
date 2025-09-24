@@ -351,7 +351,7 @@ const Solutions = () => {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Real Results from Real Businesses</h2>
+              <h2 className="text-3xl font-bold mb-4">Real Results</h2>
               <p className="text-lg text-muted-foreground">Measurable improvements delivered in days, not months</p>
             </div>
 

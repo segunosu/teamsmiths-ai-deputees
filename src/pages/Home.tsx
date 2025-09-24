@@ -248,13 +248,14 @@ const Home = () => {
           </div>
         </section>
 
-        {/* SECTION 4 — RESULTS IN NUMBERS */}
+        {/* REAL RESULTS SECTION */}
         <section id="results" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                Results in Numbers
+                Real Results
               </h2>
+              <p className="text-lg text-muted-foreground">Measurable improvements delivered in days, not months</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -331,9 +332,48 @@ const Home = () => {
               </Card>
             </div>
 
+            {/* Additional Case Studies Row */}
+            <div className="grid md:grid-cols-2 gap-6 mb-12">
+              <Card 
+                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
+                onClick={() => handleResultsTileView('retail_chain')}
+              >
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Lisa, Retail Chain</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-success">£18k</div>
+                    <div className="text-sm">additional monthly revenue</div>
+                    <div className="text-2xl font-bold text-success">-41%</div>
+                    <div className="text-sm">admin hours</div>
+                    <div className="text-xs text-muted-foreground mt-2">New Hire Onboarding Kit (3 weeks)</div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
+                onClick={() => handleResultsTileView('tech_startup')}
+              >
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">David, Tech Startup</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="text-2xl font-bold text-success">+29%</div>
+                    <div className="text-sm">client response rate</div>
+                    <div className="text-2xl font-bold text-success">12 hrs</div>
+                    <div className="text-sm">saved weekly</div>
+                    <div className="text-xs text-muted-foreground mt-2">Follow-Up Engine (10 days)</div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
             <div className="text-center mb-12">
               <p className="text-sm text-muted-foreground">
-                Real client results. Names changed for privacy. Full case studies available under NDA.
+                Client results tracked monthly. Names changed for privacy. Full case studies available under NDA.
               </p>
             </div>
           </div>
