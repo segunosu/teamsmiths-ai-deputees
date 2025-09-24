@@ -55,20 +55,20 @@ export const BusinessUpliftCard: React.FC<BusinessUpliftCardProps> = ({
           className="w-full"
           onClick={() => onBusinessUpliftClick('add_to_plan', uplift.slug)}
         >
-          <Link to={`/start?engage=subscription&ref=${uplift.slug}`}>Add to Plan</Link>
+          <Link to="/pricing">Add to Plan</Link>
         </Button>
         <p className="text-xs text-muted-foreground text-center">
-          Included in your plan.
+          Included in your monthly plan.
         </p>
         <Button 
           asChild 
-          variant="outline" 
+          variant="ghost" 
           size="sm" 
-          className="w-full"
+          className="w-full text-muted-foreground hover:text-foreground"
           onClick={() => onBusinessUpliftClick('fixed_price', uplift.slug)}
         >
           <Link to={`/brief-builder?mode=quote&origin=solutions&ref=${uplift.slug}#form`}>
-            Prefer a project? Get a fixed price in 24h
+            Or get a fixed price quote
           </Link>
         </Button>
       </CardContent>
