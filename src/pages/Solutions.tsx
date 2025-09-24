@@ -455,20 +455,20 @@ const Solutions = () => {
                         className="w-full"
                         onClick={() => handleBusinessUpliftClick('add_to_plan', uplift.slug)}
                       >
-                        <Link to={`/start?engage=subscription&ref=${uplift.slug}`}>Add to Plan</Link>
+                        <Link to={`/pricing?ref=${uplift.slug}`}>Subscribe to Access</Link>
                       </Button>
                       <p className="text-xs text-muted-foreground text-center">
-                        Tailored to your business during onboarding.
+                        Included in your monthly plan.
                       </p>
                       <Button 
                         asChild 
-                        variant="outline" 
+                        variant="ghost" 
                         size="sm" 
-                        className="w-full"
+                        className="w-full text-muted-foreground hover:text-foreground"
                         onClick={() => handleBusinessUpliftClick('fixed_price', uplift.slug)}
                       >
                         <Link to={`/brief-builder?mode=quote&origin=solutions&ref=${uplift.slug}#form`}>
-                          Prefer a project? Get a fixed price in 24h
+                          Or get a fixed price quote
                         </Link>
                       </Button>
                     </CardContent>
@@ -519,20 +519,20 @@ const Solutions = () => {
                         className="w-full"
                         onClick={() => handleBusinessUpliftClick('add_to_plan', uplift.slug)}
                       >
-                        <Link to={`/start?engage=subscription&ref=${uplift.slug}`}>Add to Plan</Link>
+                        <Link to={`/pricing?ref=${uplift.slug}`}>Subscribe to Access</Link>
                       </Button>
                       <p className="text-xs text-muted-foreground text-center">
-                        Tailored to your business during onboarding.
+                        Included in your monthly plan.
                       </p>
                       <Button 
                         asChild 
-                        variant="outline" 
+                        variant="ghost" 
                         size="sm" 
-                        className="w-full"
+                        className="w-full text-muted-foreground hover:text-foreground"
                         onClick={() => handleBusinessUpliftClick('fixed_price', uplift.slug)}
                       >
                         <Link to={`/brief-builder?mode=quote&origin=solutions&ref=${uplift.slug}#form`}>
-                          Prefer a project? Get a fixed price in 24h
+                          Or get a fixed price quote
                         </Link>
                       </Button>
                     </CardContent>
