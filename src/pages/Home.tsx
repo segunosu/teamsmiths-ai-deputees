@@ -142,7 +142,7 @@ const Home = () => {
                 Business Wins
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Unlock a measurable business win every month — examples we can deliver inside your plan
+                Unlock measurable business wins every month — examples we deliver inside your plan
               </p>
             </div>
 
