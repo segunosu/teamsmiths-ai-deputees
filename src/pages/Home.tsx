@@ -34,32 +34,32 @@ const Home = () => {
   const quickOutcomes = [
     {
       title: "Proposal Speed-Up",
-      benefit: "Draft proposals from meetings — delivered in 3–7 days",
+      benefit: "Draft proposals from meetings — delivered in 7–14 days",
       slug: "proposal_speedup"
     },
     {
       title: "Quote Booster", 
-      benefit: "Faster quotes; higher win rate — delivered in 5–10 days",
+      benefit: "Faster quotes; higher win rate — delivered in 10–14 days",
       slug: "quote_booster"
     },
     {
       title: "Cashflow Nudges",
-      benefit: "Polite invoice reminders; lower DSO — delivered in 3–5 days",
+      benefit: "Polite invoice reminders; lower DSO — delivered in 7–10 days",
       slug: "cashflow_nudges"
     },
     {
       title: "New Hire Onboarding Kit",
-      benefit: "30-day ramp plan + SOPs — delivered in 7–10 days",
+      benefit: "30-day ramp plan + SOPs — delivered in 10–14 days",
       slug: "onboarding_kit"
     },
     {
       title: "Follow-Up Engine",
-      benefit: "Auto nudges; no lost deals — delivered in 3–7 days",
+      benefit: "Auto nudges; no lost deals — delivered in 7–10 days",
       slug: "follow_up_engine"
     },
     {
       title: "Meeting-to-Minutes",
-      benefit: "Clean actions + tasks in your tools — delivered in 3–7 days",
+      benefit: "Clean actions + tasks in your tools — delivered in 7–14 days",
       slug: "meeting_to_minutes"
     }
   ];
@@ -255,7 +255,7 @@ const Home = () => {
               <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
                 Real Results
               </h2>
-              <p className="text-lg text-muted-foreground">Measurable improvements delivered in days or weeks, not months</p>
+              <p className="text-lg text-muted-foreground">Measurable improvements delivered in weeks, not months</p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -290,7 +290,7 @@ const Home = () => {
                     <div className="text-sm">time-to-quote</div>
                     <div className="text-2xl font-bold text-success">+11%</div>
                     <div className="text-sm">win rate</div>
-                    <div className="text-xs text-muted-foreground mt-2">Quote Booster (3 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Quote Booster (2 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -308,7 +308,7 @@ const Home = () => {
                     <div className="text-sm">DSO (days)</div>
                     <div className="text-2xl font-bold text-success">-22%</div>
                     <div className="text-sm">aged invoices</div>
-                    <div className="text-xs text-muted-foreground mt-2">Cashflow Nudges (4 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Cashflow Nudges (2 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -326,7 +326,7 @@ const Home = () => {
                     <div className="text-sm">saved per week</div>
                     <div className="text-2xl font-bold text-success">+45%</div>
                     <div className="text-sm">team efficiency</div>
-                    <div className="text-xs text-muted-foreground mt-2">Meeting-to-Minutes (first month)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Meeting-to-Minutes (2 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -347,7 +347,7 @@ const Home = () => {
                     <div className="text-sm">additional monthly revenue</div>
                     <div className="text-2xl font-bold text-success">-41%</div>
                     <div className="text-sm">admin hours</div>
-                    <div className="text-xs text-muted-foreground mt-2">New Hire Onboarding Kit (3 weeks)</div>
+                    <div className="text-xs text-muted-foreground mt-2">New Hire Onboarding Kit (2 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
@@ -365,7 +365,7 @@ const Home = () => {
                     <div className="text-sm">client response rate</div>
                     <div className="text-2xl font-bold text-success">12 hrs</div>
                     <div className="text-sm">saved weekly</div>
-                    <div className="text-xs text-muted-foreground mt-2">Follow-Up Engine (10 days)</div>
+                    <div className="text-xs text-muted-foreground mt-2">Follow-Up Engine (2 weeks)</div>
                   </div>
                 </CardContent>
               </Card>
