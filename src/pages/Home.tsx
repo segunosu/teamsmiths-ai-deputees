@@ -92,11 +92,8 @@ const Home = () => {
               <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
                 Too busy with your business to figure out AI?
               </h1>
-              <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-6 max-w-4xl mx-auto leading-relaxed">
-                We deliver practical Business Uplifts in days - faster proposals, smoother cashflow, more hours back, less admin.
-              </p>
-              <p className="text-lg text-muted-foreground mb-10 max-w-3xl mx-auto">
-                <strong>Business Uplift:</strong> A targeted business improvement—implemented, tested, and delivered.
+              <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
+                Get instant business wins—faster proposals, better cashflow, and more time back—delivered by your AI-powered team.
               </p>
               
               {/* Credibility bar */}
@@ -156,7 +153,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-lg leading-relaxed">
-                    Pick your focus area and we'll tailor a Business Uplift to your specific needs.
+                    Pick your focus area and we'll tailor a business win to your specific needs.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -170,7 +167,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-lg leading-relaxed">
-                    Targeted Business Uplift delivered fast, tested, and ready to use.
+                    Targeted business results delivered fast, tested, and ready to use.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -212,7 +209,7 @@ const Home = () => {
                 What you get this month
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Examples of Business Uplifts we can deliver inside your plan
+                Examples of business wins we can deliver inside your plan
               </p>
             </div>
 
@@ -242,7 +239,7 @@ const Home = () => {
 
             <div className="text-center mt-12">
               <Button asChild variant="outline" size="lg">
-                <Link to="/solutions">See all Solutions</Link>
+                <Link to="/solutions">See our Menu</Link>
               </Button>
             </div>
           </div>
@@ -383,7 +380,7 @@ const Home = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-10">
-              Ready to get your first Business Uplift?
+              Ready to get your first business win?
             </h2>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
