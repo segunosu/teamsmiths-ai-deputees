@@ -113,11 +113,11 @@ const Home = () => {
                   size="lg" 
                   className="text-lg px-10 py-6 h-auto"
                   onClick={() => {
-                    handleHeroCTA('See how it works');
-                    scrollToSection('how');
+                    handleHeroCTA('See what you get');
+                    scrollToSection('menu');
                   }}
                 >
-                  See how it works
+                  See what you get
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button 
@@ -133,73 +133,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
-        {/* HOW IT WORKS */}
-        <section id="how" className="py-24 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                How it works
-              </h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                <CardHeader className="pb-6">
-                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                    <Target className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">Tell us your business priority</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-lg leading-relaxed">
-                    Pick your focus area and we'll tailor a business win to your specific needs.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                <CardHeader className="pb-6">
-                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                    <Zap className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">We deliver in days</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-lg leading-relaxed">
-                    Targeted business results delivered fast, tested, and ready to use. Human experts oversee every AI output.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                <CardHeader className="pb-6">
-                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                    <BarChart3 className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">Track the improvement</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-lg leading-relaxed">
-                    See gains, not guesswork. Monitor real KPI improvements month over month.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="text-center mt-16">
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-                  <Link to="/pricing#pricing">Get Started (from £495/month)</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
-                  <Link to="/brief-builder?mode=quote#form">Prefer a project? Get a fixed price in 24h</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
 
         {/* BUSINESS WINS */}
         <section id="menu" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
@@ -244,6 +177,72 @@ const Home = () => {
               <p className="text-sm text-muted-foreground mt-4">
                 Don't see your challenge? Just ask.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* HOW IT WORKS */}
+        <section id="how" className="py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-20">
+              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
+                How it works
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
+                <CardHeader className="pb-6">
+                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
+                    <Target className="h-8 w-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">Tell us your business priority</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-lg leading-relaxed">
+                    Pick from the wins above (or tell us your specific challenge) and we'll tailor a solution to your needs.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+
+              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
+                <CardHeader className="pb-6">
+                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
+                    <Zap className="h-8 w-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">We deliver in days</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-lg leading-relaxed">
+                    Targeted business results delivered fast, tested, and ready to use. Human experts oversee every AI output.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+
+              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
+                <CardHeader className="pb-6">
+                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
+                    <BarChart3 className="h-8 w-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">Track the improvement</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-lg leading-relaxed">
+                    See gains, not guesswork. Monitor real KPI improvements month over month.
+                  </CardDescription>
+                </CardContent>
+                </Card>
+            </div>
+
+            <div className="text-center mt-16">
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
+                  <Link to="/pricing#pricing">Get Started (from £495/month)</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
+                  <Link to="/brief-builder?mode=quote#form">Prefer a project? Get a fixed price in 24h</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
