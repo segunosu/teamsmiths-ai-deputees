@@ -264,7 +264,7 @@ const Home = () => {
                 onClick={() => handleResultsTileView('agency_uk')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Sarah, Marketing Agency</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Sarah, Agency Owner</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -282,7 +282,7 @@ const Home = () => {
                 onClick={() => handleResultsTileView('trades_uk')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Marcus, Construction</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Marcus, Construction Owner</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -300,7 +300,7 @@ const Home = () => {
                 onClick={() => handleResultsTileView('pro_services_eu')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Anna, Consulting Firm</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Anna, Consulting Director</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -339,7 +339,7 @@ const Home = () => {
                 onClick={() => handleResultsTileView('retail_chain')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Lisa, Retail Chain</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Lisa, Retail Owner</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -357,7 +357,7 @@ const Home = () => {
                 onClick={() => handleResultsTileView('tech_startup')}
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">David, Tech Startup</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">David, Startup Founder</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
@@ -373,7 +373,7 @@ const Home = () => {
 
             <div className="text-center mb-12">
               <p className="text-sm text-muted-foreground">
-                Client results tracked monthly. Names changed for privacy. Full case studies available under NDA.
+                Results from our clients, tracked monthly.
               </p>
             </div>
           </div>
