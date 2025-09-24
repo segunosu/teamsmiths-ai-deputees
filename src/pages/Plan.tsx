@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle, ArrowRight, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
@@ -58,7 +58,7 @@ const Plan = () => {
       period: '/mo',
       features: [
         '3 Business Uplifts / month OR',
-        '2 Uplifts + bank toward 1 Project Build*/quarter',
+        '2 Uplifts + bank toward 1 Project Build/quarter',
         'Named lead',
         'Monthly working session',
         'All Business plan benefits included'
@@ -109,13 +109,15 @@ const Plan = () => {
                       {plan.features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-3">
                           <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">
-                            {feature.includes('Project Build*') ? (
+                          <span className="text-sm flex items-center gap-1">
+                            {feature.includes('Project Build') && plan.id === 'business_plus' ? (
                               <>
-                                {feature.replace('Project Build*', 'Project Build')}
+                                {feature}
                                 <TooltipProvider>
                                   <Tooltip>
-                                    <TooltipTrigger className="text-primary cursor-help">*</TooltipTrigger>
+                                    <TooltipTrigger asChild>
+                                      <Info className="h-3 w-3 text-muted-foreground hover:text-primary cursor-help" />
+                                    </TooltipTrigger>
                                     <TooltipContent>
                                       <p>A larger app/automation you fund by banking Business Uplifts for bigger impact projects.</p>
                                     </TooltipContent>
