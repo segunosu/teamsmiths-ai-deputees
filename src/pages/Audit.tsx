@@ -33,7 +33,7 @@ const Audit = () => {
               <span className="text-xl font-semibold">5 business days</span>
             </div>
             <p className="text-xl sm:text-2xl text-foreground/80 font-medium max-w-2xl mx-auto leading-relaxed">
-              A quick, neutral diagnostic to find the fastest path to visible uplift.
+              A quick, neutral diagnostic - the fastest path to visible uplift.
             </p>
           </div>
 
