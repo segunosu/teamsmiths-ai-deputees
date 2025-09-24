@@ -343,10 +343,10 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    <div className="text-2xl font-bold text-success">£18k</div>
-                    <div className="text-sm">additional monthly revenue</div>
-                    <div className="text-2xl font-bold text-success">-41%</div>
-                    <div className="text-sm">admin hours</div>
+                    <div className="text-2xl font-bold text-success">-50%</div>
+                    <div className="text-sm">time to full productivity</div>
+                    <div className="text-2xl font-bold text-success">+35%</div>
+                    <div className="text-sm">new hire retention</div>
                     <div className="text-xs text-muted-foreground mt-2">New Hire Onboarding Kit (3.5 weeks)</div>
                   </div>
                 </CardContent>
