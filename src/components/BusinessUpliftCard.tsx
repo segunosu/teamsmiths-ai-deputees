@@ -55,7 +55,7 @@ export const BusinessUpliftCard: React.FC<BusinessUpliftCardProps> = ({
           className="w-full"
           onClick={() => onBusinessUpliftClick('add_to_plan', uplift.slug)}
         >
-          <Link to="/pricing">Add to Plan</Link>
+          <Link to={`/pricing?ref=${uplift.slug}`}>Subscribe to Access</Link>
         </Button>
         <p className="text-xs text-muted-foreground text-center">
           Included in your monthly plan.
