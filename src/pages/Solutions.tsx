@@ -106,6 +106,15 @@ const Solutions = () => {
         delivered: 'Automated categorization rules + accounting integration',
         timeframe: '5–7 days',
         outcome: 'Reduced admin time, accurate books'
+      },
+      {
+        slug: 'budget_tracker',
+        title: 'Budget Tracker & Alerts',
+        description: 'Real-time budget monitoring with automated alerts when approaching limits — delivered in 3–5 days',
+        benefit: '25% better budget control with early warning system.',
+        delivered: 'Budget monitoring dashboard + alert system',
+        timeframe: '3–5 days',
+        outcome: 'Better financial control, no budget surprises'
       }
     ],
     hr: [
@@ -126,6 +135,15 @@ const Solutions = () => {
         delivered: 'Weekly rhythm framework + priority tracker',
         timeframe: '5–7 days',
         outcome: 'More focused team, fewer meetings'
+      },
+      {
+        slug: 'performance_review_system',
+        title: 'Performance Review System',
+        description: 'Structured quarterly review process with goal tracking — delivered in 5–7 days',
+        benefit: '40% improvement in goal achievement with clear feedback loops.',
+        delivered: 'Review templates + goal tracking system',
+        timeframe: '5–7 days',
+        outcome: 'Better performance, clearer expectations'
       }
     ],
     operations: [
@@ -146,6 +164,15 @@ const Solutions = () => {
         delivered: 'Searchable knowledge base + content migration',
         timeframe: '7–10 days',
         outcome: 'Faster onboarding, consistent processes'
+      },
+      {
+        slug: 'task_automation_hub',
+        title: 'Task Automation Hub',
+        description: 'Automated workflows for repetitive tasks across your tools — delivered in 5–10 days',
+        benefit: '20 hours saved weekly on manual tasks with 95% accuracy.',
+        delivered: 'Custom automation workflows + integration setup',
+        timeframe: '5–10 days',
+        outcome: 'Less manual work, fewer errors'
       }
     ],
     marketing: [
@@ -157,6 +184,24 @@ const Solutions = () => {
         delivered: 'Objection response system + training materials',
         timeframe: '5–7 days',
         outcome: 'More confident sales calls, higher conversion'
+      },
+      {
+        slug: 'lead_nurture_engine',
+        title: 'Lead Nurture Engine',
+        description: 'Automated email sequences that warm leads until they\'re ready to buy — delivered in 5–7 days',
+        benefit: '35% more leads convert with consistent nurturing.',
+        delivered: 'Email automation + lead scoring system',
+        timeframe: '5–7 days',
+        outcome: 'Warmer leads, higher conversion rates'
+      },
+      {
+        slug: 'content_repurposer',
+        title: 'Content Repurposer',
+        description: 'Turn one piece of content into 5+ formats automatically — delivered in 3–5 days',
+        benefit: '5x more content output with same effort and budget.',
+        delivered: 'Content automation + distribution system',
+        timeframe: '3–5 days',  
+        outcome: 'More content, wider reach'
       }
     ],
     customer_service: [
@@ -168,6 +213,24 @@ const Solutions = () => {
         delivered: 'FAQ automation + deflection system',
         timeframe: '5–7 days',
         outcome: 'Less support burden, happier customers'
+      },
+      {
+        slug: 'ticket_triage_system',
+        title: 'Ticket Triage System',
+        description: 'Smart ticket routing and priority assignment — delivered in 3–5 days',
+        benefit: '50% faster response times with better ticket organization.',
+        delivered: 'Automated triage rules + routing system',
+        timeframe: '3–5 days',
+        outcome: 'Faster resolutions, better customer experience'
+      },
+      {
+        slug: 'feedback_collector',
+        title: 'Customer Feedback Collector',
+        description: 'Automated feedback collection with sentiment analysis — delivered in 5–7 days',
+        benefit: '3x more customer feedback with actionable insights.',
+        delivered: 'Feedback automation + sentiment dashboard',
+        timeframe: '5–7 days',
+        outcome: 'Better customer insights, proactive improvements'
       }
     ]
   };
@@ -195,7 +258,7 @@ const Solutions = () => {
               Choose your next Business Uplift
             </h1>
             <p className="text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
-              <strong>Business Uplift:</strong> A targeted business improvement—implemented, tested, and delivered in 3–10 days. No jargon, no delays.
+              <strong>Business Uplift:</strong> A targeted business improvement—implemented, tested, and delivered.
             </p>
 
             {/* Business Function Grid */}
