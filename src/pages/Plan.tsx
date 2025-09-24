@@ -124,7 +124,7 @@ const Plan = () => {
             {/* Project Alternative */}
             <div className="text-center mt-16">
               <p className="text-muted-foreground mb-4">
-                Prefer a one-off project? Most projects £1.9k–£2.5k; bigger builds from £3.5k. Get a fixed price in 24h.
+                Prefer a one-off project?  Speak to us and get a fixed price.
               </p>
               <Button asChild variant="outline">
                 <Link to="/brief-builder?mode=quote#form">Get a fixed price</Link>
