@@ -25,7 +25,7 @@ const PlanConfirmation = () => {
       price: '£495',
       period: '/mo',
       description: 'Perfect for getting started with business wins',
-      winCount: '1 business win',
+      winCount: '1 business win every month',
       features: [
         '1 business win / month',
         'KPI dashboard to track progress',
@@ -45,7 +45,7 @@ const PlanConfirmation = () => {
       price: '£895',
       period: '/mo',
       description: 'Our most popular plan for growing businesses',
-      winCount: '2 business wins',
+      winCount: '2 business wins every month',
       features: [
         '2 business wins / month',
         'Business KPI dashboard with detailed analytics',
@@ -65,7 +65,7 @@ const PlanConfirmation = () => {
       price: '£1,495',
       period: '/mo',
       description: 'For teams that need maximum impact and support',
-      winCount: '3 business wins',
+      winCount: '3 business wins every month',
       features: [
         '3 business wins / month OR',
         '2 wins + bank toward 1 Project Build/quarter',
