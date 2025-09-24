@@ -190,7 +190,7 @@ const Home = () => {
             <div className="text-center mt-16">
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-                  <Link to="/pricing#pricing">Get Started (from £2,500/month)</Link>
+                  <Link to="/pricing#pricing">Get Started (from £495/month)</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
                   <Link to="/brief-builder?mode=quote#form">Prefer a project? Get a fixed price in 24h</Link>
@@ -392,7 +392,7 @@ const Home = () => {
                 size="lg" 
                 className="text-lg px-10 py-6 h-auto"
               >
-                <Link to="/start">Get Started (from £2,500/month)</Link>
+                <Link to="/start">Get Started (from £495/month)</Link>
               </Button>
               <Button 
                 asChild 
