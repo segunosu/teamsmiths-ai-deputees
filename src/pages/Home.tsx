@@ -167,7 +167,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-lg leading-relaxed">
-                    Targeted business results delivered fast, tested, and ready to use.
+                    Targeted business results delivered fast, tested, and ready to use. Human experts oversee every AI output.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -190,7 +190,7 @@ const Home = () => {
             <div className="text-center mt-16">
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
-                  <Link to="/pricing#pricing">Join the Plan</Link>
+                  <Link to="/pricing#pricing">Get Started (from £2,500/month)</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
                   <Link to="/brief-builder?mode=quote#form">Prefer a project? Get a fixed price in 24h</Link>
@@ -201,15 +201,15 @@ const Home = () => {
         </section>
 
 
-        {/* WHAT YOU GET THIS MONTH */}
+        {/* BUSINESS WINS */}
         <section id="menu" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                What you get this month
+                Business Wins
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Examples of business wins we can deliver inside your plan
+                Unlock a measurable business win every month — examples we can deliver inside your plan
               </p>
             </div>
 
@@ -239,8 +239,11 @@ const Home = () => {
 
             <div className="text-center mt-12">
               <Button asChild variant="outline" size="lg">
-                <Link to="/solutions">See our Menu</Link>
+                <Link to="/solutions">See All Solutions</Link>
               </Button>
+              <p className="text-sm text-muted-foreground mt-4">
+                Don't see your challenge? Just ask.
+              </p>
             </div>
           </div>
         </section>
@@ -389,7 +392,7 @@ const Home = () => {
                 size="lg" 
                 className="text-lg px-10 py-6 h-auto"
               >
-                <Link to="/start">Start now</Link>
+                <Link to="/start">Get Started (from £2,500/month)</Link>
               </Button>
               <Button 
                 asChild 
@@ -398,7 +401,7 @@ const Home = () => {
                 className="text-lg px-10 py-6 h-auto"
               >
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Or talk to us
+                  Talk to a Strategist
                 </a>
               </Button>
             </div>

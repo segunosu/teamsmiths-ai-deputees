@@ -22,19 +22,17 @@ export const Footer = () => {
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
               <li><Link to="/plan" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Plan</Link></li>
-              <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Menu</Link></li>
+              <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Solutions</Link></li>
               <li><Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About</Link></li>
             </ul>
           </div>
 
-          {/* Support */}
+          {/* Help & Support */}
           <div>
-            <h3 className="font-semibold mb-4 text-primary-foreground">Support</h3>
+            <h3 className="font-semibold mb-4 text-primary-foreground">Help & Support</h3>
             <ul className="space-y-3">
               <li><Link to="/help" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Help Center</Link></li>
-              <li><Link to="/faq" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">FAQ</Link></li>
-              <li><Link to="/support" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact Support</Link></li>
-              <li><Link to="/documentation" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Documentation</Link></li>
+              <li><Link to="/contact" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact Support</Link></li>
             </ul>
           </div>
 
