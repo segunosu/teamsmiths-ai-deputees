@@ -391,7 +391,7 @@ const Home = () => {
                 size="lg" 
                 className="text-lg px-10 py-6 h-auto"
               >
-                <Link to="/start">Get Started (from £495/month)</Link>
+                <Link to="/pricing#pricing">Get Started (from £495/month)</Link>
               </Button>
               <Button 
                 asChild 
