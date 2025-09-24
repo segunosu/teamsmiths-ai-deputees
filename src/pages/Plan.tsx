@@ -81,7 +81,20 @@ const Plan = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Simple subscription. Monthly Business Uplifts.
+              Simple subscription. Monthly{' '}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="underline decoration-dotted decoration-2 underline-offset-4 cursor-help">
+                      Business Uplifts
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>A targeted business improvement—implemented, tested, and delivered.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              .
             </h1>
           </div>
         </section>
