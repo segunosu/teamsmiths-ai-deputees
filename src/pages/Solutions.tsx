@@ -7,6 +7,7 @@ import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus } from '
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 import { BusinessUpliftCard } from '@/components/BusinessUpliftCard';
+import { AIDeputee } from '@/components/AIDeputee';
 
 const Solutions = () => {
   const { trackEvent } = useAnalytics();
@@ -61,6 +62,15 @@ const Solutions = () => {
   const businessUplifts = {
     sales: [
       {
+        slug: 'sales_deputee_deal_closer',
+        title: 'AI Deputee™ – Deal Closer',
+        description: 'Automated sales follow-up and risk detection — delivered in 7–10 days',
+        benefit: 'CRM/email scan, action suggestions, custom follow-ups',
+        delivered: 'Smart follow-up system + risk detection dashboard',
+        timeframe: '7–10 days',
+        outcome: 'No missed deals, increased close rate, 3+ hours back/week'
+      },
+      {
         slug: 'proposal_speed_up',
         title: 'Proposal Speed-Up',
         description: 'Automated proposal creation from meeting notes and client briefs — delivered in 7–14 days',
@@ -89,6 +99,15 @@ const Solutions = () => {
       }
     ],
     finance: [
+      {
+        slug: 'finance_deputee_cashflow_sentinel',
+        title: 'AI Deputee™ – Cashflow Sentinel',
+        description: 'Automated invoice reminders and financial oversight — delivered in 7–10 days',
+        benefit: 'Reminders, expense tracking, flagging payers/issues',
+        delivered: 'Financial oversight system + automated reminders',
+        timeframe: '7–10 days',
+        outcome: 'Faster payments, smoother cash flow'
+      },
       {
         slug: 'cashflow_nudges',
         title: 'Cashflow Nudges',
@@ -119,6 +138,15 @@ const Solutions = () => {
     ],
     hr: [
       {
+        slug: 'hr_deputee_onboarding_accelerator',
+        title: 'AI Deputee™ – Onboarding Accelerator',
+        description: 'Automated onboarding & milestone tracking — delivered in 10–14 days',
+        benefit: 'Step-by-step onboarding, manager prompts',
+        delivered: 'Automated onboarding system + milestone tracker',
+        timeframe: '10–14 days',
+        outcome: 'Faster ramp-up, less admin'
+      },
+      {
         slug: 'onboarding_kit',
         title: 'New Hire Onboarding Kit',
         description: '30-day structured onboarding plan with SOPs and tracking — delivered in 10–14 days',
@@ -147,6 +175,15 @@ const Solutions = () => {
       }
     ],
     operations: [
+      {
+        slug: 'operations_deputee_action_ready_ops',
+        title: 'AI Deputee™ – Action-Ready Ops',
+        description: 'Live action prompting for ops roles — delivered in 10–14 days',
+        benefit: 'Workflow triggers → role actions, promptings',
+        delivered: 'Action prompting system + workflow triggers',
+        timeframe: '10–14 days',
+        outcome: 'Fewer dropped balls, faster response'
+      },
       {
         slug: 'meeting_to_minutes',
         title: 'Meeting-to-Minutes',
@@ -177,6 +214,15 @@ const Solutions = () => {
     ],
     marketing: [
       {
+        slug: 'marketing_deputee_campaign_builder',
+        title: 'AI Deputee™ – Campaign Builder',
+        description: 'Automated campaign creation and engagement prompts — delivered in 7–14 days',
+        benefit: 'AI-generated campaigns & engagement nudges',
+        delivered: 'Campaign automation system + engagement tools',
+        timeframe: '7–14 days',
+        outcome: '10+ warm leads/month, less manual work'
+      },
+      {
         slug: 'objection_helper',
         title: 'Sales Objection Helper',
         description: 'Live objection handling prompts with response library — delivered in 10–14 days',
@@ -205,6 +251,15 @@ const Solutions = () => {
       }
     ],
     customer_service: [
+      {
+        slug: 'customer_service_deputee_resolution_turbo',
+        title: 'AI Deputee™ – Resolution Turbo',
+        description: 'Automated ticket triage and quick-response drafting — delivered in 7–10 days',
+        benefit: 'Ticket assignment, FAQ auto-responses, priority flagging',
+        delivered: 'Ticket triage system + quick response tools',
+        timeframe: '7–10 days',
+        outcome: 'Faster resolution, happier customers'
+      },
       {
         slug: 'faq_assistant_lite',
         title: 'Customer FAQ Assistant (lite)',
