@@ -176,7 +176,7 @@ const Home = () => {
                       className="w-full"
                       onClick={() => handleQuickOutcomeClick(outcome.slug)}
                     >
-                      <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>Get This Win</Link>
+                      <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>See Details</Link>
                     </Button>
                   </CardContent>
                 </Card>
