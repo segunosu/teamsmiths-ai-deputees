@@ -64,7 +64,7 @@ const Solutions = () => {
       {
         slug: 'sales_deputee_deal_closer',
         title: 'AI Deputee™ – Deal Closer',
-        description: 'Connects to your CRM to analyze deal patterns and triggers personalized follow-up actions for your sales team — delivered in 7–10 days',
+        description: 'Connects to your CRM to analyze deal patterns and triggers personalized follow-up actions for your sales team',
         benefit: 'Scans CRM data, surfaces at-risk deals, generates role-specific next actions and follow-up prompts based on deal stage and client behavior',
         delivered: 'CRM-integrated system that delivers daily action prompts and deal risk alerts to the right team members',
         timeframe: '7–10 days',
@@ -102,7 +102,7 @@ const Solutions = () => {
       {
         slug: 'finance_deputee_cashflow_sentinel',
         title: 'AI Deputee™ – Cashflow Sentinel',
-        description: 'Integrates with your invoicing system to analyze payment patterns and automatically prompt follow-up actions — delivered in 7–10 days',
+        description: 'Integrates with your invoicing system to analyze payment patterns and automatically prompt follow-up actions',
         benefit: 'Analyzes invoice data, identifies payment delays, generates targeted reminders and escalation prompts based on client payment history',
         delivered: 'Invoice-tracking system that delivers daily payment status updates and role-specific collection actions',
         timeframe: '7–10 days',
@@ -140,7 +140,7 @@ const Solutions = () => {
       {
         slug: 'hr_deputee_onboarding_accelerator',
         title: 'AI Deputee™ – Onboarding Accelerator',
-        description: 'Connects to your HR systems to track new hire progress and trigger personalized coaching prompts for managers — delivered in 10–14 days',
+        description: 'Connects to your HR systems to track new hire progress and trigger personalized coaching prompts for managers',
         benefit: 'Monitors onboarding milestones, analyzes completion patterns, generates manager action prompts and check-in reminders based on individual progress',
         delivered: 'HR-integrated tracking that delivers daily manager prompts and milestone-based coaching actions',
         timeframe: '10–14 days',
@@ -178,7 +178,7 @@ const Solutions = () => {
       {
         slug: 'operations_deputee_action_ready_ops',
         title: 'AI Deputee™ – Action-Ready Ops',
-        description: 'Integrates with your operations systems to monitor workflow status and deliver role-specific action prompts in real-time — delivered in 10–14 days',
+        description: 'Integrates with your operations systems to monitor workflow status and deliver role-specific action prompts in real-time',
         benefit: 'Analyzes operational data flows, identifies bottlenecks and delays, generates targeted action prompts for specific team members based on system triggers',
         delivered: 'Ops-integrated monitoring that delivers real-time action prompts and workflow optimization suggestions',
         timeframe: '10–14 days',
@@ -216,7 +216,7 @@ const Solutions = () => {
       {
         slug: 'marketing_deputee_campaign_builder',
         title: 'AI Deputee™ – Campaign Builder',
-        description: 'Connects to your marketing platforms to analyze engagement data and trigger personalized campaign actions — delivered in 7–14 days',
+        description: 'Connects to your marketing platforms to analyze engagement data and trigger personalized campaign actions',
         benefit: 'Analyzes campaign performance data, identifies engagement patterns, generates targeted follow-up sequences and team action prompts based on lead behavior',
         delivered: 'Marketing-integrated system that delivers daily campaign optimization prompts and lead nurturing actions',
         timeframe: '7–14 days',
@@ -254,7 +254,7 @@ const Solutions = () => {
       {
         slug: 'customer_service_deputee_resolution_turbo',
         title: 'AI Deputee™ – Resolution Turbo',
-        description: 'Integrates with your support system to analyze ticket patterns and deliver role-specific resolution prompts — delivered in 7–10 days',
+        description: 'Integrates with your support system to analyze ticket patterns and deliver role-specific resolution prompts',
         benefit: 'Analyzes support ticket data, identifies escalation patterns, generates priority assignments and response prompts based on issue complexity and customer history',
         delivered: 'Support-integrated system that delivers real-time triage decisions and agent-specific resolution actions',
         timeframe: '7–10 days',
@@ -497,37 +497,11 @@ const Solutions = () => {
               <h2 className="text-3xl font-bold text-center mb-12">Marketing Wins</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.marketing.map((uplift) => (
-                  <Card key={uplift.slug} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                    <CardHeader className="pb-4">
-                      <CardTitle className="text-lg font-semibold">{uplift.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <CardDescription className="text-base">
-                        {uplift.description}
-                      </CardDescription>
-                      <Button 
-                        asChild 
-                        className="w-full"
-                        onClick={() => handleBusinessUpliftClick('add_to_plan', uplift.slug)}
-                      >
-                        <Link to={`/pricing?ref=${uplift.slug}`}>Subscribe to Access</Link>
-                      </Button>
-                      <p className="text-xs text-muted-foreground text-center">
-                        Included in your monthly plan.
-                      </p>
-                      <Button 
-                        asChild 
-                        variant="ghost" 
-                        size="sm" 
-                        className="w-full text-muted-foreground hover:text-foreground"
-                        onClick={() => handleBusinessUpliftClick('fixed_price', uplift.slug)}
-                      >
-                        <Link to={`/brief-builder?mode=quote&origin=solutions&ref=${uplift.slug}#form`}>
-                          Or get a fixed price quote
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <BusinessUpliftCard 
+                    key={uplift.slug} 
+                    uplift={uplift}
+                    onBusinessUpliftClick={handleBusinessUpliftClick}
+                  />
                 ))}
                 
                 {/* Custom Marketing Request Card */}
@@ -561,37 +535,11 @@ const Solutions = () => {
               <h2 className="text-3xl font-bold text-center mb-12">Customer Service Wins</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.customer_service.map((uplift) => (
-                  <Card key={uplift.slug} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                    <CardHeader className="pb-4">
-                      <CardTitle className="text-lg font-semibold">{uplift.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <CardDescription className="text-base">
-                        {uplift.description}
-                      </CardDescription>
-                      <Button 
-                        asChild 
-                        className="w-full"
-                        onClick={() => handleBusinessUpliftClick('add_to_plan', uplift.slug)}
-                      >
-                        <Link to={`/pricing?ref=${uplift.slug}`}>Subscribe to Access</Link>
-                      </Button>
-                      <p className="text-xs text-muted-foreground text-center">
-                        Included in your monthly plan.
-                      </p>
-                      <Button 
-                        asChild 
-                        variant="ghost" 
-                        size="sm" 
-                        className="w-full text-muted-foreground hover:text-foreground"
-                        onClick={() => handleBusinessUpliftClick('fixed_price', uplift.slug)}
-                      >
-                        <Link to={`/brief-builder?mode=quote&origin=solutions&ref=${uplift.slug}#form`}>
-                          Or get a fixed price quote
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <BusinessUpliftCard 
+                    key={uplift.slug} 
+                    uplift={uplift}
+                    onBusinessUpliftClick={handleBusinessUpliftClick}
+                  />
                 ))}
                 
                 {/* Custom Customer Service Request Card */}
