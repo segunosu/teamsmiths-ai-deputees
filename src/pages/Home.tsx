@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Target, BarChart3, Zap, Shield, FileCheck, CreditCard, MessageSquare, Workflow, Globe, TrendingUp, Clock, Users, ArrowUp, DollarSign, Calendar, Mail, AlertCircle } from 'lucide-react';
+import { CheckCircle, ArrowRight, Target, BarChart3, Zap, Shield, FileCheck, CreditCard, MessageSquare, Workflow, Globe, TrendingUp, Clock, Users, ArrowUp, DollarSign, Calendar, Mail, AlertCircle, Cog, Star, Award, Crown } from 'lucide-react';
 import { StickyMobileBar } from '@/components/ui/sticky-mobile-bar';
 import { AIDeputee } from '@/components/AIDeputee';
 import { useAnalytics } from '@/hooks/useAnalytics';
@@ -34,33 +34,75 @@ const Home = () => {
   const quickOutcomes = [
     {
       title: "Proposal Speed-Up",
-      benefit: "Draft proposals from meetings — delivered in 7–14 days",
-      slug: "proposal_speedup"
+      painHeadline: "Tired of slow proposal turnaround?",
+      benefit: "Send 28% more proposals with 37% faster turnaround",
+      proof: "Owners saved 6+ hours/week",
+      timeframe: "7–14 days",
+      slug: "proposal_speedup",
+      category: "sales",
+      icon: <Target className="h-6 w-6" />,
+      badge: "Top Pick",
+      accentColor: "text-blue-600 dark:text-blue-400"
     },
     {
-      title: "Quote Booster", 
-      benefit: "Faster quotes; higher win rate — delivered in 10–14 days",
-      slug: "quote_booster"
+      title: "Lead Nurture Engine", 
+      painHeadline: "Leads going cold?",
+      benefit: "35% more leads convert with consistent nurturing",
+      proof: "10+ warm leads/month",
+      timeframe: "10–14 days",
+      slug: "lead_nurture_engine",
+      category: "marketing",
+      icon: <BarChart3 className="h-6 w-6" />,
+      badge: "Fast Results",
+      accentColor: "text-green-600 dark:text-green-400"
     },
     {
       title: "Cashflow Nudges",
-      benefit: "Polite invoice reminders; lower DSO — delivered in 7–10 days",
-      slug: "cashflow_nudges"
+      painHeadline: "Chasing payments?",
+      benefit: "17% reduction in DSO, 22% fewer aged invoices",
+      proof: "Faster payments, smoother cashflow",
+      timeframe: "7–10 days",
+      slug: "cashflow_nudges",
+      category: "finance",
+      icon: <DollarSign className="h-6 w-6" />,
+      badge: "Quickest Win",
+      accentColor: "text-emerald-600 dark:text-emerald-400"
     },
     {
       title: "New Hire Onboarding Kit",
-      benefit: "30-day ramp plan + SOPs — delivered in 10–14 days",
-      slug: "onboarding_kit"
-    },
-    {
-      title: "Follow-Up Engine",
-      benefit: "Auto nudges; no lost deals — delivered in 7–10 days",
-      slug: "follow_up_engine"
+      painHeadline: "Onboarding headaches?",
+      benefit: "45% faster time to productivity for new hires",
+      proof: "50% reduction in ramp time",
+      timeframe: "10–14 days",
+      slug: "onboarding_kit",
+      category: "hr",
+      icon: <Users className="h-6 w-6" />,
+      badge: "Owner's Favorite",
+      accentColor: "text-purple-600 dark:text-purple-400"
     },
     {
       title: "Meeting-to-Minutes",
-      benefit: "Clean actions + tasks in your tools — delivered in 7–14 days",
-      slug: "meeting_to_minutes"
+      painHeadline: "Drowning in meeting admin?",
+      benefit: "15 hours saved per week, 45% better team efficiency",
+      proof: "Clear actions, better follow-through",
+      timeframe: "7–14 days",
+      slug: "meeting_to_minutes",
+      category: "operations",
+      icon: <Cog className="h-6 w-6" />,
+      badge: "Most Popular",
+      accentColor: "text-orange-600 dark:text-orange-400"
+    },
+    {
+      title: "Resolution Turbo",
+      painHeadline: "Support tickets piling up?",
+      benefit: "50% faster response times with smart triage",
+      proof: "Happier customers, less stress",
+      timeframe: "7–10 days",
+      slug: "customer_service_deputee_resolution_turbo",
+      category: "customer_service",
+      icon: <MessageSquare className="h-6 w-6" />,
+      badge: "Game Changer",
+      accentColor: "text-red-600 dark:text-red-400"
     }
   ];
 
@@ -68,13 +110,25 @@ const Home = () => {
   const getSolutionSection = (slug: string) => {
     const solutionMap: Record<string, string> = {
       "proposal_speedup": "sales",
-      "quote_booster": "sales", 
+      "lead_nurture_engine": "marketing",
       "cashflow_nudges": "finance",
       "onboarding_kit": "hr",
-      "follow_up_engine": "sales",
-      "meeting_to_minutes": "operations"
+      "meeting_to_minutes": "operations",
+      "customer_service_deputee_resolution_turbo": "customer-service"
     };
     return solutionMap[slug] || "sales";
+  };
+
+  const getBadgeIcon = (badge: string) => {
+    switch (badge) {
+      case "Top Pick": return <Crown className="h-3 w-3" />;
+      case "Fast Results": return <Zap className="h-3 w-3" />;
+      case "Quickest Win": return <Clock className="h-3 w-3" />;
+      case "Owner's Favorite": return <Star className="h-3 w-3" />;
+      case "Most Popular": return <TrendingUp className="h-3 w-3" />;
+      case "Game Changer": return <Award className="h-3 w-3" />;
+      default: return <Star className="h-3 w-3" />;
+    }
   };
 
   // Scroll to section function
@@ -160,35 +214,71 @@ const Home = () => {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {quickOutcomes.slice(0, 6).map((outcome, index) => (
-                <Card key={index} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-lg font-semibold">{outcome.title}</CardTitle>
+              {quickOutcomes.map((outcome, index) => (
+                <Card key={index} className="group shadow-sm hover:shadow-xl transition-all duration-300 border-0 bg-card/50 hover:bg-card/80 relative overflow-hidden">
+                  {/* Badge */}
+                  <div className="absolute top-3 right-3 z-10">
+                    <Badge variant="secondary" className="text-xs font-medium bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
+                      {getBadgeIcon(outcome.badge)}
+                      {outcome.badge}
+                    </Badge>
+                  </div>
+                  
+                  {/* Accent Line */}
+                  <div className={`absolute top-0 left-0 right-0 h-1 ${outcome.accentColor} bg-current opacity-60`}></div>
+                  
+                  <CardHeader className="pb-4 pt-8">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`p-2 rounded-lg bg-muted/50 ${outcome.accentColor}`}>
+                        {outcome.icon}
+                      </div>
+                      <CardTitle className="text-lg font-semibold">{outcome.title}</CardTitle>
+                    </div>
+                    <div className="text-sm font-medium text-muted-foreground mb-2">
+                      {outcome.painHeadline}
+                    </div>
                   </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base mb-4">
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base font-medium text-foreground">
                       {outcome.benefit}
                     </CardDescription>
+                    
+                    <div className="text-sm text-muted-foreground space-y-1">
+                      <div className="flex items-center gap-1">
+                        <CheckCircle className="h-4 w-4 text-success" />
+                        <span>{outcome.proof}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <span>Delivered in: {outcome.timeframe}</span>
+                      </div>
+                    </div>
+                    
                     <Button 
                       asChild 
                       variant="outline" 
                       size="sm" 
-                      className="w-full"
+                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
                       onClick={() => handleQuickOutcomeClick(outcome.slug)}
                     >
-                      <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>See Details</Link>
+                      <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>See Full Details</Link>
                     </Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
 
-            <div className="text-center mt-12">
-              <Button asChild variant="outline" size="lg">
-                <Link to="/solutions">See All Solutions</Link>
-              </Button>
-              <p className="text-sm text-muted-foreground mt-4">
-                Don't see your challenge? Just ask.
+            <div className="text-center mt-16">
+              <div className="mb-8">
+                <Button asChild size="lg" className="text-lg px-8 py-4 h-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all">
+                  <Link to="/solutions">
+                    <Globe className="mr-2 h-5 w-5" />
+                    Explore All Business Wins
+                  </Link>
+                </Button>
+              </div>
+              <p className="text-base text-muted-foreground max-w-md mx-auto">
+                Don't see your specific challenge? We create custom solutions for every business need.
               </p>
             </div>
           </div>
