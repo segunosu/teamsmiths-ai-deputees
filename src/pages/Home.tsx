@@ -64,6 +64,19 @@ const Home = () => {
     }
   ];
 
+  // Map solution slugs to their corresponding sections on the Solutions page
+  const getSolutionSection = (slug: string) => {
+    const solutionMap: Record<string, string> = {
+      "proposal_speedup": "sales",
+      "quote_booster": "sales", 
+      "cashflow_nudges": "finance",
+      "onboarding_kit": "hr",
+      "follow_up_engine": "sales",
+      "meeting_to_minutes": "operations"
+    };
+    return solutionMap[slug] || "sales";
+  };
+
   // Scroll to section function
   const scrollToSection = (elementId: string) => {
     const element = document.getElementById(elementId);
@@ -163,7 +176,7 @@ const Home = () => {
                       className="w-full"
                       onClick={() => handleQuickOutcomeClick(outcome.slug)}
                     >
-                      <Link to={`/pricing?ref=${outcome.slug}`}>Get This Win</Link>
+                      <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>Get This Win</Link>
                     </Button>
                   </CardContent>
                 </Card>
