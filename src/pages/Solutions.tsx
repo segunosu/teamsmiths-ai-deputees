@@ -73,7 +73,7 @@ const Solutions = () => {
       {
         slug: 'proposal_speed_up',
         title: 'Proposal Speed-Up',
-        description: 'Automated proposal creation from meeting notes and client briefs — delivered in 7–14 days',
+        description: 'Automated proposal creation from meeting notes and client briefs',
         benefit: 'Send 28% more proposals with 37% faster turnaround — track on your dashboard.',
         delivered: 'Custom proposal templates + automation setup',
         timeframe: '7–14 days',
@@ -82,7 +82,7 @@ const Solutions = () => {
       {
         slug: 'quote_booster',
         title: 'Quote Booster',
-        description: 'Streamlined quoting process with dynamic pricing models — delivered in 10–14 days',
+        description: 'Streamlined quoting process with dynamic pricing models',
         benefit: '32% faster quotes with 11% higher win rate — measured monthly.',
         delivered: 'Quote automation system + pricing calculator',
         timeframe: '10–14 days',
@@ -91,7 +91,7 @@ const Solutions = () => {
       {
         slug: 'follow_up_engine',
         title: 'Follow-Up Engine',
-        description: 'Automated client follow-up system with smart nudging — delivered in 7–10 days',
+        description: 'Automated client follow-up system with smart nudging',
         benefit: 'Never miss follow-ups; 23% more deals closed on time.',
         delivered: 'Follow-up automation + CRM integration',
         timeframe: '7–10 days',
@@ -111,7 +111,7 @@ const Solutions = () => {
       {
         slug: 'cashflow_nudges',
         title: 'Cashflow Nudges',
-        description: 'Automated invoice reminders with polite escalation sequences — delivered in 7–10 days',
+        description: 'Automated invoice reminders with polite escalation sequences',
         benefit: '17% reduction in DSO, 22% fewer aged invoices — tracked monthly.',
         delivered: 'Smart reminder system + payment tracking dashboard',
         timeframe: '7–10 days',
@@ -120,7 +120,7 @@ const Solutions = () => {
       {
         slug: 'expense_categorizer',
         title: 'Expense Categorizer',
-        description: 'AI-powered expense categorization and bookkeeping automation — delivered in 10–14 days',
+        description: 'AI-powered expense categorization and bookkeeping automation',
         benefit: '15 hours saved monthly on bookkeeping tasks.',
         delivered: 'Automated categorization rules + accounting integration',
         timeframe: '10–14 days',
@@ -129,7 +129,7 @@ const Solutions = () => {
       {
         slug: 'budget_tracker',
         title: 'Budget Tracker & Alerts',
-        description: 'Real-time budget monitoring with automated alerts when approaching limits — delivered in 7–10 days',
+        description: 'Real-time budget monitoring with automated alerts when approaching limits',
         benefit: '25% better budget control with early warning system.',
         delivered: 'Budget monitoring dashboard + alert system',
         timeframe: '7–10 days',
@@ -149,7 +149,7 @@ const Solutions = () => {
       {
         slug: 'onboarding_kit',
         title: 'New Hire Onboarding Kit',
-        description: '30-day structured onboarding plan with SOPs and tracking — delivered in 10–14 days',
+        description: '30-day structured onboarding plan with SOPs and tracking',
         benefit: '45% faster time to productivity for new hires — measured monthly.',
         delivered: 'Custom onboarding workflow + SOP templates',
         timeframe: '10–14 days',
@@ -158,7 +158,7 @@ const Solutions = () => {
       {
         slug: 'team_focus_rhythm',
         title: 'Team Focus Rhythm',
-        description: 'Weekly team cadence system with clear priorities — delivered in 7–10 days',
+        description: 'Weekly team cadence system with clear priorities',
         benefit: '30% reduction in meeting time with better focus.',
         delivered: 'Weekly rhythm framework + priority tracker',
         timeframe: '7–10 days',
@@ -167,7 +167,7 @@ const Solutions = () => {
       {
         slug: 'performance_review_system',
         title: 'Performance Review System',
-        description: 'Structured quarterly review process with goal tracking — delivered in 10–14 days',
+        description: 'Structured quarterly review process with goal tracking',
         benefit: '40% improvement in goal achievement with clear feedback loops.',
         delivered: 'Review templates + goal tracking system',
         timeframe: '10–14 days',
@@ -187,7 +187,7 @@ const Solutions = () => {
       {
         slug: 'meeting_to_minutes',
         title: 'Meeting-to-Minutes',
-        description: 'Automated meeting notes with action items in your tools — delivered in 7–14 days',
+        description: 'Automated meeting notes with action items in your tools',
         benefit: '15 hours saved per week, 45% better team efficiency.',
         delivered: 'Meeting automation + task integration',
         timeframe: '7–14 days',
@@ -196,7 +196,7 @@ const Solutions = () => {
       {
         slug: 'kb_starter',
         title: 'Knowledge Base Starter',
-        description: 'Searchable company SOPs and knowledge system — delivered in 10–14 days',
+        description: 'Searchable company SOPs and knowledge system',
         benefit: 'Instant access to company knowledge for all team members.',
         delivered: 'Searchable knowledge base + content migration',
         timeframe: '10–14 days',
@@ -205,7 +205,7 @@ const Solutions = () => {
       {
         slug: 'task_automation_hub',
         title: 'Task Automation Hub',
-        description: 'Automated workflows for repetitive tasks across your tools — delivered in 10–14 days',
+        description: 'Automated workflows for repetitive tasks across your tools',
         benefit: '20 hours saved weekly on manual tasks with 95% accuracy.',
         delivered: 'Custom automation workflows + integration setup',
         timeframe: '10–14 days',
@@ -225,7 +225,7 @@ const Solutions = () => {
       {
         slug: 'objection_helper',
         title: 'Sales Objection Helper',
-        description: 'Live objection handling prompts with response library — delivered in 10–14 days',
+        description: 'Live objection handling prompts with response library',
         benefit: '25% higher close rates with confident objection handling.',
         delivered: 'Objection response system + training materials',
         timeframe: '10–14 days',
@@ -234,7 +234,7 @@ const Solutions = () => {
       {
         slug: 'lead_nurture_engine',
         title: 'Lead Nurture Engine',
-        description: 'Automated email sequences that warm leads until they\'re ready to buy — delivered in 10–14 days',
+        description: 'Automated email sequences that warm leads until they\'re ready to buy',
         benefit: '35% more leads convert with consistent nurturing.',
         delivered: 'Email automation + lead scoring system',
         timeframe: '10–14 days',
@@ -243,7 +243,7 @@ const Solutions = () => {
       {
         slug: 'content_repurposer',
         title: 'Content Repurposer',
-        description: 'Turn one piece of content into 5+ formats automatically — delivered in 7–10 days',
+        description: 'Turn one piece of content into 5+ formats automatically',
         benefit: '5x more content output with same effort and budget.',
         delivered: 'Content automation + distribution system',
         timeframe: '7–10 days',  
@@ -263,7 +263,7 @@ const Solutions = () => {
       {
         slug: 'faq_assistant_lite',
         title: 'Customer FAQ Assistant (lite)',
-        description: 'Automated FAQ responses that reduce support tickets — delivered in 10–14 days',
+        description: 'Automated FAQ responses that reduce support tickets',
         benefit: '40% reduction in basic support tickets.',
         delivered: 'FAQ automation + deflection system',
         timeframe: '10–14 days',
@@ -272,7 +272,7 @@ const Solutions = () => {
       {
         slug: 'ticket_triage_system',
         title: 'Ticket Triage System',
-        description: 'Smart ticket routing and priority assignment — delivered in 7–10 days',
+        description: 'Smart ticket routing and priority assignment',
         benefit: '50% faster response times with better ticket organization.',
         delivered: 'Automated triage rules + routing system',
         timeframe: '7–10 days',
@@ -281,7 +281,7 @@ const Solutions = () => {
       {
         slug: 'feedback_collector',
         title: 'Customer Feedback Collector',
-        description: 'Automated feedback collection with sentiment analysis — delivered in 10–14 days',
+        description: 'Automated feedback collection with sentiment analysis',
         benefit: '3x more customer feedback with actionable insights.',
         delivered: 'Feedback automation + sentiment dashboard',
         timeframe: '10–14 days',
