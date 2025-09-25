@@ -282,13 +282,13 @@ const PlanConfirmation = () => {
                 onClick={handleBookCall}
                 asChild
               >
-                <Link to="/contact?reason=plan-discussion&plan=${planId}">
+                <a href="https://calendly.com/osu/surrey-rapid-performance" target="_blank" rel="noopener noreferrer">
                   <div className="text-left">
                     <div className="font-semibold">Book a Call First</div>
                     <div className="text-sm text-muted-foreground">Questions? Let's chat</div>
                   </div>
                   <Phone className="ml-3 h-5 w-5" />
-                </Link>
+                </a>
               </Button>
             </div>
 
