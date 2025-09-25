@@ -64,9 +64,9 @@ const Solutions = () => {
       {
         slug: 'sales_deputee_deal_closer',
         title: 'AI Deputee™ – Deal Closer',
-        description: 'Automated sales follow-up and risk detection — delivered in 7–10 days',
-        benefit: 'CRM/email scan, action suggestions, custom follow-ups',
-        delivered: 'Smart follow-up system + risk detection dashboard',
+        description: 'Connects to your CRM to analyze deal patterns and triggers personalized follow-up actions for your sales team — delivered in 7–10 days',
+        benefit: 'Scans CRM data, surfaces at-risk deals, generates role-specific next actions and follow-up prompts based on deal stage and client behavior',
+        delivered: 'CRM-integrated system that delivers daily action prompts and deal risk alerts to the right team members',
         timeframe: '7–10 days',
         outcome: 'No missed deals, increased close rate, 3+ hours back/week'
       },
@@ -102,9 +102,9 @@ const Solutions = () => {
       {
         slug: 'finance_deputee_cashflow_sentinel',
         title: 'AI Deputee™ – Cashflow Sentinel',
-        description: 'Automated invoice reminders and financial oversight — delivered in 7–10 days',
-        benefit: 'Reminders, expense tracking, flagging payers/issues',
-        delivered: 'Financial oversight system + automated reminders',
+        description: 'Integrates with your invoicing system to analyze payment patterns and automatically prompt follow-up actions — delivered in 7–10 days',
+        benefit: 'Analyzes invoice data, identifies payment delays, generates targeted reminders and escalation prompts based on client payment history',
+        delivered: 'Invoice-tracking system that delivers daily payment status updates and role-specific collection actions',
         timeframe: '7–10 days',
         outcome: 'Faster payments, smoother cash flow'
       },
@@ -140,9 +140,9 @@ const Solutions = () => {
       {
         slug: 'hr_deputee_onboarding_accelerator',
         title: 'AI Deputee™ – Onboarding Accelerator',
-        description: 'Automated onboarding & milestone tracking — delivered in 10–14 days',
-        benefit: 'Step-by-step onboarding, manager prompts',
-        delivered: 'Automated onboarding system + milestone tracker',
+        description: 'Connects to your HR systems to track new hire progress and trigger personalized coaching prompts for managers — delivered in 10–14 days',
+        benefit: 'Monitors onboarding milestones, analyzes completion patterns, generates manager action prompts and check-in reminders based on individual progress',
+        delivered: 'HR-integrated tracking that delivers daily manager prompts and milestone-based coaching actions',
         timeframe: '10–14 days',
         outcome: 'Faster ramp-up, less admin'
       },
@@ -178,9 +178,9 @@ const Solutions = () => {
       {
         slug: 'operations_deputee_action_ready_ops',
         title: 'AI Deputee™ – Action-Ready Ops',
-        description: 'Live action prompting for ops roles — delivered in 10–14 days',
-        benefit: 'Workflow triggers → role actions, promptings',
-        delivered: 'Action prompting system + workflow triggers',
+        description: 'Integrates with your operations systems to monitor workflow status and deliver role-specific action prompts in real-time — delivered in 10–14 days',
+        benefit: 'Analyzes operational data flows, identifies bottlenecks and delays, generates targeted action prompts for specific team members based on system triggers',
+        delivered: 'Ops-integrated monitoring that delivers real-time action prompts and workflow optimization suggestions',
         timeframe: '10–14 days',
         outcome: 'Fewer dropped balls, faster response'
       },
@@ -216,9 +216,9 @@ const Solutions = () => {
       {
         slug: 'marketing_deputee_campaign_builder',
         title: 'AI Deputee™ – Campaign Builder',
-        description: 'Automated campaign creation and engagement prompts — delivered in 7–14 days',
-        benefit: 'AI-generated campaigns & engagement nudges',
-        delivered: 'Campaign automation system + engagement tools',
+        description: 'Connects to your marketing platforms to analyze engagement data and trigger personalized campaign actions — delivered in 7–14 days',
+        benefit: 'Analyzes campaign performance data, identifies engagement patterns, generates targeted follow-up sequences and team action prompts based on lead behavior',
+        delivered: 'Marketing-integrated system that delivers daily campaign optimization prompts and lead nurturing actions',
         timeframe: '7–14 days',
         outcome: '10+ warm leads/month, less manual work'
       },
@@ -254,9 +254,9 @@ const Solutions = () => {
       {
         slug: 'customer_service_deputee_resolution_turbo',
         title: 'AI Deputee™ – Resolution Turbo',
-        description: 'Automated ticket triage and quick-response drafting — delivered in 7–10 days',
-        benefit: 'Ticket assignment, FAQ auto-responses, priority flagging',
-        delivered: 'Ticket triage system + quick response tools',
+        description: 'Integrates with your support system to analyze ticket patterns and deliver role-specific resolution prompts — delivered in 7–10 days',
+        benefit: 'Analyzes support ticket data, identifies escalation patterns, generates priority assignments and response prompts based on issue complexity and customer history',
+        delivered: 'Support-integrated system that delivers real-time triage decisions and agent-specific resolution actions',
         timeframe: '7–10 days',
         outcome: 'Faster resolution, happier customers'
       },
