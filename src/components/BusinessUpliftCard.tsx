@@ -50,35 +50,27 @@ export const BusinessUpliftCard: React.FC<BusinessUpliftCardProps> = ({
           </div>
         )}
 
-        <div className="space-y-3">
-          <Button 
-            asChild 
-            className="w-full"
-            onClick={() => onBusinessUpliftClick('add_to_plan', uplift.slug)}
-          >
-            <Link to={`/pricing?ref=${uplift.slug}`}>Add to Plan (from £495/month)</Link>
-          </Button>
-          
-          <Button 
-            asChild 
-            variant="outline" 
-            className="w-full"
-            onClick={() => onBusinessUpliftClick('fixed_price', uplift.slug)}
-          >
-            <Link to={`/brief-builder?mode=quote&origin=solutions&ref=${uplift.slug}#form`}>
-              Get Fixed Price Quote
-            </Link>
-          </Button>
-          
-          <Button 
-            asChild 
-            variant="ghost" 
-            size="sm" 
-            className="w-full"
-          >
-            <Link to="/contact">Book a Call First</Link>
-          </Button>
-        </div>
+        <Button 
+          asChild 
+          className="w-full"
+          onClick={() => onBusinessUpliftClick('add_to_plan', uplift.slug)}
+        >
+          <Link to={`/pricing?ref=${uplift.slug}`}>Subscribe to Access</Link>
+        </Button>
+        <p className="text-xs text-muted-foreground text-center">
+          Included in your monthly plan.
+        </p>
+        <Button 
+          asChild 
+          variant="ghost" 
+          size="sm" 
+          className="w-full text-muted-foreground hover:text-foreground"
+          onClick={() => onBusinessUpliftClick('fixed_price', uplift.slug)}
+        >
+          <Link to={`/brief-builder?mode=quote&origin=solutions&ref=${uplift.slug}#form`}>
+            Or get a fixed price quote
+          </Link>
+        </Button>
       </CardContent>
     </Card>
   );
