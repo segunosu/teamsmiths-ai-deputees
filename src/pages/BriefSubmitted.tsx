@@ -9,7 +9,7 @@ export const BriefSubmitted = () => {
   const briefId = searchParams.get('brief');
 
   const handleBookCurator = () => {
-    const calendlyUrl = 'https://calendly.com/teamsmiths/curator-call';
+    const calendlyUrl = 'https://calendly.com/osu/business-performance-curator-call';
     window.open(calendlyUrl, '_blank');
   };
 
