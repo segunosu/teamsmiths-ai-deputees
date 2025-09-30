@@ -194,7 +194,7 @@ const Home = () => {
                   className="text-lg px-10 py-6 h-auto"
                   onClick={() => handleHeroCTA('Start now')}
                 >
-                  <Link to="/start">Start now</Link>
+                  <Link to="/solutions">Start now</Link>
                 </Button>
               </div>
             </div>
