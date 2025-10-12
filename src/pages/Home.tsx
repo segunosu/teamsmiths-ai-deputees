@@ -27,8 +27,10 @@ import {
   Star,
   Award,
   Crown,
+  Info,
 } from "lucide-react";
 import { StickyMobileBar } from "@/components/ui/sticky-mobile-bar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { AIDeputee } from "@/components/AIDeputee";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { Helmet } from "react-helmet-async";
@@ -242,7 +244,19 @@ const Home = () => {
         <section id="menu" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">Business Wins</h2>
+              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 flex items-center justify-center gap-2">
+                Business Wins
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-6 w-6 text-muted-foreground hover:text-primary cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>A targeted business improvement—implemented, tested, and delivered.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 Unlock measurable business wins every month — examples we deliver inside your plan
               </p>
