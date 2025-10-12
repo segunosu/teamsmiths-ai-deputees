@@ -198,7 +198,7 @@ const Home = () => {
                 Too busy with business to figure out AI?
               </h1>
               <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
-                Access AI expertise that boosts sales, eliminates waste, and frees up leadership time.
+                Access AI expertise that boosts sales, eliminates waste, and frees leadership time.
               </p>
 
               {/* Credibility bar */}
