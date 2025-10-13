@@ -615,6 +615,72 @@ export type Database = {
           },
         ]
       }
+      business_case_studies: {
+        Row: {
+          assumptions: Json | null
+          challenge: string | null
+          client_profile: string | null
+          created_at: string | null
+          cta_primary: string | null
+          cta_primary_url: string | null
+          cta_secondary: string | null
+          cta_secondary_url: string | null
+          deliverables: Json | null
+          id: string
+          measurement: string | null
+          quote: string | null
+          results: Json | null
+          roi_example: string | null
+          short_summary: string | null
+          slug: string
+          solution: string | null
+          timeline_days: number | null
+          title: string
+        }
+        Insert: {
+          assumptions?: Json | null
+          challenge?: string | null
+          client_profile?: string | null
+          created_at?: string | null
+          cta_primary?: string | null
+          cta_primary_url?: string | null
+          cta_secondary?: string | null
+          cta_secondary_url?: string | null
+          deliverables?: Json | null
+          id?: string
+          measurement?: string | null
+          quote?: string | null
+          results?: Json | null
+          roi_example?: string | null
+          short_summary?: string | null
+          slug: string
+          solution?: string | null
+          timeline_days?: number | null
+          title: string
+        }
+        Update: {
+          assumptions?: Json | null
+          challenge?: string | null
+          client_profile?: string | null
+          created_at?: string | null
+          cta_primary?: string | null
+          cta_primary_url?: string | null
+          cta_secondary?: string | null
+          cta_secondary_url?: string | null
+          deliverables?: Json | null
+          id?: string
+          measurement?: string | null
+          quote?: string | null
+          results?: Json | null
+          roi_example?: string | null
+          short_summary?: string | null
+          slug?: string
+          solution?: string | null
+          timeline_days?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
       case_studies: {
         Row: {
           created_at: string | null

@@ -34,9 +34,19 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { AIDeputee } from "@/components/AIDeputee";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { Helmet } from "react-helmet-async";
+import { CaseStudyCard } from "@/components/CaseStudyCard";
+import { CaseStudyModal } from "@/components/CaseStudyModal";
+import { useCaseStudies, useCaseStudy } from "@/hooks/useCaseStudies";
+import { useState } from "react";
 
 const Home = () => {
   const { trackEvent } = useAnalytics();
+  const { data: caseStudies, isLoading: caseStudiesLoading } = useCaseStudies();
+  const [selectedCaseSlug, setSelectedCaseSlug] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const selectedCaseIndex = caseStudies?.findIndex(cs => cs.slug === selectedCaseSlug) ?? -1;
+  const selectedCase = caseStudies?.[selectedCaseIndex] ?? null;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -54,6 +64,31 @@ const Home = () => {
 
   const handleResultsTileView = (segment: string) => {
     trackEvent("results_tile_view" as any, { segment } as any);
+  };
+
+  const handleOpenModal = (slug: string) => {
+    setSelectedCaseSlug(slug);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedCaseSlug(null), 200);
+  };
+
+  const handlePrevCase = () => {
+    if (!caseStudies || selectedCaseIndex <= 0) return;
+    setSelectedCaseSlug(caseStudies[selectedCaseIndex - 1].slug);
+  };
+
+  const handleNextCase = () => {
+    if (!caseStudies || selectedCaseIndex >= caseStudies.length - 1) return;
+    setSelectedCaseSlug(caseStudies[selectedCaseIndex + 1].slug);
+  };
+
+  const prefetchCase = (slug: string) => {
+    // Prefetch case study data when hovering
+    useCaseStudy(slug);
   };
 
   const quickOutcomes = [
@@ -414,126 +449,45 @@ const Home = () => {
               <p className="text-lg text-muted-foreground">Measurable improvements delivered in weeks, not months</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <Card
-                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
-                onClick={() => handleResultsTileView("agency_uk")}
-              >
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Sarah, Agency Owner</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="text-2xl font-bold text-success">+28%</div>
-                    <div className="text-sm">proposals/week</div>
-                    <div className="text-2xl font-bold text-success">-37%</div>
-                    <div className="text-sm">time-to-proposal</div>
-                    <div className="text-xs text-muted-foreground mt-2">Proposal Speed-Up (10 days)</div>
-                  </div>
-                </CardContent>
-              </Card>
+            {caseStudiesLoading ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Card key={i} className="p-6 animate-pulse">
+                    <div className="h-6 bg-muted rounded mb-4"></div>
+                    <div className="h-4 bg-muted rounded mb-2"></div>
+                    <div className="h-20 bg-muted rounded"></div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {caseStudies?.map((caseStudy) => (
+                  <CaseStudyCard
+                    key={caseStudy.id}
+                    caseStudy={caseStudy}
+                    onOpenModal={() => handleOpenModal(caseStudy.slug)}
+                    onHoverStart={() => prefetchCase(caseStudy.slug)}
+                  />
+                ))}
+              </div>
+            )}
 
-              <Card
-                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
-                onClick={() => handleResultsTileView("trades_uk")}
-              >
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Marcus, Construction Owner
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="text-2xl font-bold text-success">-32%</div>
-                    <div className="text-sm">time-to-quote</div>
-                    <div className="text-2xl font-bold text-success">+11%</div>
-                    <div className="text-sm">win rate</div>
-                    <div className="text-xs text-muted-foreground mt-2">Quote Booster (3 weeks)</div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card
-                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
-                onClick={() => handleResultsTileView("pro_services_eu")}
-              >
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Anna, Consulting Director</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="text-2xl font-bold text-success">-17%</div>
-                    <div className="text-sm">DSO (days)</div>
-                    <div className="text-2xl font-bold text-success">-22%</div>
-                    <div className="text-sm">aged invoices</div>
-                    <div className="text-xs text-muted-foreground mt-2">Cashflow Nudges (2.5 weeks)</div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card
-                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
-                onClick={() => handleResultsTileView("sme_ops_multi")}
-              >
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Tom, Operations Lead</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="text-2xl font-bold text-success">15 hrs</div>
-                    <div className="text-sm">saved per week</div>
-                    <div className="text-2xl font-bold text-success">+45%</div>
-                    <div className="text-sm">team efficiency</div>
-                    <div className="text-xs text-muted-foreground mt-2">Meeting-to-Minutes (1.5 weeks)</div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Additional Case Studies Row */}
-            <div className="grid md:grid-cols-2 gap-6 mb-12">
-              <Card
-                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
-                onClick={() => handleResultsTileView("retail_chain")}
-              >
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Lisa, Retail Owner</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="text-2xl font-bold text-success">-50%</div>
-                    <div className="text-sm">time to full productivity</div>
-                    <div className="text-2xl font-bold text-success">+35%</div>
-                    <div className="text-sm">new hire retention</div>
-                    <div className="text-xs text-muted-foreground mt-2">New Hire Onboarding Kit (3.5 weeks)</div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card
-                className="text-center shadow-sm border-0 bg-card/80 cursor-pointer hover:shadow-lg transition-all"
-                onClick={() => handleResultsTileView("tech_startup")}
-              >
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">David, Startup Founder</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="text-2xl font-bold text-success">+29%</div>
-                    <div className="text-sm">client response rate</div>
-                    <div className="text-2xl font-bold text-success">12 hrs</div>
-                    <div className="text-sm">saved weekly</div>
-                    <div className="text-xs text-muted-foreground mt-2">Follow-Up Engine (8 days)</div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="text-center mb-12">
+            <div className="text-center mt-12">
               <p className="text-sm text-muted-foreground">Results from our clients, tracked monthly.</p>
             </div>
           </div>
         </section>
+
+        {/* Case Study Modal */}
+        <CaseStudyModal
+          caseStudy={selectedCase}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onPrev={handlePrevCase}
+          onNext={handleNextCase}
+          canNavigatePrev={selectedCaseIndex > 0}
+          canNavigateNext={selectedCaseIndex >= 0 && selectedCaseIndex < (caseStudies?.length ?? 0) - 1}
+        />
 
         {/* READY BAND (FINAL CTA) */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">

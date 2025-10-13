@@ -51,6 +51,13 @@ export interface AnalyticsEvents {
   
   // A/B testing
   'a_b_cta_click': { variantId: string; element: string };
+  
+  // Case study events
+  'case_hover': { slug: string };
+  'case_open': { slug: string };
+  'case_prev': { slug: string; direction: string };
+  'case_next': { slug: string; direction: string };
+  'case_close': { slug: string };
 }
 
 export type AnalyticsEventName = keyof AnalyticsEvents;
