@@ -23,7 +23,7 @@ export const BusinessUpliftCard: React.FC<BusinessUpliftCardProps> = ({
   onBusinessUpliftClick
 }) => {
   return (
-    <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
+    <Card id={uplift.slug} className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 scroll-mt-24">
       <CardHeader className="pb-4">
         <CardTitle className="text-lg font-semibold">{uplift.title}</CardTitle>
       </CardHeader>
