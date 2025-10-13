@@ -618,6 +618,7 @@ export type Database = {
       business_case_studies: {
         Row: {
           assumptions: Json | null
+          category: string | null
           challenge: string | null
           client_profile: string | null
           created_at: string | null
@@ -639,6 +640,7 @@ export type Database = {
         }
         Insert: {
           assumptions?: Json | null
+          category?: string | null
           challenge?: string | null
           client_profile?: string | null
           created_at?: string | null
@@ -660,6 +662,7 @@ export type Database = {
         }
         Update: {
           assumptions?: Json | null
+          category?: string | null
           challenge?: string | null
           client_profile?: string | null
           created_at?: string | null

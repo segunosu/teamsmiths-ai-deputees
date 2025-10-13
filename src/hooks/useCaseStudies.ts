@@ -20,6 +20,7 @@ export interface CaseStudy {
   cta_primary_url: string | null;
   cta_secondary: string | null;
   cta_secondary_url: string | null;
+  category: string | null;
   created_at: string;
 }
 

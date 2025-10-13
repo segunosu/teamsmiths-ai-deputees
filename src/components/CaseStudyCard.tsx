@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
+import { Eye, ArrowRight } from "lucide-react";
 import { CaseStudy } from "@/hooks/useCaseStudies";
 import { track } from "@/lib/analytics";
 
@@ -10,6 +11,20 @@ interface CaseStudyCardProps {
   onOpenModal: () => void;
   onHoverStart?: () => void;
 }
+
+const getCategorySectionUrl = (category?: string): string => {
+  if (!category) return "/solutions";
+  // Map database category to Solutions page section IDs
+  const sectionMap: Record<string, string> = {
+    sales: "#sales",
+    marketing: "#marketing",
+    hr: "#hr",
+    finance: "#finance",
+    operations: "#operations",
+    customer_service: "#customer-service"
+  };
+  return `/solutions${sectionMap[category] || ""}`;
+};
 
 export const CaseStudyCard = ({ caseStudy, onOpenModal, onHoverStart }: CaseStudyCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -77,7 +92,21 @@ export const CaseStudyCard = ({ caseStudy, onOpenModal, onHoverStart }: CaseStud
           </div>
         )}
 
-        {/* View Case Button - visible on hover */}
+        {/* Primary CTA - Learn More */}
+        <Button
+          asChild
+          variant="default"
+          size="sm"
+          className="w-full"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Link to={getCategorySectionUrl(caseStudy.category)}>
+            Learn More
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Link>
+        </Button>
+        
+        {/* Secondary action - View full case (on hover) */}
         <Button
           variant="outline"
           size="sm"
