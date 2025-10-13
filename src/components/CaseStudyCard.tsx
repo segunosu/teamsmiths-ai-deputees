@@ -92,28 +92,18 @@ export const CaseStudyCard = ({ caseStudy, onOpenModal, onHoverStart }: CaseStud
           </div>
         )}
 
-        {/* Primary CTA - Learn More */}
+        {/* Learn More Button - visible on hover */}
         <Button
           asChild
-          variant="default"
+          variant="outline"
           size="sm"
-          className="w-full"
+          className="w-full opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={(e) => e.stopPropagation()}
         >
           <Link to={getCategorySectionUrl(caseStudy.category)}>
             Learn More
             <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
-        </Button>
-        
-        {/* Secondary action - View full case (on hover) */}
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full opacity-0 group-hover:opacity-100 transition-opacity"
-        >
-          <Eye className="w-4 h-4 mr-2" />
-          View full case
         </Button>
       </div>
     </Card>
