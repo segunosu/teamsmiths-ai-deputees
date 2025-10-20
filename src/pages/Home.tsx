@@ -103,6 +103,7 @@ const Home = () => {
       icon: <Target className="h-6 w-6" />,
       badge: "Top Pick",
       accentColor: "text-blue-600 dark:text-blue-400",
+      caseStudySlug: "proposal-speedup",
     },
     {
       title: "Lead Nurture Engine",
@@ -127,6 +128,7 @@ const Home = () => {
       icon: <DollarSign className="h-6 w-6" />,
       badge: "Quickest Win",
       accentColor: "text-emerald-600 dark:text-emerald-400",
+      caseStudySlug: "cashflow-nudges",
     },
     {
       title: "New Hire Onboarding Kit",
@@ -139,6 +141,7 @@ const Home = () => {
       icon: <Users className="h-6 w-6" />,
       badge: "Owner's Favorite",
       accentColor: "text-purple-600 dark:text-purple-400",
+      caseStudySlug: "new-hire-onboarding",
     },
     {
       title: "Meeting-to-Minutes",
@@ -151,6 +154,7 @@ const Home = () => {
       icon: <Cog className="h-6 w-6" />,
       badge: "Most Popular",
       accentColor: "text-orange-600 dark:text-orange-400",
+      caseStudySlug: "meeting-to-minutes",
     },
     {
       title: "Resolution Turbo",
@@ -341,15 +345,44 @@ const Home = () => {
                       </div>
                     </div>
 
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-                      onClick={() => handleQuickOutcomeClick(outcome.slug)}
-                    >
-                      <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>See Full Details</Link>
-                    </Button>
+                    {outcome.caseStudySlug ? (
+                      <div className="space-y-2">
+                        <Button
+                          variant="default"
+                          size="sm"
+                          className="w-full"
+                          onClick={() => {
+                            handleQuickOutcomeClick(outcome.slug);
+                            handleOpenModal(outcome.caseStudySlug!);
+                          }}
+                        >
+                          See proof
+                        </Button>
+                        <Button
+                          asChild
+                          variant="link"
+                          size="sm"
+                          className="w-full text-muted-foreground hover:text-foreground"
+                          onClick={() => handleQuickOutcomeClick(outcome.slug)}
+                        >
+                          <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>
+                            Explore details →
+                          </Link>
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button
+                        asChild
+                        variant="default"
+                        size="sm"
+                        className="w-full"
+                        onClick={() => handleQuickOutcomeClick(outcome.slug)}
+                      >
+                        <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>
+                          Explore details
+                        </Link>
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               ))}
