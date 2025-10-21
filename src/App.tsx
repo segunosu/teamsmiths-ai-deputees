@@ -10,6 +10,7 @@ import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/Footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ScrollManager } from "@/components/ScrollManager";
+import { PWAInstallPrompt } from "@/components/ui/pwa-install-prompt";
 import AdminMatchingSettings from "@/components/admin/AdminMatchingSettings";
 import AdminOnly from "@/components/admin/AdminOnly";
 import CertificationsPage from "./pages/admin/CertificationsPage";
@@ -72,6 +73,7 @@ const App = () => (
           <BrowserRouter>
             <div className="min-h-screen flex flex-col">
               <ScrollManager />
+              <PWAInstallPrompt />
               <Navigation />
               <main id="main-content" className="flex-1" tabIndex={-1}>
                 <Routes>
