@@ -226,49 +226,49 @@ const Home = () => {
 
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <section className="relative py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
           {/* Subtle Background Pattern */}
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted opacity-80"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.05),transparent_50%),radial-gradient(circle_at_80%_80%,hsl(var(--accent)/0.05),transparent_50%)]"></div>
 
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
-              <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6 leading-[1.1] py-2">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 sm:mb-6 leading-[1.15] py-2">
                 Too busy with business to figure out AI?
               </h1>
-              <p className="text-xl sm:text-2xl text-foreground/80 font-medium mb-10 max-w-4xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-xl lg:text-2xl text-foreground/80 font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
                 Access AI expertise that boosts sales, eliminates waste, and frees leadership time.
               </p>
 
               {/* Credibility bar */}
-              <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-10 text-lg font-medium">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center mb-8 sm:mb-10 text-base sm:text-lg font-medium">
                 <div className="flex items-center gap-2">
-                  <div className="text-2xl font-bold text-success">5–10 hrs</div>
-                  <div className="text-muted-foreground">saved per leader per week</div>
+                  <div className="text-xl sm:text-2xl font-bold text-success">5–10 hrs</div>
+                  <div className="text-sm sm:text-base text-muted-foreground">saved per leader per week</div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="text-2xl font-bold text-success">45%</div>
-                  <div className="text-muted-foreground">uplift in team performance</div>
+                  <div className="text-xl sm:text-2xl font-bold text-success">45%</div>
+                  <div className="text-sm sm:text-base text-muted-foreground">uplift in team performance</div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center mb-6 sm:mb-8 max-w-md sm:max-w-none mx-auto">
                 <Button
                   size="lg"
-                  className="text-lg px-10 py-6 h-auto"
+                  className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                   onClick={() => {
                     handleHeroCTA("See what you get");
                     scrollToSection("menu");
                   }}
                 >
                   See what you get
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                 </Button>
                 <Button
                   asChild
                   variant="outline"
                   size="lg"
-                  className="text-lg px-10 py-6 h-auto"
+                  className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                   onClick={() => handleHeroCTA("Start now")}
                 >
                   <Link to="/solutions">Start now</Link>
@@ -279,15 +279,15 @@ const Home = () => {
         </section>
 
         {/* BUSINESS WINS */}
-        <section id="menu" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <section id="menu" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 flex items-center justify-center gap-2">
-                Business Wins
+            <div className="text-center mb-10 sm:mb-16 lg:mb-20">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6 flex flex-col sm:flex-row items-center justify-center gap-2">
+                <span>Business Wins</span>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-6 w-6 text-muted-foreground hover:text-primary cursor-help" />
+                      <Info className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground hover:text-primary cursor-help" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>A targeted business improvement—implemented, tested, and delivered.</p>
@@ -295,24 +295,24 @@ const Home = () => {
                   </Tooltip>
                 </TooltipProvider>
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
                 Unlock measurable business wins every month — examples we deliver inside your plan
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
               {quickOutcomes.map((outcome, index) => (
                 <Card
                   key={index}
                   className="group shadow-sm hover:shadow-xl transition-all duration-300 border-0 bg-card/50 hover:bg-card/80 relative overflow-hidden"
                 >
                   {/* Badge */}
-                  <div className="absolute top-3 right-3 z-10">
+                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
                     <Badge
                       variant="secondary"
-                      className="text-xs font-medium bg-primary/10 text-primary border-primary/20 flex items-center gap-1"
+                      className="text-[10px] sm:text-xs font-medium bg-primary/10 text-primary border-primary/20 flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-2 py-0.5"
                     >
-                      {getBadgeIcon(outcome.badge)}
+                      <span className="hidden sm:inline">{getBadgeIcon(outcome.badge)}</span>
                       {outcome.badge}
                     </Badge>
                   </div>
@@ -322,26 +322,26 @@ const Home = () => {
                     className={`absolute top-0 left-0 right-0 h-1 ${outcome.accentColor} bg-current opacity-60`}
                   ></div>
 
-                  <CardHeader className="pb-4 pt-8">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className={`p-2 rounded-lg bg-muted/50 ${outcome.accentColor}`}>{outcome.icon}</div>
-                      <CardTitle className="text-lg font-semibold">{outcome.title}</CardTitle>
+                  <CardHeader className="pb-3 sm:pb-4 pt-10 sm:pt-8 px-4 sm:px-6">
+                    <div className="flex items-start gap-2 sm:gap-3 mb-2 sm:mb-3">
+                      <div className={`p-1.5 sm:p-2 rounded-lg bg-muted/50 ${outcome.accentColor} flex-shrink-0`}>{outcome.icon}</div>
+                      <CardTitle className="text-base sm:text-lg font-semibold leading-tight">{outcome.title}</CardTitle>
                     </div>
-                    <div className="text-sm font-medium text-muted-foreground mb-2">{outcome.painHeadline}</div>
+                    <div className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 sm:mb-2">{outcome.painHeadline}</div>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <CardDescription className="text-base font-medium text-foreground">
+                  <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
+                    <CardDescription className="text-sm sm:text-base font-medium text-foreground leading-snug">
                       {outcome.benefit}
                     </CardDescription>
 
-                    <div className="text-sm text-muted-foreground space-y-1">
-                      <div className="flex items-center gap-1">
-                        <CheckCircle className="h-4 w-4 text-success" />
-                        <span>{outcome.proof}</span>
+                    <div className="text-xs sm:text-sm text-muted-foreground space-y-1 sm:space-y-1.5">
+                      <div className="flex items-start gap-1.5 sm:gap-2">
+                        <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-success flex-shrink-0 mt-0.5" />
+                        <span className="leading-tight">{outcome.proof}</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-                        <span>Delivered in: {outcome.timeframe}</span>
+                      <div className="flex items-start gap-1.5 sm:gap-2">
+                        <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+                        <span className="leading-tight">Delivered in: {outcome.timeframe}</span>
                       </div>
                     </div>
 
@@ -388,20 +388,20 @@ const Home = () => {
               ))}
             </div>
 
-            <div className="text-center mt-16">
-              <div className="mb-8">
+            <div className="text-center mt-10 sm:mt-16">
+              <div className="mb-6 sm:mb-8">
                 <Button
                   asChild
                   size="lg"
-                  className="text-lg px-8 py-4 h-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all"
+                  className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 h-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto max-w-sm"
                 >
                   <Link to="/solutions">
-                    <Globe className="mr-2 h-5 w-5" />
+                    <Globe className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
                     Explore All Business Wins
                   </Link>
                 </Button>
               </div>
-              <p className="text-base text-muted-foreground max-w-md mx-auto">
+              <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto px-4">
                 Don't see your specific challenge? We create custom solutions for every business need.
               </p>
             </div>
@@ -409,13 +409,13 @@ const Home = () => {
         </section>
 
         {/* HOW IT WORKS */}
-        <section id="how" className="py-24 px-4 sm:px-6 lg:px-8">
+        <section id="how" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">How it works</h2>
+            <div className="text-center mb-10 sm:mb-16 lg:mb-20">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">How it works</h2>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-5xl mx-auto">
               <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
                 <CardHeader className="pb-6">
                   <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
@@ -461,12 +461,12 @@ const Home = () => {
               </Card>
             </div>
 
-            <div className="text-center mt-16">
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
+            <div className="text-center mt-10 sm:mt-16">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto">
+                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                   <Link to="/pricing#pricing">Get Started (from £495/month)</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
+                <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                   <Link to="/brief-builder?mode=quote#form">Prefer a project? Get a fixed price in 24h</Link>
                 </Button>
               </div>
@@ -475,25 +475,25 @@ const Home = () => {
         </section>
 
         {/* POWERFUL RESULTS SECTION */}
-        <section id="results" className="py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">Powerful Results</h2>
-              <p className="text-lg text-muted-foreground">Measurable improvements delivered in weeks, not months</p>
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6">Powerful Results</h2>
+              <p className="text-base sm:text-lg text-muted-foreground px-4">Measurable improvements delivered in weeks, not months</p>
             </div>
 
             {caseStudiesLoading ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Card key={i} className="p-6 animate-pulse">
-                    <div className="h-6 bg-muted rounded mb-4"></div>
-                    <div className="h-4 bg-muted rounded mb-2"></div>
-                    <div className="h-20 bg-muted rounded"></div>
+                  <Card key={i} className="p-4 sm:p-6 animate-pulse">
+                    <div className="h-5 sm:h-6 bg-muted rounded mb-3 sm:mb-4"></div>
+                    <div className="h-3 sm:h-4 bg-muted rounded mb-2"></div>
+                    <div className="h-16 sm:h-20 bg-muted rounded"></div>
                   </Card>
                 ))}
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {caseStudies?.map((caseStudy) => (
                   <CaseStudyCard
                     key={caseStudy.id}
@@ -523,17 +523,17 @@ const Home = () => {
         />
 
         {/* READY BAND (FINAL CTA) */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8">
+        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-10">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10 px-4">
               Ready to get your first business win?
             </h2>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button asChild size="lg" className="text-lg px-10 py-6 h-auto">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto">
+              <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <Link to="/pricing#pricing">Get Started (from £495/month)</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-lg px-10 py-6 h-auto">
+              <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
                   Talk to a Strategist
                 </a>
