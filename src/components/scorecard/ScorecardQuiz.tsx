@@ -144,15 +144,13 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
         utm_campaign: urlParams.get('utm_campaign'),
       };
 
-      const { data: insertedData, error } = await supabase
+      const { error } = await supabase
         .from('scorecard_responses')
-        .insert(payload)
-        .select('id')
-        .single();
+        .insert(payload);
 
       if (error) throw error;
 
-      const scorecardId = insertedData?.id || 'pending';
+      const scorecardId = 'pending';
 
       // Trigger email without requiring a SELECT (works for anonymous users)
       await supabase.functions.invoke('send-scorecard-report', {
