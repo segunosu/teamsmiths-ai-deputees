@@ -167,8 +167,10 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
           <Button size="lg" onClick={() => navigate(segmentInfo.ctaLink)}>
             {segmentInfo.cta}
           </Button>
-          <Button size="lg" variant="outline" onClick={() => navigate('/contact')}>
-            Speak to an Expert
+          <Button size="lg" variant="outline" asChild>
+            <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+              Speak to an Expert
+            </a>
           </Button>
         </div>
       </Card>
