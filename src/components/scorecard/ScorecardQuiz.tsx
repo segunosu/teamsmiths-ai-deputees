@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -70,6 +70,7 @@ interface ScorecardQuizProps {
 export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const ignoreSubmitUntil = useRef<number>(0);
   const totalSteps = Math.ceil(questions.length / 3) + 1; // Group questions + contact info
   
   const form = useForm<FormValues>({
@@ -103,6 +104,10 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
   };
 
   const onSubmit = async (values: FormValues) => {
+    // Prevent accidental submit right after advancing to final step
+    if (Date.now() < ignoreSubmitUntil.current) {
+      return;
+    }
     // Guard: if not on final step, just advance instead of submitting
     if (step < totalSteps - 1) {
       setStep(step + 1);
@@ -343,7 +348,14 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
             {step < totalSteps - 1 ? (
               <Button
                 type="button"
-                onClick={() => setStep(step + 1)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (step === totalSteps - 2) {
+                    ignoreSubmitUntil.current = Date.now() + 600; // ignore rapid submit
+                  }
+                  setStep(step + 1);
+                }}
                 disabled={isSubmitting}
               >
                 Next
