@@ -30,7 +30,7 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
           color: 'text-blue-600',
           bgColor: 'bg-blue-50',
           cta: 'Free AI Workshop',
-          ctaLink: '/contact?interest=workshop',
+          ctaLink: '/start?interest=workshop&origin=scorecard',
         };
       case 'Implementer':
         return {
@@ -39,7 +39,7 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
           color: 'text-amber-600',
           bgColor: 'bg-amber-50',
           cta: 'AI Growth Sprint',
-          ctaLink: '/contact?interest=sprint',
+          ctaLink: '/start?interest=sprint&origin=scorecard',
         };
       case 'Accelerator':
         return {
@@ -48,7 +48,7 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
           color: 'text-green-600',
           bgColor: 'bg-green-50',
           cta: 'Book Business Win Project',
-          ctaLink: '/contact?interest=business-win',
+          ctaLink: '/start?interest=business-win&origin=scorecard',
         };
     }
   };
