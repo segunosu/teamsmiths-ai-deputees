@@ -49,8 +49,9 @@ serve(async (req) => {
         const { subject, html, text } = email.payload;
         
         // Send via Resend
+        // Using Resend sandbox domain - replace with verified domain in production
         const { data: emailData, error: sendError } = await resend.emails.send({
-          from: "Teamsmiths <noreply@teamsmiths.ai>",
+          from: "Teamsmiths <onboarding@resend.dev>",
           to: [email.to_email],
           subject: subject || "Your AI Impact Scorecard Results",
           html: html,

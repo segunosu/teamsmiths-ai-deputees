@@ -18,8 +18,12 @@
 - Automatically calculates send dates based on segment
 
 ✅ **Cron Jobs:**
-- Email processor runs every hour (0 * * * *)
-- Processes pending emails and queues them via Resend
+- **process-email-outbox** - Runs every 5 minutes (*/5 * * * *)
+  - Processes immediate emails from `email_outbox` table
+  - Sends scorecard results, alerts, etc. via Resend
+- **process-scorecard-emails** - Runs hourly (0 * * * *)
+  - Processes scheduled nurture emails from `scorecard_email_queue`
+  - Queues them in `email_outbox` for sending
 
 ---
 
@@ -27,10 +31,17 @@
 
 ✅ **process-scorecard-emails**
 - Runs hourly via cron
-- Fetches pending emails from queue
+- Fetches pending emails from `scorecard_email_queue`
 - Replaces template variables
-- Sends via Resend email system
+- Queues in `email_outbox` for sending
 - Logs all actions
+
+✅ **process-email-outbox**
+- Runs every 5 minutes via cron
+- Fetches pending emails from `email_outbox`
+- Sends via Resend email API
+- Updates status to 'sent' or 'failed'
+- Logs provider ID for tracking
 
 ✅ **trigger-scorecard-alerts**
 - Called when scorecard submitted
@@ -47,6 +58,8 @@
 ✅ **send-scorecard-report**
 - Sends immediate scorecard results email
 - Called on submission
+- Queues email in `email_outbox`
+- Processed by cron within 5 minutes
 
 ---
 
@@ -135,10 +148,15 @@ After CRM instructions are complete:
    - Open lead detail and test updates
 
 4. **Verify email processing:**
-   - Wait up to 1 hour for cron job
-   - OR manually trigger: CRM email queue monitor page
-   - Check emails sent: `email_outbox` table
+   - Emails send within 5 minutes (cron runs every 5 min)
+   - Check `email_outbox` table for status
    - Verify status changed to 'sent'
+   - Check Resend dashboard for delivery
+
+**⚠️ Important Note:**
+- The system uses Resend sandbox domain (`onboarding@resend.dev`)
+- For production, verify your domain at: https://resend.com/domains
+- Then update `from` address in `process-email-outbox` edge function
 
 ---
 
