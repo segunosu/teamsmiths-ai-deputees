@@ -24,6 +24,7 @@ import BriefBuilder from "./pages/BriefBuilder";
 import BriefDetail from "./pages/BriefDetail";
 import { BriefSubmitted } from "./pages/BriefSubmitted";
 import DebugBrief from "./pages/DebugBrief";
+import AIImpactScorecard from "./pages/AIImpactScorecard";
 import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
@@ -110,7 +111,8 @@ const App = () => (
                      </React.Suspense>
                    } />
                     <Route path="/plan" element={<Navigate to="/pricing" replace />} />
-                  <Route path="/work-with-us" element={<WorkWithUs />} />
+                   <Route path="/work-with-us" element={<WorkWithUs />} />
+                  <Route path="/ai-impact-scorecard" element={<AIImpactScorecard />} />
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
                   <Route path="/brief" element={<Navigate to="/brief-builder" replace />} />

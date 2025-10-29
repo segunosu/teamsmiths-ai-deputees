@@ -2871,6 +2871,120 @@ export type Database = {
           },
         ]
       }
+      scorecard_responses: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          lead_id: string | null
+          name: string
+          pp1: number
+          pp2: number
+          pp3: number
+          pp4: number
+          pr1: number
+          pr2: number
+          pr3: number
+          pr4: number
+          protection_score: number
+          prowess_score: number
+          r1: number
+          r2: number
+          r3: number
+          r4: number
+          reach_score: number
+          readiness_score: number
+          role: string | null
+          rp1: number
+          rp2: number
+          rp3: number
+          rp4: number
+          segment: string
+          source: string | null
+          total_score: number
+          updated_at: string
+          user_id: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          lead_id?: string | null
+          name: string
+          pp1: number
+          pp2: number
+          pp3: number
+          pp4: number
+          pr1: number
+          pr2: number
+          pr3: number
+          pr4: number
+          protection_score: number
+          prowess_score: number
+          r1: number
+          r2: number
+          r3: number
+          r4: number
+          reach_score: number
+          readiness_score: number
+          role?: string | null
+          rp1: number
+          rp2: number
+          rp3: number
+          rp4: number
+          segment: string
+          source?: string | null
+          total_score: number
+          updated_at?: string
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          lead_id?: string | null
+          name?: string
+          pp1?: number
+          pp2?: number
+          pp3?: number
+          pp4?: number
+          pr1?: number
+          pr2?: number
+          pr3?: number
+          pr4?: number
+          protection_score?: number
+          prowess_score?: number
+          r1?: number
+          r2?: number
+          r3?: number
+          r4?: number
+          reach_score?: number
+          readiness_score?: number
+          role?: string | null
+          rp1?: number
+          rp2?: number
+          rp3?: number
+          rp4?: number
+          segment?: string
+          source?: string | null
+          total_score?: number
+          updated_at?: string
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
+      }
       series: {
         Row: {
           category_id: string | null
@@ -3817,10 +3931,7 @@ export type Database = {
       }
     }
     Functions: {
-      admin_get_matching_settings: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
+      admin_get_matching_settings: { Args: never; Returns: Json }
       admin_list_briefs: {
         Args: {
           p_limit?: number
@@ -3850,6 +3961,12 @@ export type Database = {
           updated_at: string | null
           urgency_level: string | null
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "admin_v_briefs"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       admin_list_deliverables: {
         Args: {
@@ -3870,6 +3987,12 @@ export type Database = {
           title: string | null
           versions: number | null
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "admin_v_deliverables"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       admin_list_experts: {
         Args: { p_limit?: number; p_offset?: number; p_q?: string }
@@ -3928,6 +4051,12 @@ export type Database = {
           starts_at: string | null
           title: string | null
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "admin_v_meetings"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       admin_list_milestones: {
         Args: {
@@ -3949,6 +4078,12 @@ export type Database = {
           stripe_payment_intent_id: string | null
           title: string | null
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "admin_v_milestones"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       admin_list_project_deliverables: {
         Args: {
@@ -3970,6 +4105,12 @@ export type Database = {
           submitted_at: string | null
           title: string | null
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "admin_v_project_deliverables"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       admin_list_projects: {
         Args: {
@@ -4031,7 +4172,7 @@ export type Database = {
         Returns: string
       }
       get_autopilot_history: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           algorithm_version: string
           candidate_count: number
@@ -4075,15 +4216,15 @@ export type Database = {
           title: string
           total_price: number | null
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "projects"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
-      get_public_settings: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      is_admin: {
-        Args: { _uid: string }
-        Returns: boolean
-      }
+      get_public_settings: { Args: never; Returns: Json }
+      is_admin: { Args: { _uid: string }; Returns: boolean }
       is_org_member: {
         Args: { _org_id: string; _user_id: string }
         Returns: boolean
