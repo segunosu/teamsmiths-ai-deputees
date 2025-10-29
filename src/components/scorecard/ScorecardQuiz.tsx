@@ -144,21 +144,40 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
         utm_campaign: urlParams.get('utm_campaign'),
       };
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('scorecard_responses')
-        .insert(payload)
-        .select()
-        .single();
+        .insert(payload);
 
       if (error) throw error;
 
-      // Trigger email
+      // Trigger email without requiring a SELECT (works for anonymous users)
       await supabase.functions.invoke('send-scorecard-report', {
-        body: { scorecardId: data.id },
+        body: {
+          scorecard: {
+            name: values.name,
+            email: values.email,
+            readiness_score: scores.readiness,
+            reach_score: scores.reach,
+            prowess_score: scores.prowess,
+            protection_score: scores.protection,
+            total_score: scores.total,
+            segment: scores.segment,
+          },
+        },
       });
 
       toast.success('Scorecard completed! Check your email for the full report.');
-      onComplete(data);
+      onComplete({
+        id: 'pending',
+        name: values.name,
+        email: values.email,
+        readiness_score: scores.readiness,
+        reach_score: scores.reach,
+        prowess_score: scores.prowess,
+        protection_score: scores.protection,
+        total_score: scores.total,
+        segment: scores.segment,
+      } as any);
     } catch (error) {
       console.error('Error submitting scorecard:', error);
       toast.error('Failed to submit scorecard. Please try again.');

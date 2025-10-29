@@ -12,22 +12,24 @@ serve(async (req) => {
   }
 
   try {
-    const { scorecardId } = await req.json();
+    const { scorecardId, scorecard } = await req.json();
 
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Fetch scorecard data
-    const { data: scorecard, error } = await supabaseClient
-      .from("scorecard_responses")
-      .select("*")
-      .eq("id", scorecardId)
-      .single();
-
-    if (error || !scorecard) {
-      throw new Error("Scorecard not found");
+    // Resolve scorecard data: prefer payload, fallback to DB fetch by id
+    let sc = scorecard;
+    if (!sc) {
+      if (!scorecardId) throw new Error("Missing scorecard data");
+      const { data: fetched, error } = await supabaseClient
+        .from("scorecard_responses")
+        .select("*")
+        .eq("id", scorecardId)
+        .single();
+      if (error || !fetched) throw new Error("Scorecard not found");
+      sc = fetched;
     }
 
     const getSegmentInfo = (segment: string) => {
@@ -82,7 +84,7 @@ serve(async (req) => {
       }
     };
 
-    const segmentInfo = getSegmentInfo(scorecard.segment);
+    const segmentInfo = getSegmentInfo(sc.segment);
 
     // Build email HTML
     const emailHtml = `
@@ -110,7 +112,7 @@ serve(async (req) => {
           <!-- Greeting -->
           <tr>
             <td style="padding: 30px 30px 20px 30px;">
-              <p style="margin: 0; font-size: 16px; color: #1f2937;">Hi ${scorecard.name},</p>
+              <p style="margin: 0; font-size: 16px; color: #1f2937;">Hi ${sc.name},</p>
               <p style="margin: 15px 0 0 0; font-size: 16px; color: #1f2937;">
                 Thank you for completing the AI Impact Scorecard. Here are your personalized results:
               </p>
@@ -126,7 +128,7 @@ serve(async (req) => {
                     <div style="background-color: #dbeafe; display: inline-block; padding: 8px 20px; border-radius: 20px; margin-bottom: 10px;">
                       <span style="color: #1e40af; font-weight: 600; font-size: 14px;">${segmentInfo.title}</span>
                     </div>
-                    <h2 style="margin: 10px 0; color: #1e3a8a; font-size: 48px; font-weight: bold;">${Math.round(scorecard.total_score)}/100</h2>
+                    <h2 style="margin: 10px 0; color: #1e3a8a; font-size: 48px; font-weight: bold;">${Math.round(sc.total_score)}/100</h2>
                     <p style="margin: 5px 0 0 0; color: #475569; font-size: 14px;">${segmentInfo.description}</p>
                   </td>
                 </tr>
@@ -144,10 +146,10 @@ serve(async (req) => {
                   <td style="padding: 8px 0;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                       <span style="color: #4b5563; font-size: 14px; font-weight: 500;">Readiness</span>
-                      <span style="color: #1e3a8a; font-size: 14px; font-weight: 600;">${Math.round(scorecard.readiness_score)}/100</span>
+                      <span style="color: #1e3a8a; font-size: 14px; font-weight: 600;">${Math.round(sc.readiness_score)}/100</span>
                     </div>
                     <div style="background-color: #e5e7eb; height: 8px; border-radius: 4px; overflow: hidden;">
-                      <div style="background-color: #3b82f6; height: 100%; width: ${scorecard.readiness_score}%; border-radius: 4px;"></div>
+                      <div style="background-color: #3b82f6; height: 100%; width: ${sc.readiness_score}%; border-radius: 4px;"></div>
                     </div>
                   </td>
                 </tr>
@@ -158,10 +160,10 @@ serve(async (req) => {
                   <td style="padding: 8px 0;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                       <span style="color: #4b5563; font-size: 14px; font-weight: 500;">Reach</span>
-                      <span style="color: #1e3a8a; font-size: 14px; font-weight: 600;">${Math.round(scorecard.reach_score)}/100</span>
+                      <span style="color: #1e3a8a; font-size: 14px; font-weight: 600;">${Math.round(sc.reach_score)}/100</span>
                     </div>
                     <div style="background-color: #e5e7eb; height: 8px; border-radius: 4px; overflow: hidden;">
-                      <div style="background-color: #3b82f6; height: 100%; width: ${scorecard.reach_score}%; border-radius: 4px;"></div>
+                      <div style="background-color: #3b82f6; height: 100%; width: ${sc.reach_score}%; border-radius: 4px;"></div>
                     </div>
                   </td>
                 </tr>
@@ -172,10 +174,10 @@ serve(async (req) => {
                   <td style="padding: 8px 0;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                       <span style="color: #4b5563; font-size: 14px; font-weight: 500;">Prowess</span>
-                      <span style="color: #1e3a8a; font-size: 14px; font-weight: 600;">${Math.round(scorecard.prowess_score)}/100</span>
+                      <span style="color: #1e3a8a; font-size: 14px; font-weight: 600;">${Math.round(sc.prowess_score)}/100</span>
                     </div>
                     <div style="background-color: #e5e7eb; height: 8px; border-radius: 4px; overflow: hidden;">
-                      <div style="background-color: #3b82f6; height: 100%; width: ${scorecard.prowess_score}%; border-radius: 4px;"></div>
+                      <div style="background-color: #3b82f6; height: 100%; width: ${sc.prowess_score}%; border-radius: 4px;"></div>
                     </div>
                   </td>
                 </tr>
@@ -186,10 +188,10 @@ serve(async (req) => {
                   <td style="padding: 8px 0;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                       <span style="color: #4b5563; font-size: 14px; font-weight: 500;">Protection</span>
-                      <span style="color: #1e3a8a; font-size: 14px; font-weight: 600;">${Math.round(scorecard.protection_score)}/100</span>
+                      <span style="color: #1e3a8a; font-size: 14px; font-weight: 600;">${Math.round(sc.protection_score)}/100</span>
                     </div>
                     <div style="background-color: #e5e7eb; height: 8px; border-radius: 4px; overflow: hidden;">
-                      <div style="background-color: #3b82f6; height: 100%; width: ${scorecard.protection_score}%; border-radius: 4px;"></div>
+                      <div style="background-color: #3b82f6; height: 100%; width: ${sc.protection_score}%; border-radius: 4px;"></div>
                     </div>
                   </td>
                 </tr>
@@ -247,12 +249,12 @@ serve(async (req) => {
 
     // Queue email in outbox
     await supabaseClient.from("email_outbox").insert({
-      to_email: scorecard.email,
+      to_email: sc.email,
       template_code: "scorecard_report",
       payload: {
-        name: scorecard.name,
-        total_score: scorecard.total_score,
-        segment: scorecard.segment,
+        name: sc.name,
+        total_score: sc.total_score,
+        segment: sc.segment,
         html: emailHtml,
       },
     });
