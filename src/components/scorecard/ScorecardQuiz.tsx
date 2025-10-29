@@ -103,6 +103,11 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
   };
 
   const onSubmit = async (values: FormValues) => {
+    // Guard: if not on final step, just advance instead of submitting
+    if (step < totalSteps - 1) {
+      setStep(step + 1);
+      return;
+    }
     setIsSubmitting(true);
     try {
       const scores = calculateScores(values);
