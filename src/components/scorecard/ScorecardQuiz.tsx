@@ -199,6 +199,13 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
   const progress = ((step + 1) / totalSteps) * 100;
   const currentQuestions = step === 0 ? [] : questions.slice((step - 1) * 3, step * 3);
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && step < totalSteps - 1) {
+      e.preventDefault();
+      setStep(step + 1);
+    }
+  };
+
   return (
     <div className="container max-w-4xl mx-auto px-4 py-8 md:py-16">
       <div className="text-center mb-8 md:mb-12">
@@ -213,7 +220,7 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
       <Progress value={progress} className="mb-8" />
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} onKeyDown={handleKeyDown} className="space-y-6">
           <Card className="p-6 md:p-8">
             {step === 0 ? (
               <div className="space-y-6">
