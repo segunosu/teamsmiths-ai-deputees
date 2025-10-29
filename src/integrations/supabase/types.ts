@@ -2873,12 +2873,18 @@ export type Database = {
       }
       scorecard_responses: {
         Row: {
+          booked_session: boolean | null
           company: string | null
+          converted_to_project: boolean | null
           created_at: string
+          crm_lead_status: string | null
+          crm_synced_at: string | null
           email: string
           id: string
+          last_contacted_at: string | null
           lead_id: string | null
           name: string
+          notes: string | null
           pp1: number
           pp2: number
           pp3: number
@@ -2910,12 +2916,18 @@ export type Database = {
           utm_source: string | null
         }
         Insert: {
+          booked_session?: boolean | null
           company?: string | null
+          converted_to_project?: boolean | null
           created_at?: string
+          crm_lead_status?: string | null
+          crm_synced_at?: string | null
           email: string
           id?: string
+          last_contacted_at?: string | null
           lead_id?: string | null
           name: string
+          notes?: string | null
           pp1: number
           pp2: number
           pp3: number
@@ -2947,12 +2959,18 @@ export type Database = {
           utm_source?: string | null
         }
         Update: {
+          booked_session?: boolean | null
           company?: string | null
+          converted_to_project?: boolean | null
           created_at?: string
+          crm_lead_status?: string | null
+          crm_synced_at?: string | null
           email?: string
           id?: string
+          last_contacted_at?: string | null
           lead_id?: string | null
           name?: string
+          notes?: string | null
           pp1?: number
           pp2?: number
           pp3?: number
@@ -3909,6 +3927,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      scorecard_leads_view: {
+        Row: {
+          booked_session: boolean | null
+          company: string | null
+          converted_to_project: boolean | null
+          created_at: string | null
+          crm_lead_status: string | null
+          email: string | null
+          id: string | null
+          last_contacted_at: string | null
+          lead_id: string | null
+          name: string | null
+          protection_score: number | null
+          prowess_score: number | null
+          reach_score: number | null
+          readiness_score: number | null
+          role: string | null
+          segment: string | null
+          source: string | null
+          total_score: number | null
+          updated_at: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          booked_session?: boolean | null
+          company?: string | null
+          converted_to_project?: boolean | null
+          created_at?: string | null
+          crm_lead_status?: string | null
+          email?: string | null
+          id?: string | null
+          last_contacted_at?: string | null
+          lead_id?: string | null
+          name?: string | null
+          protection_score?: number | null
+          prowess_score?: number | null
+          reach_score?: number | null
+          readiness_score?: number | null
+          role?: string | null
+          segment?: string | null
+          source?: string | null
+          total_score?: number | null
+          updated_at?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          booked_session?: boolean | null
+          company?: string | null
+          converted_to_project?: boolean | null
+          created_at?: string | null
+          crm_lead_status?: string | null
+          email?: string | null
+          id?: string | null
+          last_contacted_at?: string | null
+          lead_id?: string | null
+          name?: string | null
+          protection_score?: number | null
+          prowess_score?: number | null
+          reach_score?: number | null
+          readiness_score?: number | null
+          role?: string | null
+          segment?: string | null
+          source?: string | null
+          total_score?: number | null
+          updated_at?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+        }
+        Relationships: []
       }
       v_experts: {
         Row: {
