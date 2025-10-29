@@ -1,50 +1,70 @@
 # AI Impact Scorecard - CRM Integration Guide
 
 ## Overview
-This guide explains how to integrate the AI Impact Scorecard leads into your Teamsmiths CRM system.
+This guide explains how to integrate the AI Impact Scorecard leads into your Teamsmiths CRM system using **only Lovable and Supabase** (no Zapier needed).
+
+## 🎯 What's Automated Out of the Box
+
+✅ **Email Nurture Sequences** - Segment-specific emails automatically queued  
+✅ **Real-Time Alerts** - Hot leads trigger instant notifications  
+✅ **CRM Tracking** - All leads captured with full metadata  
+✅ **Conversion Tracking** - Monitor bookings and project conversions  
+✅ **Analytics Dashboard** - Real-time metrics and insights  
+
+---
 
 ## Architecture
 
-### Database Connection (Recommended)
-Both projects use Supabase. The scorecard data is stored in the `scorecard_responses` table.
+### Automation Flow
+```
+User Completes Scorecard
+         ↓
+   [Insert to DB]
+         ↓
+   [Database Trigger] ← Automatic
+         ↓
+   Queue Nurture Emails (Day 0, 2, 5, 10...)
+         ↓
+   Trigger Alerts (if high-value lead)
+         ↓
+   [Cron Job] ← Runs hourly
+         ↓
+   Process & Send Emails
+```
 
-**Option 1: Shared Database** (If same Supabase project)
-- The CRM can directly query the `scorecard_responses` table
-- Use the `scorecard_leads_view` for simplified access
+### Database Connection
+Both projects use Supabase. The scorecard data is in the `scorecard_responses` table with supporting automation tables.
 
-**Option 2: Cross-Project API** (If different Supabase projects)  
-- Use the `scorecard-webhook` edge function
-- API endpoint: `https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-webhook`
-
-**Option 3: Zapier Integration**
-- Set up Zapier webhook triggers
-- Connect to CRM automation workflows
+---
 
 ## Data Structure
 
-### Scorecard Response Fields
+### Main Tables
+
+#### `scorecard_responses`
+Primary lead data:
 ```typescript
 {
-  id: uuid,                    // Unique scorecard ID
-  lead_id: uuid,              // Lead reference ID
-  user_id: uuid,              // User ID (if authenticated)
-  name: string,               // Contact name
-  email: string,              // Contact email
-  company: string,            // Company name
-  role: string,               // Job role
+  id: uuid,
+  lead_id: uuid,
+  user_id: uuid,
+  name: string,
+  email: string,
+  company: string,
+  role: string,
   
   // Scores
   total_score: number,        // 0-100
-  readiness_score: number,    // 0-100
-  reach_score: number,        // 0-100
-  prowess_score: number,      // 0-100
-  protection_score: number,   // 0-100
+  readiness_score: number,
+  reach_score: number,
+  prowess_score: number,
+  protection_score: number,
   
   // Segmentation
   segment: 'Explorer' | 'Implementer' | 'Accelerator',
   
   // Tracking
-  source: string,             // Origin source
+  source: string,
   utm_source: string,
   utm_medium: string,
   utm_campaign: string,
@@ -62,11 +82,57 @@ Both projects use Supabase. The scorecard data is stored in the `scorecard_respo
 }
 ```
 
+#### `scorecard_email_queue`
+Scheduled nurture emails:
+```typescript
+{
+  id: uuid,
+  scorecard_id: uuid,
+  template_id: uuid,
+  to_email: string,
+  scheduled_for: timestamp,
+  sent_at: timestamp,
+  status: 'pending' | 'sent' | 'failed' | 'cancelled'
+}
+```
+
+#### `scorecard_email_templates`
+Email content by segment:
+```typescript
+{
+  id: uuid,
+  segment: string,
+  day_number: integer,        // 0, 2, 5, 10, etc.
+  subject: string,
+  body_html: string,
+  cta_text: string,
+  cta_url: string,
+  is_active: boolean
+}
+```
+
+#### `scorecard_alert_rules`
+Real-time notification config:
+```typescript
+{
+  id: uuid,
+  name: string,
+  condition_segment: string,  // null = all
+  condition_min_score: integer,
+  alert_type: 'slack' | 'email' | 'in_app',
+  alert_target: string,       // webhook URL, email, or user_id
+  message_template: string,
+  is_active: boolean
+}
+```
+
+---
+
 ## Integration Methods
 
-### Method 1: Direct Database Query (Same Supabase Project)
+### Method 1: Direct Database Query (Recommended)
 
-**Step 1: In CRM Project - Add Database Connection**
+**Step 1: Configure Supabase Client in CRM**
 ```typescript
 import { createClient } from '@supabase/supabase-js';
 
@@ -86,11 +152,11 @@ const { data: leads } = await supabase
   .order('created_at', { ascending: false });
 
 // Filter by segment
-const { data: explorers } = await supabase
+const { data: accelerators } = await supabase
   .from('scorecard_leads_view')
   .select('*')
-  .eq('segment', 'Explorer')
-  .is('crm_synced_at', null);
+  .eq('segment', 'Accelerator')
+  .gte('total_score', 70);
 ```
 
 **Step 3: Update Lead Status**
@@ -99,7 +165,6 @@ await supabase
   .from('scorecard_responses')
   .update({
     crm_lead_status: 'contacted',
-    crm_synced_at: new Date().toISOString(),
     last_contacted_at: new Date().toISOString()
   })
   .eq('id', leadId);
@@ -107,27 +172,18 @@ await supabase
 
 ---
 
-### Method 2: API Webhook (Cross-Project or External CRM)
+### Method 2: API Webhook (Cross-Project or External)
 
 **Base URL:** `https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-webhook`
 
-**Authentication:** Include Supabase anon key in header
-```
-Authorization: Bearer YOUR_ANON_KEY
-```
-
 #### GET - Fetch Leads
 ```bash
-# Get all new leads
-curl "https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-webhook?status=new" \
+# Get hot leads
+curl "https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-webhook?segment=Accelerator&status=new" \
   -H "Authorization: Bearer YOUR_ANON_KEY"
 
-# Get leads since specific date
+# Get leads since date
 curl "https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-webhook?since=2025-01-01" \
-  -H "Authorization: Bearer YOUR_ANON_KEY"
-
-# Get by segment
-curl "https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-webhook?segment=Accelerator" \
   -H "Authorization: Bearer YOUR_ANON_KEY"
 ```
 
@@ -140,88 +196,9 @@ curl -X POST "https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-we
     "lead_id": "uuid-here",
     "updates": {
       "crm_lead_status": "contacted",
-      "last_contacted_at": "2025-01-29T10:00:00Z",
       "notes": "Called and left voicemail"
     }
   }'
-```
-
-#### PUT - Bulk Update
-```bash
-curl -X PUT "https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-webhook" \
-  -H "Authorization: Bearer YOUR_ANON_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "updates": [
-      {
-        "lead_id": "uuid-1",
-        "crm_lead_status": "contacted",
-        "crm_synced_at": "2025-01-29T10:00:00Z"
-      },
-      {
-        "lead_id": "uuid-2",
-        "crm_lead_status": "qualified",
-        "booked_session": true
-      }
-    ]
-  }'
-```
-
----
-
-### Method 3: Zapier Integration
-
-**Step 1: Create Zapier Account & Zap**
-1. Go to zapier.com
-2. Create new Zap
-3. Choose trigger: "Webhooks by Zapier" > "Catch Hook"
-
-**Step 2: Set Up Supabase Trigger (Alternative)**
-1. Use "Supabase" app in Zapier
-2. Trigger: "New Row" in table `scorecard_responses`
-3. Connect your Supabase account
-
-**Step 3: Add Filters**
-- Filter by segment (Explorer/Implementer/Accelerator)
-- Filter by score range
-- Filter by source/UTM parameters
-
-**Step 4: Create Action Based on Segment**
-
-**For Explorer Segment:**
-- Action: Send email with workshop invitation
-- Action: Add to "Explorer Nurture" sequence
-- Action: Tag in CRM as "Explorer"
-
-**For Implementer Segment:**
-- Action: Send email with Growth Sprint invitation
-- Action: Add to "Implementer Nurture" sequence
-- Action: Create task for sales follow-up
-
-**For Accelerator Segment:**
-- Action: Send Slack notification to team
-- Action: Create high-priority lead in CRM
-- Action: Send immediate booking link email
-- Action: Assign to account executive
-
-**Step 5: Update CRM Status**
-Use Zapier's "Code" action or HTTP request to call back to webhook:
-```javascript
-// Zapier Code Action
-const response = await fetch('https://iyqsbjawaampgcavsgcz.supabase.co/functions/v1/scorecard-webhook', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Bearer YOUR_ANON_KEY',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    lead_id: inputData.id,
-    updates: {
-      crm_lead_status: 'contacted',
-      crm_synced_at: new Date().toISOString()
-    }
-  })
-});
 ```
 
 ---
@@ -251,50 +228,48 @@ export const ScorecardLeads = () => {
   return (
     <div className="container mx-auto p-6">
       <h1>Scorecard Leads</h1>
-      {/* Render leads in table/cards */}
+      {/* Render leads */}
     </div>
   );
 };
 ```
 
-**Step 2: Add Segmentation Tabs**
-- Tab 1: All Leads
-- Tab 2: Explorers (new leads, low maturity)
-- Tab 3: Implementers (medium maturity)
-- Tab 4: Accelerators (high maturity, hot leads)
+**Step 2: Real-Time Notifications**
+```tsx
+useEffect(() => {
+  const channel = supabase
+    .channel('scorecard-leads')
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'scorecard_responses',
+      filter: 'segment=eq.Accelerator'
+    }, (payload) => {
+      toast.success(`🔥 New hot lead: ${payload.new.name}`);
+    })
+    .subscribe();
 
-**Step 3: Add Filters**
-- Date range
-- Score range
-- Status (new, contacted, qualified, converted)
-- Source/UTM parameters
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, []);
+```
 
-**Step 4: Add Actions**
-- Mark as contacted
-- Add notes
-- Book session
-- Convert to project
-- Send email
-
-**Step 5: Dashboard KPIs**
+**Step 3: Dashboard KPIs**
 ```tsx
 const { data: stats } = useQuery({
   queryKey: ['scorecard-stats'],
   queryFn: async () => {
-    const { data: total } = await supabase
+    const { data } = await supabase
       .from('scorecard_responses')
-      .select('count');
+      .select('segment, crm_lead_status, booked_session, converted_to_project');
     
-    const { data: bySegment } = await supabase
-      .from('scorecard_responses')
-      .select('segment, count');
-    
-    const { data: conversions } = await supabase
-      .from('scorecard_responses')
-      .select('count')
-      .eq('converted_to_project', true);
-      
-    return { total, bySegment, conversions };
+    return {
+      total: data?.length || 0,
+      bySegment: groupBy(data, 'segment'),
+      booked: data?.filter(d => d.booked_session).length || 0,
+      converted: data?.filter(d => d.converted_to_project).length || 0
+    };
   }
 });
 ```
@@ -303,129 +278,103 @@ const { data: stats } = useQuery({
 
 ## Lead Nurture Workflows
 
-### Explorer Workflow
-**Day 0:** Welcome email + scorecard results (automated)
-**Day 2:** Workshop invitation email
-**Day 5:** AI readiness guide PDF
-**Day 10:** Case study: "Getting Started with AI"
-**Day 15:** Follow-up: "Ready to start your AI journey?"
+All automated via database triggers and cron jobs. No manual configuration needed!
 
-### Implementer Workflow  
-**Day 0:** Welcome email + scorecard results (automated)
-**Day 1:** Growth Sprint invitation
-**Day 3:** Resource: "Scaling AI in Your Organization"
-**Day 7:** Success story: "From Pilot to Production"
-**Day 10:** Call booking reminder
-**Day 14:** Follow-up: "Let's accelerate your AI progress"
+### Explorer Workflow
+**Goal:** Educate and invite to workshop
+
+| Day | Subject | CTA |
+|-----|---------|-----|
+| 0 | Your AI Impact Score: {{total_score}}/100 🎯 | Book Free Workshop |
+| 2 | Ready to Start Your AI Journey? | Reserve Your Spot |
+| 5 | Your Free AI Readiness Guide | Download Guide |
+| 10 | Case Study: Getting Started with AI | Read Case Study |
+
+### Implementer Workflow
+**Goal:** Scale pilots and accelerate growth
+
+| Day | Subject | CTA |
+|-----|---------|-----|
+| 0 | Your AI Impact Score: {{total_score}}/100 🚀 | Join Growth Sprint |
+| 1 | Accelerate Your AI Growth | Learn About Sprint |
+| 3 | Scaling AI in Your Organization | Access Resource |
+| 7 | From Pilot to Production Success Story | Read Success Story |
 
 ### Accelerator Workflow
-**Day 0:** Immediate notification to sales team (automated)
-**Day 0:** Premium email + calendar booking link
-**Day 1:** Personal video from founder/expert
-**Day 2:** Phone call attempt (task for team)
-**Day 3:** Case study: "Enterprise AI Transformation"
-**Day 5:** Follow-up call attempt
-**Day 7:** Strategic partnership proposal
+**Goal:** Strategic partnership and immediate engagement
+
+| Day | Subject | CTA |
+|-----|---------|-----|
+| 0 | Impressive! Your AI Score: {{total_score}}/100 🏆 | Book Strategy Call |
+| 1 | Let's Drive Strategic AI Innovation | Schedule Call |
+| 3 | Enterprise AI Transformation Case Study | View Case Study |
+
+**How It Works:**
+1. User completes scorecard
+2. Database trigger auto-queues all emails for their segment
+3. Cron job processes queue hourly
+4. Emails sent via Resend
+5. Opens/clicks tracked automatically
 
 ---
 
-## Notification Setup
+## Alert Configurations
 
-### Slack Notifications (High-Intent Leads)
-Create Zapier Zap:
-1. Trigger: New row in `scorecard_responses` where segment = "Accelerator"
-2. Filter: total_score > 70
-3. Action: Send Slack message to #hot-leads channel
+### Pre-Configured Alerts
 
-Message template:
-```
-🔥 New Hot Lead: Accelerator Segment
+1. **Hot Lead Alert**
+   - Trigger: Accelerator + score > 70
+   - Action: In-app notification
+   - Message: "🔥 New hot lead: {{name}} from {{company}} scored {{total_score}}/100"
 
-Name: {{name}}
-Email: {{email}}
-Company: {{company}}
-Score: {{total_score}}/100
+2. **High Score Alert**
+   - Trigger: Any segment + score > 85
+   - Action: In-app notification
+   - Message: "⭐ Exceptional score: {{name}} scored {{total_score}}/100"
 
-Segment: {{segment}}
-Source: {{source}}
+### Add Slack Alerts
 
-📊 Breakdown:
-- Readiness: {{readiness_score}}
-- Reach: {{reach_score}}
-- Prowess: {{prowess_score}}  
-- Protection: {{protection_score}}
+1. Create Slack Incoming Webhook at https://api.slack.com/apps
+2. Update alert rule:
 
-🎯 Action: Book call immediately
-👉 View in CRM: [link to CRM]
-```
-
----
-
-## Email Nurture Sequences
-
-### Setting Up Email Templates
-
-**Tool Options:**
-- Resend (already configured in project)
-- Zapier Email
-- Mailchimp
-- HubSpot
-
-**Template Variables:**
-- {{name}}
-- {{segment}}
-- {{total_score}}
-- {{company}}
-- {{cta_url}}
-
-### Sample Email: Explorer Day 0
-```
-Subject: Your AI Impact Score: {{total_score}}/100 🎯
-
-Hi {{name}},
-
-Thanks for taking the AI Impact Scorecard! Your score places you in the **Explorer** segment - you're at the beginning of an exciting AI journey.
-
-📊 Your Breakdown:
-- Readiness: {{readiness_score}}
-- Reach: {{reach_score}}
-- Prowess: {{prowess_score}}
-- Protection: {{protection_score}}
-
-🎯 Next Step: Join our free AI Workshop
-Learn the fundamentals and identify your first AI use cases.
-
-[Book Workshop] {{cta_url}}
-
-Best regards,
-Teamsmiths Team
+```sql
+INSERT INTO scorecard_alert_rules (
+  name,
+  condition_segment,
+  condition_min_score,
+  alert_type,
+  alert_target,
+  message_template
+) VALUES (
+  'Slack Hot Lead',
+  'Accelerator',
+  70,
+  'slack',
+  'https://hooks.slack.com/services/YOUR/WEBHOOK/URL',
+  '🔥 *New Hot Lead*\n*Name:* {{name}}\n*Company:* {{company}}\n*Score:* {{total_score}}/100'
+);
 ```
 
 ---
 
 ## Conversion Tracking
 
-### Tracking Events to Record
+### Track These Events
 
-1. **Workshop Booked** - Set `booked_session = true`
-2. **Workshop Attended** - Update `crm_lead_status = 'engaged'`
-3. **Sprint Signup** - Update `crm_lead_status = 'qualified'`
-4. **Project Created** - Set `converted_to_project = true`
-5. **Payment Received** - Update to `crm_lead_status = 'customer'`
-
-### Implementation in CRM
+1. **Workshop Booked**
 ```typescript
-// When user books workshop
 await supabase
   .from('scorecard_responses')
   .update({
     booked_session: true,
-    last_contacted_at: new Date().toISOString(),
-    crm_lead_status: 'engaged'
+    crm_lead_status: 'engaged',
+    last_contacted_at: new Date().toISOString()
   })
   .eq('email', userEmail);
+```
 
-// When project created
+2. **Project Created**
+```typescript
 await supabase
   .from('scorecard_responses')
   .update({
@@ -442,109 +391,98 @@ await supabase
 ### Key Metrics to Track
 
 **Lead Volume:**
-- Total scorecard completions
-- Completions by segment
-- Completions by source/UTM
-- Daily/weekly/monthly trends
+```sql
+SELECT 
+  DATE_TRUNC('day', created_at) as date,
+  segment,
+  COUNT(*) as leads
+FROM scorecard_responses
+WHERE created_at > NOW() - INTERVAL '30 days'
+GROUP BY date, segment
+ORDER BY date DESC;
+```
 
 **Conversion Funnel:**
-- Scorecard → Email opened (track in email tool)
-- Email → Session booked
-- Session booked → Session attended
-- Session → Sprint signup
-- Sprint → Project created
-- Project → Payment
+```sql
+SELECT 
+  segment,
+  COUNT(*) as total,
+  COUNT(CASE WHEN booked_session THEN 1 END) as booked,
+  COUNT(CASE WHEN converted_to_project THEN 1 END) as converted,
+  ROUND(100.0 * COUNT(CASE WHEN booked_session THEN 1 END) / COUNT(*), 2) as booking_rate,
+  ROUND(100.0 * COUNT(CASE WHEN converted_to_project THEN 1 END) / COUNT(*), 2) as conversion_rate
+FROM scorecard_responses
+GROUP BY segment;
+```
 
-**Segment Performance:**
-- Explorer conversion rate
-- Implementer conversion rate  
-- Accelerator conversion rate
-- Average time to conversion by segment
-
-**Revenue Metrics:**
-- Total pipeline value from scorecard leads
-- Conversion to revenue by segment
-- Average deal size by segment
-- ROI of scorecard campaign
-
-### Dashboard Queries
-```typescript
-// Conversion rates by segment
-const conversionRates = await supabase
-  .rpc('calculate_segment_conversions');
-
-// Lead velocity (leads per day)
-const leadVelocity = await supabase
-  .from('scorecard_responses')
-  .select('created_at')
-  .gte('created_at', thirtyDaysAgo)
-  .then(data => data.length / 30);
+**Email Performance:**
+```sql
+SELECT 
+  t.segment,
+  t.day_number,
+  COUNT(*) as queued,
+  COUNT(CASE WHEN q.status = 'sent' THEN 1 END) as sent,
+  COUNT(CASE WHEN q.status = 'failed' THEN 1 END) as failed
+FROM scorecard_email_queue q
+JOIN scorecard_email_templates t ON t.id = q.template_id
+GROUP BY t.segment, t.day_number
+ORDER BY t.segment, t.day_number;
 ```
 
 ---
 
 ## Testing Checklist
 
-- [ ] New scorecard submission creates lead in CRM
-- [ ] Lead is correctly segmented (Explorer/Implementer/Accelerator)
-- [ ] Segment-specific email is triggered
-- [ ] Slack notification sent for Accelerator leads (score > 70)
-- [ ] CRM dashboard shows new lead
-- [ ] UTM parameters are captured correctly
+- [ ] New scorecard submission creates lead in database
+- [ ] Lead is correctly segmented
+- [ ] Emails are queued automatically with correct dates
+- [ ] Alert triggers for Accelerator leads with score > 70
+- [ ] CRM dashboard shows new lead in real-time
+- [ ] UTM parameters captured correctly
 - [ ] Lead status can be updated from CRM
-- [ ] Booking link triggers status update
-- [ ] Conversion tracking works end-to-end
-- [ ] All emails have working CTAs
-- [ ] Zapier workflows are active and not paused
-- [ ] Dashboard metrics are calculating correctly
+- [ ] Email templates render with correct variable replacements
+- [ ] Cron job processes emails hourly
+- [ ] Conversion tracking updates database
 
 ---
 
 ## Troubleshooting
 
-**Issue: Leads not appearing in CRM**
-- Check Supabase connection
-- Verify RLS policies allow reading scorecard_responses
-- Check if lead_id is being generated
+**Issue: Emails not queuing**
+- Check `scorecard_email_queue` table
+- Verify database trigger is active
+- Check `scorecard_automation_log` for errors
 
-**Issue: Zapier not triggering**
-- Verify webhook URL is correct
-- Check Zapier task history for errors
-- Ensure Supabase table trigger is set up correctly
+**Issue: Alerts not firing**
+- Verify alert rules are active
+- Check segment and score match conditions
+- Review `scorecard_automation_log`
 
-**Issue: Wrong segment assignment**
-- Check scoring algorithm in ScorecardQuiz.tsx
-- Verify segment thresholds are correct
-- Review test submissions
-
-**Issue: Emails not sending**
-- Check Resend API key is configured
-- Verify email_outbox processing
-- Check spam folder
+**Issue: Cron job not running**
+- Check Supabase Edge Function logs
+- Verify cron schedule in `config.toml`
+- Manually trigger: `curl -X POST <function-url>`
 
 ---
 
 ## Next Steps
 
-1. **Choose Integration Method** (Direct DB, API, or Zapier)
-2. **Set up CRM Dashboard** in Lovable CRM project
-3. **Configure Zapier Workflows** for each segment
-4. **Create Email Templates** for nurture sequences
-5. **Set up Slack Notifications** for hot leads
-6. **Test End-to-End** with sample submissions
-7. **Monitor and Optimize** based on conversion data
+1. **Set up CRM Dashboard** (see `LOVABLE-CRM-INSTRUCTIONS.md`)
+2. **Configure Slack Webhooks** (optional)
+3. **Customize Email Templates** (optional)
+4. **Monitor Automation Logs**
+5. **Track Conversion Metrics**
 
 ---
 
 ## Support Resources
 
-- **Scorecard Database:** `scorecard_responses` table
-- **View:** `scorecard_leads_view` (simplified access)
-- **Webhook:** `scorecard-webhook` edge function
+- **Automation Guide:** `AUTOMATION-NO-ZAPIER.md`
+- **CRM Instructions:** `LOVABLE-CRM-INSTRUCTIONS.md`
 - **Supabase Project:** https://iyqsbjawaampgcavsgcz.supabase.co
 - **CRM Project:** https://lovable.dev/projects/60b7bde4-08fc-4a6a-a5c4-a9e917ed8fb9
 
 ---
 
 **Last Updated:** January 2025  
-**Version:** 1.0
+**Version:** 2.0 (Fully Automated - No Zapier)

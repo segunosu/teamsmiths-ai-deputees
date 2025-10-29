@@ -144,16 +144,21 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
         utm_campaign: urlParams.get('utm_campaign'),
       };
 
-      const { error } = await supabase
+      const { data: insertedData, error } = await supabase
         .from('scorecard_responses')
-        .insert(payload);
+        .insert(payload)
+        .select('id')
+        .single();
 
       if (error) throw error;
+
+      const scorecardId = insertedData?.id || 'pending';
 
       // Trigger email without requiring a SELECT (works for anonymous users)
       await supabase.functions.invoke('send-scorecard-report', {
         body: {
           scorecard: {
+            id: scorecardId,
             name: values.name,
             email: values.email,
             readiness_score: scores.readiness,
@@ -166,9 +171,16 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
         },
       });
 
+      // Trigger alerts for hot leads (background task)
+      if (scorecardId !== 'pending') {
+        supabase.functions.invoke('trigger-scorecard-alerts', {
+          body: { scorecardId },
+        }).catch(error => console.error('Failed to trigger alerts:', error));
+      }
+
       toast.success('Scorecard completed! Check your email for the full report.');
       onComplete({
-        id: 'pending',
+        id: scorecardId,
         name: values.name,
         email: values.email,
         readiness_score: scores.readiness,

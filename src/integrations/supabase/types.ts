@@ -2871,6 +2871,184 @@ export type Database = {
           },
         ]
       }
+      scorecard_alert_rules: {
+        Row: {
+          alert_target: string
+          alert_type: string
+          condition_min_score: number | null
+          condition_segment: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          message_template: string
+          name: string
+        }
+        Insert: {
+          alert_target: string
+          alert_type: string
+          condition_min_score?: number | null
+          condition_segment?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          message_template: string
+          name: string
+        }
+        Update: {
+          alert_target?: string
+          alert_type?: string
+          condition_min_score?: number | null
+          condition_segment?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          message_template?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      scorecard_automation_log: {
+        Row: {
+          action_data: Json | null
+          action_type: string
+          created_at: string | null
+          error: string | null
+          id: string
+          scorecard_id: string
+          status: string | null
+        }
+        Insert: {
+          action_data?: Json | null
+          action_type: string
+          created_at?: string | null
+          error?: string | null
+          id?: string
+          scorecard_id: string
+          status?: string | null
+        }
+        Update: {
+          action_data?: Json | null
+          action_type?: string
+          created_at?: string | null
+          error?: string | null
+          id?: string
+          scorecard_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scorecard_automation_log_scorecard_id_fkey"
+            columns: ["scorecard_id"]
+            isOneToOne: false
+            referencedRelation: "scorecard_leads_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scorecard_automation_log_scorecard_id_fkey"
+            columns: ["scorecard_id"]
+            isOneToOne: false
+            referencedRelation: "scorecard_responses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scorecard_email_queue: {
+        Row: {
+          created_at: string | null
+          error: string | null
+          id: string
+          scheduled_for: string
+          scorecard_id: string
+          sent_at: string | null
+          status: string | null
+          template_id: string
+          to_email: string
+        }
+        Insert: {
+          created_at?: string | null
+          error?: string | null
+          id?: string
+          scheduled_for: string
+          scorecard_id: string
+          sent_at?: string | null
+          status?: string | null
+          template_id: string
+          to_email: string
+        }
+        Update: {
+          created_at?: string | null
+          error?: string | null
+          id?: string
+          scheduled_for?: string
+          scorecard_id?: string
+          sent_at?: string | null
+          status?: string | null
+          template_id?: string
+          to_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scorecard_email_queue_scorecard_id_fkey"
+            columns: ["scorecard_id"]
+            isOneToOne: false
+            referencedRelation: "scorecard_leads_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scorecard_email_queue_scorecard_id_fkey"
+            columns: ["scorecard_id"]
+            isOneToOne: false
+            referencedRelation: "scorecard_responses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scorecard_email_queue_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "scorecard_email_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scorecard_email_templates: {
+        Row: {
+          body_html: string
+          created_at: string | null
+          cta_text: string | null
+          cta_url: string | null
+          day_number: number
+          id: string
+          is_active: boolean | null
+          segment: string
+          subject: string
+          updated_at: string | null
+        }
+        Insert: {
+          body_html: string
+          created_at?: string | null
+          cta_text?: string | null
+          cta_url?: string | null
+          day_number: number
+          id?: string
+          is_active?: boolean | null
+          segment: string
+          subject: string
+          updated_at?: string | null
+        }
+        Update: {
+          body_html?: string
+          created_at?: string | null
+          cta_text?: string | null
+          cta_url?: string | null
+          day_number?: number
+          id?: string
+          is_active?: boolean | null
+          segment?: string
+          subject?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       scorecard_responses: {
         Row: {
           booked_session: boolean | null
