@@ -167,5 +167,8 @@ verify_jwt = false
 [functions.brief-sensemaking]
 verify_jwt = false
 
+[functions.process-email-outbox]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true

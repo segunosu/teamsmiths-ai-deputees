@@ -51,6 +51,19 @@ serve(async (req) => {
       try {
         // Sanitize recipient email
         const sanitizedEmail = (email.to_email ?? "").trim().toLowerCase();
+
+        // Basic safety check for recipient format
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail);
+        if (!isValidEmail) {
+          console.warn(`Skipping email ${email.id}: invalid recipient '${sanitizedEmail}'`);
+          await supabaseClient
+            .from("email_outbox")
+            .update({ status: "failed", error: "invalid_to_email" })
+            .eq("id", email.id);
+          // small delay to avoid rate limits
+          await new Promise((res) => setTimeout(res, 600));
+          continue;
+        }
         
         // Determine recipient (use test recipient if provided)
         const to = TEST_RECIPIENT ? [TEST_RECIPIENT] : [sanitizedEmail];
@@ -84,6 +97,8 @@ serve(async (req) => {
 
         successCount++;
         console.log(`✓ Sent email to ${email.to_email}`);
+        // small delay to respect Resend rate limits
+        await new Promise((res) => setTimeout(res, 600));
 
       } catch (emailError: any) {
         failCount++;
