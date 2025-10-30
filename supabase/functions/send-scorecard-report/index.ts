@@ -54,6 +54,8 @@ serve(async (req) => {
         subject,
         body: html,
         status: "queued",
+        template_code: "scorecard_report",
+        payload: body,
       });
 
     if (insertError) throw insertError;
