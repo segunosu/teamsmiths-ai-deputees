@@ -170,7 +170,16 @@ verify_jwt = false
 [functions.process-email-outbox]
 verify_jwt = false
 
-[functions.test-resend-auth]
+[functions.send-scorecard-report]
+verify_jwt = false
+
+[functions.process-scorecard-emails]
+verify_jwt = false
+
+[functions.trigger-scorecard-alerts]
+verify_jwt = false
+
+[functions.scorecard-webhook]
 verify_jwt = false
 
 [edge_runtime]
