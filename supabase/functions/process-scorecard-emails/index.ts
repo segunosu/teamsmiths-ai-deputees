@@ -13,13 +13,12 @@ serve(async (req) => {
 
   try {
     console.log("Starting scorecard email processing...");
-
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Get all pending emails that are due to be sent
+    // Get all pending scorecard emails due for sending
     const now = new Date().toISOString();
     const { data: pendingEmails, error: fetchError } = await supabaseClient
       .from("scorecard_email_queue")
@@ -55,14 +54,14 @@ serve(async (req) => {
     if (fetchError) throw fetchError;
 
     if (!pendingEmails || pendingEmails.length === 0) {
-      console.log("No pending emails to process");
+      console.log("No pending scorecard emails to process");
       return new Response(
         JSON.stringify({ success: true, processed: 0 }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    console.log(`Processing ${pendingEmails.length} emails...`);
+    console.log(`Processing ${pendingEmails.length} queued emails...`);
 
     let successCount = 0;
     let failCount = 0;
@@ -76,22 +75,22 @@ serve(async (req) => {
           throw new Error("Missing scorecard or template data");
         }
 
-        // Replace template variables
+        // Build subject line and body with placeholders replaced
         let subject = template.subject
           .replace(/{{name}}/g, scorecard.name)
           .replace(/{{total_score}}/g, Math.round(scorecard.total_score).toString())
-          .replace(/{{company}}/g, scorecard.company || '');
+          .replace(/{{company}}/g, scorecard.company || "");
 
         let body = template.body_html
           .replace(/{{name}}/g, scorecard.name)
           .replace(/{{total_score}}/g, Math.round(scorecard.total_score).toString())
-          .replace(/{{company}}/g, scorecard.company || '')
+          .replace(/{{company}}/g, scorecard.company || "")
           .replace(/{{readiness_score}}/g, Math.round(scorecard.readiness_score).toString())
           .replace(/{{reach_score}}/g, Math.round(scorecard.reach_score).toString())
           .replace(/{{prowess_score}}/g, Math.round(scorecard.prowess_score).toString())
           .replace(/{{protection_score}}/g, Math.round(scorecard.protection_score).toString());
 
-        // Add CTA button if available
+        // Add CTA button if provided
         if (template.cta_text && template.cta_url) {
           body += `
             <div style="margin: 30px 0; text-align: center;">
@@ -108,31 +107,35 @@ serve(async (req) => {
           `;
         }
 
-        // Add footer
+        // Add branded footer
         body += `
           <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px;">
-            <p>Teamsmiths - Your AI Transformation Partner</p>
+            <p>Teamsmiths – Your AI Transformation Partner</p>
             <p>© ${new Date().getFullYear()} Teamsmiths. All rights reserved.</p>
           </div>
         `;
 
-        // Queue email in email_outbox
+        // Log email details
+        console.log("Queuing email:", email.to_email, "template:", email.template_id);
+
+        // Insert into email_outbox (now uses subject/body instead of payload)
         const { error: queueError } = await supabaseClient
           .from("email_outbox")
           .insert({
             to_email: email.to_email,
-            template_code: `scorecard_nurture_${scorecard.segment.toLowerCase()}`,
+            subject,
+            body,
+            template_code: `scorecard_nurture_${(scorecard.segment || "general").toLowerCase()}`,
             payload: {
-              subject,
-              html: body,
               scorecard_id: scorecard.id,
               template_id: email.template_id,
             },
+            status: "queued",
           });
 
         if (queueError) throw queueError;
 
-        // Mark email as sent
+        // Mark this queue item as sent
         await supabaseClient
           .from("scorecard_email_queue")
           .update({
@@ -142,26 +145,20 @@ serve(async (req) => {
           .eq("id", email.id);
 
         // Log success
-        await supabaseClient
-          .from("scorecard_automation_log")
-          .insert({
-            scorecard_id: scorecard.id,
-            action_type: "email_sent",
-            action_data: {
-              template_id: email.template_id,
-              subject,
-            },
-            status: "success",
-          });
+        await supabaseClient.from("scorecard_automation_log").insert({
+          scorecard_id: scorecard.id,
+          action_type: "email_sent",
+          action_data: { template_id: email.template_id, subject },
+          status: "success",
+        });
 
         successCount++;
-        console.log(`✓ Queued email for ${email.to_email}`);
-
-      } catch (emailError: any) {
+        console.log(`✓ Queued email successfully for ${email.to_email}`);
+      } catch (emailError) {
         failCount++;
-        console.error(`✗ Failed to process email ${email.id}:`, emailError);
+        console.error(`✗ Failed to queue email ${email.id}:`, emailError);
 
-        // Mark as failed
+        // Mark failure in queue table
         await supabaseClient
           .from("scorecard_email_queue")
           .update({
@@ -171,35 +168,31 @@ serve(async (req) => {
           .eq("id", email.id);
 
         // Log failure
-        await supabaseClient
-          .from("scorecard_automation_log")
-          .insert({
-            scorecard_id: email.scorecard_id,
-            action_type: "email_failed",
-            action_data: {
-              template_id: email.template_id,
-              error: emailError.message,
-            },
-            status: "error",
-            error: emailError.message,
-          });
+        await supabaseClient.from("scorecard_automation_log").insert({
+          scorecard_id: email.scorecard_id,
+          action_type: "email_failed",
+          action_data: { template_id: email.template_id, error: emailError.message },
+          status: "error",
+          error: emailError.message,
+        });
       }
     }
 
-    console.log(`Email processing complete: ${successCount} sent, ${failCount} failed`);
+    console.log(
+      `Scorecard email processing complete: ${successCount} queued, ${failCount} failed`
+    );
 
     return new Response(
       JSON.stringify({
         success: true,
         processed: successCount + failCount,
-        sent: successCount,
+        queued: successCount,
         failed: failCount,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
-
-  } catch (error: any) {
-    console.error("Error processing emails:", error);
+  } catch (error) {
+    console.error("Error processing scorecard emails:", error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
