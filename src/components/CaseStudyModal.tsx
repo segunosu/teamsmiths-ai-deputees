@@ -94,7 +94,7 @@ export const CaseStudyModal = ({
         {canNavigatePrev && (
           <button
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-3 hover:bg-accent transition-all z-50 hover:scale-110"
+            className="absolute -left-5 top-1/2 -translate-y-1/2 bg-background/90 backdrop-blur-sm rounded-full p-3 hover:bg-accent transition-all z-50 hover:scale-110 shadow-lg hidden md:block"
             aria-label="Previous case study (Left arrow)"
           >
             <ChevronLeft className="h-7 w-7" />
@@ -104,14 +104,36 @@ export const CaseStudyModal = ({
         {canNavigateNext && (
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm rounded-full p-3 hover:bg-accent transition-all z-50 hover:scale-110"
+            className="absolute -right-5 top-1/2 -translate-y-1/2 bg-background/90 backdrop-blur-sm rounded-full p-3 hover:bg-accent transition-all z-50 hover:scale-110 shadow-lg hidden md:block"
             aria-label="Next case study (Right arrow)"
           >
             <ChevronRight className="h-7 w-7" />
           </button>
         )}
 
-        <div className="p-8 space-y-8">
+        {/* Mobile Navigation - Bottom positioned */}
+        <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-50">
+          {canNavigatePrev && (
+            <button
+              onClick={handlePrev}
+              className="bg-background/90 backdrop-blur-sm rounded-full p-3 hover:bg-accent transition-all shadow-lg"
+              aria-label="Previous case study"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+          )}
+          {canNavigateNext && (
+            <button
+              onClick={handleNext}
+              className="bg-background/90 backdrop-blur-sm rounded-full p-3 hover:bg-accent transition-all shadow-lg"
+              aria-label="Next case study"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+          )}
+        </div>
+
+        <div className="p-6 md:p-8 space-y-8">
           {/* Header */}
           <div className="space-y-4">
             <DialogTitle id="case-study-title" className="text-3xl font-bold">
