@@ -25,11 +25,12 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Configurable sender and test recipient for Resend sandbox
-    const FROM = Deno.env.get("RESEND_FROM") || "Teamsmiths <onboarding@resend.dev>";
-    const TEST_RECIPIENT = Deno.env.get("RESEND_TEST_RECIPIENT") || "";
+    // Configurable sender and test recipient for Resend
+    const FROM =
+      Deno.env.get("RESEND_FROM") || "Teamsmiths <onboarding@resend.dev>";
+    const TEST_RECIPIENT = Deno.env.get("RESEND_TEST_RECIPIENT")?.trim();
 
-    // Get pending emails from outbox
+    // Get pending emails
     const { data: pendingEmails, error: fetchError } = await supabaseClient
       .from("email_outbox")
       .select("*")
@@ -55,31 +56,40 @@ serve(async (req) => {
       try {
         // Sanitize recipient email
         const sanitizedEmail = (email.to_email ?? "").trim().toLowerCase();
-
-        // Basic safety check for recipient format
         const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail);
+
         if (!isValidEmail) {
-          console.warn(`Skipping email ${email.id}: invalid recipient '${sanitizedEmail}'`);
+          console.warn(
+            `Skipping email ${email.id}: invalid recipient '${sanitizedEmail}'`
+          );
           await supabaseClient
             .from("email_outbox")
-            .update({ status: "failed", error: "invalid_to_email" })
+            .update({
+              status: "failed",
+              error: "invalid_to_email",
+            })
             .eq("id", email.id);
-          // small delay to avoid rate limits
           await new Promise((res) => setTimeout(res, 600));
           continue;
         }
-        
-        // Determine recipient (use test recipient if provided)
-        const to = TEST_RECIPIENT ? [TEST_RECIPIENT] : [sanitizedEmail];
-        if (TEST_RECIPIENT && sanitizedEmail !== TEST_RECIPIENT) {
-          console.log(`Routing email ${email.id} to test recipient ${TEST_RECIPIENT} (original: ${sanitizedEmail})`);
-        }
-        
-        // Ensure subject and body have fallback values
-        const subject = email.subject ?? "Your Teamsmiths 4RPR Scorecard Report";
-        const html = email.body ?? "<p>Report generated.</p>";
-        
-        // Send via Resend
+
+        // Choose correct recipient (prefer TEST_RECIPIENT if defined)
+        const to =
+          TEST_RECIPIENT && TEST_RECIPIENT.length > 3
+            ? [TEST_RECIPIENT]
+            : [sanitizedEmail];
+
+        console.log("Resolved recipient for", email.id, "→", to);
+
+        // Ensure subject and body have safe fallback values
+        const subject =
+          email.subject ?? "Your Teamsmiths 4RPR Scorecard Report";
+        const html =
+          email.body?.trim()?.length > 0
+            ? email.body
+            : "<p>Your Teamsmiths report is ready.</p>";
+
+        // Send email via Resend
         const { data: emailData, error: sendError } = await resend.emails.send({
           from: FROM,
           to,
@@ -89,7 +99,7 @@ serve(async (req) => {
 
         if (sendError) throw sendError;
 
-        // Mark as sent
+        // Update email record
         await supabaseClient
           .from("email_outbox")
           .update({
@@ -100,26 +110,25 @@ serve(async (req) => {
           .eq("id", email.id);
 
         successCount++;
-        console.log(`✓ Sent email to ${email.to_email}`);
-        // small delay to respect Resend rate limits
+        console.log(`✓ Sent email to ${to}`);
         await new Promise((res) => setTimeout(res, 600));
-
-      } catch (emailError: any) {
+      } catch (emailError) {
         failCount++;
         console.error(`✗ Failed to send email ${email.id}:`, emailError);
 
-        // Mark as failed
         await supabaseClient
           .from("email_outbox")
           .update({
             status: "failed",
-            error: emailError.message,
+            error: emailError.message ?? "unknown_error",
           })
           .eq("id", email.id);
       }
     }
 
-    console.log(`Email processing complete: ${successCount} sent, ${failCount} failed`);
+    console.log(
+      `Email processing complete: ${successCount} sent, ${failCount} failed`
+    );
 
     return new Response(
       JSON.stringify({
@@ -130,8 +139,7 @@ serve(async (req) => {
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
-
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error processing email outbox:", error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
