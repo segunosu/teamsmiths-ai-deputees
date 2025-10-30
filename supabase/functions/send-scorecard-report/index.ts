@@ -12,6 +12,12 @@ serve(async (req) => {
   }
 
   try {
+    console.log("Sending scorecard report...");
+    console.log({
+      RESEND_API_KEY: !!Deno.env.get("RESEND_API_KEY"),
+      RESEND_FROM: Deno.env.get("RESEND_FROM"),
+    });
+
     const { scorecardId, scorecard } = await req.json();
 
     const supabaseClient = createClient(

@@ -170,5 +170,8 @@ verify_jwt = false
 [functions.process-email-outbox]
 verify_jwt = false
 
+[functions.test-resend-auth]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true

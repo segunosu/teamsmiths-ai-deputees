@@ -14,6 +14,10 @@ serve(async (req) => {
 
   try {
     console.log("Starting email outbox processing...");
+    console.log({
+      RESEND_API_KEY: !!Deno.env.get("RESEND_API_KEY"),
+      RESEND_FROM: Deno.env.get("RESEND_FROM"),
+    });
 
     const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
     const supabaseClient = createClient(
