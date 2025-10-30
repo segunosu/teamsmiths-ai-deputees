@@ -1358,6 +1358,7 @@ export type Database = {
       }
       email_outbox: {
         Row: {
+          body: string | null
           created_at: string | null
           error: string | null
           id: string
@@ -1365,10 +1366,12 @@ export type Database = {
           provider_id: string | null
           sent_at: string | null
           status: string | null
+          subject: string | null
           template_code: string
           to_email: string
         }
         Insert: {
+          body?: string | null
           created_at?: string | null
           error?: string | null
           id?: string
@@ -1376,10 +1379,12 @@ export type Database = {
           provider_id?: string | null
           sent_at?: string | null
           status?: string | null
+          subject?: string | null
           template_code: string
           to_email: string
         }
         Update: {
+          body?: string | null
           created_at?: string | null
           error?: string | null
           id?: string
@@ -1387,6 +1392,7 @@ export type Database = {
           provider_id?: string | null
           sent_at?: string | null
           status?: string | null
+          subject?: string | null
           template_code?: string
           to_email?: string
         }
