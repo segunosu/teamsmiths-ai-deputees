@@ -47,16 +47,18 @@ serve(async (req) => {
     `;
 
     // Insert into email_outbox (for process-email-outbox to send)
+    const insertPayload = {
+      to_email,
+      subject,
+      body: html,
+      status: "queued",
+      template_code: "scorecard_report",
+      payload: body,
+    };
+    console.log("insertPayload keys:", Object.keys(insertPayload));
     const { error: insertError } = await supabase
       .from("email_outbox")
-      .insert({
-        to_email,
-        subject,
-        body: html,
-        status: "queued",
-        template_code: "scorecard_report",
-        payload: body,
-      });
+      .insert(insertPayload);
 
     if (insertError) throw insertError;
 
