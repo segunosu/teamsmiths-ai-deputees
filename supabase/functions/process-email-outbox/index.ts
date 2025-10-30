@@ -21,6 +21,10 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
+    // Configurable sender and test recipient for Resend sandbox
+    const FROM = Deno.env.get("RESEND_FROM") || "Teamsmiths <onboarding@resend.dev>";
+    const TEST_RECIPIENT = Deno.env.get("RESEND_TEST_RECIPIENT") || "";
+
     // Get pending emails from outbox
     const { data: pendingEmails, error: fetchError } = await supabaseClient
       .from("email_outbox")
@@ -48,11 +52,16 @@ serve(async (req) => {
         // Extract email data from payload
         const { subject, html, text } = email.payload;
         
+        // Determine recipient (use test recipient if provided)
+        const to = TEST_RECIPIENT ? [TEST_RECIPIENT] : [email.to_email];
+        if (TEST_RECIPIENT && email.to_email !== TEST_RECIPIENT) {
+          console.log(`Routing email ${email.id} to test recipient ${TEST_RECIPIENT} (original: ${email.to_email})`);
+        }
+        
         // Send via Resend
-        // Using Resend sandbox domain - replace with verified domain in production
         const { data: emailData, error: sendError } = await resend.emails.send({
-          from: "Teamsmiths <onboarding@resend.dev>",
-          to: [email.to_email],
+          from: FROM,
+          to,
           subject: subject || "Your AI Impact Scorecard Results",
           html: html,
           text: text || "",
