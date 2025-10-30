@@ -29,7 +29,7 @@ serve(async (req) => {
     const { data: pendingEmails, error: fetchError } = await supabaseClient
       .from("email_outbox")
       .select("*")
-      .eq("status", "queued")
+      .or("status.is.null,status.eq.queued")
       .limit(50);
 
     if (fetchError) throw fetchError;
