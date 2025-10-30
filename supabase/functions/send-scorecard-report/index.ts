@@ -247,9 +247,12 @@ serve(async (req) => {
 </html>
     `;
 
+    // Sanitize email before queuing
+    const sanitizedEmail = (sc.email ?? "").trim().toLowerCase();
+    
     // Queue email in outbox for async sending
     await supabaseClient.from("email_outbox").insert({
-      to_email: sc.email,
+      to_email: sanitizedEmail,
       subject: `Your AI Impact Score: ${Math.round(sc.total_score)}/100`,
       body: emailHtml,
       status: "queued"

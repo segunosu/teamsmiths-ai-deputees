@@ -49,18 +49,25 @@ serve(async (req) => {
 
     for (const email of pendingEmails) {
       try {
+        // Sanitize recipient email
+        const sanitizedEmail = (email.to_email ?? "").trim().toLowerCase();
+        
         // Determine recipient (use test recipient if provided)
-        const to = TEST_RECIPIENT ? [TEST_RECIPIENT] : [email.to_email];
-        if (TEST_RECIPIENT && email.to_email !== TEST_RECIPIENT) {
-          console.log(`Routing email ${email.id} to test recipient ${TEST_RECIPIENT} (original: ${email.to_email})`);
+        const to = TEST_RECIPIENT ? [TEST_RECIPIENT] : [sanitizedEmail];
+        if (TEST_RECIPIENT && sanitizedEmail !== TEST_RECIPIENT) {
+          console.log(`Routing email ${email.id} to test recipient ${TEST_RECIPIENT} (original: ${sanitizedEmail})`);
         }
+        
+        // Ensure subject and body have fallback values
+        const subject = email.subject ?? "Your Teamsmiths 4RPR Scorecard Report";
+        const html = email.body ?? "<p>Report generated.</p>";
         
         // Send via Resend
         const { data: emailData, error: sendError } = await resend.emails.send({
           from: FROM,
           to,
-          subject: email.subject || "Your AI Impact Scorecard Results",
-          html: email.body,
+          subject,
+          html,
         });
 
         if (sendError) throw sendError;
