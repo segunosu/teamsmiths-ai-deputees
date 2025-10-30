@@ -49,9 +49,6 @@ serve(async (req) => {
 
     for (const email of pendingEmails) {
       try {
-        // Extract email data from payload
-        const { subject, html, text } = email.payload;
-        
         // Determine recipient (use test recipient if provided)
         const to = TEST_RECIPIENT ? [TEST_RECIPIENT] : [email.to_email];
         if (TEST_RECIPIENT && email.to_email !== TEST_RECIPIENT) {
@@ -62,9 +59,8 @@ serve(async (req) => {
         const { data: emailData, error: sendError } = await resend.emails.send({
           from: FROM,
           to,
-          subject: subject || "Your AI Impact Scorecard Results",
-          html: html,
-          text: text || "",
+          subject: email.subject || "Your AI Impact Scorecard Results",
+          html: email.body,
         });
 
         if (sendError) throw sendError;

@@ -250,13 +250,9 @@ serve(async (req) => {
     // Queue email in outbox for async sending
     await supabaseClient.from("email_outbox").insert({
       to_email: sc.email,
-      template_code: "scorecard_report",
-      status: "queued",
-      payload: {
-        subject: `Your AI Impact Score: ${Math.round(sc.total_score)}/100`,
-        html: emailHtml,
-        text: `Hi ${sc.name}, your AI Impact Score is ${Math.round(sc.total_score)}/100. You're an ${segmentInfo.title}! View your full report and get personalized recommendations.`
-      },
+      subject: `Your AI Impact Score: ${Math.round(sc.total_score)}/100`,
+      body: emailHtml,
+      status: "queued"
     });
 
     return new Response(
