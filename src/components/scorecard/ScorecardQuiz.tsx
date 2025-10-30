@@ -162,20 +162,16 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
 
       const scorecardId = 'pending';
 
-      // Trigger email without requiring a SELECT (works for anonymous users)
+      // Trigger email report immediately (correct payload structure)
       await supabase.functions.invoke('send-scorecard-report', {
         body: {
-          scorecard: {
-            id: scorecardId,
-            name: values.name,
-            email: values.email,
-            readiness_score: scores.readiness,
-            reach_score: scores.reach,
-            prowess_score: scores.prowess,
-            protection_score: scores.protection,
-            total_score: scores.total,
-            segment: scores.segment,
-          },
+          to_email: values.email,
+          user_name: values.name,
+          score: Math.round(scores.total),
+          readiness: Math.round(scores.readiness),
+          reach: Math.round(scores.reach),
+          prowess: Math.round(scores.prowess),
+          protection: Math.round(scores.protection),
         },
       });
 
