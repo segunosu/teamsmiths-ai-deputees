@@ -22,29 +22,59 @@ const CookiePolicy = () => {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-foreground mb-4">What We Use</h2>
               
-              <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Strictly Necessary</h3>
+              <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Strictly Necessary Cookies</h3>
               <p className="mb-4">
-                Essential cookies for authentication/session management, load balancing, and security. 
-                These are always enabled and cannot be disabled as they are required for the site to function.
+                These cookies are essential for our website to function properly. They enable core functionality 
+                such as security, authentication, and network management. You cannot opt out of these cookies.
+              </p>
+              <ul className="list-disc pl-6 mb-4 space-y-2">
+                <li><strong>sb-access-token, sb-refresh-token</strong>: Authentication tokens for your session (Supabase). Expires after 7 days.</li>
+                <li><strong>sb-auth-token</strong>: Session management cookie. Expires when you close your browser.</li>
+                <li><strong>__Secure-session</strong>: Security token to prevent CSRF attacks. Expires after 24 hours.</li>
+                <li><strong>load_balancer</strong>: Routes your requests to the correct server for optimal performance. Expires after 1 hour.</li>
+              </ul>
+
+              <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Preference Cookies</h3>
+              <p className="mb-4">
+                These cookies remember your choices and settings to provide you with a more personalized experience 
+                on repeat visits. Disabling these may require you to re-enter information.
+              </p>
+              <ul className="list-disc pl-6 mb-4 space-y-2">
+                <li><strong>user_locale</strong>: Remembers your language preference. Expires after 1 year.</li>
+                <li><strong>cookie_preferences</strong>: Stores your cookie consent choices. Expires after 1 year.</li>
+                <li><strong>theme_preference</strong>: Remembers if you prefer light or dark mode. Expires after 1 year.</li>
+              </ul>
+
+              <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Analytics Cookies (Optional)</h3>
+              <p className="mb-4">
+                These cookies help us understand how visitors interact with our website by collecting and reporting 
+                information anonymously. We only use these with your explicit consent.
+              </p>
+              <ul className="list-disc pl-6 mb-4 space-y-2">
+                <li><strong>_ga, _ga_*</strong>: Google Analytics cookies that track page views and user behavior. Expires after 2 years. Used to improve website performance and user experience.</li>
+                <li><strong>_gid</strong>: Google Analytics cookie for distinguishing users. Expires after 24 hours.</li>
+                <li><strong>analytics_session</strong>: Our internal analytics session ID. Expires after 30 minutes of inactivity.</li>
+              </ul>
+              <p className="mb-4 text-sm">
+                To learn more about Google Analytics and privacy, visit:{" "}
+                <a href="https://policies.google.com/privacy" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                  Google Privacy Policy
+                </a>
               </p>
 
-              <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Preferences</h3>
+              <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Marketing Cookies (Optional)</h3>
               <p className="mb-4">
-                Optional cookies that remember your form progress and locale settings to enhance your experience 
-                across visits.
+                We do not currently use third-party marketing or advertising cookies. If we decide to use marketing 
+                cookies in the future, we will only do so with your explicit consent and provide clear opt-out mechanisms.
               </p>
-
-              <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Analytics (Optional)</h3>
               <p className="mb-4">
-                Aggregated, anonymized site usage data to help us understand how visitors interact with our 
-                website and improve user experience. These are only used with your consent.
+                Any future marketing cookies would be used to:
               </p>
-
-              <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Marketing (Optional)</h3>
-              <p className="mb-4">
-                If in use, marketing cookies are only deployed with your explicit consent and can be 
-                disabled at any time.
-              </p>
+              <ul className="list-disc pl-6 mb-4 space-y-2">
+                <li>Show you relevant advertisements based on your interests</li>
+                <li>Measure the effectiveness of our advertising campaigns</li>
+                <li>Prevent you from seeing the same ads repeatedly</li>
+              </ul>
             </section>
 
             <section className="mb-8">
