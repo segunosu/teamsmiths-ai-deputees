@@ -7,116 +7,102 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Simple email validator used for both env + row values
+const isEmail = (v?: string) => !!v && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    console.log("Starting email outbox processing...");
-    console.log({
-      RESEND_API_KEY_EXISTS: !!Deno.env.get("RESEND_API_KEY"),
-      RESEND_FROM: Deno.env.get("RESEND_FROM"),
-      RESEND_TEST_RECIPIENT: Deno.env.get("RESEND_TEST_RECIPIENT"),
+    const resendApiKey = Deno.env.get("RESEND_API_KEY") ?? "";
+    const resendFromRaw = Deno.env.get("RESEND_FROM") ?? "";
+    const testRecipientRaw = Deno.env.get("RESEND_TEST_RECIPIENT") ?? "";
+
+    // Guard: only use test recipient if it is a real email (contains @ and passes regex)
+    const TEST_RECIPIENT = isEmail(testRecipientRaw) ? testRecipientRaw.trim() : "";
+
+    // Guard: FROM must be valid. If not, default to Resend sandbox (works if Resend acct allows it)
+    const FROM = /<.+@.+>/.test(resendFromRaw) ? resendFromRaw : "Teamsmiths <onboarding@resend.dev>";
+
+    console.log("process-email-outbox starting…", {
+      RESEND_API_KEY_PRESENT: !!resendApiKey,
+      FROM_in_use: FROM,
+      TEST_RECIPIENT_in_use: TEST_RECIPIENT || "(none)"
     });
 
-    const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+    const resend = new Resend(resendApiKey);
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const FROM =
-      Deno.env.get("RESEND_FROM") || "Teamsmiths <onboarding@resend.dev>";
-    const TEST_RECIPIENT = Deno.env.get("RESEND_TEST_RECIPIENT")?.trim() ?? "";
-
-    const { data: pending, error } = await supabase
+    // Fetch pending
+    const { data: rows, error: fetchErr } = await supabase
       .from("email_outbox")
       .select("*")
       .or("status.is.null,status.eq.queued")
       .limit(50);
 
-    if (error) throw error;
-    if (!pending?.length) {
-      console.log("No pending emails to process");
+    if (fetchErr) throw fetchErr;
+    if (!rows?.length) {
       return new Response(JSON.stringify({ success: true, processed: 0 }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    console.log(`Processing ${pending.length} emails...`);
-    let sent = 0;
-    let failed = 0;
+    let sent = 0, failed = 0;
 
-    for (const email of pending) {
+    for (const row of rows) {
       try {
-        const sanitized = (email.to_email ?? "").trim().toLowerCase();
-        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitized);
+        const toCandidate = (row.to_email ?? "").trim().toLowerCase();
+        const finalTo = TEST_RECIPIENT || toCandidate;
 
-        if (!isValid) {
-          console.warn(`Invalid recipient: ${sanitized}`);
-          await supabase
-            .from("email_outbox")
-            .update({ status: "failed", error: "invalid_to_email" })
-            .eq("id", email.id);
+        if (!isEmail(finalTo)) {
+          // Mark failed with precise reason
+          await supabase.from("email_outbox")
+            .update({ status: "failed", error: `invalid_to_email:${finalTo}` })
+            .eq("id", row.id);
+          failed++;
           continue;
         }
 
-        // choose correct target email
-        const to = TEST_RECIPIENT
-          ? [TEST_RECIPIENT]
-          : [sanitized];
+        const subject = (row.subject && row.subject.trim()) || "Your Teamsmiths 4RPR Scorecard Report";
+        const html = (row.body && row.body.trim()) || "<p>Your Teamsmiths report is ready.</p>";
 
-        console.log(`→ Sending to: ${to}`);
-
-        const subject =
-          email.subject ?? "Your Teamsmiths 4RPR Scorecard Report";
-        const html =
-          email.body?.trim()?.length
-            ? email.body
-            : "<p>Your Teamsmiths report is ready.</p>";
-
-        const { data: result, error: sendError } = await resend.emails.send({
+        const { data: sentData, error: sendErr } = await resend.emails.send({
           from: FROM,
-          to,
+          to: [finalTo],
           subject,
           html,
         });
+        if (sendErr) throw sendErr;
 
-        if (sendError) throw sendError;
+        await supabase.from("email_outbox").update({
+          status: "sent",
+          sent_at: new Date().toISOString(),
+          provider_id: sentData?.id ?? null,
+        }).eq("id", row.id);
 
-        await supabase
-          .from("email_outbox")
-          .update({
-            status: "sent",
-            sent_at: new Date().toISOString(),
-            provider_id: result?.id,
-          })
-          .eq("id", email.id);
-
-        console.log(`✓ Sent to ${to}`);
         sent++;
-      } catch (e) {
+      } catch (e: any) {
         failed++;
-        console.error(`✗ Error sending ${email.id}:`, e.message);
-        await supabase
-          .from("email_outbox")
-          .update({ status: "failed", error: e.message })
-          .eq("id", email.id);
+        await supabase.from("email_outbox")
+          .update({ status: "failed", error: e?.message ?? "unknown_error" })
+          .eq("id", row.id);
       }
 
-      // Small pause to respect rate limits
-      await new Promise((res) => setTimeout(res, 600));
+      // respect Resend rate limits
+      await new Promise(res => setTimeout(res, 600));
     }
 
-    console.log(`Processing complete: ${sent} sent, ${failed} failed`);
-    return new Response(
-      JSON.stringify({ success: true, sent, failed }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-  } catch (e) {
-    console.error("Fatal error:", e);
-    return new Response(JSON.stringify({ success: false, error: e.message }), {
+    return new Response(JSON.stringify({ success: true, sent, failed }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+
+  } catch (e: any) {
+    return new Response(JSON.stringify({ success: false, error: e?.message ?? String(e) }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
