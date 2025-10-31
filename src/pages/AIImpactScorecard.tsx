@@ -28,7 +28,7 @@ const AIImpactScorecard: React.FC = () => {
         <title>Free AI Impact Maturity Assessment | Discover Your Business AI Readiness | Teamsmiths</title>
         <meta 
           name="description" 
-          content="Take our free 5-minute AI Impact Maturity assessment. Discover if you're an Explorer, Implementer, or Accelerator — and get personalized steps to drive measurable AI results." 
+          content="Take our free 3-minute AI Impact Maturity assessment. Discover if you're an Explorer, Implementer, or Accelerator — and get personalized steps to drive measurable AI results." 
         />
         <meta name="keywords" content="AI maturity, AI impact assessment, AI for SMBs, AI business improvement, Teamsmiths scorecard" />
         <link rel="canonical" href={`${window.location.origin}/ai-impact-maturity`} />

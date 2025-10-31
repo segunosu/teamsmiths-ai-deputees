@@ -35,7 +35,7 @@ const AIImpactMaturity: React.FC = () => {
         <title>Free AI Impact Maturity Assessment | Discover Your Business AI Readiness | Teamsmiths</title>
         <meta 
           name="description" 
-          content="Take our free 5-minute AI Impact Maturity assessment. Discover if you're an Explorer, Implementer, or Accelerator — and get personalized steps to drive measurable AI results." 
+          content="Take our free 3-minute AI Impact Maturity assessment. Discover if you're an Explorer, Implementer, or Accelerator — and get personalized steps to drive measurable AI results." 
         />
         <meta name="keywords" content="AI maturity, AI impact assessment, AI for SMBs, AI business improvement, Teamsmiths scorecard" />
         <link rel="canonical" href={`${window.location.origin}/ai-impact-maturity`} />
@@ -56,7 +56,7 @@ const AIImpactMaturity: React.FC = () => {
               <div className="grid md:grid-cols-3 gap-6 mb-12 text-left">
                 <div className="bg-card p-6 rounded-lg border">
                   <CheckCircle2 className="h-8 w-8 text-primary mb-3" />
-                  <h3 className="font-semibold mb-2">Complete in 5 minutes</h3>
+                  <h3 className="font-semibold mb-2">Complete in 3 minutes</h3>
                   <p className="text-sm text-muted-foreground">Quick assessment of your AI capabilities across 4 key dimensions</p>
                 </div>
                 <div className="bg-card p-6 rounded-lg border">
