@@ -1,13 +1,24 @@
+import { Helmet } from "react-helmet-async";
+
 const TermsOfService = () => {
+  const lastUpdated = "31 October 2025";
+  
   return (
-    <div className="container mx-auto px-6 py-12">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-foreground mb-8">Terms of Service</h1>
-        
-        <div className="prose prose-lg max-w-none text-muted-foreground">
-          <p className="text-lg mb-6">
-            Last updated: {new Date().toLocaleDateString()}
+    <>
+      <Helmet>
+        <title>Terms of Service | Teamsmiths AI Deputees™</title>
+        <meta name="description" content="Read the Terms of Service for Teamsmiths AI Deputees™ platform and services." />
+        <link rel="canonical" href="https://teamsmiths.ai/terms" />
+      </Helmet>
+      
+      <div className="container mx-auto px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold text-foreground mb-4">Terms of Service</h1>
+          <p className="text-sm text-muted-foreground mb-8">
+            Last updated: {lastUpdated}
           </p>
+          
+          <div className="prose prose-lg max-w-none text-muted-foreground">
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Agreement to Terms</h2>
@@ -61,9 +72,10 @@ const TermsOfService = () => {
               Email: legal@teamsmiths.ai
             </p>
           </section>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

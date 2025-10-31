@@ -40,10 +40,10 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Legal</h3>
             <ul className="space-y-3">
-              <li><Link to="/legal/privacy" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/legal/terms" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Terms of Service</Link></li>
-              <li><Link to="/security-policy" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Security Policy</Link></li>
-              <li><Link to="/cookie-policy" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Cookie Policy</Link></li>
+              <li><Link to="/privacy" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Terms of Service</Link></li>
+              <li><Link to="/security" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Security Policy</Link></li>
+              <li><Link to="/cookies" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Cookie Policy</Link></li>
               <li><Link to="/data-protection" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Data Protection</Link></li>
               <li><Link to="/compliance" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Compliance</Link></li>
             </ul>

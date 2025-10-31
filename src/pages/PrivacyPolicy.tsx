@@ -1,13 +1,24 @@
+import { Helmet } from "react-helmet-async";
+
 const PrivacyPolicy = () => {
+  const lastUpdated = "31 October 2025";
+  
   return (
-    <div className="container mx-auto px-6 py-12">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-foreground mb-8">Privacy Policy</h1>
-        
-        <div className="prose prose-lg max-w-none text-muted-foreground">
-          <p className="text-lg mb-6">
-            Last updated: {new Date().toLocaleDateString()}
+    <>
+      <Helmet>
+        <title>Privacy Policy | Teamsmiths AI Deputees™</title>
+        <meta name="description" content="Read how Teamsmiths collects, uses, and protects your personal information in compliance with GDPR and data protection regulations." />
+        <link rel="canonical" href="https://teamsmiths.ai/privacy" />
+      </Helmet>
+      
+      <div className="container mx-auto px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold text-foreground mb-4">Privacy Policy</h1>
+          <p className="text-sm text-muted-foreground mb-8">
+            Last updated: {lastUpdated}
           </p>
+          
+          <div className="prose prose-lg max-w-none text-muted-foreground">
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Introduction</h2>
@@ -112,9 +123,10 @@ const PrivacyPolicy = () => {
               Email: privacy@teamsmiths.ai
             </p>
           </section>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

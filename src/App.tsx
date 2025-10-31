@@ -176,11 +176,18 @@ const App = () => (
                        </ErrorBoundary>
                      </React.Suspense>
                    } />
-                  <Route path="/legal/privacy" element={<PrivacyPolicy />} />
-                  <Route path="/legal/terms" element={<TermsOfService />} />
-                  <Route path="/compliance" element={<Compliance />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
+                   <Route path="/privacy" element={<PrivacyPolicy />} />
+                   <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+                   <Route path="/terms" element={<TermsOfService />} />
+                   <Route path="/legal/terms" element={<TermsOfService />} />
+                   <Route path="/security" element={<SecurityPolicy />} />
+                   <Route path="/security-policy" element={<SecurityPolicy />} />
+                   <Route path="/cookies" element={<CookiePolicy />} />
+                   <Route path="/cookie-policy" element={<CookiePolicy />} />
+                   <Route path="/data-protection" element={<DataProtection />} />
+                   <Route path="/compliance" element={<Compliance />} />
+                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
               <Footer />
