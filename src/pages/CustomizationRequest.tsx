@@ -51,8 +51,7 @@ const CustomizationRequest = () => {
     budget_range: '',
     timeline_preference: '',
     urgency_level: 'standard',
-    additional_context: '',
-    consentToStore: false
+    additional_context: ''
   });
 
   // Scroll to top when component mounts
@@ -124,8 +123,8 @@ const CustomizationRequest = () => {
         if (data?.error) throw new Error(data.error);
       }
 
-      // Save to user_profiles if consent given
-      if (formData.consentToStore && formData.contact_email) {
+      // Save to user_profiles for form prefill (legitimate interest basis)
+      if (formData.contact_email) {
         await supabase.from('user_profiles').upsert({
           email: formData.contact_email,
           company: formData.company_name || null,
@@ -364,24 +363,7 @@ const CustomizationRequest = () => {
                       value={formData.additional_context}
                       onChange={(e) => handleInputChange('additional_context', e.target.value)}
                       placeholder="Any additional information, specific tools/platforms you use, team size, etc."
-                    />
-                   </div>
-
-                   <div className="flex items-start space-x-3 p-4 bg-muted/30 rounded-md border border-border">
-                     <Checkbox
-                       id="consentToStore"
-                       checked={formData.consentToStore}
-                       onCheckedChange={(checked) => handleInputChange('consentToStore', checked as boolean)}
                      />
-                     <div className="space-y-1 leading-none">
-                       <Label htmlFor="consentToStore" className="text-sm font-normal cursor-pointer">
-                         I agree to have my contact details securely stored to improve my experience 
-                         and pre-fill future forms. You can withdraw consent anytime by contacting{' '}
-                         <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">
-                           privacy@teamsmiths.ai
-                         </a>
-                       </Label>
-                     </div>
                    </div>
 
                    <Button type="submit" className="w-full" size="lg" disabled={loading}>

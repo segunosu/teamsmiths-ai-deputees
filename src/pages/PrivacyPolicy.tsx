@@ -31,28 +31,55 @@ const PrivacyPolicy = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Form Data and Preferences</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">Form Submissions & Data Processing</h2>
+            
+            <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Data You Provide</h3>
             <p className="mb-4">
-              When you complete a form on our website, we may store limited information such as your 
-              name, email address, and company name to improve your experience.
+              When you complete a form on any Teamsmiths or Deputee website, we collect only the business 
+              information you choose to share — typically your name, company, role, email address, and answers 
+              relevant to the service or assessment you've requested.
             </p>
+
+            <h3 className="text-xl font-medium text-foreground mb-3 mt-6">How We Use It</h3>
+            <p className="mb-2">Your details are used to:</p>
+            <ul className="list-disc pl-6 mb-4">
+              <li>Deliver the resource, report, or AI analysis you requested (e.g. AI Impact Score)</li>
+              <li>Personalize your experience and show relevant content or follow-up options</li>
+              <li>Maintain service records, analytics, and security logs for legitimate business purposes</li>
+            </ul>
             <p className="mb-4">
-              <strong>By default</strong>, this data is stored locally in your browser only and is 
-              never transmitted to our servers until you explicitly submit a form.
+              We do not sell or rent personal data, and we never use information from these forms for 
+              unrelated marketing without a clear, separate opt-in.
             </p>
+
+            <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Legal Basis</h3>
             <p className="mb-4">
-              <strong>With your consent</strong>, we may securely store your contact details in our 
-              systems to pre-fill future forms and maintain continuity between visits.
+              We process this data under <strong>legitimate interest</strong> — to respond to your enquiry, 
+              deliver requested results, and maintain the quality and security of our services. This lawful 
+              basis applies to all B2B and professional contacts who reasonably expect communication after 
+              submitting a business form.
             </p>
+
+            <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Data Storage</h3>
             <p className="mb-4">
-              You may withdraw your consent or request deletion of your data at any time by contacting 
-              us at <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">privacy@teamsmiths.ai</a>.
+              Data is securely stored using encrypted, GDPR-compliant services (Supabase and associated cloud 
+              infrastructure). Local browser storage may be used to pre-fill forms for your convenience; this 
+              data remains private to your device and can be cleared anytime from your browser settings.
             </p>
+
+            <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Retention</h3>
             <p className="mb-4">
-              We do not use this information for marketing or profiling without your explicit consent.
+              We retain form data only as long as necessary to fulfil the stated purpose or maintain ongoing 
+              business contact, after which it is securely deleted or anonymised.
             </p>
-            <p>
-              This approach is fully aligned with the UK GDPR, EU GDPR, and similar global privacy regulations.
+
+            <h3 className="text-xl font-medium text-foreground mb-3 mt-6">Your Rights</h3>
+            <p className="mb-4">
+              You can request access, correction, or deletion of your data, or object to processing, by 
+              contacting us at{' '}
+              <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">
+                privacy@teamsmiths.ai
+              </a>.
             </p>
           </section>
 

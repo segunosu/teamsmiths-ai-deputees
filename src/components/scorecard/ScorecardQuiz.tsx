@@ -45,7 +45,6 @@ const formSchema = z.object({
   email: z.string().email('Invalid email address'),
   company: z.string().optional(),
   role: z.string().optional(),
-  consentToStore: z.boolean().optional(),
   r1: z.number().min(0).max(100),
   r2: z.number().min(0).max(100),
   r3: z.number().min(0).max(100),
@@ -91,7 +90,6 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
       email: persistedData.email || '',
       company: persistedData.company || '',
       role: persistedData.role || '',
-      consentToStore: false,
       r1: 50, r2: 50, r3: 50, r4: 50,
       rp1: 50, rp2: 50, rp3: 50, rp4: 50,
       pp1: 50, pp2: 50, pp3: 50, pp4: 50,
@@ -187,8 +185,8 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
 
       if (error) throw error;
 
-      // Save to user_profiles if consent given
-      if (values.consentToStore && values.email) {
+      // Save to user_profiles for form prefill (legitimate interest basis)
+      if (values.email) {
         const nameParts = values.name.split(' ');
         const firstName = nameParts[0] || '';
         const lastName = nameParts.slice(1).join(' ') || '';
@@ -329,30 +327,6 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
                         <Input placeholder="Head of Innovation" {...field} />
                       </FormControl>
                       <FormMessage />
-                    </FormItem>
-                   )}
-                 />
-                 
-                 <FormField
-                   control={form.control}
-                   name="consentToStore"
-                   render={({ field }) => (
-                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-border p-4 bg-muted/30">
-                       <FormControl>
-                         <Checkbox
-                           checked={field.value}
-                           onCheckedChange={field.onChange}
-                         />
-                       </FormControl>
-                       <div className="space-y-1 leading-none">
-                         <FormLabel className="text-sm font-normal cursor-pointer">
-                           I agree to have my contact details securely stored to improve my experience 
-                           and pre-fill future forms. You can withdraw consent anytime by contacting{' '}
-                           <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">
-                             privacy@teamsmiths.ai
-                           </a>
-                         </FormLabel>
-                       </div>
                      </FormItem>
                    )}
                  />

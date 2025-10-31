@@ -76,8 +76,6 @@ const DeputeeAIBriefBuilder = () => {
     phone: persistedData.phone || ''
   });
 
-  const [consentToStore, setConsentToStore] = useState(false);
-
   const [aiResponses, setAiResponses] = useState<Record<string, AIResponse>>({});
   const [aiStates, setAiStates] = useState<Record<string, AiState>>({});
 
@@ -255,8 +253,8 @@ const DeputeeAIBriefBuilder = () => {
         }
       });
 
-      // Save to user_profiles if consent given
-      if (consentToStore && contactData.email) {
+      // Save to user_profiles for form prefill (legitimate interest basis)
+      if (contactData.email) {
         const nameParts = contactData.name.split(' ');
         const firstName = nameParts[0] || '';
         const lastName = nameParts.slice(1).join(' ') || '';
@@ -826,23 +824,6 @@ const DeputeeAIBriefBuilder = () => {
                       }}
                       placeholder="+44 xxx xxx xxxx"
                     />
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3 p-4 bg-muted/30 rounded-md border border-border mt-4">
-                  <Checkbox
-                    id="consentToStore"
-                    checked={consentToStore}
-                    onCheckedChange={(checked) => setConsentToStore(checked as boolean)}
-                  />
-                  <div className="space-y-1 leading-none">
-                    <Label htmlFor="consentToStore" className="text-sm font-normal cursor-pointer">
-                      I agree to have my contact details securely stored to improve my experience 
-                      and pre-fill future forms. You can withdraw consent anytime by contacting{' '}
-                      <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">
-                        privacy@teamsmiths.ai
-                      </a>
-                    </Label>
                   </div>
                 </div>
               </div>
