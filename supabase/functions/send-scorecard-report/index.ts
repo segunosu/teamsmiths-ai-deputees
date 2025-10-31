@@ -28,22 +28,43 @@ serve(async (req) => {
 
     console.log("Queuing scorecard report for:", to_email);
 
-    const subject = `Your Teamsmiths AI Impact Score: ${score ?? "Pending"}/100`;
+    // Determine segment based on score
+    let segment = "Explorer";
+    const totalScore = score ?? 0;
+    if (totalScore >= 70) segment = "Accelerator";
+    else if (totalScore >= 40) segment = "Implementer";
+
+    const subject = `Your AI Impact Maturity Level: ${segment} + Next Steps`;
 
     const html = `
       <h2>Hi ${user_name || "there"},</h2>
-      <p>Here's your personalised <b>4RPR AI Impact Scorecard</b> summary:</p>
+      <p>Thank you for completing the <b>AI Impact Maturity Assessment</b>!</p>
+      
+      <h3>Your AI Impact Maturity Level: <b>${segment}</b></h3>
+      <p><b>Overall Maturity Score:</b> ${score ?? "N/A"} / 100</p>
+      
+      <h4>Your 4RPR Breakdown:</h4>
       <ul>
-        <li>Readiness: ${readiness ?? "N/A"}%</li>
-        <li>Reach: ${reach ?? "N/A"}%</li>
-        <li>Prowess: ${prowess ?? "N/A"}%</li>
-        <li>Protection: ${protection ?? "N/A"}%</li>
+        <li><b>Readiness:</b> ${readiness ?? "N/A"}%</li>
+        <li><b>Reach:</b> ${reach ?? "N/A"}%</li>
+        <li><b>Prowess:</b> ${prowess ?? "N/A"}%</li>
+        <li><b>Protection:</b> ${protection ?? "N/A"}%</li>
       </ul>
-      <p><b>Total AI Impact Score:</b> ${score ?? "N/A"} / 100</p>
-      <p>Your next best step depends on your profile — 
-      join our <a href="https://teamsmiths.ai/workshop">Workshop</a> or 
-      start a <a href="https://teamsmiths.ai/growth-sprint">Growth Sprint</a>.</p>
-      <p>— The Teamsmiths AI Team</p>
+      
+      <h4>Your Next Step:</h4>
+      <p>Based on your ${segment} maturity level, we recommend focusing on ${
+        Math.min(readiness ?? 0, reach ?? 0, prowess ?? 0, protection ?? 0) === readiness
+          ? "improving your <b>Readiness</b> — building awareness and starting with low-risk AI experiments"
+          : Math.min(readiness ?? 0, reach ?? 0, prowess ?? 0, protection ?? 0) === reach
+          ? "expanding your <b>Reach</b> — deploying AI more extensively across your organization"
+          : Math.min(readiness ?? 0, reach ?? 0, prowess ?? 0, protection ?? 0) === prowess
+          ? "developing your <b>Prowess</b> — advancing your AI sophistication and measuring ROI"
+          : "strengthening your <b>Protection</b> — robust governance, risk management, and compliance"
+      } to progress to the next maturity level and maximize your AI impact.</p>
+      
+      <p>Want to explore your practical next step toward AI-driven performance? <a href="https://teamsmiths.ai/contact">Book a short Teamsmiths AI Upgrade Clinic</a>.</p>
+      
+      <p>Best regards,<br>The Teamsmiths Team</p>
     `;
 
     // Insert into email_outbox (for process-email-outbox to send)

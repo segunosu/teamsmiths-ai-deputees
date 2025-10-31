@@ -25,30 +25,30 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
     switch (data.segment) {
       case 'Explorer':
         return {
-          title: 'AI Explorer',
-          description: 'You\'re at the beginning of your AI journey with significant opportunities ahead.',
+          title: 'Explorer Level',
+          description: 'You\'re at the beginning of your AI impact journey. Focus on building awareness and starting with low-risk AI experiments.',
           color: 'text-blue-600',
           bgColor: 'bg-blue-50',
-          cta: 'Free AI Workshop',
-          ctaLink: '/start?interest=workshop&origin=scorecard',
+          cta: 'Book Your AI Strategy Session',
+          ctaLink: '/contact',
         };
       case 'Implementer':
         return {
-          title: 'AI Implementer',
-          description: 'You\'re making progress with AI and ready to accelerate impact.',
+          title: 'Implementer Level',
+          description: 'You\'re making solid progress on your AI impact journey! Now it\'s time to scale successful pilots and integrate AI more deeply into your operations.',
           color: 'text-amber-600',
           bgColor: 'bg-amber-50',
-          cta: 'AI Growth Sprint',
-          ctaLink: '/start?interest=sprint&origin=scorecard',
+          cta: 'Explore AI Implementation Services',
+          ctaLink: '/solutions',
         };
       case 'Accelerator':
         return {
-          title: 'AI Accelerator',
-          description: 'You\'re advanced in AI and ready to maximize business wins.',
+          title: 'Accelerator Level',
+          description: 'Excellent! You\'re leading with AI impact. Focus on optimization, innovation, and staying ahead of the curve.',
           color: 'text-green-600',
           bgColor: 'bg-green-50',
-          cta: 'Book Business Win Project',
-          ctaLink: '/start?interest=business-win&origin=scorecard',
+          cta: 'Partner for AI Innovation',
+          ctaLink: '/contact',
         };
     }
   };
@@ -84,10 +84,10 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
     <div className="container max-w-5xl mx-auto px-4 py-8 md:py-16">
       <div className="text-center mb-8 md:mb-12">
         <div className={`inline-block px-6 py-2 rounded-full ${segmentInfo.bgColor} ${segmentInfo.color} font-semibold mb-4`}>
-          {segmentInfo.title}
+          AI Impact Maturity Level: {segmentInfo.title}
         </div>
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          Your Score: <span className="text-primary">{Math.round(data.total_score)}/100</span>
+          Your Maturity Score: <span className="text-primary">{Math.round(data.total_score)}/100</span>
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
           {segmentInfo.description}
@@ -159,9 +159,9 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
 
       <Card className="p-8 text-center bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
         <Mail className="h-12 w-12 text-primary mx-auto mb-4" />
-        <h2 className="text-2xl font-bold mb-3">Check Your Email</h2>
+        <h2 className="text-2xl font-bold mb-3">Your AI Impact Maturity Results Are On Their Way!</h2>
         <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-          We've sent a detailed report to <strong>{data.email}</strong> with your complete scorecard analysis and personalized recommendations.
+          We've sent a detailed AI Impact Maturity report to <strong>{data.email}</strong> with your personalized insights and recommended next steps. If you'd like to explore your next practical step toward AI-driven performance, book a short Teamsmiths AI Upgrade Clinic below.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" onClick={() => navigate(segmentInfo.ctaLink)}>

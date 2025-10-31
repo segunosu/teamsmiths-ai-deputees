@@ -73,7 +73,7 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const ignoreSubmitUntil = useRef<number>(0);
-  const totalSteps = Math.ceil(questions.length / 3) + 1; // Group questions + contact info
+  const totalSteps = Math.ceil(questions.length / 3) + 1; // 4 question categories + 1 contact at end
   
   // Get persisted form data from localStorage
   const { formData: persistedData } = usePersistentForm({
@@ -246,7 +246,8 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
   };
 
   const progress = ((step + 1) / totalSteps) * 100;
-  const currentQuestions = step === 0 ? [] : questions.slice((step - 1) * 3, step * 3);
+  // Show questions for first 4 steps, contact form on step 5
+  const currentQuestions = step < 4 ? questions.slice(step * 3, (step + 1) * 3) : [];
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && step < totalSteps - 1) {
@@ -259,10 +260,10 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
     <div className="container max-w-4xl mx-auto px-4 py-8 md:py-16">
       <div className="text-center mb-8 md:mb-12">
         <h1 className="text-3xl md:text-5xl font-bold mb-4">
-          Discover Your AI Impact Score
+          AI Impact Maturity Assessment
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-          Take 5 minutes to assess your organization's AI readiness and get personalized recommendations
+          Understanding where you are on the AI impact journey — from Explorer to Accelerator
         </p>
       </div>
 
@@ -271,9 +272,12 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} onKeyDown={handleKeyDown} className="space-y-6">
           <Card className="p-6 md:p-8">
-            {step === 0 ? (
+            {step === 4 ? (
               <div className="space-y-6">
-                <h2 className="text-2xl font-semibold mb-6">Let's start with your details</h2>
+                <h2 className="text-2xl font-semibold mb-6">Get Your AI Impact Maturity Results</h2>
+                <p className="text-muted-foreground mb-6">
+                  You've completed the assessment! Enter your details below to receive your personalized AI Impact Maturity results and next steps.
+                </p>
                 
                 <FormField
                   control={form.control}
@@ -375,14 +379,16 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
           </Card>
 
           <div className="flex justify-between gap-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setStep(Math.max(0, step - 1))}
-              disabled={step === 0 || isSubmitting}
-            >
-              Back
-            </Button>
+              {step > 0 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setStep(step - 1)}
+                  disabled={isSubmitting}
+                >
+                  Back
+                </Button>
+              )}
             
             {step < totalSteps - 1 ? (
               <Button
@@ -407,7 +413,7 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
                     Calculating...
                   </>
                 ) : (
-                  'Get My Score'
+                  'Get My AI Impact Maturity Results'
                 )}
               </Button>
             )}

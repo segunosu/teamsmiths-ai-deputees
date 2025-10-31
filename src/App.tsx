@@ -25,6 +25,7 @@ import BriefDetail from "./pages/BriefDetail";
 import { BriefSubmitted } from "./pages/BriefSubmitted";
 import DebugBrief from "./pages/DebugBrief";
 import AIImpactScorecard from "./pages/AIImpactScorecard";
+import AIImpactMaturity from "./pages/AIImpactMaturity";
 import QuoteDetail from "./pages/QuoteDetail";
 import ForClients from "./pages/ForClients";
 import ForFreelancers from "./pages/ForFreelancers";
@@ -112,7 +113,8 @@ const App = () => (
                    } />
                     <Route path="/plan" element={<Navigate to="/pricing" replace />} />
                    <Route path="/work-with-us" element={<WorkWithUs />} />
-                  <Route path="/ai-impact-scorecard" element={<AIImpactScorecard />} />
+                   <Route path="/ai-impact-maturity" element={<ErrorBoundary><AIImpactMaturity /></ErrorBoundary>} />
+                   <Route path="/ai-impact-scorecard" element={<Navigate to="/ai-impact-maturity" replace />} />
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
                   <Route path="/brief" element={<Navigate to="/brief-builder" replace />} />

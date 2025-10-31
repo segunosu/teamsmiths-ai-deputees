@@ -25,12 +25,13 @@ const AIImpactScorecard: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>AI Impact Scorecard | Discover Your AI Readiness | Teamsmiths</title>
+        <title>Free AI Impact Maturity Assessment | Discover Your Business AI Readiness | Teamsmiths</title>
         <meta 
           name="description" 
-          content="Take our free AI Impact Scorecard to assess your organization's AI readiness, reach, prowess, and protection. Get personalized insights and recommendations." 
+          content="Take our free 5-minute AI Impact Maturity assessment. Discover if you're an Explorer, Implementer, or Accelerator — and get personalized steps to drive measurable AI results." 
         />
-        <link rel="canonical" href={`${window.location.origin}/ai-impact-scorecard`} />
+        <meta name="keywords" content="AI maturity, AI impact assessment, AI for SMBs, AI business improvement, Teamsmiths scorecard" />
+        <link rel="canonical" href={`${window.location.origin}/ai-impact-maturity`} />
       </Helmet>
       
       <main className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
