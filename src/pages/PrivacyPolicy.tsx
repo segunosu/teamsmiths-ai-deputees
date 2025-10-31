@@ -31,6 +31,32 @@ const PrivacyPolicy = () => {
           </section>
 
           <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">Form Data and Preferences</h2>
+            <p className="mb-4">
+              When you complete a form on our website, we may store limited information such as your 
+              name, email address, and company name to improve your experience.
+            </p>
+            <p className="mb-4">
+              <strong>By default</strong>, this data is stored locally in your browser only and is 
+              never transmitted to our servers until you explicitly submit a form.
+            </p>
+            <p className="mb-4">
+              <strong>With your consent</strong>, we may securely store your contact details in our 
+              systems to pre-fill future forms and maintain continuity between visits.
+            </p>
+            <p className="mb-4">
+              You may withdraw your consent or request deletion of your data at any time by contacting 
+              us at <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">privacy@teamsmiths.ai</a>.
+            </p>
+            <p className="mb-4">
+              We do not use this information for marketing or profiling without your explicit consent.
+            </p>
+            <p>
+              This approach is fully aligned with the UK GDPR, EU GDPR, and similar global privacy regulations.
+            </p>
+          </section>
+
+          <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">How We Use Your Information</h2>
             <p>We use the information we collect to:</p>
             <ul className="list-disc pl-6 mb-4">

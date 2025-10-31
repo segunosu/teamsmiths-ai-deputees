@@ -6,12 +6,14 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft, Check, Send, Info } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePersistentForm } from '@/hooks/usePersistentForm';
 
 interface Product {
   id: string;
@@ -32,17 +34,25 @@ const CustomizationRequest = () => {
   const { toast } = useToast();
   const { user } = useAuth();
 
+  // Get persisted form data from localStorage
+  const { formData: persistedData, updateField: updatePersisted } = usePersistentForm({
+    company: '',
+    email: '',
+    phone: '',
+  });
+
   const [formData, setFormData] = useState({
-    company_name: '',
-    contact_email: user?.email || '',
-    contact_phone: '',
+    company_name: persistedData.company || '',
+    contact_email: user?.email || persistedData.email || '',
+    contact_phone: persistedData.phone || '',
     project_title: '',
     base_template: templateName || '',
     custom_requirements: '',
     budget_range: '',
     timeline_preference: '',
     urgency_level: 'standard',
-    additional_context: ''
+    additional_context: '',
+    consentToStore: false
   });
 
   // Scroll to top when component mounts
@@ -114,6 +124,19 @@ const CustomizationRequest = () => {
         if (data?.error) throw new Error(data.error);
       }
 
+      // Save to user_profiles if consent given
+      if (formData.consentToStore && formData.contact_email) {
+        await supabase.from('user_profiles').upsert({
+          email: formData.contact_email,
+          company: formData.company_name || null,
+          phone: formData.contact_phone || null,
+          consent_given: true,
+          last_updated: new Date().toISOString(),
+        }, {
+          onConflict: 'email'
+        });
+      }
+
       setSubmitted(true);
       toast({
         title: "Request Submitted!",
@@ -132,8 +155,17 @@ const CustomizationRequest = () => {
     }
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Update localStorage for contact fields
+    if (field === 'company_name') {
+      updatePersisted('company', value as string);
+    } else if (field === 'contact_email') {
+      updatePersisted('email', value as string);
+    } else if (field === 'contact_phone') {
+      updatePersisted('phone', value as string);
+    }
   };
 
   if (submitted) {
@@ -333,9 +365,26 @@ const CustomizationRequest = () => {
                       onChange={(e) => handleInputChange('additional_context', e.target.value)}
                       placeholder="Any additional information, specific tools/platforms you use, team size, etc."
                     />
-                  </div>
+                   </div>
 
-                  <Button type="submit" className="w-full" size="lg" disabled={loading}>
+                   <div className="flex items-start space-x-3 p-4 bg-muted/30 rounded-md border border-border">
+                     <Checkbox
+                       id="consentToStore"
+                       checked={formData.consentToStore}
+                       onCheckedChange={(checked) => handleInputChange('consentToStore', checked as boolean)}
+                     />
+                     <div className="space-y-1 leading-none">
+                       <Label htmlFor="consentToStore" className="text-sm font-normal cursor-pointer">
+                         I agree to have my contact details securely stored to improve my experience 
+                         and pre-fill future forms. You can withdraw consent anytime by contacting{' '}
+                         <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">
+                           privacy@teamsmiths.ai
+                         </a>
+                       </Label>
+                     </div>
+                   </div>
+
+                   <Button type="submit" className="w-full" size="lg" disabled={loading}>
                     {loading ? 'Submitting...' : (
                       <>
                         Submit Customization Request

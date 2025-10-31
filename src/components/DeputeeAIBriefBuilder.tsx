@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Switch } from '@/components/ui/switch';
@@ -15,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { safeText } from '@/lib/safeRender';
+import { usePersistentForm } from '@/hooks/usePersistentForm';
 
 interface AIResponse {
   interpreted: string;
@@ -48,6 +50,15 @@ const DeputeeAIBriefBuilder = () => {
   const continueCrId = searchParams.get('cr');
   const briefOrigin = capabilityId ? 'capability' : packId ? 'catalog' : outcomeId ? 'outcome' : continueToken ? 'continue' : null;
 
+  // Get persisted form data from localStorage
+  const { formData: persistedData, updateField: updatePersisted } = usePersistentForm({
+    firstName: '',
+    lastName: '',
+    email: '',
+    company: '',
+    phone: '',
+  });
+
   const [briefData, setBriefData] = useState({
     goal: '',
     context: '',
@@ -59,11 +70,13 @@ const DeputeeAIBriefBuilder = () => {
   });
 
   const [contactData, setContactData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    phone: ''
+    name: `${persistedData.firstName} ${persistedData.lastName}`.trim() || '',
+    email: persistedData.email || '',
+    company: persistedData.company || '',
+    phone: persistedData.phone || ''
   });
+
+  const [consentToStore, setConsentToStore] = useState(false);
 
   const [aiResponses, setAiResponses] = useState<Record<string, AIResponse>>({});
   const [aiStates, setAiStates] = useState<Record<string, AiState>>({});
@@ -241,6 +254,25 @@ const DeputeeAIBriefBuilder = () => {
           origin_id: capabilityId || packId || outcomeId || continueCrId
         }
       });
+
+      // Save to user_profiles if consent given
+      if (consentToStore && contactData.email) {
+        const nameParts = contactData.name.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        
+        await supabase.from('user_profiles').upsert({
+          email: contactData.email,
+          first_name: firstName,
+          last_name: lastName,
+          company: contactData.company || null,
+          phone: contactData.phone || null,
+          consent_given: true,
+          last_updated: new Date().toISOString(),
+        }, {
+          onConflict: 'email'
+        });
+      }
 
       if (response.error || !response.data?.brief_id) {
         console.error('Brief submission error:', response.error);
@@ -739,13 +771,19 @@ const DeputeeAIBriefBuilder = () => {
                   </p>
                 </div>
                 
-                <div className="grid md:grid-cols-2 gap-4">
+                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Name *</Label>
                     <Input
                       id="name"
                       value={contactData.name}
-                      onChange={(e) => setContactData(prev => ({ ...prev, name: e.target.value }))}
+                      onChange={(e) => {
+                        const newName = e.target.value;
+                        setContactData(prev => ({ ...prev, name: newName }));
+                        const parts = newName.split(' ');
+                        updatePersisted('firstName', parts[0] || '');
+                        updatePersisted('lastName', parts.slice(1).join(' ') || '');
+                      }}
                       placeholder="Your full name"
                     />
                   </div>
@@ -755,7 +793,11 @@ const DeputeeAIBriefBuilder = () => {
                       id="email"
                       type="email"
                       value={contactData.email}
-                      onChange={(e) => setContactData(prev => ({ ...prev, email: e.target.value }))}
+                      onChange={(e) => {
+                        const newEmail = e.target.value;
+                        setContactData(prev => ({ ...prev, email: newEmail }));
+                        updatePersisted('email', newEmail);
+                      }}
                       placeholder="your@email.com"
                     />
                   </div>
@@ -764,7 +806,11 @@ const DeputeeAIBriefBuilder = () => {
                     <Input
                       id="company"
                       value={contactData.company}
-                      onChange={(e) => setContactData(prev => ({ ...prev, company: e.target.value }))}
+                      onChange={(e) => {
+                        const newCompany = e.target.value;
+                        setContactData(prev => ({ ...prev, company: newCompany }));
+                        updatePersisted('company', newCompany);
+                      }}
                       placeholder="Your company name"
                     />
                   </div>
@@ -773,9 +819,30 @@ const DeputeeAIBriefBuilder = () => {
                     <Input
                       id="phone"
                       value={contactData.phone}
-                      onChange={(e) => setContactData(prev => ({ ...prev, phone: e.target.value }))}
+                      onChange={(e) => {
+                        const newPhone = e.target.value;
+                        setContactData(prev => ({ ...prev, phone: newPhone }));
+                        updatePersisted('phone', newPhone);
+                      }}
                       placeholder="+44 xxx xxx xxxx"
                     />
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-3 p-4 bg-muted/30 rounded-md border border-border mt-4">
+                  <Checkbox
+                    id="consentToStore"
+                    checked={consentToStore}
+                    onCheckedChange={(checked) => setConsentToStore(checked as boolean)}
+                  />
+                  <div className="space-y-1 leading-none">
+                    <Label htmlFor="consentToStore" className="text-sm font-normal cursor-pointer">
+                      I agree to have my contact details securely stored to improve my experience 
+                      and pre-fill future forms. You can withdraw consent anytime by contacting{' '}
+                      <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">
+                        privacy@teamsmiths.ai
+                      </a>
+                    </Label>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -8,9 +8,11 @@ import { Slider } from '@/components/ui/slider';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { usePersistentForm } from '@/hooks/usePersistentForm';
 
 const questions = [
   // Readiness (R1-R4)
@@ -43,6 +45,7 @@ const formSchema = z.object({
   email: z.string().email('Invalid email address'),
   company: z.string().optional(),
   role: z.string().optional(),
+  consentToStore: z.boolean().optional(),
   r1: z.number().min(0).max(100),
   r2: z.number().min(0).max(100),
   r3: z.number().min(0).max(100),
@@ -73,19 +76,43 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
   const ignoreSubmitUntil = useRef<number>(0);
   const totalSteps = Math.ceil(questions.length / 3) + 1; // Group questions + contact info
   
+  // Get persisted form data from localStorage
+  const { formData: persistedData } = usePersistentForm({
+    name: '',
+    email: '',
+    company: '',
+    role: '',
+  });
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      email: '',
-      company: '',
-      role: '',
+      name: persistedData.name || '',
+      email: persistedData.email || '',
+      company: persistedData.company || '',
+      role: persistedData.role || '',
+      consentToStore: false,
       r1: 50, r2: 50, r3: 50, r4: 50,
       rp1: 50, rp2: 50, rp3: 50, rp4: 50,
       pp1: 50, pp2: 50, pp3: 50, pp4: 50,
       pr1: 50, pr2: 50, pr3: 50, pr4: 50,
     },
   });
+
+  // Save to localStorage whenever contact fields change
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      if (value.name || value.email || value.company || value.role) {
+        localStorage.setItem('userFormData', JSON.stringify({
+          name: value.name,
+          email: value.email,
+          company: value.company,
+          role: value.role,
+        }));
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const calculateScores = (values: FormValues) => {
     const readiness = (values.r1 + values.r2 + values.r3 + values.r4) / 4;
@@ -159,6 +186,24 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
         .insert(payload);
 
       if (error) throw error;
+
+      // Save to user_profiles if consent given
+      if (values.consentToStore && values.email) {
+        const nameParts = values.name.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        
+        await supabase.from('user_profiles').upsert({
+          email: values.email,
+          first_name: firstName,
+          last_name: lastName,
+          company: values.company || null,
+          consent_given: true,
+          last_updated: new Date().toISOString(),
+        }, {
+          onConflict: 'email'
+        });
+      }
 
       const scorecardId = 'pending';
 
@@ -285,11 +330,35 @@ export const ScorecardQuiz: React.FC<ScorecardQuizProps> = ({ onComplete }) => {
                       </FormControl>
                       <FormMessage />
                     </FormItem>
-                  )}
-                />
-              </div>
-            ) : (
-              <div className="space-y-8">
+                   )}
+                 />
+                 
+                 <FormField
+                   control={form.control}
+                   name="consentToStore"
+                   render={({ field }) => (
+                     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-border p-4 bg-muted/30">
+                       <FormControl>
+                         <Checkbox
+                           checked={field.value}
+                           onCheckedChange={field.onChange}
+                         />
+                       </FormControl>
+                       <div className="space-y-1 leading-none">
+                         <FormLabel className="text-sm font-normal cursor-pointer">
+                           I agree to have my contact details securely stored to improve my experience 
+                           and pre-fill future forms. You can withdraw consent anytime by contacting{' '}
+                           <a href="mailto:privacy@teamsmiths.ai" className="text-primary hover:underline">
+                             privacy@teamsmiths.ai
+                           </a>
+                         </FormLabel>
+                       </div>
+                     </FormItem>
+                   )}
+                 />
+               </div>
+             ) : (
+               <div className="space-y-8">
                 <div className="mb-6">
                   <h2 className="text-xl md:text-2xl font-semibold mb-2">
                     {currentQuestions[0]?.category}
