@@ -3496,6 +3496,42 @@ export type Database = {
           },
         ]
       }
+      user_profiles: {
+        Row: {
+          company: string | null
+          consent_given: boolean | null
+          created_at: string | null
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          last_updated: string | null
+          phone: string | null
+        }
+        Insert: {
+          company?: string | null
+          consent_given?: boolean | null
+          created_at?: string | null
+          email: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          last_updated?: string | null
+          phone?: string | null
+        }
+        Update: {
+          company?: string | null
+          consent_given?: boolean | null
+          created_at?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          last_updated?: string | null
+          phone?: string | null
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           created_at: string | null
