@@ -15,10 +15,10 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const navigationItems = [
-  { label: 'Home', path: '/', tooltip: 'Start here — outcome-driven AI solutions for SMBs.' },
-  { label: 'Menu', path: '/solutions', tooltip: 'Browse business wins we can deliver monthly' },
-  { label: 'Plan', path: '/pricing', tooltip: 'Simple subscription plans for monthly business wins' },
-  { label: 'Results', path: '/#results', tooltip: 'View business results and success metrics' },
+  { label: 'Home', path: '/', tooltip: 'Measurable business improvements for UK SMEs' },
+  { label: 'How It Works', path: '/solutions', tooltip: 'See how we deliver real results' },
+  { label: 'Pricing', path: '/pricing', tooltip: 'Fixed price, visible outcomes' },
+  { label: 'Results', path: '/#results', tooltip: 'Proof: real clients, real numbers' },
 ];
 
 export const Navigation = () => {
@@ -174,7 +174,7 @@ export const Navigation = () => {
                   size="sm"
                   className="justify-start h-10"
                 >
-                  <Link to="/solutions">Menu</Link>
+                  <Link to="/solutions">How It Works</Link>
                 </Button>
                 <Button
                   asChild

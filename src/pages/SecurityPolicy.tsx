@@ -6,7 +6,7 @@ const SecurityPolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Security Policy | Teamsmiths AI Deputees™</title>
+        <title>Security Policy | Teamsmiths</title>
         <meta name="description" content="Learn about Teamsmiths' professional-grade security measures, data protection, and incident response procedures." />
         <link rel="canonical" href="https://teamsmiths.ai/security" />
       </Helmet>
@@ -22,7 +22,7 @@ const SecurityPolicy = () => {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-foreground mb-4">Overview</h2>
               <p>
-                Teamsmiths AI Deputees™ operates with security by design: principle of least privilege, 
+                Teamsmiths operates with security by design: principle of least privilege, 
                 comprehensive audit logging, and strict separation of environments. Your data is protected 
                 with professional-grade safeguards designed to maintain the highest standards of security and privacy.
               </p>

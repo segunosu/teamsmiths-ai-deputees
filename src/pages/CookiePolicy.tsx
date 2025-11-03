@@ -6,7 +6,7 @@ const CookiePolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Cookie & Tracking Policy | Teamsmiths AI Deputees™</title>
+        <title>Cookie & Tracking Policy | Teamsmiths</title>
         <meta name="description" content="Learn about how Teamsmiths uses cookies and tracking technologies to improve your experience." />
         <link rel="canonical" href="https://teamsmiths.ai/cookies" />
       </Helmet>

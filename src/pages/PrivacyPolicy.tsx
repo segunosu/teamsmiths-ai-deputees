@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
   return (
     <>
       <Helmet>
-        <title>Privacy Policy | Teamsmiths AI Deputees™</title>
+        <title>Privacy Policy | Teamsmiths</title>
         <meta name="description" content="Read how Teamsmiths collects, uses, and protects your personal information in compliance with GDPR and data protection regulations." />
         <link rel="canonical" href="https://teamsmiths.ai/privacy" />
       </Helmet>
@@ -23,7 +23,7 @@ const PrivacyPolicy = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-foreground mb-4">Introduction</h2>
             <p>
-              Teamsmiths AI Deputees™ ("we," "our," or "us") is committed to protecting your privacy. 
+              Teamsmiths ("we," "our," or "us") is committed to protecting your privacy. 
               This Privacy Policy explains how we collect, use, disclose, and safeguard your information 
               when you visit our website or use our services.
             </p>

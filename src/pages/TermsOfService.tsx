@@ -6,7 +6,7 @@ const TermsOfService = () => {
   return (
     <>
       <Helmet>
-        <title>Terms of Service | Teamsmiths AI Deputees™</title>
+        <title>Terms of Service | Teamsmiths</title>
         <meta name="description" content="Read the Terms of Service for Teamsmiths AI Deputees™ platform and services." />
         <link rel="canonical" href="https://teamsmiths.ai/terms" />
       </Helmet>

@@ -6,7 +6,7 @@ const Compliance = () => {
   return (
     <>
       <Helmet>
-        <title>Compliance & Standards | Teamsmiths AI Deputees™</title>
+        <title>Compliance & Standards | Teamsmiths</title>
         <meta name="description" content="Learn about Teamsmiths' commitment to regulatory compliance, industry standards, and ethical business practices." />
         <link rel="canonical" href="https://teamsmiths.ai/compliance" />
       </Helmet>
@@ -22,7 +22,7 @@ const Compliance = () => {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-foreground mb-4">Our Commitment to Compliance</h2>
               <p>
-                Teamsmiths AI Deputees™ is committed to maintaining the highest standards of regulatory 
+                Teamsmiths is committed to maintaining the highest standards of regulatory 
                 compliance across all our operations and services. We understand that trust is built through 
                 consistent adherence to legal, regulatory, and industry standards.
               </p>

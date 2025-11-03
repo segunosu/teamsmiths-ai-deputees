@@ -6,7 +6,7 @@ const DataProtection = () => {
   return (
     <>
       <Helmet>
-        <title>Data Protection & Your Rights | Teamsmiths AI Deputees™</title>
+        <title>Data Protection & Your Rights | Teamsmiths</title>
         <meta name="description" content="Understand your data protection rights under GDPR and how Teamsmiths processes and protects your personal information." />
         <link rel="canonical" href="https://teamsmiths.ai/data-protection" />
       </Helmet>

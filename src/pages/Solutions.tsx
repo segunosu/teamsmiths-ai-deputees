@@ -7,7 +7,6 @@ import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus } from '
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 import { BusinessUpliftCard } from '@/components/BusinessUpliftCard';
-import { AIDeputee } from '@/components/AIDeputee';
 
 const Solutions = () => {
   const { trackEvent } = useAnalytics();
@@ -23,37 +22,37 @@ const Solutions = () => {
   const businessFunctions = [
     {
       id: 'sales',
-      title: 'Sales Wins',
+      title: 'Sales Improvements',
       icon: <Target className="h-8 w-8 text-primary" />,
       anchor: '#sales'
     },
     {
       id: 'marketing',
-      title: 'Marketing Wins',
+      title: 'Marketing Improvements',
       icon: <BarChart3 className="h-8 w-8 text-primary" />,
       anchor: '#marketing'
     },
     {
       id: 'hr',
-      title: 'HR Wins',
+      title: 'HR Improvements',
       icon: <Users className="h-8 w-8 text-primary" />,
       anchor: '#hr'
     },
     {
       id: 'finance',
-      title: 'Finance Wins',
+      title: 'Finance Improvements',
       icon: <DollarSign className="h-8 w-8 text-primary" />,
       anchor: '#finance'
     },
     {
       id: 'operations',
-      title: 'Operations Wins',
+      title: 'Operations Improvements',
       icon: <Cog className="h-8 w-8 text-primary" />,
       anchor: '#operations'
     },
     {
       id: 'customer_service',
-      title: 'Customer Service Wins',
+      title: 'Customer Service Improvements',
       icon: <MessageSquare className="h-8 w-8 text-primary" />,
       anchor: '#customer-service'
     }
@@ -63,7 +62,7 @@ const Solutions = () => {
     sales: [
       {
         slug: 'sales_deputee_deal_closer',
-        title: 'AI Deputee™ – Deal Closer',
+        title: 'Deal Closer',
         description: 'Connects to your CRM to analyze deal patterns and triggers personalized follow-up actions for your sales team',
         benefit: 'Scans CRM data, surfaces at-risk deals, generates role-specific next actions and follow-up prompts based on deal stage and client behavior',
         delivered: 'CRM-integrated system that delivers daily action prompts and deal risk alerts to the right team members',
@@ -101,7 +100,7 @@ const Solutions = () => {
     finance: [
       {
         slug: 'finance_deputee_cashflow_sentinel',
-        title: 'AI Deputee™ – Cashflow Sentinel',
+        title: 'Cashflow Sentinel',
         description: 'Integrates with your invoicing system to analyze payment patterns and automatically prompt follow-up actions',
         benefit: 'Analyzes invoice data, identifies payment delays, generates targeted reminders and escalation prompts based on client payment history',
         delivered: 'Invoice-tracking system that delivers daily payment status updates and role-specific collection actions',
@@ -139,7 +138,7 @@ const Solutions = () => {
     hr: [
       {
         slug: 'hr_deputee_onboarding_accelerator',
-        title: 'AI Deputee™ – Onboarding Accelerator',
+        title: 'Onboarding Accelerator',
         description: 'Connects to your HR systems to track new hire progress and trigger personalized coaching prompts for managers',
         benefit: 'Monitors onboarding milestones, analyzes completion patterns, generates manager action prompts and check-in reminders based on individual progress',
         delivered: 'HR-integrated tracking that delivers daily manager prompts and milestone-based coaching actions',
@@ -177,7 +176,7 @@ const Solutions = () => {
     operations: [
       {
         slug: 'operations_deputee_action_ready_ops',
-        title: 'AI Deputee™ – Action-Ready Ops',
+        title: 'Action-Ready Ops',
         description: 'Integrates with your operations systems to monitor workflow status and deliver role-specific action prompts in real-time',
         benefit: 'Analyzes operational data flows, identifies bottlenecks and delays, generates targeted action prompts for specific team members based on system triggers',
         delivered: 'Ops-integrated monitoring that delivers real-time action prompts and workflow optimization suggestions',
@@ -215,7 +214,7 @@ const Solutions = () => {
     marketing: [
       {
         slug: 'marketing_deputee_campaign_builder',
-        title: 'AI Deputee™ – Campaign Builder',
+        title: 'Campaign Builder',
         description: 'Connects to your marketing platforms to analyze engagement data and trigger personalized campaign actions',
         benefit: 'Analyzes campaign performance data, identifies engagement patterns, generates targeted follow-up sequences and team action prompts based on lead behavior',
         delivered: 'Marketing-integrated system that delivers daily campaign optimization prompts and lead nurturing actions',
@@ -253,7 +252,7 @@ const Solutions = () => {
     customer_service: [
       {
         slug: 'customer_service_deputee_resolution_turbo',
-        title: 'AI Deputee™ – Resolution Turbo',
+        title: 'Resolution Turbo',
         description: 'Integrates with your support system to analyze ticket patterns and deliver role-specific resolution prompts',
         benefit: 'Analyzes support ticket data, identifies escalation patterns, generates priority assignments and response prompts based on issue complexity and customer history',
         delivered: 'Support-integrated system that delivers real-time triage decisions and agent-specific resolution actions',
@@ -300,9 +299,9 @@ const Solutions = () => {
   return (
     <>
       <Helmet>
-        <title>Choose your next business win | Teamsmiths</title>
-        <meta name="description" content="Browse business wins by function: Sales, Finance, HR, Operations, Marketing, and Customer Service. Add to your plan or get a fixed price." />
-        <meta name="keywords" content="business wins, sales automation, finance optimization, HR tools, operations improvement, marketing automation, customer service" />
+        <title>How It Works — Measurable Improvements for UK SMEs | Teamsmiths</title>
+        <meta name="description" content="Browse targeted business improvements by function: Sales, Finance, HR, Operations, Marketing, and Customer Service. Fixed pricing, proven results." />
+        <meta name="keywords" content="business improvement, sales automation, finance optimization, HR tools, operations, marketing, customer service, UK SME" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -310,7 +309,7 @@ const Solutions = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Choose your next business win
+              How It Works
             </h1>
             <p className="text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
               Browse targeted business improvements by area—each delivered fast, tested, and ready to use.
@@ -340,9 +339,9 @@ const Solutions = () => {
         <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto space-y-24">
             
-            {/* Sales Wins */}
+            {/* Sales Improvements */}
             <div id="sales">
-              <h2 className="text-3xl font-bold text-center mb-12">Sales Wins</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Sales Improvements</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.sales.map((uplift) => (
                   <BusinessUpliftCard 
@@ -378,9 +377,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Finance Wins */}
+            {/* Finance Improvements */}
             <div id="finance">
-              <h2 className="text-3xl font-bold text-center mb-12">Finance Wins</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Finance Improvements</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.finance.map((uplift) => (
                   <BusinessUpliftCard 
@@ -416,9 +415,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* HR Wins */}
+            {/* HR Improvements */}
             <div id="hr">
-              <h2 className="text-3xl font-bold text-center mb-12">HR Wins</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">HR Improvements</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.hr.map((uplift) => (
                   <BusinessUpliftCard 
@@ -454,9 +453,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Operations Wins */}
+            {/* Operations Improvements */}
             <div id="operations">
-              <h2 className="text-3xl font-bold text-center mb-12">Operations Wins</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Operations Improvements</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.operations.map((uplift) => (
                   <BusinessUpliftCard 
@@ -492,9 +491,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Marketing Wins */}
+            {/* Marketing Improvements */}
             <div id="marketing">
-              <h2 className="text-3xl font-bold text-center mb-12">Marketing Wins</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Marketing Improvements</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.marketing.map((uplift) => (
                   <BusinessUpliftCard 
@@ -530,9 +529,9 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Customer Service Wins */}
+            {/* Customer Service Improvements */}
             <div id="customer-service">
-              <h2 className="text-3xl font-bold text-center mb-12">Customer Service Wins</h2>
+              <h2 className="text-3xl font-bold text-center mb-12">Customer Service Improvements</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {businessUplifts.customer_service.map((uplift) => (
                   <BusinessUpliftCard 

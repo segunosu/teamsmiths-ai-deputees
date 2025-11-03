@@ -21,8 +21,9 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
-              <li><Link to="/plan" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Plan</Link></li>
-              <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Solutions</Link></li>
+              <li><Link to="/pricing" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Pricing</Link></li>
+              <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">How It Works</Link></li>
+              <li><Link to="/#results" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Results</Link></li>
               <li><Link to="/ai-impact-maturity" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">AI Impact Maturity</Link></li>
             </ul>
           </div>
@@ -71,7 +72,7 @@ export const Footer = () => {
         <div className="border-t border-primary-foreground/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div className="text-primary-foreground/70 text-sm">
-              © {new Date().getFullYear()} Teamsmiths AI Deputees™. All rights reserved.
+              © {new Date().getFullYear()} Teamsmiths. All rights reserved.
             </div>
             
             {/* Social Media Icons */}

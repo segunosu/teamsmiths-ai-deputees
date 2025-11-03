@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, ArrowRight } from 'lucide-react';
-import { AIDeputee } from '@/components/AIDeputee';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 const Plans = () => {
@@ -17,7 +16,7 @@ const Plans = () => {
       period: 'month',
       who: 'Solo operators & micro-teams',
       features: [
-        '1 AI Deputee™ agent (single function: proposals OR quotes)',
+        '1 improvement agent (single function: proposals OR quotes)',
         'Monthly performance check',
         'Basic dashboard',  
         '2 integrations (calendar, Zoom)'
@@ -41,12 +40,12 @@ const Plans = () => {
       popular: true,
       who: 'Small teams (1–20 staff)',
       features: [
-        '2 AI Deputee™ agents (sales + ops)',
+        '2 improvement agents (sales + ops)',
         'Weekly performance digest',
         '1×60min monthly advisor review',
         'Basic RAG',
         'Up to 5 integrations',
-        'AI Deputee™ Assurance'
+        'Performance Assurance'
       ],
       primaryCTA: 'Join Core — £395 / month',
       primaryAction: () => {
@@ -66,7 +65,7 @@ const Plans = () => {
       period: 'month',
       who: 'Growing firms (10–50 staff)',
       features: [
-        '4 AI Deputee™ agents',
+        '4 improvement agents',
         'Fortnightly strategy session',
         'Custom vertical RAG',
         'Success tracking dashboard',
@@ -91,7 +90,7 @@ const Plans = () => {
       who: 'Strategic partners/fast-growth SMBs',
       bespokeOnly: true,
       features: [
-        'Full AI Deputee™ suite',
+        'Full improvement suite',
         'Dedicated account team',
         'Bespoke integrations',
         'Optional performance fee or equity/advisory options'
@@ -110,10 +109,10 @@ const Plans = () => {
         {/* Header */}
         <div className="text-center mb-20">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-            Navigator Packs
+            Plans
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Choose your <AIDeputee /> subscription to build your AI team. All plans include human QA and continuous monitoring.
+            Choose your subscription to build your improvement roadmap. All plans include human QA and continuous monitoring.
           </p>
         </div>
 
@@ -192,7 +191,7 @@ const Plans = () => {
         {/* Footer Note */}
         <div className="text-center">
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-            All plans include <AIDeputee /> Assurance and human QA. Month-to-month or quarterly billing available.
+            All plans include continuous monitoring and human QA. Month-to-month or quarterly billing available.
           </p>
         </div>
       </div>
