@@ -344,14 +344,15 @@ const Home = () => {
 
             <div className="text-center mt-10 sm:mt-16">
               <Button
-                asChild
                 size="lg"
                 className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 h-auto w-full sm:w-auto"
+                onClick={() => {
+                  handleHeroCTA("See real client results from How It Works");
+                  scrollToSection("results");
+                }}
               >
-                <Link to="/pricing">
-                  See how we price this
-                  <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
-                </Link>
+                See real client results
+                <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
               </Button>
             </div>
           </div>
