@@ -213,14 +213,14 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Grow revenue, speed up delivery, cut costs — in weeks | Teamsmiths</title>
+        <title>Measurable Business Results for UK SMEs | Teamsmiths</title>
         <meta
           name="description"
-          content="We deliver Business Outcomes and Impact builds that move one KPI at a time, with AI Deputee™ and human QA."
+          content="We don't sell AI tools—we deliver measurable business results. Cut costs, boost revenue, eliminate errors. See proof in your numbers within weeks."
         />
         <meta
           name="keywords"
-          content="business outcomes, revenue growth, delivery speed, cost reduction, AI, human QA"
+          content="business results, cost reduction, revenue growth, UK SME, automation, efficiency"
         />
       </Helmet>
 
@@ -233,253 +233,138 @@ const Home = () => {
 
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4 sm:mb-6 leading-[1.15] py-2">
-                Too busy with business to figure out AI?
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
+                We Don't Sell AI Tools—<br />We Deliver Measurable Business Results.
               </h1>
-              <p className="text-base sm:text-xl lg:text-2xl text-foreground/80 font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-                Access AI expertise that boosts sales, eliminates waste, and frees leadership time.
+              <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
+                Automate what matters. See proof in your numbers within weeks.
               </p>
 
-              {/* Credibility bar */}
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center mb-8 sm:mb-10 text-base sm:text-lg font-medium">
+              {/* Top SME Outcomes */}
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center mb-8 sm:mb-10 text-base sm:text-lg">
                 <div className="flex items-center gap-2">
-                  <div className="text-xl sm:text-2xl font-bold text-success">5–10 hrs</div>
-                  <div className="text-sm sm:text-base text-muted-foreground">saved per leader per week</div>
+                  <CheckCircle className="h-5 w-5 text-success" />
+                  <span className="font-medium">Get paid faster</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="text-xl sm:text-2xl font-bold text-success">45%</div>
-                  <div className="text-sm sm:text-base text-muted-foreground">uplift in team performance</div>
+                  <CheckCircle className="h-5 w-5 text-success" />
+                  <span className="font-medium">Cut admin time in half</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-success" />
+                  <span className="font-medium">Eliminate costly errors</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center mb-6 sm:mb-8 max-w-md sm:max-w-none mx-auto">
                 <Button
+                  asChild
                   size="lg"
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
-                  onClick={() => {
-                    handleHeroCTA("See what you get");
-                    scrollToSection("menu");
-                  }}
                 >
-                  See what you get
-                  <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                    Book your outcome call
+                    <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
+                  </a>
                 </Button>
                 <Button
-                  asChild
                   variant="outline"
                   size="lg"
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
-                  onClick={() => handleHeroCTA("Start now")}
+                  onClick={() => {
+                    handleHeroCTA("See real client results");
+                    scrollToSection("results");
+                  }}
                 >
-                  <Link to="/solutions">Start now</Link>
+                  See real client results
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* BUSINESS WINS */}
-        <section id="menu" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        {/* HOW IT WORKS IN 3 STEPS */}
+        <section id="how-it-works" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6 flex flex-col sm:flex-row items-center justify-center gap-2">
-                <span>Business Wins</span>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground hover:text-primary cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>A targeted business improvement—implemented, tested, and delivered.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6">
+                How it Works in 3 Steps
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-                Unlock measurable business wins every month — examples we deliver inside your plan
+                Simple. Direct. Measurable.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
-              {quickOutcomes.map((outcome, index) => (
-                <Card
-                  key={index}
-                  className="group shadow-sm hover:shadow-xl transition-all duration-300 border-0 bg-card/50 hover:bg-card/80 relative overflow-hidden"
-                >
-                  {/* Badge */}
-                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
-                    <Badge
-                      variant="secondary"
-                      className="text-[10px] sm:text-xs font-medium bg-primary/10 text-primary border-primary/20 flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-2 py-0.5"
-                    >
-                      <span className="hidden sm:inline">{getBadgeIcon(outcome.badge)}</span>
-                      {outcome.badge}
-                    </Badge>
+            <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 max-w-5xl mx-auto">
+              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-2 bg-card">
+                <CardHeader className="pb-6">
+                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
+                    <MessageSquare className="h-10 w-10 text-primary" />
                   </div>
+                  <div className="text-6xl font-bold text-primary mb-2">1</div>
+                  <CardTitle className="text-xl font-bold mb-2">Tell us your priority</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base leading-relaxed">
+                    What's your biggest pain point? Faster payments, fewer errors, less admin—we focus on what matters most to you.
+                  </CardDescription>
+                </CardContent>
+              </Card>
 
-                  {/* Accent Line */}
-                  <div
-                    className={`absolute top-0 left-0 right-0 h-1 ${outcome.accentColor} bg-current opacity-60`}
-                  ></div>
+              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-2 bg-card">
+                <CardHeader className="pb-6">
+                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
+                    <Cog className="h-10 w-10 text-primary" />
+                  </div>
+                  <div className="text-6xl font-bold text-primary mb-2">2</div>
+                  <CardTitle className="text-xl font-bold mb-2">We set up & prove the solution</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base leading-relaxed">
+                    We implement the best-fit automation or improvement for your business—no jargon, just results.
+                  </CardDescription>
+                </CardContent>
+              </Card>
 
-                  <CardHeader className="pb-3 sm:pb-4 pt-10 sm:pt-8 px-4 sm:px-6">
-                    <div className="flex items-start gap-2 sm:gap-3 mb-2 sm:mb-3">
-                      <div className={`p-1.5 sm:p-2 rounded-lg bg-muted/50 ${outcome.accentColor} flex-shrink-0`}>{outcome.icon}</div>
-                      <CardTitle className="text-base sm:text-lg font-semibold leading-tight">{outcome.title}</CardTitle>
-                    </div>
-                    <div className="text-xs sm:text-sm font-medium text-muted-foreground mb-1 sm:mb-2">{outcome.painHeadline}</div>
-                  </CardHeader>
-                  <CardContent className="space-y-3 sm:space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
-                    <CardDescription className="text-sm sm:text-base font-medium text-foreground leading-snug">
-                      {outcome.benefit}
-                    </CardDescription>
-
-                    <div className="text-xs sm:text-sm text-muted-foreground space-y-1 sm:space-y-1.5">
-                      <div className="flex items-start gap-1.5 sm:gap-2">
-                        <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-success flex-shrink-0 mt-0.5" />
-                        <span className="leading-tight">{outcome.proof}</span>
-                      </div>
-                      <div className="flex items-start gap-1.5 sm:gap-2">
-                        <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-                        <span className="leading-tight">Delivered in: {outcome.timeframe}</span>
-                      </div>
-                    </div>
-
-                    {outcome.caseStudySlug ? (
-                      <div className="space-y-2">
-                        <Button
-                          variant="default"
-                          size="sm"
-                          className="w-full"
-                          onClick={() => {
-                            handleQuickOutcomeClick(outcome.slug);
-                            handleOpenModal(outcome.caseStudySlug!);
-                          }}
-                        >
-                          See proof
-                        </Button>
-                        <Button
-                          asChild
-                          variant="link"
-                          size="sm"
-                          className="w-full text-muted-foreground hover:text-foreground"
-                          onClick={() => handleQuickOutcomeClick(outcome.slug)}
-                        >
-                          <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>
-                            Explore details →
-                          </Link>
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button
-                        asChild
-                        variant="default"
-                        size="sm"
-                        className="w-full"
-                        onClick={() => handleQuickOutcomeClick(outcome.slug)}
-                      >
-                        <Link to={`/solutions#${getSolutionSection(outcome.slug)}`}>
-                          Explore details
-                        </Link>
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-2 bg-card">
+                <CardHeader className="pb-6">
+                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
+                    <TrendingUp className="h-10 w-10 text-primary" />
+                  </div>
+                  <div className="text-6xl font-bold text-primary mb-2">3</div>
+                  <CardTitle className="text-xl font-bold mb-2">You see verified improvement</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base leading-relaxed">
+                    Track real numbers in your business—cost cut, time saved, revenue found. Proof, not promises.
+                  </CardDescription>
+                </CardContent>
+              </Card>
             </div>
 
             <div className="text-center mt-10 sm:mt-16">
-              <div className="mb-6 sm:mb-8">
-                <Button
-                  asChild
-                  size="lg"
-                  className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 h-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all w-full sm:w-auto max-w-sm"
-                >
-                  <Link to="/solutions">
-                    <Globe className="mr-2 h-4 sm:h-5 w-4 sm:w-5" />
-                    Explore All Business Wins
-                  </Link>
-                </Button>
-              </div>
-              <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto px-4">
-                Don't see your specific challenge? We create custom solutions for every business need.
-              </p>
+              <Button
+                asChild
+                size="lg"
+                className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 h-auto w-full sm:w-auto"
+              >
+                <Link to="/pricing">
+                  See how we price this
+                  <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
 
-        {/* HOW IT WORKS */}
-        <section id="how" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+        {/* RESULTS / PROOF SECTION */}
+        <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">How it works</h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 max-w-5xl mx-auto">
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                <CardHeader className="pb-6">
-                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                    <Target className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">Tell us your business priority</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-lg leading-relaxed">
-                    Pick from the wins above (or tell us your specific challenge) and we'll tailor a solution to your
-                    needs.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                <CardHeader className="pb-6">
-                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                    <Zap className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">We deliver in days</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-lg leading-relaxed">
-                    Targeted business results delivered fast, tested, and ready to use. Human experts oversee every AI
-                    output.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50">
-                <CardHeader className="pb-6">
-                  <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                    <BarChart3 className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">Track the improvement</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-lg leading-relaxed">
-                    See gains, not guesswork. Monitor real KPI improvements month over month.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="text-center mt-10 sm:mt-16">
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto">
-                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
-                  <Link to="/pricing#pricing">Get Started (from £495/month)</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
-                  <Link to="/brief-builder?mode=quote#form">Prefer a project? Get a fixed price in 24h</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* POWERFUL RESULTS SECTION */}
-        <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-10 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6">Powerful Results</h2>
-              <p className="text-base sm:text-lg text-muted-foreground px-4">Measurable improvements delivered in weeks, not months</p>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">Proof: Real Clients, Real Numbers</h2>
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
+                See measurable results from businesses just like yours
+              </p>
             </div>
 
             {caseStudiesLoading ? (
@@ -522,21 +407,24 @@ const Home = () => {
           canNavigateNext={selectedCaseIndex >= 0 && selectedCaseIndex < (caseStudies?.length ?? 0) - 1}
         />
 
-        {/* READY BAND (FINAL CTA) */}
+        {/* FINAL CTA */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10 px-4">
-              Ready to get your first business win?
+              Simple. Measurable. Repeatable.<br />See what your business could look like with one priority solved for good.
             </h2>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto">
               <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
-                <Link to="/pricing#pricing">Get Started (from £495/month)</Link>
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                  Book your outcome call
+                  <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
+                </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Talk to a Strategist
-                </a>
+                <Link to="/pricing">
+                  See how we price this
+                </Link>
               </Button>
             </div>
           </div>

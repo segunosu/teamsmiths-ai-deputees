@@ -71,99 +71,128 @@ const Plan = () => {
   return (
     <>
       <Helmet>
-        <title>Simple subscription. Monthly business wins. Bank for bigger Project Builds | Teamsmiths</title>
-        <meta name="description" content="Choose your subscription plan. Monthly targeted improvements delivered fast with AI Deputee™ and expert oversight." />
-        <meta name="keywords" content="business wins, subscription plans, monthly improvements, AI deputee, business automation" />
+        <title>Fixed Price. Visible Outcomes. Pay Only When We Deliver | Teamsmiths</title>
+        <meta name="description" content="One-time Discovery & Implementation from £495-£995. Optional Outcomes Assurance from £195/month—only after you see results." />
+        <meta name="keywords" content="fixed price, business improvement, measurable outcomes, UK SME, cost reduction" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 flex items-center justify-center gap-2">
-              Simple subscription. Monthly business wins
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Info className="h-6 w-6 text-muted-foreground hover:text-primary cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>A targeted business improvement—implemented, tested, and delivered.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              .
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
+              Fixed price. Visible outcomes.<br />Pay monthly only when we deliver.
             </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              One business improvement delivered and proven—tracked in your numbers.
+            </p>
           </div>
         </section>
 
         {/* Pricing Cards */}
         <section id="pricing" className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              {plans.map((plan) => (
-                <Card key={plan.id} className={`relative shadow-sm hover:shadow-lg transition-all duration-300 ${plan.popular ? 'border-primary scale-105' : 'border-border'}`}>
-                  {plan.popular && (
-                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground">
-                      Most Popular
-                    </Badge>
-                  )}
-                  <CardHeader className="text-center pb-6">
-                    <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                    <div className="mt-4">
-                      <span className="text-4xl font-bold text-primary">{plan.price}</span>
-                      <span className="text-xl text-muted-foreground">{plan.period}</span>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <ul className="space-y-3">
-                      {plan.features.map((feature, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                           <span className="text-sm flex items-center gap-1.5">
-                             {feature.includes('Project Build') && plan.id === 'business_plus' ? (
-                               <>
-                                 {feature}
-                                 <TooltipProvider>
-                                   <Tooltip>
-                                     <TooltipTrigger asChild>
-                                       <Info className="h-3.5 w-3.5 text-muted-foreground hover:text-primary cursor-help flex-shrink-0" />
-                                     </TooltipTrigger>
-                                     <TooltipContent>
-                                       <p>A larger app/automation you fund by banking business wins for bigger impact projects.</p>
-                                     </TooltipContent>
-                                   </Tooltip>
-                                 </TooltipProvider>
-                               </>
-                             ) : (
-                               feature
-                             )}
-                           </span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Button 
-                      className="w-full"
-                      onClick={() => handlePlanSelect(plan.id)}
-                      asChild
-                    >
-                      <Link to={`/plan-confirmation?plan=${plan.id}`}>
-                        {plan.cta}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {/* Discovery & Implementation */}
+              <Card className="relative shadow-sm hover:shadow-lg transition-all duration-300 border-2 border-primary">
+                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground">
+                  Start Here
+                </Badge>
+                <CardHeader className="text-center pb-6">
+                  <CardTitle className="text-2xl font-bold">Discovery & Implementation</CardTitle>
+                  <div className="mt-4">
+                    <span className="text-4xl font-bold text-primary">£495-£995</span>
+                    <p className="text-sm text-muted-foreground mt-2">One-time, fixed price per project</p>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <CardDescription className="text-base">
+                    We identify your priority, set up the solution, and prove it works in your business.
+                  </CardDescription>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">One business improvement delivered & proven</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Tracked in your numbers</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Delivered in 2–6 weeks</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">No monthly commitment required</span>
+                    </li>
+                  </ul>
+                  <Button 
+                    className="w-full"
+                    onClick={() => handlePlanSelect('discovery')}
+                    asChild
+                  >
+                    <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                      Book your outcome call
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Outcomes Assurance */}
+              <Card className="relative shadow-sm hover:shadow-lg transition-all duration-300 border-2">
+                <CardHeader className="text-center pb-6">
+                  <CardTitle className="text-2xl font-bold">Outcomes Assurance</CardTitle>
+                  <div className="mt-4">
+                    <span className="text-4xl font-bold text-primary">£195-£395</span>
+                    <p className="text-sm text-muted-foreground mt-2">per month</p>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <CardDescription className="text-base">
+                    Optional add-on: ongoing monitoring & support to keep your results on track.
+                  </CardDescription>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Only pay after solution is working</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Continuous monitoring & optimization</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Performance safeguard included</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Cancel anytime</span>
+                    </li>
+                  </ul>
+                  <Button 
+                    className="w-full"
+                    variant="outline"
+                    onClick={() => handlePlanSelect('assurance')}
+                    asChild
+                  >
+                    <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                      Discuss Assurance
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
 
-            {/* Project Alternative */}
+            {/* Custom Build Option */}
             <div className="text-center mt-16">
-              <p className="text-muted-foreground mb-4">
-                Prefer a one-off project?  Speak to us and get a fixed price.
+              <p className="text-lg text-muted-foreground mb-4 font-medium">
+                Prefer a custom build? Request a fixed quote.
               </p>
-              <Button asChild variant="outline">
-                <Link to="/brief-builder?mode=quote#form">Get a fixed price</Link>
+              <Button asChild variant="outline" size="lg">
+                <Link to="/brief-builder">Request bespoke quote</Link>
               </Button>
             </div>
           </div>
@@ -177,44 +206,44 @@ const Plan = () => {
             <div className="grid md:grid-cols-2 gap-8">
               <Card className="shadow-sm border-0 bg-card/80">
                 <CardHeader>
-                  <CardTitle className="text-lg">What's included in each plan?</CardTitle>
+                  <CardTitle className="text-lg">What's included?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    A targeted business improvement—implemented, tested, and delivered each month. No jargon, no delays.
+                    One business improvement delivered and proven, tracked in your numbers. Simple, measurable results.
                   </CardDescription>
                 </CardContent>
               </Card>
 
               <Card className="shadow-sm border-0 bg-card/80">
                 <CardHeader>
-                  <CardTitle className="text-lg">What's a Project Build?</CardTitle>
+                  <CardTitle className="text-lg">When do I pay monthly?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    A larger app/automation you fund by banking business wins for bigger impact projects.
+                    After you see the result in your live system, not before. The Outcomes Assurance retainer is optional.
                   </CardDescription>
                 </CardContent>
               </Card>
 
               <Card className="shadow-sm border-0 bg-card/80">
                 <CardHeader>
-                  <CardTitle className="text-lg">Do business wins roll over?</CardTitle>
+                  <CardTitle className="text-lg">How quickly will I see results?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    Yes, up to 2 months. Bank them for larger Project Builds when you need them.
+                    Most clients see measurable change in 2–6 weeks from the start of implementation.
                   </CardDescription>
                 </CardContent>
               </Card>
 
               <Card className="shadow-sm border-0 bg-card/80">
                 <CardHeader>
-                  <CardTitle className="text-lg">Can we switch to a project?</CardTitle>
+                  <CardTitle className="text-lg">Is this a subscription?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription>
-                    Yes—subscription fees can be credited within 90 days toward project work.
+                    Discovery & Implementation is one-time. Outcomes Assurance is a monthly retainer—only if you like the result and keep it running.
                   </CardDescription>
                 </CardContent>
               </Card>
