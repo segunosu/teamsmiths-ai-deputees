@@ -44,6 +44,7 @@ serve(async (req) => {
       <p><b>Overall Maturity Score:</b> ${score ?? "N/A"} / 100</p>
       
       <h4>Your 4RPR Breakdown:</h4>
+      <p><em>4RPR measures your AI maturity across four critical dimensions: Readiness, Reach, Prowess, and Protection.</em></p>
       <ul>
         <li><b>Readiness:</b> ${readiness ?? "N/A"}%</li>
         <li><b>Reach:</b> ${reach ?? "N/A"}%</li>
@@ -62,7 +63,7 @@ serve(async (req) => {
           : "strengthening your <b>Protection</b> — robust governance, risk management, and compliance"
       } to progress to the next maturity level and maximize your AI impact.</p>
       
-      <p>Want to explore your practical next step toward AI-driven performance? <a href="https://teamsmiths.ai/contact">Book a short Teamsmiths AI Upgrade Clinic</a>.</p>
+      <p>Want to explore your practical next step toward AI-driven performance? <a href="https://calendly.com/osu/brief-chat?name=${encodeURIComponent(user_name || '')}&email=${encodeURIComponent(to_email)}">Book a short Teamsmiths AI Upgrade Clinic</a>.</p>
       
       <p>Best regards,<br>The Teamsmiths Team</p>
     `;

@@ -97,6 +97,9 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
       <div className="grid md:grid-cols-2 gap-6 mb-12">
         <Card className="p-6">
           <h3 className="text-lg font-semibold mb-4">Your 4RPR Breakdown</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            4RPR measures your AI maturity across four critical dimensions: <strong>Readiness</strong>, <strong>Reach</strong>, <strong>Prowess</strong>, and <strong>Protection</strong>.
+          </p>
           <div className="space-y-4">
             <div>
               <div className="flex justify-between mb-2">
@@ -164,13 +167,17 @@ export const ScorecardResults: React.FC<ScorecardResultsProps> = ({ data }) => {
           We've sent a detailed AI Impact Maturity report to <strong>{data.email}</strong> with your personalized insights and recommended next steps. If you'd like to explore your next practical step toward AI-driven performance, book a short Teamsmiths AI Upgrade Clinic below.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" onClick={() => navigate(segmentInfo.ctaLink)}>
-            {segmentInfo.cta}
-          </Button>
-          <Button size="lg" variant="outline" asChild>
-            <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-              Speak to an Expert
-            </a>
+          <Button 
+            size="lg" 
+            onClick={() => {
+              const calendlyUrl = new URL('https://calendly.com/osu/brief-chat');
+              calendlyUrl.searchParams.set('name', data.name);
+              calendlyUrl.searchParams.set('email', data.email);
+              window.open(calendlyUrl.toString(), '_blank');
+            }}
+          >
+            Book Your Free AI Strategy Call
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </Card>
