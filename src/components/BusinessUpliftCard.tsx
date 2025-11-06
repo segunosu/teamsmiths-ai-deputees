@@ -55,10 +55,12 @@ export const BusinessUpliftCard: React.FC<BusinessUpliftCardProps> = ({
           className="w-full"
           onClick={() => onBusinessUpliftClick('add_to_plan', uplift.slug)}
         >
-          <Link to={`/pricing?ref=${uplift.slug}`}>Subscribe to Access</Link>
+          <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+            Book Free Strategy Call
+          </a>
         </Button>
         <p className="text-xs text-muted-foreground text-center">
-          Included in your monthly plan.
+          Let's discuss how this fits your needs
         </p>
         <Button 
           asChild 
@@ -68,7 +70,7 @@ export const BusinessUpliftCard: React.FC<BusinessUpliftCardProps> = ({
           onClick={() => onBusinessUpliftClick('fixed_price', uplift.slug)}
         >
           <Link to={`/brief-builder?mode=quote&origin=solutions&ref=${uplift.slug}#form`}>
-            Or get a fixed price quote
+            Or request a fixed price quote
           </Link>
         </Button>
       </CardContent>

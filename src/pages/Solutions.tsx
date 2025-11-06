@@ -357,7 +357,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Sales win?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Sales improvement?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -369,7 +369,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=sales#form">
-                        Request Custom Sales Win
+                        Request Custom Sales Improvement
                       </Link>
                     </Button>
                   </CardContent>
@@ -395,7 +395,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Finance win?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Finance improvement?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -407,7 +407,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=finance#form">
-                        Request Custom Finance Win
+                        Request Custom Finance Improvement
                       </Link>
                     </Button>
                   </CardContent>
@@ -433,7 +433,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different HR win?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different HR improvement?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -445,7 +445,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=hr#form">
-                        Request Custom HR Win
+                        Request Custom HR Improvement
                       </Link>
                     </Button>
                   </CardContent>
@@ -471,7 +471,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Operations win?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Operations improvement?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -483,7 +483,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=operations#form">
-                        Request Custom Operations Win
+                        Request Custom Operations Improvement
                       </Link>
                     </Button>
                   </CardContent>
@@ -509,7 +509,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Marketing win?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Marketing improvement?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -521,7 +521,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=marketing#form">
-                        Request Custom Marketing Win
+                        Request Custom Marketing Improvement
                       </Link>
                     </Button>
                   </CardContent>
@@ -547,7 +547,7 @@ const Solutions = () => {
                     <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
                       <Plus className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Customer Service win?</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Need a different Customer Service improvement?</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <CardDescription className="text-base text-center">
@@ -559,7 +559,7 @@ const Solutions = () => {
                       className="w-full"
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=customer_service#form">
-                        Request Custom Customer Service Win
+                        Request Custom Customer Service Improvement
                       </Link>
                     </Button>
                   </CardContent>
@@ -571,11 +571,11 @@ const Solutions = () => {
             <div className="mt-24 text-center">
               <h2 className="text-3xl font-bold mb-6">Don't see what you need?</h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Every business is unique. Tell us about your specific challenge and we'll create a custom business win just for you.
+                Every business is unique. Tell us about your specific challenge and we'll create a custom business improvement just for you.
               </p>
               <Button asChild size="lg" className="mb-4">
                 <Link to="/brief-builder?mode=quote&origin=solutions&category=custom#form">
-                  Request Custom Win
+                  Request Custom Improvement
                 </Link>
               </Button>
               <p className="text-sm text-muted-foreground">
