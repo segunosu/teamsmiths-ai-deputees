@@ -312,7 +312,7 @@ const Solutions = () => {
               How It Works
             </h1>
             <p className="text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
-              Browse targeted business improvements by area—each delivered fast, tested, and ready to use.
+              Business wins and a stronger team, hand-built for your goals. Browse our proprietary methods: Process · Recognition · Growth.
             </p>
 
             {/* Business Function Grid */}

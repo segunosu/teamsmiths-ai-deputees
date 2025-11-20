@@ -234,25 +234,25 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-                We Don't Sell AI Tools—<br />We Deliver Measurable Business Results.
+                Unlock Measurable Results, Motivation, & Growth—<br />all Hand-built for Your Team.
               </h1>
               <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-                Automate what matters. See proof in your numbers within weeks.
+                Get rapid business wins and a more energised, appreciated team with our tailored uplift system.
               </p>
 
               {/* Top SME Outcomes */}
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center mb-8 sm:mb-10 text-base sm:text-lg">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-success" />
-                  <span className="font-medium">Get paid faster</span>
+                  <span className="font-medium">5–10 hrs saved per leader</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-success" />
-                  <span className="font-medium">Cut admin time in half</span>
+                  <span className="font-medium">45% team uplift</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-success" />
-                  <span className="font-medium">Eliminate costly errors</span>
+                  <span className="font-medium">Sharper morale & retention</span>
                 </div>
               </div>
 
@@ -302,11 +302,11 @@ const Home = () => {
                     <MessageSquare className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-6xl font-bold text-primary mb-2">1</div>
-                  <CardTitle className="text-xl font-bold mb-2">Tell us your priority</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">Tell us your business/culture priority</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    What's your biggest pain point? Faster payments, fewer errors, less admin—we focus on what matters most to you.
+                    What matters most? Revenue growth, faster processes, stronger team culture—we focus on your priority.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -317,11 +317,11 @@ const Home = () => {
                     <Cog className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-6xl font-bold text-primary mb-2">2</div>
-                  <CardTitle className="text-xl font-bold mb-2">We set up & prove the solution</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">We hand-build your uplift solution</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    We implement the best-fit automation or improvement for your business—no jargon, just results.
+                    Process optimization, team appreciation, growth coaching—all custom-built and integrated for your goals.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -332,11 +332,11 @@ const Home = () => {
                     <TrendingUp className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-6xl font-bold text-primary mb-2">3</div>
-                  <CardTitle className="text-xl font-bold mb-2">You see verified improvement</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">See results fast—morale & productivity</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Track real numbers in your business—cost cut, time saved, revenue found. Proof, not promises.
+                    Track improvements in your numbers and team energy—both productivity and morale, proven within weeks.
                   </CardDescription>
                 </CardContent>
               </Card>
