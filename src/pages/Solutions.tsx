@@ -336,21 +336,82 @@ const Solutions = () => {
             </p>
 
             {/* Business Function Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {businessFunctions.map((func) => (
-                <Card 
-                  key={func.id}
-                  className="cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50"
-                  onClick={() => scrollToSection(func.anchor)}
-                >
-                  <CardHeader className="text-center pb-4">
-                    <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-xl w-fit">
-                      {func.icon}
+            <div className="max-w-4xl mx-auto space-y-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {businessFunctions.map((func) => (
+                  <Card 
+                    key={func.id}
+                    className="cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50"
+                    onClick={() => scrollToSection(func.anchor)}
+                  >
+                    <CardHeader className="text-center pb-4">
+                      <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-xl w-fit">
+                        {func.icon}
+                      </div>
+                      <CardTitle className="text-lg font-semibold">{func.title}</CardTitle>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Foundation Layer - Always Visible */}
+              <div className="relative group">
+                <Card className="border-2 border-primary/40 bg-primary/5 hover:bg-primary/10 transition-all duration-300 cursor-pointer">
+                  <CardHeader className="text-center py-6">
+                    <div className="mx-auto mb-3 p-3 bg-primary/20 rounded-xl w-fit">
+                      <Heart className="h-6 w-6 text-primary" />
                     </div>
-                    <CardTitle className="text-lg font-semibold">{func.title}</CardTitle>
+                    <CardTitle className="text-lg font-semibold text-primary">
+                      Team Appreciation and Coaching
+                    </CardTitle>
+                    <CardDescription className="text-sm mt-2">
+                      The foundation beneath every business win
+                    </CardDescription>
                   </CardHeader>
                 </Card>
-              ))}
+
+                {/* Hover Tooltip - Details */}
+                <div className="absolute left-0 right-0 top-full mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                  <Card className="border-2 border-primary/60 bg-background shadow-xl">
+                    <CardContent className="p-6 space-y-4">
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                          <Heart className="h-4 w-4 text-primary" />
+                          Culture & Growth: The Foundation of Every Business Win
+                        </h4>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Every result we deliver—sales, marketing, HR, and more—is powered by our hand-built approach to recognition, appreciation, and ongoing team coaching.
+                        </p>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <h5 className="font-medium text-sm text-foreground">Team Appreciation Moments</h5>
+                          <p className="text-xs text-muted-foreground">
+                            Custom celebrations for key milestones, fostering energy, connection, and deep engagement.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h5 className="font-medium text-sm text-foreground">Ongoing Micro-Coaching</h5>
+                          <p className="text-xs text-muted-foreground">
+                            Continuous personal and team development through crafted feedback cycles and growth nudges.
+                          </p>
+                        </div>
+                      </div>
+
+                      <Button 
+                        asChild 
+                        className="w-full mt-4"
+                        onClick={() => scrollToSection('#culture-growth')}
+                      >
+                        <Link to="#culture-growth">
+                          Learn How Our Culture Methods Power Results
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           </div>
         </section>
