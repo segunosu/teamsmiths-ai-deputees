@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus, Heart, ChevronDown, ChevronUp } from 'lucide-react';
+import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus, Heart } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 import { BusinessUpliftCard } from '@/components/BusinessUpliftCard';
 
 const Solutions = () => {
   const { trackEvent } = useAnalytics();
-  const [isFoundationExpanded, setIsFoundationExpanded] = useState(false);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -355,56 +354,43 @@ const Solutions = () => {
                 ))}
               </div>
 
-              {/* Foundation Layer - Collapsible Two-Column Layout */}
+              {/* Foundation Layer - Compact Two-Column Layout */}
               <div className="mt-6 border-t border-primary/20 pt-4">
-                <div 
-                  className="text-center mb-3 cursor-pointer group"
-                  onClick={() => setIsFoundationExpanded(!isFoundationExpanded)}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <h3 className="text-sm font-bold text-foreground">The Foundation Beneath Every Business Win</h3>
-                    {isFoundationExpanded ? (
-                      <ChevronUp className="h-4 w-4 text-primary group-hover:text-primary/80 transition-colors" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 text-primary group-hover:text-primary/80 transition-colors" />
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">Click to {isFoundationExpanded ? 'collapse' : 'expand'} details</p>
+                <div className="text-center mb-3">
+                  <h3 className="text-sm font-bold text-foreground">The Foundation Beneath Every Business Win</h3>
                 </div>
                 
-                {isFoundationExpanded && (
-                  <div className="grid md:grid-cols-2 gap-3 mb-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                    {/* Left Column - Personalized Motivation */}
-                    <Card className="border border-primary/10">
-                      <CardContent className="p-3">
-                        <h4 className="text-sm font-semibold mb-1.5">Personalized Motivation & Team Appreciation</h4>
-                        <p className="text-xs text-muted-foreground mb-2">
-                          Motivate and energize your team by celebrating achievements. Our signature solution delivers:
-                        </p>
-                        <ul className="space-y-1 text-xs text-muted-foreground">
-                          <li>• Custom team appreciation moments</li>
-                          <li>• Recognition for milestones and wins</li>
-                          <li>• Shared experiences that build connection</li>
-                        </ul>
-                      </CardContent>
-                    </Card>
+                <div className="grid md:grid-cols-2 gap-3 mb-3">
+                  {/* Left Column - Personalized Motivation */}
+                  <Card className="border border-primary/10">
+                    <CardContent className="p-3">
+                      <h4 className="text-sm font-semibold mb-1.5">Personalized Motivation & Team Appreciation</h4>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Motivate and energize your team by celebrating achievements. Our signature solution delivers:
+                      </p>
+                      <ul className="space-y-1 text-xs text-muted-foreground">
+                        <li>• Custom team appreciation moments</li>
+                        <li>• Recognition for milestones and wins</li>
+                        <li>• Shared experiences that build connection</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
 
-                    {/* Right Column - Ongoing Coaching */}
-                    <Card className="border border-primary/10">
-                      <CardContent className="p-3">
-                        <h4 className="text-sm font-semibold mb-1.5">Ongoing Coaching & Micro-Growth</h4>
-                        <p className="text-xs text-muted-foreground mb-2">
-                          Accelerate development and maintain high performance. Our signature coaching delivers:
-                        </p>
-                        <ul className="space-y-1 text-xs text-muted-foreground">
-                          <li>• Personal growth prompts and targeted feedback</li>
-                          <li>• Action plans for individuals and leaders</li>
-                          <li>• Micro-coaching nudges for continuous learning</li>
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
+                  {/* Right Column - Ongoing Coaching */}
+                  <Card className="border border-primary/10">
+                    <CardContent className="p-3">
+                      <h4 className="text-sm font-semibold mb-1.5">Ongoing Coaching & Micro-Growth</h4>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Accelerate development and maintain high performance. Our signature coaching delivers:
+                      </p>
+                      <ul className="space-y-1 text-xs text-muted-foreground">
+                        <li>• Personal growth prompts and targeted feedback</li>
+                        <li>• Action plans for individuals and leaders</li>
+                        <li>• Micro-coaching nudges for continuous learning</li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
 
                 <div className="text-center">
                   <Button asChild size="sm">
