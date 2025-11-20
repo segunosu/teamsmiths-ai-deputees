@@ -411,9 +411,9 @@ const Solutions = () => {
 
                 <div className="text-center">
                   <Button asChild size="sm">
-                    <Link to="/contact">
+                    <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
                       Book Free Strategy Call
-                    </Link>
+                    </a>
                   </Button>
                 </div>
               </div>
