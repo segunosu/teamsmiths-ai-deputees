@@ -366,8 +366,8 @@ const Solutions = () => {
                 <div className="grid md:grid-cols-2 gap-3 mb-3">
                   {/* Left Column - Personalized Motivation */}
                   <Card className="border border-primary/10">
-                    <CardContent className="p-3">
-                      <Collapsible open={motivationOpen} onOpenChange={setMotivationOpen}>
+                    <Collapsible open={motivationOpen} onOpenChange={setMotivationOpen}>
+                      <CardContent className="p-3">
                         <CollapsibleTrigger className="w-full flex items-center justify-between group">
                           <h4 className="text-sm font-semibold">Personalized Motivation & Team Appreciation</h4>
                           <ChevronDown className={`h-4 w-4 transition-transform ${motivationOpen ? 'rotate-180' : ''}`} />
@@ -382,14 +382,14 @@ const Solutions = () => {
                             <li>• Shared experiences that build connection</li>
                           </ul>
                         </CollapsibleContent>
-                      </Collapsible>
-                    </CardContent>
+                      </CardContent>
+                    </Collapsible>
                   </Card>
 
                   {/* Right Column - Ongoing Coaching */}
                   <Card className="border border-primary/10">
-                    <CardContent className="p-3">
-                      <Collapsible open={coachingOpen} onOpenChange={setCoachingOpen}>
+                    <Collapsible open={coachingOpen} onOpenChange={setCoachingOpen}>
+                      <CardContent className="p-3">
                         <CollapsibleTrigger className="w-full flex items-center justify-between group">
                           <h4 className="text-sm font-semibold">Ongoing Coaching & Micro-Growth</h4>
                           <ChevronDown className={`h-4 w-4 transition-transform ${coachingOpen ? 'rotate-180' : ''}`} />
@@ -404,8 +404,8 @@ const Solutions = () => {
                             <li>• Micro-coaching nudges for continuous learning</li>
                           </ul>
                         </CollapsibleContent>
-                      </Collapsible>
-                    </CardContent>
+                      </CardContent>
+                    </Collapsible>
                   </Card>
                 </div>
 
