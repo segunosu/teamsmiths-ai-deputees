@@ -396,7 +396,7 @@ const Solutions = () => {
                         </CollapsibleTrigger>
                         <CollapsibleContent className="mt-2">
                           <p className="text-xs text-muted-foreground mb-2">
-                            Accelerate development with AI-enabled coaching built on expert coaches' knowledge and experience:
+                            Accelerate development with AI-enabled coaching built on expert coaches' knowledge, experience, and proven models:
                           </p>
                           <ul className="space-y-1 text-xs text-muted-foreground">
                             <li>• Personal growth prompts and targeted feedback</li>
