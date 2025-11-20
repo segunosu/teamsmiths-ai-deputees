@@ -94,10 +94,10 @@ const About = () => {
           <section className="py-24 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto text-center">
               <h1 className="text-5xl sm:text-6xl font-bold text-foreground mb-6 leading-[1.1]">
-                We deliver real improvements—faster, simpler, and proven.
+                Unlocking better businesses, stronger teams, and a culture of ongoing growth—all hand-built.
               </h1>
               <p className="text-xl sm:text-2xl text-muted-foreground font-medium mb-16 max-w-4xl mx-auto leading-relaxed">
-                No jargon. No delays. Just measurable results that move your business forward.
+                We combine proven process uplift with unique, crafted recognition and coaching methods, fully tailored to you.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
@@ -195,7 +195,7 @@ const About = () => {
                   We've worked with startups, SMEs, and large enterprises—always focused on moving one metric at a time.
                 </p>
                 <p>
-                  Our approach is consultative and low-jargon. We don't sell tools or subscriptions—we deliver tangible improvements you can see in your business within weeks.
+                  Our approach is consultative and low-jargon. We don't sell tools or subscriptions—we deliver tangible improvements you can see in your business within weeks, combining business process optimization with our proprietary team recognition and coaching methods.
                 </p>
                 <p>
                   Principal consultant involvement from start to finish, with curated specialists and quality assurance at every step.
