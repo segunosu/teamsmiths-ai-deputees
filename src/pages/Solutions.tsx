@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus } from 'lucide-react';
+import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus, Sparkles } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 import { BusinessUpliftCard } from '@/components/BusinessUpliftCard';
@@ -55,6 +55,12 @@ const Solutions = () => {
       title: 'Customer Service Improvements',
       icon: <MessageSquare className="h-8 w-8 text-primary" />,
       anchor: '#customer-service'
+    },
+    {
+      id: 'culture_growth',
+      title: 'Culture & Growth Improvements',
+      icon: <Sparkles className="h-8 w-8 text-primary" />,
+      anchor: '#culture-growth'
     }
   ];
 
@@ -285,6 +291,26 @@ const Solutions = () => {
         delivered: 'Feedback automation + sentiment dashboard',
         timeframe: '10–14 days',
         outcome: 'Better customer insights, proactive improvements'
+      }
+    ],
+    culture_growth: [
+      {
+        slug: 'team_appreciation_moments',
+        title: 'Team Appreciation Moments',
+        description: 'Celebrate key milestones, foster connection, and energise your team',
+        benefit: 'Hand-built team recognition experiences, crafted for your team culture.',
+        delivered: 'Custom team recognition and celebration experiences',
+        timeframe: '7–14 days',
+        outcome: 'Boosted morale, stronger team connection'
+      },
+      {
+        slug: 'coaching_micro_growth',
+        title: 'Coaching & Micro-Growth',
+        description: 'Accelerate development with ongoing, personalised coaching prompts',
+        benefit: 'Micro-coaching plans and feedback cycles, all tailored to individuals and teams.',
+        delivered: 'Personalized coaching system with continuous development prompts',
+        timeframe: '7–14 days',
+        outcome: 'Accelerated growth, better retention'
       }
     ]
   };
@@ -560,6 +586,44 @@ const Solutions = () => {
                     >
                       <Link to="/brief-builder?mode=quote&origin=solutions&category=customer_service#form">
                         Request Custom Customer Service Improvement
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Culture & Growth Improvements */}
+            <div id="culture-growth">
+              <h2 className="text-3xl font-bold text-center mb-12">Culture & Growth Improvements</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {businessUplifts.culture_growth.map((uplift) => (
+                  <BusinessUpliftCard 
+                    key={uplift.slug} 
+                    uplift={uplift}
+                    onBusinessUpliftClick={handleBusinessUpliftClick}
+                  />
+                ))}
+                
+                {/* Custom Culture & Growth Request Card */}
+                <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 border-dashed border-2 border-muted-foreground/30">
+                  <CardHeader className="pb-4">
+                    <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
+                      <Plus className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">Need a different Culture or Growth improvement?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base text-center">
+                      Tell us about your specific team culture or development needs and we'll create a custom solution.
+                    </CardDescription>
+                    <Button 
+                      asChild 
+                      variant="outline" 
+                      className="w-full"
+                    >
+                      <Link to="/brief-builder?mode=quote&origin=solutions&category=culture_growth#form">
+                        Request Custom Culture & Growth Improvement
                       </Link>
                     </Button>
                   </CardContent>
