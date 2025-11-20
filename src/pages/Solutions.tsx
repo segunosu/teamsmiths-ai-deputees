@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus, Sparkles } from 'lucide-react';
+import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus, Heart } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 import { BusinessUpliftCard } from '@/components/BusinessUpliftCard';
@@ -55,12 +55,6 @@ const Solutions = () => {
       title: 'Customer Service Improvements',
       icon: <MessageSquare className="h-8 w-8 text-primary" />,
       anchor: '#customer-service'
-    },
-    {
-      id: 'culture_growth',
-      title: 'Culture & Growth Improvements',
-      icon: <Sparkles className="h-8 w-8 text-primary" />,
-      anchor: '#culture-growth'
     }
   ];
 
@@ -593,41 +587,43 @@ const Solutions = () => {
               </div>
             </div>
 
-            {/* Culture & Growth Improvements */}
-            <div id="culture-growth">
-              <h2 className="text-3xl font-bold text-center mb-12">Culture & Growth Improvements</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Culture & Growth: Foundation Section */}
+            <div id="culture-growth" className="mt-32 -mx-8 px-8 py-16 bg-muted/30 border-y-2 border-primary/20">
+              <div className="max-w-4xl mx-auto text-center mb-12">
+                <div className="mx-auto mb-6 p-4 bg-primary/10 rounded-full w-fit">
+                  <Heart className="h-12 w-12 text-primary" />
+                </div>
+                <h2 className="text-4xl font-bold mb-6">Culture & Growth: The Foundation of Every Business Win</h2>
+                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                  At Teamsmiths, sales, marketing, finance, and HR solutions are only the beginning. Real, lasting results come from the energy, recognition, and growth built into every engagement. These aren't extras—they're what make your business wins stick.
+                </p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-8">
                 {businessUplifts.culture_growth.map((uplift) => (
-                  <BusinessUpliftCard 
-                    key={uplift.slug} 
-                    uplift={uplift}
-                    onBusinessUpliftClick={handleBusinessUpliftClick}
-                  />
+                  <Card key={uplift.slug} className="shadow-md hover:shadow-xl transition-all duration-300 border-primary/20">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="text-xl font-bold">{uplift.title}</CardTitle>
+                      <CardDescription className="text-base">{uplift.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <p className="text-sm text-muted-foreground">{uplift.benefit}</p>
+                      <div className="pt-2 border-t border-border/50">
+                        <p className="text-sm font-medium">What you get: <span className="font-normal text-muted-foreground">{uplift.delivered}</span></p>
+                        <p className="text-sm font-medium">Timeline: <span className="font-normal text-muted-foreground">{uplift.timeframe}</span></p>
+                        <p className="text-sm font-medium">Outcome: <span className="font-normal text-muted-foreground">{uplift.outcome}</span></p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
-                
-                {/* Custom Culture & Growth Request Card */}
-                <Card className="shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/50 border-dashed border-2 border-muted-foreground/30">
-                  <CardHeader className="pb-4">
-                    <div className="mx-auto mb-4 p-4 bg-muted/20 rounded-xl w-fit">
-                      <Plus className="h-8 w-8 text-muted-foreground" />
-                    </div>
-                    <CardTitle className="text-lg font-semibold">Need a different Culture or Growth improvement?</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <CardDescription className="text-base text-center">
-                      Tell us about your specific team culture or development needs and we'll create a custom solution.
-                    </CardDescription>
-                    <Button 
-                      asChild 
-                      variant="outline" 
-                      className="w-full"
-                    >
-                      <Link to="/brief-builder?mode=quote&origin=solutions&category=culture_growth#form">
-                        Request Custom Culture & Growth Improvement
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+              </div>
+
+              <div className="text-center">
+                <Button asChild size="lg" className="shadow-lg">
+                  <Link to="/brief-builder?mode=quote&origin=solutions&category=culture_growth#form">
+                    Learn How Our Culture Methods Power Results
+                  </Link>
+                </Button>
               </div>
             </div>
 
