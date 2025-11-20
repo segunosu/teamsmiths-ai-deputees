@@ -363,7 +363,7 @@ const Solutions = () => {
                   <h3 className="text-sm font-bold text-foreground">The Foundation Beneath Every Business Win</h3>
                 </div>
                 
-                <div className="grid md:grid-cols-2 gap-3 mb-3">
+                <div className="grid md:grid-cols-2 gap-3 mb-3 items-start">
                   {/* Left Column - Personalized Motivation */}
                   <Card className="border border-primary/10">
                     <Collapsible open={motivationOpen} onOpenChange={setMotivationOpen}>
