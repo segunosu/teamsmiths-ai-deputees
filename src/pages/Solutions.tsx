@@ -374,7 +374,7 @@ const Solutions = () => {
                         </CollapsibleTrigger>
                         <CollapsibleContent className="mt-2">
                           <p className="text-xs text-muted-foreground mb-2">
-                            Celebrate achievements with custom team appreciation songs and moments.
+                            Celebrate achievements with custom team appreciation songs. AI-powered creativity, refined by real human producers for emotional resonance.
                           </p>
                           <ul className="space-y-1 text-xs text-muted-foreground">
                             <li>• Custom team anthem or appreciation song</li>
@@ -396,7 +396,7 @@ const Solutions = () => {
                         </CollapsibleTrigger>
                         <CollapsibleContent className="mt-2">
                           <p className="text-xs text-muted-foreground mb-2">
-                            AI-enabled coaching that accelerates development and maintains high performance:
+                            Accelerate development and maintain high performance with personalized, AI-enabled coaching:
                           </p>
                           <ul className="space-y-1 text-xs text-muted-foreground">
                             <li>• Personal growth prompts and targeted feedback</li>
