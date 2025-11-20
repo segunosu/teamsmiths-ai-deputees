@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus, Heart } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { BarChart3, Users, DollarSign, Target, Cog, MessageSquare, Plus, Heart, ChevronDown } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 import { BusinessUpliftCard } from '@/components/BusinessUpliftCard';
 
 const Solutions = () => {
   const { trackEvent } = useAnalytics();
+  const [motivationOpen, setMotivationOpen] = useState(false);
+  const [coachingOpen, setCoachingOpen] = useState(false);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -354,7 +357,7 @@ const Solutions = () => {
                 ))}
               </div>
 
-              {/* Foundation Layer - Compact Two-Column Layout */}
+              {/* Foundation Layer - Compact Collapsible Two-Column Layout */}
               <div className="mt-6 border-t border-primary/20 pt-4">
                 <div className="text-center mb-3">
                   <h3 className="text-sm font-bold text-foreground">The Foundation Beneath Every Business Win</h3>
@@ -364,30 +367,44 @@ const Solutions = () => {
                   {/* Left Column - Personalized Motivation */}
                   <Card className="border border-primary/10">
                     <CardContent className="p-3">
-                      <h4 className="text-sm font-semibold mb-1.5">Personalized Motivation & Team Appreciation</h4>
-                      <p className="text-xs text-muted-foreground mb-2">
-                        Motivate and energize your team by celebrating achievements. Our signature solution delivers:
-                      </p>
-                      <ul className="space-y-1 text-xs text-muted-foreground">
-                        <li>• Custom team appreciation moments</li>
-                        <li>• Recognition for milestones and wins</li>
-                        <li>• Shared experiences that build connection</li>
-                      </ul>
+                      <Collapsible open={motivationOpen} onOpenChange={setMotivationOpen}>
+                        <CollapsibleTrigger className="w-full flex items-center justify-between group">
+                          <h4 className="text-sm font-semibold">Personalized Motivation & Team Appreciation</h4>
+                          <ChevronDown className={`h-4 w-4 transition-transform ${motivationOpen ? 'rotate-180' : ''}`} />
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="mt-2">
+                          <p className="text-xs text-muted-foreground mb-2">
+                            Motivate and energize your team by celebrating achievements. Our signature solution delivers:
+                          </p>
+                          <ul className="space-y-1 text-xs text-muted-foreground">
+                            <li>• Custom team appreciation moments</li>
+                            <li>• Recognition for milestones and wins</li>
+                            <li>• Shared experiences that build connection</li>
+                          </ul>
+                        </CollapsibleContent>
+                      </Collapsible>
                     </CardContent>
                   </Card>
 
                   {/* Right Column - Ongoing Coaching */}
                   <Card className="border border-primary/10">
                     <CardContent className="p-3">
-                      <h4 className="text-sm font-semibold mb-1.5">Ongoing Coaching & Micro-Growth</h4>
-                      <p className="text-xs text-muted-foreground mb-2">
-                        Accelerate development and maintain high performance. Our signature coaching delivers:
-                      </p>
-                      <ul className="space-y-1 text-xs text-muted-foreground">
-                        <li>• Personal growth prompts and targeted feedback</li>
-                        <li>• Action plans for individuals and leaders</li>
-                        <li>• Micro-coaching nudges for continuous learning</li>
-                      </ul>
+                      <Collapsible open={coachingOpen} onOpenChange={setCoachingOpen}>
+                        <CollapsibleTrigger className="w-full flex items-center justify-between group">
+                          <h4 className="text-sm font-semibold">Ongoing Coaching & Micro-Growth</h4>
+                          <ChevronDown className={`h-4 w-4 transition-transform ${coachingOpen ? 'rotate-180' : ''}`} />
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="mt-2">
+                          <p className="text-xs text-muted-foreground mb-2">
+                            Accelerate development and maintain high performance. Our signature coaching delivers:
+                          </p>
+                          <ul className="space-y-1 text-xs text-muted-foreground">
+                            <li>• Personal growth prompts and targeted feedback</li>
+                            <li>• Action plans for individuals and leaders</li>
+                            <li>• Micro-coaching nudges for continuous learning</li>
+                          </ul>
+                        </CollapsibleContent>
+                      </Collapsible>
                     </CardContent>
                   </Card>
                 </div>
