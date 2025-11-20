@@ -354,62 +354,71 @@ const Solutions = () => {
                 ))}
               </div>
 
-              {/* Foundation Layer - Always Visible */}
-              <div className="relative group">
-                <Card className="border-2 border-primary/40 bg-primary/5 hover:bg-primary/10 transition-all duration-300 cursor-pointer">
-                  <CardHeader className="text-center py-6">
-                    <div className="mx-auto mb-3 p-3 bg-primary/20 rounded-xl w-fit">
-                      <Heart className="h-6 w-6 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg font-semibold text-primary">
-                      Team Appreciation and Coaching
-                    </CardTitle>
-                    <CardDescription className="text-sm mt-2">
-                      The foundation beneath every business win
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-
-                {/* Hover Tooltip - Details */}
-                <div className="absolute left-0 right-0 top-full mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
-                  <Card className="border-2 border-primary/60 bg-background shadow-xl">
-                    <CardContent className="p-6 space-y-4">
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                          <Heart className="h-4 w-4 text-primary" />
-                          Culture & Growth: The Foundation of Every Business Win
-                        </h4>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Every result we deliver—sales, marketing, HR, and more—is powered by our hand-built approach to recognition, appreciation, and ongoing team coaching.
-                        </p>
-                      </div>
-                      
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <h5 className="font-medium text-sm text-foreground">Team Appreciation Moments</h5>
-                          <p className="text-xs text-muted-foreground">
-                            Custom celebrations for key milestones, fostering energy, connection, and deep engagement.
-                          </p>
-                        </div>
-                        <div className="space-y-2">
-                          <h5 className="font-medium text-sm text-foreground">Ongoing Micro-Coaching</h5>
-                          <p className="text-xs text-muted-foreground">
-                            Continuous personal and team development through crafted feedback cycles and growth nudges.
-                          </p>
-                        </div>
-                      </div>
-
-                      <Button 
-                        asChild 
-                        className="w-full mt-4"
-                        onClick={() => scrollToSection('#culture-growth')}
-                      >
-                        <Link to="#culture-growth">
-                          Learn How Our Culture Methods Power Results
-                        </Link>
-                      </Button>
+              {/* Foundation Layer - Always Visible Two-Column Layout */}
+              <div className="mt-6 border-t-2 border-primary/20 pt-6">
+                <div className="text-center mb-4">
+                  <h3 className="text-lg font-bold text-foreground">The Foundation Beneath Every Business Win</h3>
+                  <p className="text-xs text-muted-foreground mt-1">Our signature approach to team energy and growth</p>
+                </div>
+                
+                <div className="grid md:grid-cols-2 gap-4 mb-4">
+                  {/* Left Column - Personalized Motivation */}
+                  <Card className="border border-primary/20 hover:border-primary/40 transition-colors">
+                    <CardContent className="p-4">
+                      <h4 className="text-base font-bold mb-2">Personalized Motivation & Team Appreciation</h4>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        Motivate and energize your team by celebrating achievements.
+                      </p>
+                      <p className="text-xs font-medium mb-2">Our signature solution delivers:</p>
+                      <ul className="space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-1.5">
+                          <span className="text-primary mt-0.5 font-bold">•</span>
+                          <span>Custom team appreciation moments (like your own team anthem or song)</span>
+                        </li>
+                        <li className="flex items-start gap-1.5">
+                          <span className="text-primary mt-0.5 font-bold">•</span>
+                          <span>Recognition for milestones and wins</span>
+                        </li>
+                        <li className="flex items-start gap-1.5">
+                          <span className="text-primary mt-0.5 font-bold">•</span>
+                          <span>Shared experiences that build lasting energy and connection</span>
+                        </li>
+                      </ul>
                     </CardContent>
                   </Card>
+
+                  {/* Right Column - Ongoing Coaching */}
+                  <Card className="border border-primary/20 hover:border-primary/40 transition-colors">
+                    <CardContent className="p-4">
+                      <h4 className="text-base font-bold mb-2">Ongoing Coaching & Micro-Growth</h4>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        Accelerate every team member's development and maintain high performance.
+                      </p>
+                      <p className="text-xs font-medium mb-2">Our signature coaching delivers:</p>
+                      <ul className="space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-1.5">
+                          <span className="text-primary mt-0.5 font-bold">•</span>
+                          <span>Personal growth prompts and targeted feedback</span>
+                        </li>
+                        <li className="flex items-start gap-1.5">
+                          <span className="text-primary mt-0.5 font-bold">•</span>
+                          <span>Action plans and next best actions for individuals and leaders</span>
+                        </li>
+                        <li className="flex items-start gap-1.5">
+                          <span className="text-primary mt-0.5 font-bold">•</span>
+                          <span>Micro-coaching nudges for continuous learning and improvement</span>
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="text-center">
+                  <Button asChild variant="outline" size="sm">
+                    <Link to="/brief-builder?mode=quote&origin=solutions&category=culture_growth#form">
+                      Learn How Our Culture Methods Power Results
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </div>
