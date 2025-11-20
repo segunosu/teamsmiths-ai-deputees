@@ -374,10 +374,10 @@ const Solutions = () => {
                         </CollapsibleTrigger>
                         <CollapsibleContent className="mt-2">
                           <p className="text-xs text-muted-foreground mb-2">
-                            Motivate and energize your team by celebrating achievements. Our signature solution delivers:
+                            Celebrate achievements with custom team appreciation songs and moments.
                           </p>
                           <ul className="space-y-1 text-xs text-muted-foreground">
-                            <li>• Custom team appreciation moments</li>
+                            <li>• Custom team anthem or appreciation song</li>
                             <li>• Recognition for milestones and wins</li>
                             <li>• Shared experiences that build connection</li>
                           </ul>
@@ -396,7 +396,7 @@ const Solutions = () => {
                         </CollapsibleTrigger>
                         <CollapsibleContent className="mt-2">
                           <p className="text-xs text-muted-foreground mb-2">
-                            Accelerate development and maintain high performance. Our signature coaching delivers:
+                            AI-enabled coaching that accelerates development and maintains high performance:
                           </p>
                           <ul className="space-y-1 text-xs text-muted-foreground">
                             <li>• Personal growth prompts and targeted feedback</li>
