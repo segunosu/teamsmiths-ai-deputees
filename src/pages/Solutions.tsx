@@ -365,9 +365,14 @@ const Solutions = () => {
                   <Card className="border border-primary/10">
                     <CardContent className="p-3">
                       <h4 className="text-sm font-semibold mb-1.5">Personalized Motivation & Team Appreciation</h4>
-                      <p className="text-xs text-muted-foreground">
-                        Custom appreciation moments, milestone recognition, and shared experiences that build lasting team energy.
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Motivate and energize your team by celebrating achievements. Our signature solution delivers:
                       </p>
+                      <ul className="space-y-1 text-xs text-muted-foreground">
+                        <li>• Custom team appreciation moments</li>
+                        <li>• Recognition for milestones and wins</li>
+                        <li>• Shared experiences that build connection</li>
+                      </ul>
                     </CardContent>
                   </Card>
 
@@ -375,9 +380,14 @@ const Solutions = () => {
                   <Card className="border border-primary/10">
                     <CardContent className="p-3">
                       <h4 className="text-sm font-semibold mb-1.5">Ongoing Coaching & Micro-Growth</h4>
-                      <p className="text-xs text-muted-foreground">
-                        Personal growth prompts, targeted feedback, and micro-coaching nudges for continuous development.
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Accelerate development and maintain high performance. Our signature coaching delivers:
                       </p>
+                      <ul className="space-y-1 text-xs text-muted-foreground">
+                        <li>• Personal growth prompts and targeted feedback</li>
+                        <li>• Action plans for individuals and leaders</li>
+                        <li>• Micro-coaching nudges for continuous learning</li>
+                      </ul>
                     </CardContent>
                   </Card>
                 </div>
