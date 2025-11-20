@@ -234,10 +234,10 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-                Measurable Business Results. Motivated Team.
+                Unlock Measurable Results, Motivation, & Growth—<br />all Hand-built for Your Team.
               </h1>
               <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-                Hand-built solutions for rapid wins, energized teams, and profitable revenue uplift—all proven and delivered fast.
+                Get rapid business wins and a more energised, appreciated team with our tailored uplift system.
               </p>
 
               {/* Top SME Outcomes */}
