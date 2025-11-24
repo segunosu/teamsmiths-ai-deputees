@@ -295,7 +295,7 @@ const Solutions = () => {
         slug: 'team_appreciation_moments',
         title: 'Team Appreciation Moments',
         description: 'Celebrate key milestones, foster connection, and energise your team',
-        benefit: 'Hand-built team recognition experiences, crafted for your team culture.',
+        benefit: 'Custom-built team recognition experiences, crafted for your team culture.',
         delivered: 'Custom team recognition and celebration experiences',
         timeframe: '7–14 days',
         outcome: 'Boosted morale, stronger team connection'
@@ -335,7 +335,7 @@ const Solutions = () => {
               How It Works
             </h1>
             <p className="text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
-              Business wins and a stronger team, hand-built for your goals. Browse our proprietary methods: Process · Recognition · Growth.
+              Business wins and a stronger team, custom-built for your goals. Browse our proprietary methods: Process · Recognition · Growth.
             </p>
 
             {/* Business Function Grid */}

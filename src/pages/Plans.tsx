@@ -112,7 +112,7 @@ const Plans = () => {
             Plans
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Every engagement includes a hand-built business win and the option to add custom team appreciation or ongoing growth coaching—delivered and proven, tracked in your numbers.
+            Every engagement includes a custom-built business win and the option to add custom team appreciation or ongoing growth coaching—delivered and proven, tracked in your numbers.
           </p>
         </div>
 
@@ -191,7 +191,7 @@ const Plans = () => {
         {/* Footer Note */}
         <div className="text-center">
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-            All plans include continuous monitoring and human QA. Teamsmiths uplift includes custom recognition and ongoing coaching, all hand-built for your team. Month-to-month or quarterly billing available.
+            All plans include continuous monitoring and human QA. Teamsmiths uplift includes custom recognition and ongoing coaching, all custom-built for your team. Month-to-month or quarterly billing available.
           </p>
         </div>
       </div>
