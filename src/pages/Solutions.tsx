@@ -686,9 +686,9 @@ const Solutions = () => {
 
               <div className="text-center">
                 <Button asChild size="lg" className="shadow-lg">
-                  <Link to="/brief-builder?mode=quote&origin=solutions&category=culture_growth#form">
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
                     Learn How Our Culture Methods Power Results
-                  </Link>
+                  </a>
                 </Button>
               </div>
             </div>

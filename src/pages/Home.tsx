@@ -237,7 +237,7 @@ const Home = () => {
                 Measurable Results. Motivated Team. Profitable Growth.
               </h1>
               <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-                Hand-built solutions for rapid wins, energized teams, and financial uplift—all proven and delivered fast.
+                Custom-built solutions for rapid wins, energized teams, and financial uplift—all proven and delivered fast.
               </p>
 
               {/* Top SME Outcomes */}
