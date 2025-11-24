@@ -317,7 +317,7 @@ const Home = () => {
                     <Cog className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-6xl font-bold text-primary mb-2">2</div>
-                  <CardTitle className="text-xl font-bold mb-2">We hand-build your uplift solution</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">We custom-build your uplift solution</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
