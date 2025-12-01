@@ -256,6 +256,10 @@ const Home = () => {
                 </div>
               </div>
 
+              <p className="text-sm text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
+                Optional add-ons: personalised motivation and coaching layers to boost team morale and retention.
+              </p>
+
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center mb-6 sm:mb-8 max-w-md sm:max-w-none mx-auto">
                 <Button
                   asChild
@@ -358,6 +362,88 @@ const Home = () => {
           </div>
         </section>
 
+        {/* CULTURE & MOTIVATION LAYER */}
+        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">
+                Add a Culture & Motivation Layer to Your Plan
+              </h2>
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
+                Alongside process automation, some clients choose a personalised team appreciation program to lift morale, retention, and discretionary effort.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
+              <Card className="shadow-md hover:shadow-xl transition-all duration-300 border-2">
+                <CardHeader>
+                  <CardTitle className="text-xl sm:text-2xl font-bold mb-2">
+                    Motivation & Appreciation (Songita BusinessPack)
+                  </CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground">
+                    Powered by our proprietary methods
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-base">Hand-built songs and appreciation moments for your team</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-base">Designed from your stories, values, and goals</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-base">Optional layer that supports engagement and retention</span>
+                    </li>
+                  </ul>
+                  <Button asChild variant="outline" className="w-full" size="lg">
+                    <Link to="/solutions#culture">
+                      Explore Motivation Layer
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-md hover:shadow-xl transition-all duration-300 border-2">
+                <CardHeader>
+                  <CardTitle className="text-xl sm:text-2xl font-bold mb-2">
+                    Coaching & Growth (Deputee-style Coaching)
+                  </CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground">
+                    Powered by our proprietary methods
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-base">Personalised support for key leaders or teams</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-base">Turn new systems into habits and better decisions</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
+                      <span className="text-base">Add only where coaching leverage is highest</span>
+                    </li>
+                  </ul>
+                  <Button asChild variant="outline" className="w-full" size="lg">
+                    <Link to="/solutions#coaching">
+                      Explore Coaching Layer
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         {/* RESULTS / PROOF SECTION */}
         <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -415,7 +501,7 @@ const Home = () => {
               Simple. Measurable. Repeatable.<br />See what your business could look like with one priority solved for good.
             </h2>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">
               <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
                   Book your outcome call
@@ -428,6 +514,9 @@ const Home = () => {
                 </Link>
               </Button>
             </div>
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+              During your call, you can also ask about adding the Motivation & Appreciation layer for your team.
+            </p>
           </div>
         </section>
 
