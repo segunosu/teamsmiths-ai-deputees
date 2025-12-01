@@ -159,13 +159,13 @@ const MotivationAndAppreciation = () => {
                   We deliver this using our Songita BusinessPack method, fully integrated into your Teamsmiths plan.
                 </p>
               </div>
-              <div className="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer" onClick={() => setIsModalOpen(true)}>
+              <div className="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer max-w-md mx-auto lg:mx-0" onClick={() => setIsModalOpen(true)}>
                 <img 
                   src={businesspackCover} 
                   alt="BusinessPack team celebration example" 
-                  className="w-full h-full object-cover min-h-[400px]"
+                  className="w-full h-auto object-cover"
                 />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 flex items-center justify-center transition-colors duration-300">
                   <div className="text-center">
                     <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mx-auto mb-4 transform group-hover:scale-110 transition-transform duration-300">
                       <Play className="w-8 h-8 text-primary ml-1" />
