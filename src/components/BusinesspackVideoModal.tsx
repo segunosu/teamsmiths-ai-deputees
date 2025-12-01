@@ -143,7 +143,7 @@ export const BusinesspackVideoModal = ({
                 onClick={handleOverlayPlay}
               >
                 <button
-                  className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/90 hover:bg-white text-primary flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-2xl animate-pulse"
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/90 hover:bg-white text-primary flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-2xl animate-gentle-pulse"
                   onClick={handleOverlayPlay}
                 >
                   <Play className="w-5 h-5 md:w-6 md:h-6 ml-0.5" />
