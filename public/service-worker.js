@@ -1,4 +1,4 @@
-const CACHE_NAME = 'teamsmiths-v2';
+const CACHE_NAME = 'teamsmiths-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -47,21 +47,20 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event - network first for HTML, cache first for assets
+// Fetch event - network first for HTML and JS, cache first for static assets
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Network-first strategy for HTML documents
-  if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
+  // Network-first strategy for HTML and JavaScript to avoid version mismatches
+  if (request.mode === 'navigate' || 
+      request.headers.get('accept')?.includes('text/html') ||
+      url.pathname.endsWith('.js') || 
+      url.pathname.includes('/@') || 
+      url.pathname.includes('/src/')) {
     event.respondWith(
       fetch(request)
         .then(response => {
-          // Clone the response before caching
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(request, responseToCache);
-          });
           return response;
         })
         .catch(() => {
@@ -72,7 +71,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first strategy for other assets
+  // Cache-first strategy for static assets (images, fonts, etc.)
   event.respondWith(
     caches.match(request)
       .then(response => {
