@@ -482,7 +482,7 @@ const Home = () => {
                     </li>
                   </ul>
                   <Button asChild variant="outline" className="w-full" size="lg">
-                    <Link to="/solutions#culture">
+                    <Link to="/motivation-and-appreciation">
                       Explore Motivation Layer
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>

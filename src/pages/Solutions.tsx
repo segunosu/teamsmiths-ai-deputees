@@ -372,9 +372,9 @@ const Solutions = () => {
                           <h4 className="text-sm font-semibold">Personalized Motivation & Team Appreciation</h4>
                           <ChevronDown className={`h-4 w-4 transition-transform ${motivationOpen ? 'rotate-180' : ''}`} />
                         </CollapsibleTrigger>
-                        <CollapsibleContent className="mt-2">
+                          <CollapsibleContent className="mt-2">
                           <p className="text-xs text-muted-foreground mb-2">
-                            Celebrate achievements with custom team appreciation songs. AI-powered creativity, refined by real human producers for emotional resonance.
+                            Celebrate achievements with custom team appreciation songs. AI-powered creativity, refined by real human producers for emotional resonance. <Link to="/motivation-and-appreciation" className="text-primary hover:underline">Learn more about the Motivation & Appreciation layer</Link>
                           </p>
                           <ul className="space-y-1 text-xs text-muted-foreground">
                             <li>• Custom team anthem or appreciation song</li>

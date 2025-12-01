@@ -57,6 +57,7 @@ import NotFound from "./pages/NotFound";
 import Blog from "./pages/Blog";
 import BusinessImpact from "./pages/BusinessImpact";
 import Start from "./pages/Start";
+import MotivationAndAppreciation from "./pages/MotivationAndAppreciation";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
@@ -188,6 +189,7 @@ const App = () => (
                    <Route path="/cookie-policy" element={<CookiePolicy />} />
                    <Route path="/data-protection" element={<DataProtection />} />
                    <Route path="/compliance" element={<Compliance />} />
+                   <Route path="/motivation-and-appreciation" element={<MotivationAndAppreciation />} />
                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                    <Route path="*" element={<NotFound />} />
                 </Routes>

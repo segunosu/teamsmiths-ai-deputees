@@ -116,7 +116,7 @@ const Pricing = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
-                  For some projects, clients choose to add a personalised Motivation & Appreciation layer (Songita BusinessPack) or Coaching & Growth layer. These are quoted as part of your bespoke build, only if they support your outcomes.
+                  For some projects, clients choose to add a personalised <Link to="/motivation-and-appreciation" className="text-primary hover:underline">Motivation & Appreciation layer</Link> (Songita BusinessPack) or Coaching & Growth layer. These are quoted as part of your bespoke build, only if they support your outcomes.
                 </p>
                 <Button asChild variant="link" className="p-0 h-auto text-sm">
                   <Link to="/brief-builder">
