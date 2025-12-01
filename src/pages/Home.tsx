@@ -287,6 +287,88 @@ const Home = () => {
           </div>
         </section>
 
+        {/* BUSINESS WINS SECTION */}
+        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">
+                Popular Business Wins
+              </h2>
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
+                Choose from proven outcomes or build something custom
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {quickOutcomes.map((outcome) => (
+                <Card key={outcome.slug} className="shadow-md hover:shadow-xl transition-all duration-300 border-2">
+                  <CardHeader>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="p-3 bg-primary/10 rounded-xl">
+                        {outcome.icon}
+                      </div>
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        {getBadgeIcon(outcome.badge)}
+                        <span className="text-xs">{outcome.badge}</span>
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-xl font-bold mb-2">{outcome.title}</CardTitle>
+                    <CardDescription className="text-sm font-semibold text-foreground mb-2">
+                      {outcome.painHeadline}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-foreground">{outcome.benefit}</p>
+                      <p className="text-xs text-muted-foreground">{outcome.proof}</p>
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        <span>{outcome.timeframe}</span>
+                      </div>
+                      {outcome.caseStudySlug && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-auto p-0 text-xs"
+                          onClick={() => handleOpenModal(outcome.caseStudySlug!)}
+                        >
+                          See proof
+                        </Button>
+                      )}
+                    </div>
+                    <Button asChild variant="outline" className="w-full" size="sm">
+                      <Link
+                        to={`/solutions#${getSolutionSection(outcome.slug)}`}
+                        onClick={() => handleQuickOutcomeClick(outcome.slug)}
+                      >
+                        Learn more
+                        <ArrowRight className="ml-2 h-3 w-3" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center mt-10 sm:mt-12 space-y-3">
+              <p className="text-base text-muted-foreground">
+                Don't see your specific challenge? We create custom solutions for every business need.
+              </p>
+              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+                You can also add a motivation & appreciation layer to any win, via our hand-built Songita BusinessPack.
+              </p>
+              <Button asChild size="lg" className="mt-4">
+                <Link to="/brief-builder">
+                  Build your custom solution
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* HOW IT WORKS IN 3 STEPS */}
         <section id="how-it-works" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
