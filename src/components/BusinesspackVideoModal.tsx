@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Play, Award, Heart, Share2 } from "lucide-react";
 import { Dialog, DialogContent } from "./ui/dialog";
 
@@ -17,13 +17,13 @@ interface BusinesspackVideoModalProps {
   coverImage: string;
 }
 
-export const BusinesspackVideoModal: React.FC<BusinesspackVideoModalProps> = ({
+export const BusinesspackVideoModal = ({
   isOpen,
   onClose,
   videos,
   defaultVideoId,
   coverImage,
-}) => {
+}: BusinesspackVideoModalProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [activeVideoId, setActiveVideoId] = useState(defaultVideoId);
   const [showOverlay, setShowOverlay] = useState(true);
