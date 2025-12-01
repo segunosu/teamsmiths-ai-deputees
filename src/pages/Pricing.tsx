@@ -104,6 +104,13 @@ const Pricing = () => {
                 <Link to="/brief?mode=quote#form">Get a fixed price in 24h</Link>
               </Button>
             </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Need recognition only? You can also book a standalone{' '}
+              <Link to="/motivation-and-appreciation" className="text-primary hover:underline">
+                Motivation & Appreciation BusinessPack
+              </Link>
+              {' '}for your team.
+            </p>
           </div>
         </section>
 
@@ -217,6 +224,17 @@ const Pricing = () => {
                 <CardContent>
                   <p className="text-muted-foreground">
                     Each plan includes custom-built solutions tailored to your business needs, KPI tracking, and expert support. Higher tiers add more audits, outcomes, and advisory time.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Can I just buy the Motivation & Appreciation / BusinessPack on its own?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Yes. You can book a standalone BusinessPack (popular for year‑end and special milestones), or include it as a motivation layer inside a wider Teamsmiths project. We'll scope and price whichever works best for you.
                   </p>
                 </CardContent>
               </Card>

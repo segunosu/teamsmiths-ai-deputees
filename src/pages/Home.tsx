@@ -407,7 +407,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Process optimization, team appreciation, growth coaching—all custom-built and integrated for your goals.
+                    Process optimisation, team appreciation, and growth coaching—all custom‑built. You can start with a one‑off BusinessPack or a full improvement project.
                   </CardDescription>
                 </CardContent>
               </Card>
