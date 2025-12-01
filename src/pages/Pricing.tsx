@@ -196,17 +196,36 @@ const Pricing = () => {
               ))}
             </div>
             
+            {/* BusinessPack standalone note */}
+            <div className="text-center mt-12 max-w-3xl mx-auto">
+              <p className="text-base text-muted-foreground">
+                Need recognition only? You can also book a standalone{' '}
+                <Link to="/motivation-and-appreciation" className="text-primary hover:underline">
+                  Motivation & Appreciation BusinessPack
+                </Link>
+                {' '}for your team.
+              </p>
+            </div>
+            
             {/* Additional info */}
-            <div className="text-center mt-16 max-w-3xl mx-auto">
-              <p className="text-muted-foreground mb-6">
+            <div className="text-center mt-12 max-w-3xl mx-auto space-y-4">
+              <p className="text-muted-foreground">
                 Subscription fees count as credit toward a Business Outcome within 90 days.
               </p>
-              <Button asChild variant="outline">
-                <Link to="/brief-builder?mode=quote#form">
-                  Get a fixed price in 24h
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+              <div>
+                <p className="text-base text-muted-foreground mb-2">
+                  Prefer a custom build? Request a fixed quote.
+                </p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Use this if you want either a one‑off BusinessPack (e.g. year‑end recognition) or a full multi‑improvement project.
+                </p>
+                <Button asChild variant="outline" size="lg">
+                  <Link to="/brief-builder?mode=quote#form">
+                    Request bespoke quote
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
