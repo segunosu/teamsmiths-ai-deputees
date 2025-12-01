@@ -335,7 +335,7 @@ const Solutions = () => {
               How It Works
             </h1>
             <p className="text-lg text-muted-foreground mb-12 max-w-3xl mx-auto">
-              Business wins and a stronger team, custom-built for your goals. Browse our proprietary methods: Process · Recognition · Growth.
+              Business wins and a stronger team, custom‑built for your goals. You can book a one‑off Recognition BusinessPack, or combine process, recognition, and growth methods in a single project.
             </p>
 
             {/* Business Function Grid */}
@@ -670,7 +670,14 @@ const Solutions = () => {
                   <Card key={uplift.slug} className="shadow-md hover:shadow-xl transition-all duration-300 border-primary/20">
                     <CardHeader className="pb-4">
                       <CardTitle className="text-xl font-bold">{uplift.title}</CardTitle>
-                      <CardDescription className="text-base">{uplift.description}</CardDescription>
+                      <CardDescription className="text-base">
+                        {uplift.description}
+                        {uplift.slug === 'team_appreciation_moments' && (
+                          <span className="block mt-2 text-sm">
+                            You can book these as a standalone BusinessPack (ideal for year‑end or special milestones) or as part of a wider improvement project.
+                          </span>
+                        )}
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <p className="text-sm text-muted-foreground">{uplift.benefit}</p>
@@ -684,10 +691,16 @@ const Solutions = () => {
                 ))}
               </div>
 
-              <div className="text-center">
+              <div className="text-center space-y-4">
+                <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+                  Tell us if you need a one‑off recognition package or a full business improvement plus recognition.{' '}
+                  <Link to="/motivation-and-appreciation" className="text-primary hover:underline">
+                    Want only the recognition piece for now? See our Motivation & Appreciation / BusinessPack page.
+                  </Link>
+                </p>
                 <Button asChild size="lg" className="shadow-lg">
                   <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                    Learn How Our Culture Methods Power Results
+                    Book a BusinessPack or Culture Call
                   </a>
                 </Button>
               </div>

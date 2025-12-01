@@ -277,7 +277,7 @@ const MotivationAndAppreciation = () => {
               </Card>
             </div>
             <p className="text-base text-muted-foreground mt-8 max-w-3xl mx-auto">
-              You only add this layer when it clearly supports your business outcomes. It is optional, scoped and priced inside your Teamsmiths project—not a separate 'fun extra'.
+              You can book this BusinessPack as a standalone recognition project (perfect for year‑end, milestones, and special teams) or include it as a motivation layer inside a wider Teamsmiths engagement.
             </p>
           </div>
         </section>
@@ -288,14 +288,30 @@ const MotivationAndAppreciation = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground text-center mb-8">
               How Pricing Works
             </h2>
-            <p className="text-lg text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-              The Motivation & Appreciation layer is quoted as part of your fixed-price Teamsmiths project. There is no separate subscription. We scope the work, agree the recognition plan and deliverables, and include it in your outcome-based pricing.
+            <p className="text-lg text-muted-foreground text-center mb-6 max-w-2xl mx-auto">
+              BusinessPack can be delivered as:
+            </p>
+            <div className="max-w-2xl mx-auto mb-10 space-y-3 text-center">
+              <p className="text-base text-muted-foreground">
+                <strong>A standalone fixed‑price recognition project</strong>, or
+              </p>
+              <p className="text-base text-muted-foreground">
+                <strong>An optional 'Motivation & Appreciation' layer</strong> inside your broader Teamsmiths project.
+              </p>
+            </div>
+            <p className="text-base text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
+              There's no subscription. We agree the recognition plan, deliverables, and timing up front.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
               <Button asChild size="lg">
-                <Link to="/brief-builder">
-                  Add Motivation Layer To My Plan
+                <Link to="/brief-builder?origin=businesspack">
+                  Book a BusinessPack for My Team
                   <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link to="/brief-builder">
+                  Talk About Motivation & Results
                 </Link>
               </Button>
             </div>
