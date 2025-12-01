@@ -1,11 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Heart, Users, TrendingUp, Sparkles, Calendar, Trophy, ArrowRight } from 'lucide-react';
+import { Heart, Users, TrendingUp, Sparkles, Calendar, Trophy, ArrowRight, Play } from 'lucide-react';
+import { BusinesspackVideoModal } from '@/components/BusinesspackVideoModal';
+import businesspackCover from '@/assets/businesspack-cover.png';
+
+const VIDEOS = [
+  {
+    id: "v7",
+    label: "Video 1",
+    description: "Latest team appreciation example",
+    src: "https://ukygyrtckglslreavnmb.supabase.co/storage/v1/object/public/B2B%20TEAM%20APPRECIATION/V7B2B%20TEAM%20EXAMPLE1_COMPRESSED.mp4",
+  },
+  {
+    id: "v6",
+    label: "Video 2",
+    description: "Earlier BusinessPack example",
+    src: "https://ukygyrtckglslreavnmb.supabase.co/storage/v1/object/public/B2B%20TEAM%20APPRECIATION/V6B2B%20TEAM%20EXAMPLE1_COMPRESSED.mp4",
+  },
+];
 
 const MotivationAndAppreciation = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
       <Helmet>
@@ -140,12 +159,19 @@ const MotivationAndAppreciation = () => {
                   We deliver this using our Songita BusinessPack method, fully integrated into your Teamsmiths plan.
                 </p>
               </div>
-              <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 flex items-center justify-center min-h-[400px]">
-                <div className="text-center">
-                  <Heart className="h-32 w-32 text-primary mx-auto mb-4 opacity-20" />
-                  <p className="text-muted-foreground text-sm">
-                    [Video thumbnail or celebration montage placeholder]
-                  </p>
+              <div className="relative rounded-2xl overflow-hidden shadow-xl group cursor-pointer" onClick={() => setIsModalOpen(true)}>
+                <img 
+                  src={businesspackCover} 
+                  alt="BusinessPack team celebration example" 
+                  className="w-full h-full object-cover min-h-[400px]"
+                />
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="text-center">
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mx-auto mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                      <Play className="w-8 h-8 text-primary ml-1" />
+                    </div>
+                    <p className="text-white font-semibold text-lg">Watch Example Videos</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -281,6 +307,14 @@ const MotivationAndAppreciation = () => {
           </div>
         </section>
       </div>
+
+      <BusinesspackVideoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        videos={VIDEOS}
+        defaultVideoId="v7"
+        coverImage={businesspackCover}
+      />
     </>
   );
 };
