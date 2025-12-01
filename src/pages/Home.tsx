@@ -352,14 +352,11 @@ const Home = () => {
               ))}
             </div>
 
-            <div className="text-center mt-10 sm:mt-12 space-y-3">
-              <p className="text-base text-muted-foreground">
+            <div className="text-center mt-10 sm:mt-12">
+              <p className="text-base text-muted-foreground mb-4">
                 Don't see your specific challenge? We create custom solutions for every business need.
               </p>
-              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                You can also add a motivation & appreciation layer to any win, via our hand-built Songita BusinessPack.
-              </p>
-              <Button asChild size="lg" className="mt-4">
+              <Button asChild size="lg">
                 <Link to="/brief-builder">
                   Build your custom solution
                   <ArrowRight className="ml-2 h-4 w-4" />
