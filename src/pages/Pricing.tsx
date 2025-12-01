@@ -107,6 +107,28 @@ const Pricing = () => {
           </div>
         </section>
 
+        {/* Optional Layers Note */}
+        <section className="py-8 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-muted/30 border-muted">
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold">Optional culture & motivation layers</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  For some projects, clients choose to add a personalised Motivation & Appreciation layer (Songita BusinessPack) or Coaching & Growth layer. These are quoted as part of your bespoke build, only if they support your outcomes.
+                </p>
+                <Button asChild variant="link" className="p-0 h-auto text-sm">
+                  <Link to="/brief-builder">
+                    Ask about motivation & coaching options
+                    <ArrowRight className="ml-2 h-3 w-3" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
         {/* Pricing Plans */}
         <section className="pb-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -178,6 +200,59 @@ const Pricing = () => {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+            
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">What's included?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Each plan includes custom-built solutions tailored to your business needs, KPI tracking, and expert support. Higher tiers add more audits, outcomes, and advisory time.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Can you also help with motivation, appreciation, or coaching?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Yes. Where it fits your goals, we can include a hand-built Motivation & Appreciation layer (Songita BusinessPack) and Coaching & Growth layer in your project scope. These are optional and priced per project, the same as other improvements.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Is this a subscription?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Yes, these are monthly subscriptions that give you ongoing access to our services. You can cancel anytime, and your subscription fees count as credit toward larger Business Outcomes within 90 days.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Do I have to commit to the motivation or coaching layers?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    No. They are optional add-ons. You only include them if they clearly support the business outcome you care about.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
