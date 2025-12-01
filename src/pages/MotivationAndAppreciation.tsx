@@ -167,7 +167,7 @@ const MotivationAndAppreciation = () => {
                 />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 flex items-center justify-center transition-colors duration-300">
                   <div className="text-center">
-                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mx-auto mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mx-auto mb-4 transform group-hover:scale-110 transition-transform duration-300 animate-gentle-pulse">
                       <Play className="w-8 h-8 text-primary ml-1" />
                     </div>
                     <p className="text-white font-semibold text-lg">Watch Example Videos</p>
