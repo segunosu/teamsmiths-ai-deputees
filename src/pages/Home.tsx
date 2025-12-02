@@ -300,9 +300,9 @@ const Home = () => {
         <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">Proof: Real Clients, Real Numbers</h2>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">The Kind of Results We Deliver</h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-                See measurable results from businesses just like yours
+                Measurable outcomes from real projects—see what's possible
               </p>
             </div>
 
@@ -330,7 +330,7 @@ const Home = () => {
             )}
 
             <div className="text-center mt-12">
-              <p className="text-sm text-muted-foreground">Results from our clients, tracked monthly.</p>
+              <p className="text-sm text-muted-foreground">Every project we take on, we measure. You should expect the same.</p>
             </div>
           </div>
         </section>
