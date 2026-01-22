@@ -61,6 +61,9 @@ import MotivationAndAppreciation from "./pages/MotivationAndAppreciation";
 import Results from "./pages/Results";
 import Resources from "./pages/Resources";
 import AIDiagnostic from "./pages/AIDiagnostic";
+import AISolutions from "./pages/AISolutions";
+import PlansAndPricing from "./pages/PlansAndPricing";
+import AddOns from "./pages/AddOns";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
@@ -104,18 +107,16 @@ const App = () => (
                       </ErrorBoundary>
                     </React.Suspense>
                   } />
-                   <Route path="/outcome-packs" element={<Navigate to="/solutions" replace />} />
-                   <Route path="/business-outcomes" element={<Navigate to="/solutions" replace />} />
-                   <Route path="/business-impact" element={<Navigate to="/solutions" replace />} />
+                   <Route path="/outcome-packs" element={<Navigate to="/ai-solutions" replace />} />
+                   <Route path="/business-outcomes" element={<Navigate to="/ai-solutions" replace />} />
+                   <Route path="/business-impact" element={<Navigate to="/ai-solutions" replace />} />
+                   <Route path="/solutions" element={<Navigate to="/ai-solutions" replace />} />
                    <Route path="/audit" element={<Audit />} />
-                   <Route path="/solutions" element={
-                     <React.Suspense fallback={<div>Loading...</div>}>
-                       <ErrorBoundary>
-                         {React.createElement(React.lazy(() => import('./pages/Solutions')))}
-                       </ErrorBoundary>
-                     </React.Suspense>
-                   } />
-                    <Route path="/plan" element={<Navigate to="/pricing" replace />} />
+                   <Route path="/ai-solutions" element={<AISolutions />} />
+                   <Route path="/plans-and-pricing" element={<PlansAndPricing />} />
+                   <Route path="/pricing" element={<Navigate to="/plans-and-pricing" replace />} />
+                   <Route path="/plan" element={<Navigate to="/plans-and-pricing" replace />} />
+                   <Route path="/add-ons" element={<AddOns />} />
                    <Route path="/work-with-us" element={<WorkWithUs />} />
                    <Route path="/ai-impact-maturity" element={<ErrorBoundary><AIImpactMaturity /></ErrorBoundary>} />
                    <Route path="/ai-impact-scorecard" element={<Navigate to="/ai-impact-maturity" replace />} />
