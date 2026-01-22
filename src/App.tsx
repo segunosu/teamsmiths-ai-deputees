@@ -58,6 +58,9 @@ import Blog from "./pages/Blog";
 import BusinessImpact from "./pages/BusinessImpact";
 import Start from "./pages/Start";
 import MotivationAndAppreciation from "./pages/MotivationAndAppreciation";
+import Results from "./pages/Results";
+import Resources from "./pages/Resources";
+import AIDiagnostic from "./pages/AIDiagnostic";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
@@ -190,6 +193,10 @@ const App = () => (
                    <Route path="/data-protection" element={<DataProtection />} />
                    <Route path="/compliance" element={<Compliance />} />
                    <Route path="/motivation-and-appreciation" element={<MotivationAndAppreciation />} />
+                   <Route path="/results" element={<Results />} />
+                   <Route path="/resources" element={<Resources />} />
+                   <Route path="/ai-diagnostic" element={<AIDiagnostic />} />
+                   <Route path="/add-ons" element={<MotivationAndAppreciation />} />
                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                    <Route path="*" element={<NotFound />} />
                 </Routes>

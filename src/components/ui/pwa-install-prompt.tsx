@@ -10,12 +10,48 @@ interface BeforeInstallPromptEvent extends Event {
 export const PWAInstallPrompt: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
+  const [hasEngaged, setHasEngaged] = useState(false);
+
+  // Track user engagement
+  useEffect(() => {
+    const trackEngagement = () => {
+      // Check if user has already dismissed or seen the prompt
+      const dismissed = sessionStorage.getItem('pwa-prompt-dismissed');
+      if (dismissed) return;
+
+      // Track scroll depth as engagement signal
+      const handleScroll = () => {
+        const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+        if (scrollPercent > 50) {
+          setHasEngaged(true);
+          window.removeEventListener('scroll', handleScroll);
+        }
+      };
+
+      // Track time on site as engagement signal (30 seconds)
+      const timeoutId = setTimeout(() => {
+        setHasEngaged(true);
+      }, 30000);
+
+      window.addEventListener('scroll', handleScroll);
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        clearTimeout(timeoutId);
+      };
+    };
+
+    trackEngagement();
+  }, []);
 
   useEffect(() => {
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setShowPrompt(true);
+      // Only show if user has engaged with the site
+      if (hasEngaged) {
+        setShowPrompt(true);
+      }
     };
 
     window.addEventListener('beforeinstallprompt', handler);
@@ -23,7 +59,14 @@ export const PWAInstallPrompt: React.FC = () => {
     return () => {
       window.removeEventListener('beforeinstallprompt', handler);
     };
-  }, []);
+  }, [hasEngaged]);
+
+  // Show prompt when engagement is detected and we have a deferred prompt
+  useEffect(() => {
+    if (hasEngaged && deferredPrompt && !sessionStorage.getItem('pwa-prompt-dismissed')) {
+      setShowPrompt(true);
+    }
+  }, [hasEngaged, deferredPrompt]);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
@@ -34,10 +77,12 @@ export const PWAInstallPrompt: React.FC = () => {
     console.log(`User ${outcome} the install prompt`);
     setDeferredPrompt(null);
     setShowPrompt(false);
+    sessionStorage.setItem('pwa-prompt-dismissed', 'true');
   };
 
   const handleDismiss = () => {
     setShowPrompt(false);
+    sessionStorage.setItem('pwa-prompt-dismissed', 'true');
   };
 
   if (!showPrompt) return null;
