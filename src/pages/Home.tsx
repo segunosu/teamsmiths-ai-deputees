@@ -5,18 +5,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import {
   CheckCircle,
   ArrowRight,
-  MessageSquare,
+  Search,
+  Rocket,
   TrendingUp,
-  Cog,
-  Info,
+  Clock,
+  Target,
+  Zap,
 } from "lucide-react";
 import { StickyMobileBar } from "@/components/ui/sticky-mobile-bar";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { Helmet } from "react-helmet-async";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { CaseStudyModal } from "@/components/CaseStudyModal";
-import { useCaseStudies, useCaseStudy } from "@/hooks/useCaseStudies";
+import { useCaseStudies } from "@/hooks/useCaseStudies";
 
 const Home = () => {
   const { trackEvent } = useAnalytics();
@@ -29,8 +30,7 @@ const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Track page view
-    trackEvent("outcomes_page_view" as any, { page: "home" } as any);
+    trackEvent("homepage_view" as any, { page: "home" } as any);
   }, [trackEvent]);
 
   const handleOpenModal = (slug: string) => {
@@ -53,68 +53,50 @@ const Home = () => {
     setSelectedCaseSlug(caseStudies[selectedCaseIndex + 1].slug);
   };
 
-  const prefetchCase = (slug: string) => {
-    // Prefetch case study data when hovering
-    useCaseStudy(slug);
-  };
-
-  // Scroll to section function
-  const scrollToSection = (elementId: string) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <>
       <Helmet>
-        <title>Measurable Business Results for UK SMEs | Teamsmiths</title>
+        <title>Turn AI into Measurable Business Results | Teamsmiths</title>
         <meta
           name="description"
-          content="We don't sell AI tools—we deliver measurable business results. Cut costs, boost revenue, eliminate errors. See proof in your numbers within weeks."
+          content="We help UK SMEs automate repetitive work, boost revenue and cut costs using proven AI workflows—starting at £495. See results in under 90 days."
         />
         <meta
           name="keywords"
-          content="business results, cost reduction, revenue growth, UK SME, automation, efficiency"
+          content="AI automation, business AI, UK SME, cost reduction, revenue growth, AI workflows"
         />
       </Helmet>
 
       <div className="min-h-screen">
         {/* Hero Section */}
         <section className="relative py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-          {/* Subtle Background Pattern */}
           <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted opacity-80"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.05),transparent_50%),radial-gradient(circle_at_80%_80%,hsl(var(--accent)/0.05),transparent_50%)]"></div>
 
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-                Measurable Results. Motivated Team. Profitable Growth.
+                Turn AI into measurable business results in under 90 days.
               </h1>
               <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-                Custom-built solutions for rapid wins, energized teams, and financial uplift—all proven and delivered fast.
+                We help UK SMEs automate repetitive work, boost revenue and cut costs using proven AI workflows—starting at £495.
               </p>
 
-              {/* Top SME Outcomes */}
+              {/* Outcome-driven metrics */}
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center mb-8 sm:mb-10 text-base sm:text-lg">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-success" />
-                  <span className="font-medium">5–10 hrs saved per leader</span>
+                  <Clock className="h-5 w-5 text-success" />
+                  <span className="font-medium">Save 5–10 hours per week</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-success" />
-                  <span className="font-medium">45% team uplift</span>
+                  <Target className="h-5 w-5 text-success" />
+                  <span className="font-medium">Increase win rates by 20%</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-success" />
-                  <span className="font-medium">Sharper morale & retention</span>
+                  <Zap className="h-5 w-5 text-success" />
+                  <span className="font-medium">Reduce operational errors by 30%</span>
                 </div>
               </div>
-
-              <p className="text-sm text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
-                Optional add-ons: personalised motivation and coaching layers to boost team morale and retention.
-              </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center mb-6 sm:mb-8 max-w-md sm:max-w-none mx-auto">
                 <Button
@@ -123,7 +105,7 @@ const Home = () => {
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                 >
                   <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                    Book your outcome call
+                    Book your free AI diagnostic
                     <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                   </a>
                 </Button>
@@ -131,26 +113,26 @@ const Home = () => {
                   variant="outline"
                   size="lg"
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
-                  onClick={() => {
-                    scrollToSection("results");
-                  }}
+                  asChild
                 >
-                  See real client results
+                  <Link to="/results">
+                    See AI case studies
+                  </Link>
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* HOW IT WORKS IN 3 STEPS */}
+        {/* AI ADOPTION JOURNEY - 3 Steps */}
         <section id="how-it-works" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6">
-                How it Works in 3 Steps
+                Your AI Adoption Journey
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-                Simple. Direct. Measurable.
+                Three steps from identifying opportunities to scaling AI across your business
               </p>
             </div>
 
@@ -158,14 +140,14 @@ const Home = () => {
               <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-2 bg-card">
                 <CardHeader className="pb-6">
                   <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                    <MessageSquare className="h-10 w-10 text-primary" />
+                    <Search className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-6xl font-bold text-primary mb-2">1</div>
-                  <CardTitle className="text-xl font-bold mb-2">Tell us your business/culture priority</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">AI Opportunity Scan</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    What matters most? Revenue growth, faster processes, stronger team culture—we focus on your priority.
+                    Identify high-impact AI use cases within your current processes. We analyse where automation will deliver the biggest ROI.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -173,14 +155,14 @@ const Home = () => {
               <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-2 bg-card">
                 <CardHeader className="pb-6">
                   <div className="mx-auto mb-6 p-6 bg-primary/10 rounded-2xl w-fit">
-                    <Cog className="h-10 w-10 text-primary" />
+                    <Rocket className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-6xl font-bold text-primary mb-2">2</div>
-                  <CardTitle className="text-xl font-bold mb-2">We custom-build your uplift solution</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">Rapid Implementation</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Process optimisation, team appreciation, and growth coaching—all custom‑built. You can start with a one‑off BusinessPack or a full improvement project.
+                    Deploy out-of-the-box AI workflows to automate tasks, generate leads and support decision-making. Live in days, not months.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -191,11 +173,11 @@ const Home = () => {
                     <TrendingUp className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-6xl font-bold text-primary mb-2">3</div>
-                  <CardTitle className="text-xl font-bold mb-2">See results fast—morale & productivity</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">Scale & Support</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Track improvements in your numbers and team energy—both productivity and morale, proven within weeks.
+                    Train your team, optimise results, and build a roadmap for continued AI adoption. Ongoing support available.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -205,93 +187,13 @@ const Home = () => {
               <Button
                 size="lg"
                 className="text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 h-auto w-full sm:w-auto"
-                onClick={() => scrollToSection("results")}
+                asChild
               >
-                See real client results
-                <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
+                <Link to="/solutions">
+                  Explore AI Solutions
+                  <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
+                </Link>
               </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* CULTURE & MOTIVATION LAYER */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10 sm:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">
-                Add a Culture & Motivation Layer to Your Plan
-              </h2>
-              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-                Alongside process automation, some clients choose a personalised team appreciation program to lift morale, retention, and discretionary effort.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
-              <Card className="shadow-md hover:shadow-xl transition-all duration-300 border-2">
-                <CardHeader>
-                  <CardTitle className="text-xl sm:text-2xl font-bold mb-2">
-                    Motivation & Appreciation (Songita BusinessPack)
-                  </CardTitle>
-                  <CardDescription className="text-sm text-muted-foreground">
-                    Powered by our proprietary methods
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                      <span className="text-base">Hand-built songs and appreciation moments for your team</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                      <span className="text-base">Designed from your stories, values, and goals</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                      <span className="text-base">Optional layer that supports engagement and retention</span>
-                    </li>
-                  </ul>
-                  <Button asChild variant="outline" className="w-full" size="lg">
-                    <Link to="/motivation-and-appreciation">
-                      Explore Motivation Layer
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="shadow-md hover:shadow-xl transition-all duration-300 border-2">
-                <CardHeader>
-                  <CardTitle className="text-xl sm:text-2xl font-bold mb-2">
-                    Coaching & Growth (Deputee-style Coaching)
-                  </CardTitle>
-                  <CardDescription className="text-sm text-muted-foreground">
-                    Powered by our proprietary methods
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                      <span className="text-base">Personalised support for key leaders or teams</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                      <span className="text-base">Turn new systems into habits and better decisions</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                      <span className="text-base">Add only where coaching leverage is highest</span>
-                    </li>
-                  </ul>
-                  <Button asChild variant="outline" className="w-full" size="lg">
-                    <Link to="/solutions#coaching">
-                      Explore Coaching Layer
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </section>
@@ -300,9 +202,9 @@ const Home = () => {
         <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">The Kind of Results We Deliver</h2>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">AI-Powered Results</h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-                Measurable outcomes from real projects—see what's possible
+                Real projects, real AI workflows, measurable outcomes
               </p>
             </div>
 
@@ -323,14 +225,19 @@ const Home = () => {
                     key={caseStudy.id}
                     caseStudy={caseStudy}
                     onOpenModal={() => handleOpenModal(caseStudy.slug)}
-                    onHoverStart={() => prefetchCase(caseStudy.slug)}
                   />
                 ))}
               </div>
             )}
 
             <div className="text-center mt-12">
-              <p className="text-sm text-muted-foreground">Every project we take on, we measure. You should expect the same.</p>
+              <p className="text-sm text-muted-foreground mb-6">Every AI workflow we deploy, we measure. You should expect the same.</p>
+              <Button variant="outline" asChild>
+                <Link to="/results">
+                  See all case studies
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -347,32 +254,32 @@ const Home = () => {
         />
 
         {/* FINAL CTA */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24">
+        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24 bg-muted/30">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10 px-4">
-              Simple. Measurable. Repeatable.<br />See what your business could look like with one priority solved for good.
+              Ready to see what AI can do for your business?
             </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Book a free 30-minute AI diagnostic call. We'll identify your highest-impact automation opportunities and show you exactly what's possible.
+            </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">
               <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your outcome call
+                  Book your free AI diagnostic
                   <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
-                <Link to="/pricing">
-                  See how we price this
+                <Link to="/results">
+                  See AI case studies
                 </Link>
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-              During your call, you can also ask about adding the Motivation & Appreciation layer for your team.
-            </p>
           </div>
         </section>
 
-        <StickyMobileBar briefOrigin="home" />
+        <StickyMobileBar />
       </div>
     </>
   );

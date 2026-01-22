@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Separator } from '@/components/ui/separator';
 
 export const Footer = () => {
   return (
@@ -11,8 +10,6 @@ export const Footer = () => {
             <h3 className="font-semibold mb-4 text-primary-foreground">Company</h3>
             <ul className="space-y-3">
               <li><Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">About</Link></li>
-              <li><Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Blog</Link></li>
-              <li><Link to="/brief-builder" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Brief</Link></li>
               <li><Link to="/contact" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact</Link></li>
             </ul>
           </div>
@@ -21,19 +18,18 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
-              <li><Link to="/pricing" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Pricing</Link></li>
-              <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">How It Works</Link></li>
-              <li><Link to="/#results" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Results</Link></li>
-              <li><Link to="/ai-impact-maturity" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">AI Impact Maturity</Link></li>
+              <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">AI Solutions</Link></li>
+              <li><Link to="/pricing" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Plans & Pricing</Link></li>
+              <li><Link to="/results" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Results</Link></li>
             </ul>
           </div>
 
-          {/* Help & Support */}
+          {/* Resources */}
           <div>
-            <h3 className="font-semibold mb-4 text-primary-foreground">Help & Support</h3>
+            <h3 className="font-semibold mb-4 text-primary-foreground">Resources</h3>
             <ul className="space-y-3">
-              <li><Link to="/help" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Help Center</Link></li>
-              <li><Link to="/contact" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Contact Support</Link></li>
+              <li><Link to="/resources" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">AI Insights Blog</Link></li>
+              <li><Link to="/ai-diagnostic" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">AI Diagnostic & Roadmap</Link></li>
             </ul>
           </div>
 
@@ -41,12 +37,11 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Legal</h3>
             <ul className="space-y-3">
+              <li><Link to="/security" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Security Policy</Link></li>
+              <li><Link to="/cookies" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Cookie & Tracking Policy</Link></li>
+              <li><Link to="/data-protection" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Data Protection & Your Rights</Link></li>
               <li><Link to="/privacy" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Terms of Service</Link></li>
-              <li><Link to="/security" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Security Policy</Link></li>
-              <li><Link to="/cookies" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Cookie Policy</Link></li>
-              <li><Link to="/data-protection" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Data Protection</Link></li>
-              <li><Link to="/compliance" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Compliance</Link></li>
             </ul>
           </div>
         </div>
