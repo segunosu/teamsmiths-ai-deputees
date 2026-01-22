@@ -16,9 +16,9 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const navigationItems = [
   { label: 'Home', path: '/', tooltip: 'AI-powered business results for UK SMEs' },
-  { label: 'AI Solutions', path: '/solutions', tooltip: 'Productised AI workflows in three tiers' },
+  { label: 'AI Solutions', path: '/ai-solutions', tooltip: 'Productised AI workflows in three tiers' },
   { label: 'Results', path: '/results', tooltip: 'Case studies with measurable outcomes' },
-  { label: 'Plans & Pricing', path: '/pricing', tooltip: 'Transparent pricing from £495' },
+  { label: 'Plans & Pricing', path: '/plans-and-pricing', tooltip: 'Transparent pricing from £495' },
   { label: 'Resources', path: '/resources', tooltip: 'AI Insights blog and AI Impact Quiz' },
   { label: 'About', path: '/about', tooltip: 'Our mission and team' },
   { label: 'Contact', path: '/contact', tooltip: 'Get in touch' },
