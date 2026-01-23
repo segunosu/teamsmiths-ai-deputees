@@ -56,14 +56,14 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Turn AI into Measurable Business Results | Teamsmiths</title>
+        <title>Turn Automation into Results in Weeks | Teamsmiths</title>
         <meta
           name="description"
-          content="We help UK SMEs automate repetitive work, boost revenue and cut costs using proven AI workflows—starting at £495. See results in under 90 days."
+          content="Do significantly more with less by automating your repetitive work, boosting revenue, and cutting costs. Fixed pricing, measurable outcomes."
         />
         <meta
           name="keywords"
-          content="AI automation, business AI, UK SME, cost reduction, revenue growth, AI workflows"
+          content="automation, business automation, cost reduction, revenue growth, workflows"
         />
       </Helmet>
 
@@ -76,10 +76,10 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-                Turn AI into measurable business results in under 90 days.
+                Turn automation into results in weeks
               </h1>
               <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-                We help UK SMEs automate repetitive work, boost revenue and cut costs using proven AI workflows—starting at £495.
+                Do significantly more with less by automating your repetitive work, boosting revenue, and cutting costs.
               </p>
 
               {/* Outcome-driven metrics */}
@@ -105,7 +105,7 @@ const Home = () => {
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                 >
                   <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                    Book your free AI diagnostic
+                    Book your free diagnostic
                     <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                   </a>
                 </Button>
@@ -116,7 +116,7 @@ const Home = () => {
                   asChild
                 >
                   <Link to="/results">
-                    See AI case studies
+                    See case studies
                   </Link>
                 </Button>
               </div>
@@ -124,15 +124,15 @@ const Home = () => {
           </div>
         </section>
 
-        {/* AI ADOPTION JOURNEY - 3 Steps */}
+        {/* AUTOMATION JOURNEY - 3 Steps */}
         <section id="how-it-works" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6">
-                Your AI Adoption Journey
+                Your Automation Journey
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-                Three steps from identifying opportunities to scaling AI across your business
+                Three steps from identifying opportunities to scaling across your business
               </p>
             </div>
 
@@ -143,11 +143,11 @@ const Home = () => {
                     <Search className="h-10 w-10 text-primary" />
                   </div>
                   <div className="text-6xl font-bold text-primary mb-2">1</div>
-                  <CardTitle className="text-xl font-bold mb-2">AI Opportunity Scan</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">Opportunity Scan</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Identify high-impact AI use cases within your current processes. We analyse where automation will deliver the biggest ROI.
+                    Identify high-impact automation use cases within your current processes. We analyse where automation will deliver the biggest ROI.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -162,7 +162,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Deploy out-of-the-box AI workflows to automate tasks, generate leads and support decision-making. Live in days, not months.
+                    Deploy proven workflows to automate tasks, generate leads and support decision-making. Live in days, not months.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -177,7 +177,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Train your team, optimise results, and build a roadmap for continued AI adoption. Ongoing support available.
+                    Train your team, optimise results, and build a roadmap for continued adoption. Ongoing support available.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -190,7 +190,7 @@ const Home = () => {
                 asChild
               >
                 <Link to="/solutions">
-                  Explore AI Solutions
+                  Explore Solutions
                   <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                 </Link>
               </Button>
@@ -202,9 +202,9 @@ const Home = () => {
         <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">AI-Powered Results</h2>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">Results</h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-                Real projects, real AI workflows, measurable outcomes
+                Real projects, real workflows, measurable outcomes
               </p>
             </div>
 
@@ -231,7 +231,7 @@ const Home = () => {
             )}
 
             <div className="text-center mt-12">
-              <p className="text-sm text-muted-foreground mb-6">Every AI workflow we deploy, we measure. You should expect the same.</p>
+              <p className="text-sm text-muted-foreground mb-6">Every workflow we deploy, we measure. You should expect the same.</p>
               <Button variant="outline" asChild>
                 <Link to="/results">
                   See all case studies
@@ -257,22 +257,22 @@ const Home = () => {
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24 bg-muted/30">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10 px-4">
-              Ready to see what AI can do for your business?
+              Ready to see what automation can do for your business?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a free 30-minute AI diagnostic call. We'll identify your highest-impact automation opportunities and show you exactly what's possible.
+              Book a free 30-minute diagnostic call. We'll identify your highest-impact automation opportunities and show you exactly what's possible.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">
               <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free AI diagnostic
+                  Book your free diagnostic
                   <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <Link to="/results">
-                  See AI case studies
+                  See case studies
                 </Link>
               </Button>
             </div>

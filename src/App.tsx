@@ -96,10 +96,23 @@ const App = () => (
                       </ErrorBoundary>
                     </React.Suspense>
                   } />
-                  <Route path="/navigator" element={<Navigate to="/outcome-packs" replace />} />
-                  <Route path="/navigator-packs" element={<Navigate to="/outcome-packs" replace />} />
-                  <Route path="/ai-navigator" element={<Navigate to="/outcome-packs" replace />} />
-                  <Route path="/proof-sprints" element={<Navigate to="/outcome-packs" replace />} />
+                  
+                  {/* Solutions is the main page - redirect pricing/plans to it */}
+                  <Route path="/solutions" element={<AISolutions />} />
+                  <Route path="/ai-solutions" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/plans-and-pricing" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/pricing" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/plan" element={<Navigate to="/solutions" replace />} />
+                  
+                  {/* Legacy redirects */}
+                  <Route path="/navigator" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/navigator-packs" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/ai-navigator" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/proof-sprints" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/outcome-packs" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/business-outcomes" element={<Navigate to="/solutions" replace />} />
+                  <Route path="/business-impact" element={<Navigate to="/solutions" replace />} />
+                  
                   <Route path="/proof-sprint-success" element={
                     <React.Suspense fallback={<div>Loading...</div>}>
                       <ErrorBoundary>
@@ -107,19 +120,12 @@ const App = () => (
                       </ErrorBoundary>
                     </React.Suspense>
                   } />
-                   <Route path="/outcome-packs" element={<Navigate to="/ai-solutions" replace />} />
-                   <Route path="/business-outcomes" element={<Navigate to="/ai-solutions" replace />} />
-                   <Route path="/business-impact" element={<Navigate to="/ai-solutions" replace />} />
-                   <Route path="/solutions" element={<Navigate to="/ai-solutions" replace />} />
-                   <Route path="/audit" element={<Audit />} />
-                   <Route path="/ai-solutions" element={<AISolutions />} />
-                   <Route path="/plans-and-pricing" element={<PlansAndPricing />} />
-                   <Route path="/pricing" element={<Navigate to="/plans-and-pricing" replace />} />
-                   <Route path="/plan" element={<Navigate to="/plans-and-pricing" replace />} />
-                   <Route path="/add-ons" element={<AddOns />} />
-                   <Route path="/work-with-us" element={<WorkWithUs />} />
-                   <Route path="/ai-impact-maturity" element={<ErrorBoundary><AIImpactMaturity /></ErrorBoundary>} />
-                   <Route path="/ai-impact-scorecard" element={<Navigate to="/ai-impact-maturity" replace />} />
+                  
+                  <Route path="/audit" element={<Audit />} />
+                  <Route path="/add-ons" element={<AddOns />} />
+                  <Route path="/work-with-us" element={<WorkWithUs />} />
+                  <Route path="/ai-impact-maturity" element={<ErrorBoundary><AIImpactMaturity /></ErrorBoundary>} />
+                  <Route path="/ai-impact-scorecard" element={<Navigate to="/ai-impact-maturity" replace />} />
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetail />} />
                   <Route path="/brief" element={<Navigate to="/brief-builder" replace />} />
@@ -166,40 +172,33 @@ const App = () => (
                   <Route path="/admin/tools/suggestions" element={<ToolSuggestionsPage />} />
                   <Route path="/admin/reports" element={<AdminReports />} />
                   <Route path="/admin/qa" element={<QADashboard />} />
-                   <Route path="/about" element={<About />} />
-                   <Route path="/blog" element={<Blog />} />
-                   <Route path="/contact" element={<Contact />} />
-                   <Route path="/pricing" element={
-                     <React.Suspense fallback={<div>Loading...</div>}>
-                       <ErrorBoundary>
-                         {React.createElement(React.lazy(() => import('./pages/Plan')))}
-                       </ErrorBoundary>
-                     </React.Suspense>
-                   } />
-                   <Route path="/plan-confirmation" element={
-                     <React.Suspense fallback={<div>Loading...</div>}>
-                       <ErrorBoundary>
-                         {React.createElement(React.lazy(() => import('./pages/PlanConfirmation')))}
-                       </ErrorBoundary>
-                     </React.Suspense>
-                   } />
-                   <Route path="/privacy" element={<PrivacyPolicy />} />
-                   <Route path="/legal/privacy" element={<PrivacyPolicy />} />
-                   <Route path="/terms" element={<TermsOfService />} />
-                   <Route path="/legal/terms" element={<TermsOfService />} />
-                   <Route path="/security" element={<SecurityPolicy />} />
-                   <Route path="/security-policy" element={<SecurityPolicy />} />
-                   <Route path="/cookies" element={<CookiePolicy />} />
-                   <Route path="/cookie-policy" element={<CookiePolicy />} />
-                   <Route path="/data-protection" element={<DataProtection />} />
-                   <Route path="/compliance" element={<Compliance />} />
-                   <Route path="/motivation-and-appreciation" element={<MotivationAndAppreciation />} />
-                   <Route path="/results" element={<Results />} />
-                   <Route path="/resources" element={<Resources />} />
-                   <Route path="/ai-diagnostic" element={<AIDiagnostic />} />
-                   <Route path="/add-ons" element={<MotivationAndAppreciation />} />
-                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                   <Route path="*" element={<NotFound />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/plan-confirmation" element={
+                    <React.Suspense fallback={<div>Loading...</div>}>
+                      <ErrorBoundary>
+                        {React.createElement(React.lazy(() => import('./pages/PlanConfirmation')))}
+                      </ErrorBoundary>
+                    </React.Suspense>
+                  } />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
+                  <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+                  <Route path="/terms" element={<TermsOfService />} />
+                  <Route path="/legal/terms" element={<TermsOfService />} />
+                  <Route path="/security" element={<SecurityPolicy />} />
+                  <Route path="/security-policy" element={<SecurityPolicy />} />
+                  <Route path="/cookies" element={<CookiePolicy />} />
+                  <Route path="/cookie-policy" element={<CookiePolicy />} />
+                  <Route path="/data-protection" element={<DataProtection />} />
+                  <Route path="/compliance" element={<Compliance />} />
+                  <Route path="/motivation-and-appreciation" element={<MotivationAndAppreciation />} />
+                  <Route path="/results" element={<Results />} />
+                  <Route path="/resources" element={<Navigate to="/blog" replace />} />
+                  <Route path="/ai-diagnostic" element={<AIDiagnostic />} />
+                  
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
               <Footer />
