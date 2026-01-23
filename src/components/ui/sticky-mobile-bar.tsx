@@ -14,7 +14,7 @@ export const StickyMobileBar: React.FC<StickyMobileBarProps> = ({ briefOrigin })
         <div className="flex gap-2 px-3 py-2.5 max-w-lg mx-auto">
           <Button asChild size="sm" className="flex-1 text-xs sm:text-sm h-9 sm:h-10">
             <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-              Book AI Diagnostic
+              Book Diagnostic
               <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </a>
           </Button>
