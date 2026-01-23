@@ -15,12 +15,10 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const navigationItems = [
-  { label: 'Home', path: '/', tooltip: 'AI-powered business results for UK SMEs' },
-  { label: 'AI Solutions', path: '/ai-solutions', tooltip: 'Productised AI workflows in three tiers' },
+  { label: 'Home', path: '/', tooltip: 'Automation results for growing businesses' },
+  { label: 'Solutions', path: '/solutions', tooltip: 'Packages with fixed pricing' },
   { label: 'Results', path: '/results', tooltip: 'Case studies with measurable outcomes' },
-  { label: 'Plans & Pricing', path: '/plans-and-pricing', tooltip: 'Transparent pricing from £495' },
-  { label: 'Resources', path: '/resources', tooltip: 'AI Insights blog and AI Impact Quiz' },
-  { label: 'About', path: '/about', tooltip: 'Our mission and team' },
+  { label: 'About', path: '/about', tooltip: 'Our mission and methodology' },
   { label: 'Contact', path: '/contact', tooltip: 'Get in touch' },
 ];
 
@@ -64,7 +62,7 @@ export const Navigation = () => {
             <Link to="/" className="flex items-center">
               <img 
                 src="/lovable-uploads/5ab267bc-fb45-4d08-8cf8-3812cb6a83b8.png" 
-                alt="Team Smiths AI Logo" 
+                alt="Team Smiths Logo" 
                 className="w-auto" 
                 style={{ height: '48.6px' }}
               />
@@ -143,7 +141,7 @@ export const Navigation = () => {
                   <Link to="/auth">Sign In</Link>
                 </Button>
                 <Button asChild>
-                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book your free AI diagnostic</a>
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book your free diagnostic</a>
                 </Button>
               </div>
             )}
@@ -177,7 +175,7 @@ export const Navigation = () => {
                   size="sm"
                   className="justify-start h-10"
                 >
-                  <Link to="/solutions" onClick={() => setIsMenuOpen(false)}>AI Solutions</Link>
+                  <Link to="/solutions" onClick={() => setIsMenuOpen(false)}>Solutions</Link>
                 </Button>
                 <Button
                   asChild
@@ -186,7 +184,7 @@ export const Navigation = () => {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                    Book AI Diagnostic
+                    Book Diagnostic
                   </a>
                 </Button>
               </div>
@@ -251,7 +249,7 @@ export const Navigation = () => {
                     </Button>
                     <Button asChild className="w-full justify-start">
                       <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>
-                        Book your free AI diagnostic
+                        Book your free diagnostic
                       </a>
                     </Button>
                   </div>

@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, TrendingUp, Award, Globe, Target, Zap, ArrowRight, CheckCircle, Bot } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { AIDeputee } from '@/components/AIDeputee';
+import { Users, TrendingUp, Award, Globe, Target, Zap, ArrowRight, CheckCircle } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 
@@ -19,38 +17,34 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>About Teamsmiths — Democratising AI for UK SMEs</title>
+        <title>About Teamsmiths — Democratising Automation for Growing Businesses</title>
         <meta 
           name="description" 
-          content="Our mission: help UK SMEs turn AI into measurable business results. Meet the team behind AI Deputee™ technology." 
+          content="Our mission: help growing businesses do more with less by automating repetitive work, boosting revenue, and cutting costs." 
         />
-        <meta name="keywords" content="AI for SMEs, UK business AI, AI Deputee, business automation" />
+        <meta name="keywords" content="automation for business, business automation, workflow automation" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge variant="secondary" className="mb-6">
-              <Bot className="h-4 w-4 mr-2" />
-              About Teamsmiths
-            </Badge>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-[1.1]">
-              Democratising AI for UK SMEs
+              Democratising Automation for Growing Businesses
             </h1>
             <p className="text-xl text-muted-foreground font-medium mb-8 max-w-3xl mx-auto leading-relaxed">
-              We believe every small business deserves access to the same AI capabilities that power enterprise success—without the enterprise price tag.
+              We believe every growing business deserves access to the same automation capabilities that power enterprise success—without the enterprise price tag.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free AI diagnostic
+                  Book your free diagnostic
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="/results">See AI case studies</Link>
+                <Link to="/results">See case studies</Link>
               </Button>
             </div>
           </div>
@@ -64,7 +58,7 @@ const About = () => {
                 Our Mission
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                To help UK SMEs automate repetitive work, boost revenue, and cut costs using proven AI workflows—delivering measurable results in under 90 days.
+                To enable organisations to do more with less by automating repetitive work, boosting revenue, and cutting costs—delivering measurable results in weeks.
               </p>
             </div>
 
@@ -78,7 +72,7 @@ const About = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    No complex jargon. We solve the problem in front of you with proven AI workflows.
+                    No complex jargon. We solve the problem in front of you with proven workflows.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -114,15 +108,15 @@ const About = () => {
           </div>
         </section>
 
-        {/* AI Deputee Section */}
+        {/* Methodology Section */}
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                The <AIDeputee /> Methodology
+                Our Methodology
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                Our proprietary AI Deputee™ technology combines always-on automation with human oversight to ensure quality and strategic alignment.
+                We combine always-on automation with human oversight to ensure quality and strategic alignment.
               </p>
             </div>
 
@@ -134,7 +128,7 @@ const About = () => {
                     <ul className="space-y-3">
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">AI agents handle repetitive tasks 24/7</span>
+                        <span className="text-muted-foreground">Automated workflows handle repetitive tasks 24/7</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
@@ -189,7 +183,7 @@ const About = () => {
                 <CardContent className="p-6 text-center">
                   <Users className="h-8 w-8 text-primary mx-auto mb-3" />
                   <p className="text-2xl font-bold text-foreground">25,000+</p>
-                  <p className="text-sm text-muted-foreground">SMEs served</p>
+                  <p className="text-sm text-muted-foreground">Businesses served</p>
                 </CardContent>
               </Card>
               <Card className="shadow-sm border-0 bg-card/80">
@@ -221,20 +215,20 @@ const About = () => {
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-6">
-              Ready to Turn AI into Results?
+              Ready to Turn Automation into Results?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Book a free AI diagnostic and get a personalized roadmap for your business.
+              Book a free diagnostic and get a personalized roadmap for your business.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free AI diagnostic
+                  Book your free diagnostic
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="/results">See AI case studies</Link>
+                <Link to="/results">See case studies</Link>
               </Button>
             </div>
           </div>
