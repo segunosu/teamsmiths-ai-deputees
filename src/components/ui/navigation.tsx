@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import teamsmithsLogo from "@/assets/teamsmiths-logo.png";
 import { useAuth } from '@/contexts/AuthContext';
 import { LogOut, User, Menu, X, Shield } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -62,9 +61,10 @@ export const Navigation = () => {
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
               <img 
-                src={teamsmithsLogo} 
+                src="/lovable-uploads/5ab267bc-fb45-4d08-8cf8-3812cb6a83b8.png" 
                 alt="Team Smiths Logo" 
-                className="h-10 md:h-12 w-auto" 
+                className="w-auto" 
+                style={{ height: '48.6px' }}
               />
             </Link>
           </div>
