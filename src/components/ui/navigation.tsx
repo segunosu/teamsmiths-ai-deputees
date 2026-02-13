@@ -65,7 +65,7 @@ export const Navigation = () => {
                 src={teamsmithsLogo} 
                 alt="Team Smiths Logo" 
                 className="w-auto" 
-                style={{ height: '48.6px' }}
+                style={{ height: '68px' }}
               />
             </Link>
           </div>
