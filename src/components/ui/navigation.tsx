@@ -64,8 +64,8 @@ export const Navigation = () => {
               <img 
                 src={teamsmithsLogo} 
                 alt="Team Smiths Logo" 
-                className="w-auto" 
-                style={{ height: '68px' }}
+                className="w-auto max-h-none" 
+                style={{ height: '68px', maxHeight: 'none' }}
               />
             </Link>
           </div>
