@@ -1,0 +1,1 @@
+UPDATE business_case_studies SET cta_secondary_url = 'https://calendly.com/osu/brief-chat' WHERE cta_secondary_url LIKE '/customize%';
