@@ -171,46 +171,6 @@ const About = () => {
           </div>
         </section>
 
-        {/* Track Record */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-12">
-              Track Record
-            </h2>
-            
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="shadow-sm border-0 bg-card/80">
-                <CardContent className="p-6 text-center">
-                  <Users className="h-8 w-8 text-primary mx-auto mb-3" />
-                  <p className="text-2xl font-bold text-foreground">25,000+</p>
-                  <p className="text-sm text-muted-foreground">Businesses served</p>
-                </CardContent>
-              </Card>
-              <Card className="shadow-sm border-0 bg-card/80">
-                <CardContent className="p-6 text-center">
-                  <TrendingUp className="h-8 w-8 text-primary mx-auto mb-3" />
-                  <p className="text-2xl font-bold text-foreground">$1.5M</p>
-                  <p className="text-sm text-muted-foreground">Revenue in 18 months</p>
-                </CardContent>
-              </Card>
-              <Card className="shadow-sm border-0 bg-card/80">
-                <CardContent className="p-6 text-center">
-                  <Award className="h-8 w-8 text-primary mx-auto mb-3" />
-                  <p className="text-2xl font-bold text-foreground">$3M→$10M</p>
-                  <p className="text-sm text-muted-foreground">Gartner unit growth</p>
-                </CardContent>
-              </Card>
-              <Card className="shadow-sm border-0 bg-card/80">
-                <CardContent className="p-6 text-center">
-                  <Globe className="h-8 w-8 text-primary mx-auto mb-3" />
-                  <p className="text-2xl font-bold text-foreground">40-45%</p>
-                  <p className="text-sm text-muted-foreground">Team uplift at GSK</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         {/* Final CTA */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
