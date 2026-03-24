@@ -76,10 +76,10 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-                Make better decisions. Execute faster. Results in weeks.
+                Make better decisions. Execute faster. See results in weeks.
               </h1>
               <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-                Save time. Reduce friction. Increase output — no extra headcount.
+                Reduce friction. Increase output. No extra headcount.
               </p>
 
               {/* Outcome-driven metrics */}
