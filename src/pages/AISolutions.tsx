@@ -73,7 +73,7 @@ const AISolutions = () => {
       description: 'Transform your business with comprehensive automation',
       includes: [
         'Everything in Growth',
-        'Unlimited workflows',
+        '7 workflows',
         'Advanced training + ongoing',
         'Full custom integrations',
         'Quarterly strategy sessions',
