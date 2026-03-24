@@ -131,7 +131,7 @@ const AISolutions = () => {
     <>
       <Helmet>
         <title>Solutions | Automation for Growing Businesses | Teamsmiths</title>
-        <meta name="description" content="Fixed-price automation solutions. Starter £795 (1 workflow), Growth £1,950 (3 workflows), Scale £4,950 (unlimited). Results in weeks." />
+        <meta name="description" content="Fixed-price automation solutions. Starter £795 (1 workflow), Growth £1,950 (3 workflows), Scale £4,950 (7 workflows). Results in weeks." />
         <meta name="keywords" content="automation solutions, business automation, workflow automation, fixed pricing" />
       </Helmet>
 
