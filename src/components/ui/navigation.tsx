@@ -59,8 +59,8 @@ export const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-auto min-h-[4rem] py-2">
           {/* Logo */}
-          <div className="flex-shrink-0 relative z-10">
-            <Link to="/" className="flex items-center">
+          <div className="flex-shrink-0 overflow-visible" style={{ position: 'relative', zIndex: 1 }}>
+            <Link to="/" className="flex items-center" style={{ pointerEvents: 'auto' }}>
               <img 
                 src={teamsmithsLogo} 
                 alt="Team Smiths Logo" 
@@ -70,7 +70,7 @@ export const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:block" style={{ position: 'relative', zIndex: 2 }}>
             <div className="ml-10 flex items-baseline space-x-4">
               {navigationItems.map((item) => (
                 <Link
