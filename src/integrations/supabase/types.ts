@@ -869,6 +869,91 @@ export type Database = {
           },
         ]
       }
+      content_drafts: {
+        Row: {
+          content: string | null
+          content_type: string
+          created_at: string
+          id: string
+          industry: string | null
+          source_lead_id: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          content_type: string
+          created_at?: string
+          id?: string
+          industry?: string | null
+          source_lead_id?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          content_type?: string
+          created_at?: string
+          id?: string
+          industry?: string | null
+          source_lead_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_drafts_source_lead_id_fkey"
+            columns: ["source_lead_id"]
+            isOneToOne: false
+            referencedRelation: "engine_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_performance: {
+        Row: {
+          comments: number
+          content_id: string
+          id: string
+          leads_generated: number
+          likes: number
+          linkedin_post_id: string | null
+          recorded_at: string
+          views: number
+        }
+        Insert: {
+          comments?: number
+          content_id: string
+          id?: string
+          leads_generated?: number
+          likes?: number
+          linkedin_post_id?: string | null
+          recorded_at?: string
+          views?: number
+        }
+        Update: {
+          comments?: number
+          content_id?: string
+          id?: string
+          leads_generated?: number
+          likes?: number
+          linkedin_post_id?: string | null
+          recorded_at?: string
+          views?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_performance_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content_drafts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       custom_project_milestones: {
         Row: {
           amount: number
@@ -1395,6 +1480,239 @@ export type Database = {
           subject?: string | null
           template_code?: string
           to_email?: string
+        }
+        Relationships: []
+      }
+      engine_ai_analysis: {
+        Row: {
+          ai_opportunity: string | null
+          analysis_date: string
+          automation_score: number | null
+          company_summary: string | null
+          estimated_roi: string | null
+          id: string
+          lead_id: string | null
+          workflow_opportunity: string | null
+        }
+        Insert: {
+          ai_opportunity?: string | null
+          analysis_date?: string
+          automation_score?: number | null
+          company_summary?: string | null
+          estimated_roi?: string | null
+          id?: string
+          lead_id?: string | null
+          workflow_opportunity?: string | null
+        }
+        Update: {
+          ai_opportunity?: string | null
+          analysis_date?: string
+          automation_score?: number | null
+          company_summary?: string | null
+          estimated_roi?: string | null
+          id?: string
+          lead_id?: string | null
+          workflow_opportunity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "engine_ai_analysis_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "engine_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      engine_contacts: {
+        Row: {
+          created_at: string
+          email: string | null
+          email_status: string | null
+          enrichment_score: number | null
+          id: string
+          lead_id: string | null
+          linkedin_url: string | null
+          name: string
+          phone: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          email_status?: string | null
+          enrichment_score?: number | null
+          id?: string
+          lead_id?: string | null
+          linkedin_url?: string | null
+          name: string
+          phone?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          email_status?: string | null
+          enrichment_score?: number | null
+          id?: string
+          lead_id?: string | null
+          linkedin_url?: string | null
+          name?: string
+          phone?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "engine_contacts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "engine_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      engine_leads: {
+        Row: {
+          city: string | null
+          company_name: string
+          country: string | null
+          created_at: string
+          employee_count: number | null
+          id: string
+          industry: string | null
+          lead_score: number | null
+          signal_type: string | null
+          source: string | null
+          website: string | null
+        }
+        Insert: {
+          city?: string | null
+          company_name: string
+          country?: string | null
+          created_at?: string
+          employee_count?: number | null
+          id?: string
+          industry?: string | null
+          lead_score?: number | null
+          signal_type?: string | null
+          source?: string | null
+          website?: string | null
+        }
+        Update: {
+          city?: string | null
+          company_name?: string
+          country?: string | null
+          created_at?: string
+          employee_count?: number | null
+          id?: string
+          industry?: string | null
+          lead_score?: number | null
+          signal_type?: string | null
+          source?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      engine_meetings: {
+        Row: {
+          campaign_source: string | null
+          contact_id: string | null
+          id: string
+          meeting_date: string | null
+          meeting_status: string | null
+        }
+        Insert: {
+          campaign_source?: string | null
+          contact_id?: string | null
+          id?: string
+          meeting_date?: string | null
+          meeting_status?: string | null
+        }
+        Update: {
+          campaign_source?: string | null
+          contact_id?: string | null
+          id?: string
+          meeting_date?: string | null
+          meeting_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "engine_meetings_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "engine_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      engine_outreach: {
+        Row: {
+          campaign_id: string | null
+          contact_id: string | null
+          email_body: string | null
+          email_subject: string | null
+          id: string
+          reply_status: string | null
+          sent_date: string | null
+          status: string | null
+        }
+        Insert: {
+          campaign_id?: string | null
+          contact_id?: string | null
+          email_body?: string | null
+          email_subject?: string | null
+          id?: string
+          reply_status?: string | null
+          sent_date?: string | null
+          status?: string | null
+        }
+        Update: {
+          campaign_id?: string | null
+          contact_id?: string | null
+          email_body?: string | null
+          email_subject?: string | null
+          id?: string
+          reply_status?: string | null
+          sent_date?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "engine_outreach_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "engine_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      engine_signals: {
+        Row: {
+          company_name: string
+          confidence_score: number | null
+          detected_at: string
+          id: string
+          signal_description: string | null
+          signal_source: string | null
+          signal_type: string
+        }
+        Insert: {
+          company_name: string
+          confidence_score?: number | null
+          detected_at?: string
+          id?: string
+          signal_description?: string | null
+          signal_source?: string | null
+          signal_type: string
+        }
+        Update: {
+          company_name?: string
+          confidence_score?: number | null
+          detected_at?: string
+          id?: string
+          signal_description?: string | null
+          signal_source?: string | null
+          signal_type?: string
         }
         Relationships: []
       }
