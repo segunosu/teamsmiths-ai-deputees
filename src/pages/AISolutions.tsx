@@ -121,7 +121,7 @@ const AISolutions = () => {
     },
     {
       question: 'Do you offer ongoing support after implementation?',
-      answer: 'Yes. Each tier includes a support period (30–60 days). For ongoing optimization, we offer a monthly retainer called Outcomes Assurance starting at £295/month.'
+      answer: 'Yes. Each tier includes team support (30–60 days depending on tier). For ongoing optimization, we offer a monthly retainer called Outcomes Assurance starting at £295/month.'
     },
     {
       question: 'What about culture, motivation, or coaching services?',
