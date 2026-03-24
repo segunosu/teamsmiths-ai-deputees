@@ -29,7 +29,9 @@ const AISolutions = () => {
         '1 automation workflow',
         'Basic team training',
         'KPI dashboard setup',
-        'Email support for 30 days'
+        'Team support for 30 days',
+        'Standard integrations',
+        '1 strategy session'
       ],
       outcomes: [
         'Save 5–10 hours per week',
