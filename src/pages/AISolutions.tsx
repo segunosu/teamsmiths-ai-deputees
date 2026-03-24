@@ -68,12 +68,12 @@ const AISolutions = () => {
       name: 'Scale',
       subtitle: 'Strategic Automation',
       price: '£4,950',
-      workflows: 'Unlimited workflows',
+      workflows: '7 workflows',
       timeline: '4–8 weeks',
       description: 'Transform your business with comprehensive automation',
       includes: [
         'Everything in Growth',
-        'Unlimited workflows',
+        '7 workflows',
         'Advanced training + ongoing',
         'Full custom integrations',
         'Quarterly strategy sessions',
@@ -91,7 +91,7 @@ const AISolutions = () => {
 
   const comparisonFeatures = [
     { feature: 'Opportunity Scan', starter: true, growth: true, scale: true },
-    { feature: 'Workflow Implementation', starter: '1 workflow', growth: '3 workflows', scale: 'Unlimited' },
+    { feature: 'Workflow Implementation', starter: '1 workflow', growth: '3 workflows', scale: '7 workflows' },
     { feature: 'Team Training', starter: 'Basic', growth: 'Comprehensive', scale: 'Advanced + ongoing' },
     { feature: 'KPI Dashboard', starter: true, growth: true, scale: true },
     { feature: 'Implementation Time', starter: '1–2 weeks', growth: '2–4 weeks', scale: '4–8 weeks' },
@@ -131,7 +131,7 @@ const AISolutions = () => {
     <>
       <Helmet>
         <title>Solutions | Automation for Growing Businesses | Teamsmiths</title>
-        <meta name="description" content="Fixed-price automation solutions. Starter £795 (1 workflow), Growth £1,950 (3 workflows), Scale £4,950 (unlimited). Results in weeks." />
+        <meta name="description" content="Fixed-price automation solutions. Starter £795 (1 workflow), Growth £1,950 (3 workflows), Scale £4,950 (7 workflows). Results in weeks." />
         <meta name="keywords" content="automation solutions, business automation, workflow automation, fixed pricing" />
       </Helmet>
 

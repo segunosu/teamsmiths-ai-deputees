@@ -65,7 +65,7 @@ const PlansAndPricing = () => {
       description: 'Full AI transformation for growth',
       includes: [
         'Everything in Growth',
-        'Unlimited workflows',
+        '7 workflows',
         'Advanced training + ongoing',
         'Full custom integrations',
         'Quarterly AI strategy sessions',
