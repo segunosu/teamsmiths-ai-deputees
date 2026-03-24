@@ -68,7 +68,7 @@ const AISolutions = () => {
       name: 'Scale',
       subtitle: 'Strategic Automation',
       price: '£4,950',
-      workflows: 'Unlimited workflows',
+      workflows: '7 workflows',
       timeline: '4–8 weeks',
       description: 'Transform your business with comprehensive automation',
       includes: [
