@@ -19,14 +19,14 @@ const PlansAndPricing = () => {
     {
       id: 'starter',
       name: 'Starter',
-      subtitle: 'Automation Essentials',
+      subtitle: 'Quick Wins',
       price: '£495',
       priceNote: 'one-time',
       timeline: '1–2 weeks',
       description: 'Perfect for testing AI with quick wins',
       includes: [
-        'AI Opportunity Scan',
-        '1–2 automation workflows',
+        'Opportunity Scan',
+        '1–2 AI workflows',
         'Basic team training',
         'KPI dashboard setup',
         'Team support for 30 days',
@@ -40,7 +40,7 @@ const PlansAndPricing = () => {
     {
       id: 'growth',
       name: 'Growth',
-      subtitle: 'Marketing & Sales AI',
+      subtitle: 'Marketing & Sales',
       price: '£1,950',
       priceNote: 'one-time',
       timeline: '2–4 weeks',
@@ -60,11 +60,11 @@ const PlansAndPricing = () => {
     {
       id: 'scale',
       name: 'Scale',
-      subtitle: 'Strategic AI & Analytics',
+      subtitle: 'Full Transformation',
       price: '£4,950',
       priceNote: 'starting price',
       timeline: '4–8 weeks',
-      description: 'Full AI transformation for growth',
+      description: 'Complete AI transformation for growth',
       includes: [
         'Everything in Growth',
         '7 workflows',
@@ -73,7 +73,7 @@ const PlansAndPricing = () => {
         '7 strategy sessions',
         'Dedicated account team + 60 days support'
       ],
-      outcomes: 'Complete AI roadmap, real-time BI',
+      outcomes: 'Complete implementation roadmap, real-time BI',
       icon: <BarChart3 className="h-8 w-8" />,
       popular: false
     }
@@ -81,16 +81,16 @@ const PlansAndPricing = () => {
 
   const faqs = [
     {
-      question: 'When will we see AI results?',
+      question: 'When will we see results?',
       answer: 'Most clients see measurable results within 2–4 weeks of implementation. Starter tier workflows typically go live within 1–2 weeks.'
     },
     {
-      question: 'Is there a money-back guarantee if AI workflows don\'t deliver?',
+      question: 'Is there a money-back guarantee if workflows don\'t deliver?',
       answer: 'We stand behind our work. If the agreed KPIs aren\'t met within 90 days, we\'ll continue working at no extra cost until they are, or provide a partial refund.'
     },
     {
-      question: 'What\'s included in the AI Opportunity Scan?',
-      answer: 'A 30-minute diagnostic where we analyze your current processes, identify high-impact AI use cases, and provide a prioritized roadmap for implementation.'
+      question: 'What\'s included in the Opportunity Scan?',
+      answer: 'A 30-minute diagnostic where we analyze your current processes, identify high-impact use cases, and provide a prioritized roadmap for implementation.'
     },
     {
       question: 'Can I upgrade tiers later?',
@@ -102,16 +102,16 @@ const PlansAndPricing = () => {
     },
     {
       question: 'What about culture, motivation, or coaching services?',
-      answer: 'These are available as optional add-ons once your core AI workflows are delivering ROI. See our Add-Ons page for details on the Songita BusinessPack and coaching options.'
+      answer: 'These are available as optional add-ons once your core workflows are delivering ROI. See our Add-Ons page for details on the Songita BusinessPack and coaching options.'
     }
   ];
 
   return (
     <>
       <Helmet>
-        <title>Plans & Pricing | AI Solutions for UK SMEs | Teamsmiths</title>
-        <meta name="description" content="Transparent pricing for AI solutions. Starter from £495, Growth from £1,950, Scale from £4,950. Results in under 90 days." />
-        <meta name="keywords" content="AI pricing, SME AI costs, automation pricing, AI implementation" />
+        <title>Plans & Pricing | AI Solutions for Growing Businesses | Teamsmiths</title>
+        <meta name="description" content="Transparent pricing for AI solutions. Starter from £495, Growth from £1,950, Scale from £4,950. Results in weeks." />
+        <meta name="keywords" content="AI pricing, business AI, implementation, fixed pricing" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -122,7 +122,7 @@ const PlansAndPricing = () => {
               Plans & Pricing
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
-              Transparent, fixed pricing. No hidden fees. Results in under 90 days.
+              Transparent, fixed pricing. No hidden fees. Results in weeks.
             </p>
             <p className="text-muted-foreground">
               All plans include Discovery & Implementation. Add Outcomes Assurance for continuous optimization.

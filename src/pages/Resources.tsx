@@ -25,8 +25,8 @@ const Resources = () => {
   const blogPosts = [
     {
       id: 1,
-      title: "Top 5 AI Workflows Every SME Should Automate First",
-      excerpt: "Discover the highest-impact AI automations that deliver ROI within weeks, not months.",
+      title: "Top 5 Workflows Every Growing Business Should Implement First",
+      excerpt: "Discover the highest-impact workflows that deliver ROI within weeks, not months.",
       category: "Strategy",
       readTime: "5 min read",
     },
@@ -39,9 +39,9 @@ const Resources = () => {
     },
     {
       id: 3,
-      title: "CRM Automation: From Manual Follow-ups to AI-Powered Deal Closing",
+      title: "CRM: From Manual Follow-ups to AI-Powered Deal Closing",
       excerpt: "See how AI can transform your sales pipeline with intelligent lead nurturing.",
-      category: "Sales AI",
+      category: "Sales",
       readTime: "6 min read",
     },
     {
@@ -56,14 +56,14 @@ const Resources = () => {
   return (
     <>
       <Helmet>
-        <title>AI Resources & Insights | Teamsmiths</title>
+        <title>Resources & Insights | Teamsmiths</title>
         <meta
           name="description"
-          content="AI insights, guides and tools for UK SMEs. Learn how to implement AI workflows, measure ROI, and scale automation across your business."
+          content="Practical insights, guides and tools. Learn how to implement AI workflows, measure ROI, and scale across your business."
         />
         <meta
           name="keywords"
-          content="AI resources, business AI guide, AI ROI, SME automation, AI insights"
+          content="business resources, AI guide, ROI measurement, growth insights"
         />
       </Helmet>
 
@@ -73,7 +73,7 @@ const Resources = () => {
           <div className="max-w-7xl mx-auto text-center">
             <Badge className="mb-4">Resources</Badge>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-              AI Insights & Tools
+              Insights & Tools
             </h1>
             <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
               Practical guides, case studies, and tools to help you implement AI successfully
@@ -91,9 +91,9 @@ const Resources = () => {
                     <Brain className="h-8 w-8" />
                     <Badge variant="secondary">Free Tool</Badge>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-bold mb-4">AI Diagnostic & Roadmap</h2>
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-4">Diagnostic & Roadmap</h2>
                   <p className="text-primary-foreground/80 mb-6 max-w-2xl">
-                    Take our free AI readiness assessment to get a personalised roadmap for AI adoption. 
+                    Take our free readiness assessment to get a personalised roadmap. 
                     Understand where AI can deliver the biggest impact for your business in 7-10 minutes.
                   </p>
                   <Button asChild size="lg" variant="secondary" className="text-lg px-8">
@@ -119,10 +119,10 @@ const Resources = () => {
             <div className="flex items-center justify-between mb-10">
               <div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2">
-                  AI Insights Blog
+                  Insights Blog
                 </h2>
                 <p className="text-muted-foreground">
-                  Practical guides and insights for implementing AI in your business
+                  Practical guides and insights for growing your business with AI
                 </p>
               </div>
               <Button variant="outline" asChild className="hidden sm:flex">
@@ -176,9 +176,9 @@ const Resources = () => {
             <div className="grid md:grid-cols-3 gap-6">
               <Card className="text-center p-6 hover:shadow-lg transition-all duration-300">
                 <BookOpen className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle className="text-lg mb-2">AI Case Studies</CardTitle>
+                <CardTitle className="text-lg mb-2">Case Studies</CardTitle>
                 <CardDescription className="mb-4">
-                  See real results from businesses using our AI workflows
+                  See real results from businesses using our workflows
                 </CardDescription>
                 <Button variant="outline" size="sm" asChild>
                   <Link to="/results">View case studies</Link>
@@ -187,9 +187,9 @@ const Resources = () => {
 
               <Card className="text-center p-6 hover:shadow-lg transition-all duration-300">
                 <Lightbulb className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle className="text-lg mb-2">AI Solutions</CardTitle>
+                <CardTitle className="text-lg mb-2">Solutions</CardTitle>
                 <CardDescription className="mb-4">
-                  Explore our productised AI workflow packages
+                  Explore our productised workflow packages
                 </CardDescription>
                 <Button variant="outline" size="sm" asChild>
                   <Link to="/solutions">See solutions</Link>
@@ -200,7 +200,7 @@ const Resources = () => {
                 <FileText className="h-12 w-12 text-primary mx-auto mb-4" />
                 <CardTitle className="text-lg mb-2">Pricing</CardTitle>
                 <CardDescription className="mb-4">
-                  Transparent pricing for all our AI services
+                  Transparent pricing for all our services
                 </CardDescription>
                 <Button variant="outline" size="sm" asChild>
                   <Link to="/pricing">View pricing</Link>
@@ -214,14 +214,14 @@ const Resources = () => {
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-4xl font-bold text-foreground mb-6">
-              Ready to start your AI journey?
+              Ready to get started?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a free AI diagnostic call and get personalised recommendations for your business.
+              Book a free diagnostic call and get personalised recommendations for your business.
             </p>
             <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
               <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                Book your free AI diagnostic
+                Book your free diagnostic
                 <ArrowRight className="ml-2 h-5 w-5" />
               </a>
             </Button>

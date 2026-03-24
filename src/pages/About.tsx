@@ -17,12 +17,12 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>About Teamsmiths — Democratising Automation for Growing Businesses</title>
+        <title>About Teamsmiths — Helping Businesses Do More With AI</title>
         <meta 
           name="description" 
-          content="Our mission: help growing businesses do more with less by automating repetitive work, boosting revenue, and cutting costs." 
+          content="Our mission: help growing businesses do more with less by applying AI to repetitive work, boosting revenue, and cutting costs." 
         />
-        <meta name="keywords" content="automation for business, business automation, workflow automation" />
+        <meta name="keywords" content="AI for business, business AI, intelligent workflows" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -30,10 +30,10 @@ const About = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-[1.1]">
-              Democratising Automation for Growing Businesses
+              Helping Growing Businesses Do More With AI
             </h1>
             <p className="text-xl text-muted-foreground font-medium mb-8 max-w-3xl mx-auto leading-relaxed">
-              We believe every growing business deserves access to the same automation capabilities that power enterprise success—without the enterprise price tag.
+              We believe every growing business deserves access to the same AI-powered capabilities that power enterprise success—without the enterprise price tag.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -58,7 +58,7 @@ const About = () => {
                 Our Mission
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                To enable organisations to do more with less by automating repetitive work, boosting revenue, and cutting costs—delivering measurable results in weeks.
+                To enable organisations to do more with less by applying AI to repetitive work, boosting revenue, and cutting costs—delivering measurable results in weeks.
               </p>
             </div>
 
@@ -116,7 +116,7 @@ const About = () => {
                 Our Methodology
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                We combine always-on automation with human oversight to ensure quality and strategic alignment.
+                We combine always-on AI workflows with human oversight to ensure quality and strategic alignment.
               </p>
             </div>
 
@@ -128,7 +128,7 @@ const About = () => {
                     <ul className="space-y-3">
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Automated workflows handle repetitive tasks 24/7</span>
+                        <span className="text-muted-foreground">AI workflows handle repetitive tasks 24/7</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
@@ -175,7 +175,7 @@ const About = () => {
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-6">
-              Ready to Turn Automation into Results?
+              Ready to Turn AI Into Results?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
               Book a free diagnostic and get a personalized roadmap for your business.

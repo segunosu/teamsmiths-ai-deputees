@@ -19,14 +19,14 @@ const AISolutions = () => {
     {
       id: 'starter',
       name: 'Starter',
-      subtitle: 'Automation Essentials',
+      subtitle: 'Quick Wins',
       price: '£795',
       workflows: '1 workflow',
       timeline: '1–2 weeks',
       description: 'Quick wins that free up your team immediately',
       includes: [
         'Opportunity Scan',
-        '1 automation workflow',
+        '1 AI workflow',
         'Basic team training',
         'KPI dashboard setup',
         'Team support for 30 days',
@@ -48,10 +48,10 @@ const AISolutions = () => {
       price: '£1,950',
       workflows: '3 workflows',
       timeline: '2–4 weeks',
-      description: 'Drive revenue with automated sales and marketing',
+      description: 'Drive revenue with AI-powered sales and marketing',
       includes: [
         'Everything in Starter',
-        '3 automation workflows',
+        '3 AI workflows',
         'Comprehensive team training',
         'Premium integrations',
         '3 strategy sessions',
@@ -68,11 +68,11 @@ const AISolutions = () => {
     {
       id: 'scale',
       name: 'Scale',
-      subtitle: 'Strategic Automation',
+      subtitle: 'Full Transformation',
       price: '£4,950',
       workflows: '7 workflows',
       timeline: '4–8 weeks',
-      description: 'Transform your business with comprehensive automation',
+      description: 'AI across your business for comprehensive impact',
       includes: [
         'Everything in Growth',
         '7 workflows',
@@ -82,7 +82,7 @@ const AISolutions = () => {
         'Dedicated account team + 60 days support'
       ],
       outcomes: [
-        'Full automation roadmap',
+        'Full implementation roadmap',
         'Real-time business intelligence',
         'Scalable infrastructure'
       ],
@@ -113,7 +113,7 @@ const AISolutions = () => {
     },
     {
       question: 'What\'s included in the Opportunity Scan?',
-      answer: 'A 30-minute diagnostic where we analyze your current processes, identify high-impact automation use cases, and provide a prioritized roadmap for implementation.'
+      answer: 'A 30-minute diagnostic where we analyze your current processes, identify high-impact use cases, and provide a prioritized roadmap for implementation.'
     },
     {
       question: 'Can I upgrade tiers later?',
@@ -125,16 +125,16 @@ const AISolutions = () => {
     },
     {
       question: 'What about culture, motivation, or coaching services?',
-      answer: 'These are available as optional add-ons once your core automation workflows are delivering ROI. See our Add-Ons page for details on the Songita BusinessPack and coaching options.'
+      answer: 'These are available as optional add-ons once your core workflows are delivering ROI. See our Add-Ons page for details on the Songita BusinessPack and coaching options.'
     }
   ];
 
   return (
     <>
       <Helmet>
-        <title>Solutions | Automation for Growing Businesses | Teamsmiths</title>
-        <meta name="description" content="Fixed-price automation solutions. Starter £795 (1 workflow), Growth £1,950 (3 workflows), Scale £4,950 (7 workflows). Results in weeks." />
-        <meta name="keywords" content="automation solutions, business automation, workflow automation, fixed pricing" />
+        <title>Solutions | AI Solutions for Growing Businesses | Teamsmiths</title>
+        <meta name="description" content="Fixed-price AI solutions. Starter £795 (1 workflow), Growth £1,950 (3 workflows), Scale £4,950 (7 workflows). Results in weeks." />
+        <meta name="keywords" content="AI solutions, business improvement, workflow implementation, fixed pricing" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -145,7 +145,7 @@ const AISolutions = () => {
               Solutions That Deliver Measurable Results
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-              Choose your package based on where you are in your automation journey. Every solution includes implementation, training, and KPI tracking.
+              Choose your package based on where you are today. Every solution includes implementation, training, and KPI tracking.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">

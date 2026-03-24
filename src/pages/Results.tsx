@@ -64,14 +64,14 @@ const Results = () => {
   return (
     <>
       <Helmet>
-        <title>AI Case Studies & Results | Teamsmiths</title>
+        <title>Case Studies & Results | Teamsmiths</title>
         <meta
           name="description"
-          content="See real AI-powered results from UK SMEs. Measurable outcomes including time saved, revenue increased, and costs reduced through our AI workflows."
+          content="Real results from real businesses. Measurable outcomes including time saved, revenue increased, and costs reduced."
         />
         <meta
           name="keywords"
-          content="AI case studies, business automation results, UK SME AI, AI ROI, automation success stories"
+          content="case studies, business results, AI ROI, success stories"
         />
       </Helmet>
 
@@ -81,10 +81,10 @@ const Results = () => {
           <div className="max-w-7xl mx-auto text-center">
             <Badge className="mb-4">Case Studies</Badge>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-              Real AI Results from Real Businesses
+              Real Results from Real Businesses
             </h1>
             <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-              Every project we take on, we measure. See how UK SMEs are using our AI workflows to save time, increase revenue, and reduce costs.
+              Every project we take on, we measure. See how businesses are using our solutions to save time, increase revenue, and reduce costs.
             </p>
           </div>
         </section>
@@ -109,10 +109,10 @@ const Results = () => {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                AI Workflows in Action
+                Workflows in Action
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Each case study shows the challenge, the AI solution deployed, and the measurable results achieved.
+                Each case study shows the challenge, the solution deployed, and the measurable results achieved.
               </p>
             </div>
 
@@ -158,18 +158,18 @@ const Results = () => {
               Ready to achieve similar results?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a free AI diagnostic call and we'll identify the AI workflows that will deliver the biggest impact for your business.
+              Book a free diagnostic call and we'll identify the workflows that will deliver the biggest impact for your business.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free AI diagnostic
+                  Book your free diagnostic
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 h-auto">
                 <Link to="/solutions">
-                  Explore AI Solutions
+                  Explore Solutions
                 </Link>
               </Button>
             </div>

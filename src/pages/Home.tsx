@@ -56,14 +56,14 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Turn Automation into Results in Weeks | Teamsmiths</title>
+        <title>Turn AI Into Results in Weeks | Teamsmiths</title>
         <meta
           name="description"
-          content="Do significantly more with less by automating your repetitive work, boosting revenue, and cutting costs. Fixed pricing, measurable outcomes."
+          content="Do significantly more with less by applying AI to your repetitive work, boosting revenue, and cutting costs. Fixed pricing, measurable outcomes."
         />
         <meta
           name="keywords"
-          content="automation, business automation, cost reduction, revenue growth, workflows"
+          content="AI solutions, business AI, cost reduction, revenue growth, workflows"
         />
       </Helmet>
 
@@ -76,7 +76,7 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-                Make better decisions. Execute faster. See results in weeks.
+                Better decisions. Faster execution. Results in weeks.
               </h1>
               <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
                 Reduce friction. Increase output. No extra headcount.
@@ -124,15 +124,15 @@ const Home = () => {
           </div>
         </section>
 
-        {/* AUTOMATION JOURNEY - 3 Steps */}
+        {/* HOW WE WORK - 3 Steps */}
         <section id="how-it-works" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6">
-                Your Automation Journey
+                How We Work
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-                Three steps from identifying opportunities to scaling across your business
+                Three steps from finding high-impact opportunities to scaling results
               </p>
             </div>
 
@@ -147,7 +147,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Identify high-impact automation use cases within your current processes. We analyse where automation will deliver the biggest ROI.
+                    Identify high-impact use cases within your current processes. We pinpoint where AI will deliver the biggest ROI.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -204,7 +204,7 @@ const Home = () => {
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">Results</h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-                Real projects, real workflows, measurable outcomes
+                Real projects. Measurable outcomes.
               </p>
             </div>
 
@@ -257,10 +257,10 @@ const Home = () => {
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24 bg-muted/30">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10 px-4">
-              Ready to see what automation can do for your business?
+              Ready to see what AI can do for your business?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a free 30-minute diagnostic call. We'll identify your highest-impact automation opportunities and show you exactly what's possible.
+              Book a free 30-minute diagnostic call. We'll identify your highest-impact opportunities and show you exactly what's possible.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">
