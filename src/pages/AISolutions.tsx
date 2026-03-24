@@ -97,9 +97,9 @@ const AISolutions = () => {
     { feature: 'Team Training', starter: 'Basic', growth: 'Comprehensive', scale: 'Advanced + ongoing' },
     { feature: 'KPI Dashboard', starter: true, growth: true, scale: true },
     { feature: 'Implementation Time', starter: '1–2 weeks', growth: '2–4 weeks', scale: '4–8 weeks' },
-    { feature: 'Support', starter: 'Email (30 days)', growth: 'Priority (60 days)', scale: 'Dedicated account team' },
-    { feature: 'Custom Integrations', starter: false, growth: 'Basic', scale: 'Full custom' },
-    { feature: 'Strategy Session', starter: false, growth: '1 session', scale: 'Quarterly' },
+    { feature: 'Support', starter: 'Team (30 days)', growth: 'Team (45 days)', scale: 'Dedicated account team (60 days)' },
+    { feature: 'Custom Integrations', starter: 'Standard', growth: 'Premium', scale: 'Full custom' },
+    { feature: 'Strategy Sessions', starter: '1', growth: '3', scale: '7' },
   ];
 
   const faqs = [
