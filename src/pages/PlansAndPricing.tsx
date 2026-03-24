@@ -70,8 +70,8 @@ const PlansAndPricing = () => {
         '7 workflows',
         'Advanced training + ongoing',
         'Full custom integrations',
-        'Quarterly AI strategy sessions',
-        'Dedicated account team'
+        '7 strategy sessions',
+        'Dedicated account team + 60 days support'
       ],
       outcomes: 'Complete AI roadmap, real-time BI',
       icon: <BarChart3 className="h-8 w-8" />,
