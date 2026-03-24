@@ -29,7 +29,9 @@ const AISolutions = () => {
         '1 automation workflow',
         'Basic team training',
         'KPI dashboard setup',
-        'Email support for 30 days'
+        'Team support for 30 days',
+        'Standard integrations',
+        '1 strategy session'
       ],
       outcomes: [
         'Save 5–10 hours per week',
@@ -51,9 +53,9 @@ const AISolutions = () => {
         'Everything in Starter',
         '3 automation workflows',
         'Comprehensive team training',
-        'Basic integrations',
-        '1 strategy session',
-        'Priority support for 60 days'
+        'Premium integrations',
+        '3 strategy sessions',
+        'Team support for 45 days'
       ],
       outcomes: [
         'Increase win rates by 20%',
@@ -76,8 +78,8 @@ const AISolutions = () => {
         '7 workflows',
         'Advanced training + ongoing',
         'Full custom integrations',
-        'Quarterly strategy sessions',
-        'Dedicated account team'
+        '7 strategy sessions',
+        'Dedicated account team + 60 days support'
       ],
       outcomes: [
         'Full automation roadmap',
@@ -95,9 +97,9 @@ const AISolutions = () => {
     { feature: 'Team Training', starter: 'Basic', growth: 'Comprehensive', scale: 'Advanced + ongoing' },
     { feature: 'KPI Dashboard', starter: true, growth: true, scale: true },
     { feature: 'Implementation Time', starter: '1–2 weeks', growth: '2–4 weeks', scale: '4–8 weeks' },
-    { feature: 'Support', starter: 'Email (30 days)', growth: 'Priority (60 days)', scale: 'Dedicated account team' },
-    { feature: 'Custom Integrations', starter: false, growth: 'Basic', scale: 'Full custom' },
-    { feature: 'Strategy Session', starter: false, growth: '1 session', scale: 'Quarterly' },
+    { feature: 'Support', starter: 'Team (30 days)', growth: 'Team (45 days)', scale: 'Dedicated account team (60 days)' },
+    { feature: 'Custom Integrations', starter: 'Standard', growth: 'Premium', scale: 'Full custom' },
+    { feature: 'Strategy Sessions', starter: '1', growth: '3', scale: '7' },
   ];
 
   const faqs = [
@@ -119,7 +121,7 @@ const AISolutions = () => {
     },
     {
       question: 'Do you offer ongoing support after implementation?',
-      answer: 'Yes. Each tier includes a support period (30–60 days). For ongoing optimization, we offer a monthly retainer called Outcomes Assurance starting at £295/month.'
+      answer: 'Yes. Each tier includes team support (30–60 days depending on tier). For ongoing optimization, we offer a monthly retainer called Outcomes Assurance starting at £295/month.'
     },
     {
       question: 'What about culture, motivation, or coaching services?',

@@ -29,7 +29,9 @@ const PlansAndPricing = () => {
         '1–2 automation workflows',
         'Basic team training',
         'KPI dashboard setup',
-        'Email support for 30 days'
+        'Team support for 30 days',
+        'Standard integrations',
+        '1 strategy session'
       ],
       outcomes: 'Save 5–10 hours/week, 80% error reduction',
       icon: <Zap className="h-8 w-8" />,
@@ -47,9 +49,9 @@ const PlansAndPricing = () => {
         'Everything in Starter',
         '3–4 AI workflows',
         'Comprehensive team training',
-        'Basic integrations',
-        '1 AI strategy session',
-        'Priority support for 60 days'
+        'Premium integrations',
+        '3 strategy sessions',
+        'Team support for 45 days'
       ],
       outcomes: '20% higher win rates, 32% faster quotes',
       icon: <TrendingUp className="h-8 w-8" />,
@@ -68,8 +70,8 @@ const PlansAndPricing = () => {
         '7 workflows',
         'Advanced training + ongoing',
         'Full custom integrations',
-        'Quarterly AI strategy sessions',
-        'Dedicated account team'
+        '7 strategy sessions',
+        'Dedicated account team + 60 days support'
       ],
       outcomes: 'Complete AI roadmap, real-time BI',
       icon: <BarChart3 className="h-8 w-8" />,
@@ -96,7 +98,7 @@ const PlansAndPricing = () => {
     },
     {
       question: 'Do you offer ongoing support after implementation?',
-      answer: 'Yes. Each tier includes a support period (30–60 days). For ongoing optimization, we offer a monthly retainer called Outcomes Assurance starting at £295/month.'
+      answer: 'Yes. Each tier includes team support (30–60 days depending on tier). For ongoing optimization, we offer a monthly retainer called Outcomes Assurance starting at £295/month.'
     },
     {
       question: 'What about culture, motivation, or coaching services?',
