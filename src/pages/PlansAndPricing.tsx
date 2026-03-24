@@ -49,9 +49,9 @@ const PlansAndPricing = () => {
         'Everything in Starter',
         '3–4 AI workflows',
         'Comprehensive team training',
-        'Basic integrations',
-        '1 AI strategy session',
-        'Priority support for 60 days'
+        'Premium integrations',
+        '3 strategy sessions',
+        'Team support for 45 days'
       ],
       outcomes: '20% higher win rates, 32% faster quotes',
       icon: <TrendingUp className="h-8 w-8" />,
