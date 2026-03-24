@@ -91,7 +91,7 @@ const AISolutions = () => {
 
   const comparisonFeatures = [
     { feature: 'Opportunity Scan', starter: true, growth: true, scale: true },
-    { feature: 'Workflow Implementation', starter: '1 workflow', growth: '3 workflows', scale: 'Unlimited' },
+    { feature: 'Workflow Implementation', starter: '1 workflow', growth: '3 workflows', scale: '7 workflows' },
     { feature: 'Team Training', starter: 'Basic', growth: 'Comprehensive', scale: 'Advanced + ongoing' },
     { feature: 'KPI Dashboard', starter: true, growth: true, scale: true },
     { feature: 'Implementation Time', starter: '1–2 weeks', growth: '2–4 weeks', scale: '4–8 weeks' },
