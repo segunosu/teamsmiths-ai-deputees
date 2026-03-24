@@ -29,7 +29,9 @@ const PlansAndPricing = () => {
         '1–2 automation workflows',
         'Basic team training',
         'KPI dashboard setup',
-        'Email support for 30 days'
+        'Team support for 30 days',
+        'Standard integrations',
+        '1 strategy session'
       ],
       outcomes: 'Save 5–10 hours/week, 80% error reduction',
       icon: <Zap className="h-8 w-8" />,
