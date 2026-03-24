@@ -78,8 +78,8 @@ const AISolutions = () => {
         '7 workflows',
         'Advanced training + ongoing',
         'Full custom integrations',
-        'Quarterly strategy sessions',
-        'Dedicated account team'
+        '7 strategy sessions',
+        'Dedicated account team + 60 days support'
       ],
       outcomes: [
         'Full automation roadmap',
