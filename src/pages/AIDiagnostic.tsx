@@ -23,7 +23,7 @@ const AIDiagnostic = () => {
   }, [trackEvent]);
 
   const assessmentBenefits = [
-    "Identify your highest-impact automation opportunities",
+    "Identify your highest-impact improvement opportunities",
     "Get a personalised implementation roadmap",
     "Understand your current readiness level",
     "Receive specific workflow recommendations",
@@ -36,11 +36,11 @@ const AIDiagnostic = () => {
         <title>Free Diagnostic & Roadmap | Teamsmiths</title>
         <meta
           name="description"
-          content="Book a free diagnostic to get a personalised roadmap for automation. Understand where automation can deliver the biggest impact for your business."
+          content="Book a free diagnostic to get a personalised roadmap for AI implementation. Understand where AI can deliver the biggest impact for your business."
         />
         <meta
           name="keywords"
-          content="automation assessment, business diagnostic, automation roadmap"
+          content="AI assessment, business diagnostic, implementation roadmap"
         />
       </Helmet>
 
@@ -55,7 +55,7 @@ const AIDiagnostic = () => {
                   Diagnostic & Roadmap
                 </h1>
                 <p className="text-xl text-muted-foreground mb-8">
-                  Discover where automation can deliver the biggest impact for your business. 
+                  Discover where AI can deliver the biggest impact for your business. 
                   Our free diagnostic analyses your processes and generates a personalised implementation roadmap.
                 </p>
                 
@@ -112,7 +112,7 @@ const AIDiagnostic = () => {
                 How the Diagnostic Works
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                A simple three-step process to your automation roadmap
+                A simple three-step process to your implementation roadmap
               </p>
             </div>
 
@@ -128,7 +128,7 @@ const AIDiagnostic = () => {
                 <div className="text-5xl font-bold text-primary mb-4">2</div>
                 <h3 className="text-xl font-semibold mb-2">Discuss Your Processes</h3>
                 <p className="text-muted-foreground">
-                  We'll analyse your current workflows and identify automation opportunities
+                  We'll analyse your current workflows and identify improvement opportunities
                 </p>
               </div>
               <div className="text-center">
@@ -168,7 +168,7 @@ const AIDiagnostic = () => {
               Prefer to self-assess?
             </h2>
             <p className="text-muted-foreground mb-6">
-              Take our Readiness Assessment to get an initial understanding of your automation opportunities before booking a call.
+              Take our Readiness Assessment to get an initial understanding of your improvement opportunities before booking a call.
             </p>
             <Button asChild variant="outline" size="lg">
               <Link to="/ai-impact-maturity">
@@ -183,7 +183,7 @@ const AIDiagnostic = () => {
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-primary text-primary-foreground">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-4xl font-bold mb-6">
-              Ready to discover your automation opportunities?
+              Ready to discover your biggest opportunities?
             </h2>
             <p className="text-lg text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
               Book a free 30-minute diagnostic and get actionable insights you can use immediately.
