@@ -53,9 +53,9 @@ const AISolutions = () => {
         'Everything in Starter',
         '3 automation workflows',
         'Comprehensive team training',
-        'Basic integrations',
-        '1 strategy session',
-        'Priority support for 60 days'
+        'Premium integrations',
+        '3 strategy sessions',
+        'Team support for 45 days'
       ],
       outcomes: [
         'Increase win rates by 20%',
