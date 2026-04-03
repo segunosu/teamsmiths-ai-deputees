@@ -16,11 +16,9 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const navigationItems = [
-  { label: 'Home', path: '/', tooltip: 'Automation results for growing businesses' },
   { label: 'Solutions', path: '/solutions', tooltip: 'Packages with fixed pricing' },
   { label: 'Results', path: '/results', tooltip: 'Case studies with measurable outcomes' },
-  { label: 'About', path: '/about', tooltip: 'Our mission and methodology' },
-  { label: 'Contact', path: '/contact', tooltip: 'Get in touch' },
+  { label: 'Outcome Sprints', path: '/outcome-sprints', tooltip: 'Build something real in 60–90 minutes' },
 ];
 
 export const Navigation = () => {
@@ -137,11 +135,8 @@ export const Navigation = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                <Button asChild variant="ghost">
-                  <Link to="/auth">Sign In</Link>
-                </Button>
                 <Button asChild>
-                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book your free diagnostic</a>
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book diagnostic</a>
                 </Button>
               </div>
             )}
@@ -167,28 +162,6 @@ export const Navigation = () => {
         {isMenuOpen && (
           <div className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-border">
-              {/* Primary CTAs for mobile visibility */}
-              <div className="grid grid-cols-2 gap-1 mb-4">
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="justify-start h-10"
-                >
-                  <Link to="/solutions" onClick={() => setIsMenuOpen(false)}>Solutions</Link>
-                </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className="justify-start h-10"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                    Book Diagnostic
-                  </a>
-                </Button>
-              </div>
-
               {/* Navigation Items */}
               {navigationItems.map((item) => (
                 <Link
@@ -242,14 +215,9 @@ export const Navigation = () => {
                   </div>
                 ) : (
                   <div className="space-y-1">
-                    <Button asChild variant="ghost" className="w-full justify-start">
-                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                        Sign In
-                      </Link>
-                    </Button>
                     <Button asChild className="w-full justify-start">
                       <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>
-                        Book your free diagnostic
+                        Book diagnostic
                       </a>
                     </Button>
                   </div>
