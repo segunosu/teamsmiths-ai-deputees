@@ -107,7 +107,7 @@ const Home = () => {
               </div>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-center max-w-md sm:max-w-none mx-auto">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-start max-w-md sm:max-w-none mx-auto">
                 <div className="flex flex-col items-center">
                   <Button
                     asChild
@@ -126,7 +126,7 @@ const Home = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
+                  className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto self-center sm:self-start"
                   asChild
                 >
                   <Link to="/outcome-sprints">
