@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Zap, TrendingUp, BarChart3, Clock, Target, HelpCircle, Rocket } from 'lucide-react';
+import { CheckCircle, ArrowRight, Zap, TrendingUp, BarChart3, Clock, Target, HelpCircle, Rocket, Sparkles } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 const AISolutions = () => {
@@ -15,31 +15,52 @@ const AISolutions = () => {
     trackEvent('solutions_view' as any, {} as any);
   }, [trackEvent]);
 
-  const tiers = [
+  const kickstartTiers = [
     {
-      id: 'kickstart',
-      name: 'Kickstart',
-      subtitle: 'Launch fast',
+      id: 'kickstart-core',
+      name: 'Kickstart Core',
       price: '£1,295',
-      workflows: '1–2 workflows',
-      timeline: '2–3 weeks',
-      description: 'Launch a product, workflow, or business in weeks — not months.',
+      description: 'Turn your idea into a clear, validated business direction and working system.',
       includes: [
-        'Direction / concept validation',
-        'Basic website or landing page',
-        '1–2 workflows',
+        'Idea validation and concept refinement',
+        'Market and competitor research',
+        'Clear business model and direction',
+        'Initial system or workflow (based on highest impact area)',
         '2 strategy sessions',
         '14–30 days support',
       ],
       outcomes: [
-        'Launch with near-zero headcount',
-        'Reduce setup time by 80%',
-        'Clear go-to-market roadmap',
+        'Clear, validated direction',
+        'Defined go-to-market approach',
+        'First working system or workflow',
       ],
       icon: <Rocket className="h-8 w-8" />,
       popular: false,
-      funnelNote: 'Next step after an Outcome Sprint',
     },
+    {
+      id: 'kickstart-build',
+      name: 'Kickstart Build',
+      price: '£1,895',
+      description: 'Go further — build and launch a working business system.',
+      includes: [
+        'Everything in Core PLUS:',
+        'Deeper research and validation',
+        'Cashflow / commercial thinking (high-level)',
+        '2–3 production-ready workflows',
+        'Website, PWA app, or system (based on use case)',
+        'Stronger execution support',
+      ],
+      outcomes: [
+        'Working business system (not just plan)',
+        'Faster launch with reduced risk',
+        'Ready-to-run foundation',
+      ],
+      icon: <Sparkles className="h-8 w-8" />,
+      popular: true,
+    },
+  ];
+
+  const solutionTiers = [
     {
       id: 'starter',
       name: 'Starter',
@@ -64,7 +85,6 @@ const AISolutions = () => {
       ],
       icon: <Zap className="h-8 w-8" />,
       popular: false,
-      funnelNote: null,
     },
     {
       id: 'growth',
@@ -89,7 +109,6 @@ const AISolutions = () => {
       ],
       icon: <TrendingUp className="h-8 w-8" />,
       popular: true,
-      funnelNote: null,
     },
     {
       id: 'scale',
@@ -114,27 +133,28 @@ const AISolutions = () => {
       ],
       icon: <BarChart3 className="h-8 w-8" />,
       popular: false,
-      funnelNote: null,
     },
   ];
 
   const comparisonFeatures = [
-    { feature: 'Opportunity Scan', kickstart: '—', starter: true, growth: true, scale: true },
-    { feature: 'Concept Validation', kickstart: true, starter: '—', growth: '—', scale: '—' },
-    { feature: 'Website / Landing Page', kickstart: 'Basic', starter: '—', growth: '—', scale: '—' },
-    { feature: 'Workflow Implementation', kickstart: '1–2 workflows', starter: '1 workflow', growth: '3 workflows', scale: '7 workflows' },
-    { feature: 'Team Training', kickstart: '—', starter: 'Basic', growth: 'Comprehensive', scale: 'Advanced + ongoing' },
-    { feature: 'KPI Dashboard', kickstart: '—', starter: true, growth: true, scale: true },
-    { feature: 'Implementation Time', kickstart: '2–3 weeks', starter: '1–2 weeks', growth: '2–4 weeks', scale: '4–8 weeks' },
-    { feature: 'Support', kickstart: '14–30 days', starter: 'Team (30 days)', growth: 'Team (45 days)', scale: 'Dedicated account team (60 days)' },
-    { feature: 'Custom Integrations', kickstart: '—', starter: 'Standard', growth: 'Premium', scale: 'Full custom' },
-    { feature: 'Strategy Sessions', kickstart: '2', starter: '1', growth: '3', scale: '7' },
+    { feature: 'Opportunity Scan', starter: true, growth: true, scale: true },
+    { feature: 'Workflow Implementation', starter: '1 workflow', growth: '3 workflows', scale: '7 workflows' },
+    { feature: 'Team Training', starter: 'Basic', growth: 'Comprehensive', scale: 'Advanced + ongoing' },
+    { feature: 'KPI Dashboard', starter: true, growth: true, scale: true },
+    { feature: 'Implementation Time', starter: '1–2 weeks', growth: '2–4 weeks', scale: '4–8 weeks' },
+    { feature: 'Support', starter: 'Team (30 days)', growth: 'Team (45 days)', scale: 'Dedicated account team (60 days)' },
+    { feature: 'Custom Integrations', starter: 'Standard', growth: 'Premium', scale: 'Full custom' },
+    { feature: 'Strategy Sessions', starter: '1', growth: '3', scale: '7' },
   ];
 
   const faqs = [
     {
       question: 'What is an Outcome Sprint?',
       answer: 'An Outcome Sprint is a 60–90 minute facilitated session where you build a working workflow, roadmap, or business concept. Available on-demand (£29–£49), live online (£79–£129), or live in-person (£149–£295). Each attendee leaves with tangible deliverables and clear next actions. Optional retainer available for ongoing improvements.',
+    },
+    {
+      question: 'What\'s the difference between Kickstart Core and Kickstart Build?',
+      answer: 'Kickstart Core (£1,295) gives you a validated direction, business model, and your first working system. Kickstart Build (£1,895) goes further — you get a production-ready business system including website, app, or platform, plus deeper research and commercial thinking.',
     },
     {
       question: 'When will we see results?',
@@ -150,7 +170,7 @@ const AISolutions = () => {
     },
     {
       question: 'Can I upgrade tiers later?',
-      answer: 'Absolutely. Many clients start with Kickstart or Starter to prove value, then upgrade to Growth or Scale. Your initial investment is credited toward larger projects.',
+      answer: 'Absolutely. Many clients start with an Outcome Sprint or Kickstart to prove value, then upgrade to Growth or Scale. Your initial investment is credited toward larger projects.',
     },
     {
       question: 'Do you offer ongoing support after implementation?',
@@ -162,8 +182,8 @@ const AISolutions = () => {
     <>
       <Helmet>
         <title>Solutions | Teamsmiths — Results-Driven Execution for Growing Businesses</title>
-        <meta name="description" content="Fixed-price solutions. Kickstart £1,295, Starter £795, Growth £1,950, Scale £4,950. Results in weeks, not months." />
-        <meta name="keywords" content="business solutions, workflow implementation, fixed pricing, execution" />
+        <meta name="description" content="Validate, design, and launch the right business or product — fast. Kickstart from £1,295. Solutions from £795 to £4,950. Results in weeks." />
+        <meta name="keywords" content="business solutions, workflow implementation, fixed pricing, execution, kickstart" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -190,12 +210,100 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Tiers Grid */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        {/* Kickstart Section — Separate */}
+        <section id="kickstart" className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-5xl mx-auto">
+            <p className="text-center text-sm font-medium text-primary mb-2">Start with clarity. Build what actually works.</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-2">Start something new (or rebuild)</h2>
+            <p className="text-center text-sm text-muted-foreground mb-3">Validate, design, and launch the right business or product — fast.</p>
+            <p className="text-center text-xs text-muted-foreground mb-10">
+              <Badge variant="secondary" className="text-xs">Next step after an Outcome Sprint</Badge>
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {kickstartTiers.map((tier) => (
+                <Card
+                  key={tier.id}
+                  className={`relative shadow-lg hover:shadow-xl transition-all duration-300 ${
+                    tier.popular ? 'border-primary ring-2 ring-primary/20' : 'border-border'
+                  }`}
+                >
+                  {tier.popular && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-primary text-primary-foreground px-4 py-1">
+                        Most Complete
+                      </Badge>
+                    </div>
+                  )}
+
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="p-2 bg-primary/10 rounded-xl">
+                        {tier.icon}
+                      </div>
+                      <div>
+                        <CardTitle className="text-xl font-bold">{tier.name}</CardTitle>
+                      </div>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-primary">{tier.price}</span>
+                    </div>
+                    <p className="text-muted-foreground mt-3 text-sm">{tier.description}</p>
+                  </CardHeader>
+
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">What's Included:</h4>
+                      <ul className="space-y-1.5">
+                        {tier.includes.map((item, index) => (
+                          <li key={index} className="flex items-start gap-2 text-sm">
+                            <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold mb-2 text-sm">Typical Outcomes:</h4>
+                      <ul className="space-y-1.5">
+                        {tier.outcomes.map((outcome, index) => (
+                          <li key={index} className="flex items-start gap-2 text-sm">
+                            <Target className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                            <span className="font-medium">{outcome}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <Button
+                      className="w-full"
+                      size="lg"
+                      variant={tier.popular ? "default" : "outline"}
+                      asChild
+                    >
+                      <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                        Get Started with {tier.name}
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Solutions Tiers Grid */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-4 gap-6">
-              {tiers.map((tier) => (
-                <Card 
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-2">Ongoing Solutions</h2>
+            <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
+              For teams ready to improve, grow, or transform existing operations.
+            </p>
+
+            <div className="grid lg:grid-cols-3 gap-6">
+              {solutionTiers.map((tier) => (
+                <Card
                   key={tier.id}
                   className={`relative shadow-lg hover:shadow-xl transition-all duration-300 ${
                     tier.popular ? 'border-primary ring-2 ring-primary/20' : 'border-border'
@@ -208,7 +316,7 @@ const AISolutions = () => {
                       </Badge>
                     </div>
                   )}
-                  
+
                   <CardHeader className="pb-4">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="p-2 bg-primary/10 rounded-xl">
@@ -232,12 +340,9 @@ const AISolutions = () => {
                         <span>{tier.timeline}</span>
                       </div>
                     </div>
-                    {tier.funnelNote && (
-                      <Badge variant="secondary" className="w-fit mt-2 text-xs">{tier.funnelNote}</Badge>
-                    )}
                     <p className="text-muted-foreground mt-3 text-sm">{tier.description}</p>
                   </CardHeader>
-                  
+
                   <CardContent className="space-y-4">
                     <div>
                       <h4 className="font-semibold mb-2 text-sm">What's Included:</h4>
@@ -250,7 +355,7 @@ const AISolutions = () => {
                         ))}
                       </ul>
                     </div>
-                    
+
                     <div>
                       <h4 className="font-semibold mb-2 text-sm">Typical Outcomes:</h4>
                       <ul className="space-y-1.5">
@@ -262,9 +367,9 @@ const AISolutions = () => {
                         ))}
                       </ul>
                     </div>
-                    
-                    <Button 
-                      className="w-full" 
+
+                    <Button
+                      className="w-full"
                       size="lg"
                       variant={tier.popular ? "default" : "outline"}
                       asChild
@@ -277,7 +382,7 @@ const AISolutions = () => {
                 </Card>
               ))}
             </div>
-            
+
             {/* Outcomes Assurance */}
             <div className="mt-12 max-w-3xl mx-auto">
               <Card className="bg-muted/30 border-dashed">
@@ -320,16 +425,15 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Comparison Table */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Compare Packages</h2>
+        {/* Comparison Table — Solutions only */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12">Compare Solutions</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b">
                     <th className="text-left py-4 px-3 font-semibold text-sm">Feature</th>
-                    <th className="text-center py-4 px-3 font-semibold text-sm">Kickstart</th>
                     <th className="text-center py-4 px-3 font-semibold text-sm">Starter</th>
                     <th className="text-center py-4 px-3 font-semibold text-sm bg-primary/5">Growth</th>
                     <th className="text-center py-4 px-3 font-semibold text-sm">Scale</th>
@@ -339,7 +443,7 @@ const AISolutions = () => {
                   {comparisonFeatures.map((row, index) => (
                     <tr key={index} className="border-b">
                       <td className="py-3 px-3 text-sm">{row.feature}</td>
-                      {(['kickstart', 'starter', 'growth', 'scale'] as const).map((col) => (
+                      {(['starter', 'growth', 'scale'] as const).map((col) => (
                         <td key={col} className={`text-center py-3 px-3 ${col === 'growth' ? 'bg-primary/5' : ''}`}>
                           {typeof row[col] === 'boolean' ? (
                             row[col] ? <CheckCircle className="h-5 w-5 text-success mx-auto" /> : <span className="text-muted-foreground">—</span>
@@ -357,10 +461,10 @@ const AISolutions = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-            
+
             <div className="space-y-4">
               {faqs.map((faq, index) => (
                 <Card key={index}>
@@ -376,7 +480,7 @@ const AISolutions = () => {
                 </Card>
               ))}
             </div>
-            
+
             <div className="text-center mt-12">
               <p className="text-muted-foreground mb-4">Have more questions?</p>
               <Button asChild variant="outline">
