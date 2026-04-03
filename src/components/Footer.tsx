@@ -14,16 +14,6 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
-          <div>
-            <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
-            <ul className="space-y-3">
-              <li><Link to="/outcome-sprints" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Outcome Sprints</Link></li>
-              <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Solutions</Link></li>
-              <li><Link to="/results" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Results</Link></li>
-            </ul>
-          </div>
-
           {/* Resources */}
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Resources</h3>
@@ -45,6 +35,9 @@ export const Footer = () => {
               <li><Link to="/terms" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Terms of Service</Link></li>
             </ul>
           </div>
+
+          {/* Empty for spacing */}
+          <div></div>
         </div>
 
         {/* Logo Section */}

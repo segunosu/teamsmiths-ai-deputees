@@ -11,6 +11,8 @@ import {
   Clock,
   Target,
   Zap,
+  Lightbulb,
+  BarChart3,
 } from "lucide-react";
 import { StickyMobileBar } from "@/components/ui/sticky-mobile-bar";
 import { useAnalytics } from "@/hooks/useAnalytics";
@@ -118,8 +120,8 @@ const Home = () => {
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                   asChild
                 >
-                  <Link to="/results">
-                    See case studies
+                  <Link to="/outcome-sprints">
+                    Join an Outcome Sprint
                   </Link>
                 </Button>
               </div>
@@ -222,7 +224,7 @@ const Home = () => {
               </div>
               <div className="flex items-center gap-2 text-sm font-medium">
                 <CheckCircle className="h-5 w-5 text-success" />
-                Optional retainer for ongoing improvements
+                Optional ongoing improvement available
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -314,8 +316,8 @@ const Home = () => {
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
-                <Link to="/results">
-                  See case studies
+                <Link to="/outcome-sprints">
+                  Join an Outcome Sprint
                 </Link>
               </Button>
             </div>
