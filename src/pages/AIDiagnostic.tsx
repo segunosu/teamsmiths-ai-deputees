@@ -36,11 +36,11 @@ const AIDiagnostic = () => {
         <title>Free Diagnostic & Roadmap | Teamsmiths</title>
         <meta
           name="description"
-          content="Book a free diagnostic to get a personalised roadmap for AI implementation. Understand where AI can deliver the biggest impact for your business."
+          content="Book a free diagnostic to get a personalised implementation roadmap. Understand where intelligent systems can deliver the biggest impact for your business."
         />
         <meta
           name="keywords"
-          content="AI assessment, business diagnostic, implementation roadmap"
+          content="business diagnostic, implementation roadmap, workflow assessment"
         />
       </Helmet>
 
