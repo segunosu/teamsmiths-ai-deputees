@@ -92,15 +92,11 @@ export const Navigation = () => {
           <div className="hidden lg:block">
             {user ? (
               <div className="flex items-center gap-2">
-                <NotificationSystem />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback>
-                          {user.user_metadata?.full_name?.[0] || user.email?.[0].toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
+                    <Button variant="ghost" size="sm" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+                      <User className="h-4 w-4 mr-1" />
+                      Account
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end">
