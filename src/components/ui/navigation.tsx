@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { LogOut, User, Menu, X, Shield } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import NotificationSystem from '@/components/NotificationSystem';
+import { Bell } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import {
   DropdownMenu,
