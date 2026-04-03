@@ -42,7 +42,7 @@ const OutcomeSprints = () => {
       features: [
         'Live facilitated session',
         'Breakout rooms for group work',
-        '3–5 leaders per group',
+        '3–5 attendees per group',
         'Real-time feedback & guidance',
       ],
     },
@@ -57,7 +57,7 @@ const OutcomeSprints = () => {
       features: [
         'Face-to-face facilitation',
         'Roundtable collaboration',
-        '3–5 leaders per table',
+        '3–5 attendees per table',
         'Networking with peers',
       ],
     },
