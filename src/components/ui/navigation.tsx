@@ -90,14 +90,22 @@ export const Navigation = () => {
           </div>
 
           {/* Desktop Auth */}
-          <div className="hidden lg:block">
-            {user ? (
-              <div className="flex items-center gap-2">
+          <div className="hidden lg:flex items-center">
+            {/* Primary CTA - always visible */}
+            <Button asChild size="sm" className="text-sm font-medium">
+              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                Book your free diagnostic
+              </a>
+            </Button>
+
+            {/* Secondary icons - logged in only, with spacing */}
+            {user && (
+              <div className="flex items-center gap-1 ml-6 pl-6 border-l border-border/50">
+                <NotificationSystem />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-                      <User className="h-4 w-4 mr-1" />
-                      Account
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground/60 hover:text-muted-foreground">
+                      <User className="h-3.5 w-3.5" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end">
@@ -129,12 +137,6 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Button asChild>
-                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">Book diagnostic</a>
-                </Button>
               </div>
             )}
           </div>
