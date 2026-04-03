@@ -56,14 +56,14 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Turn AI Into Results in Weeks | Teamsmiths</title>
+        <title>Better Decisions. Faster Execution. Results in Weeks | Teamsmiths</title>
         <meta
           name="description"
-          content="Do significantly more with less by applying AI to your repetitive work, boosting revenue, and cutting costs. Fixed pricing, measurable outcomes."
+          content="Reduce friction. Increase output. No extra headcount. Fixed pricing, measurable outcomes, results in weeks."
         />
         <meta
           name="keywords"
-          content="AI solutions, business AI, cost reduction, revenue growth, workflows"
+          content="business improvement, workflow execution, cost reduction, revenue growth"
         />
       </Helmet>
 
@@ -150,7 +150,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Identify high-impact use cases within your current processes. We pinpoint where AI will deliver the biggest ROI.
+                    Identify high-impact use cases within your current processes. We pinpoint where systems will deliver the biggest ROI.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -165,7 +165,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Deploy proven workflows to automate tasks, generate leads and support decision-making. Live in days, not months.
+                    Deploy proven workflows to streamline tasks, generate leads and support decision-making. Live in days, not months.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -180,7 +180,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Train your team, optimise results, and build a roadmap for continued adoption. Ongoing support available.
+                    Train your team, optimise results, and build a roadmap for continued growth. Ongoing support available.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -201,8 +201,48 @@ const Home = () => {
           </div>
         </section>
 
+        {/* OUTCOME SPRINT SECTION */}
+        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">
+              Start with an Outcome Sprint
+            </h2>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+              Build a workflow, roadmap, or business idea in 60–90 minutes.<br />
+              Small groups. Facilitated execution. Immediate value.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <CheckCircle className="h-5 w-5 text-success" />
+                Low-risk starting point
+              </div>
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <CheckCircle className="h-5 w-5 text-success" />
+                3–5 leaders per group
+              </div>
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <CheckCircle className="h-5 w-5 text-success" />
+                Optional retainer for ongoing improvements
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button size="lg" asChild>
+                <Link to="/outcome-sprints">
+                  Join the next Outcome Sprint
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link to="/outcome-sprints">
+                  Start on-demand
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* RESULTS / PROOF SECTION */}
-        <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+        <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">Results</h2>
@@ -257,13 +297,13 @@ const Home = () => {
         />
 
         {/* FINAL CTA */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24 bg-muted/30">
+        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10 px-4">
-              Ready to see what AI can do for your business?
+              Ready to see what's possible for your business?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a free 30-minute diagnostic call. We'll identify your highest-impact opportunities and show you exactly what's possible.
+              Book a free 30-minute diagnostic call. We'll identify your highest-impact opportunities and show you exactly what's achievable.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">

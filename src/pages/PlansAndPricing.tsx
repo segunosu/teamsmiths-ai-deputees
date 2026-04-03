@@ -23,10 +23,10 @@ const PlansAndPricing = () => {
       price: '£495',
       priceNote: 'one-time',
       timeline: '1–2 weeks',
-      description: 'Perfect for testing AI with quick wins',
+      description: 'Perfect for testing with quick wins',
       includes: [
         'Opportunity Scan',
-        '1–2 AI workflows',
+        '1–2 workflows',
         'Basic team training',
         'KPI dashboard setup',
         'Team support for 30 days',
@@ -44,10 +44,10 @@ const PlansAndPricing = () => {
       price: '£1,950',
       priceNote: 'one-time',
       timeline: '2–4 weeks',
-      description: 'Drive revenue with AI-powered sales',
+      description: 'Drive revenue with intelligent sales systems',
       includes: [
         'Everything in Starter',
-        '3–4 AI workflows',
+        '3–4 workflows',
         'Comprehensive team training',
         'Premium integrations',
         '3 strategy sessions',
@@ -64,7 +64,7 @@ const PlansAndPricing = () => {
       price: '£4,950',
       priceNote: 'starting price',
       timeline: '4–8 weeks',
-      description: 'Complete AI transformation for growth',
+      description: 'Complete transformation for growth',
       includes: [
         'Everything in Growth',
         '7 workflows',
@@ -109,9 +109,9 @@ const PlansAndPricing = () => {
   return (
     <>
       <Helmet>
-        <title>Plans & Pricing | AI Solutions for Growing Businesses | Teamsmiths</title>
-        <meta name="description" content="Transparent pricing for AI solutions. Starter from £495, Growth from £1,950, Scale from £4,950. Results in weeks." />
-        <meta name="keywords" content="AI pricing, business AI, implementation, fixed pricing" />
+        <title>Plans & Pricing | Solutions for Growing Businesses | Teamsmiths</title>
+        <meta name="description" content="Transparent pricing for business solutions. Starter from £495, Growth from £1,950, Scale from £4,950. Results in weeks." />
+        <meta name="keywords" content="business pricing, workflow implementation, fixed pricing" />
       </Helmet>
 
       <div className="min-h-screen bg-background">

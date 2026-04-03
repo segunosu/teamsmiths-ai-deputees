@@ -5,7 +5,7 @@ export const Footer = () => {
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-          {/* Company */}
+          {/* About */}
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Company</h3>
             <ul className="space-y-3">
@@ -18,9 +18,9 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Services</h3>
             <ul className="space-y-3">
+              <li><Link to="/outcome-sprints" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Outcome Sprints</Link></li>
               <li><Link to="/solutions" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Solutions</Link></li>
               <li><Link to="/results" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Results</Link></li>
-              <li><Link to="/add-ons" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Add-Ons</Link></li>
             </ul>
           </div>
 
