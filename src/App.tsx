@@ -64,6 +64,7 @@ import AIDiagnostic from "./pages/AIDiagnostic";
 import AISolutions from "./pages/AISolutions";
 import PlansAndPricing from "./pages/PlansAndPricing";
 import AddOns from "./pages/AddOns";
+import OutcomeSprints from "./pages/OutcomeSprints";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
