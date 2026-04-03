@@ -92,7 +92,7 @@ const AISolutions = () => {
     {
       id: 'growth',
       name: 'Growth',
-      subtitle: 'Marketing & Sales',
+      subtitle: 'Operations, Marketing & Sales',
       price: '£1,950',
       workflows: '3 workflows',
       timeline: '2–4 weeks',
