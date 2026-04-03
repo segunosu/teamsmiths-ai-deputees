@@ -197,6 +197,7 @@ const App = () => (
                   <Route path="/results" element={<Results />} />
                   <Route path="/resources" element={<Navigate to="/blog" replace />} />
                   <Route path="/ai-diagnostic" element={<AIDiagnostic />} />
+                  <Route path="/outcome-sprints" element={<OutcomeSprints />} />
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

@@ -19,7 +19,7 @@ const AddOns = () => {
     <>
       <Helmet>
         <title>Add-Ons: Culture, Motivation & Coaching | Teamsmiths</title>
-        <meta name="description" content="Optional add-ons to complement your AI workflows. Songita BusinessPack for team appreciation and Deputee-style coaching for ongoing growth." />
+        <meta name="description" content="Optional add-ons to complement your workflows. Songita BusinessPack for team appreciation and Deputee-style coaching for ongoing growth." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -31,7 +31,7 @@ const AddOns = () => {
               Culture & Motivation Add-Ons
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Once your core AI workflows are delivering ROI, boost team morale with these optional services.
+              Once your core workflows are delivering ROI, boost team morale with these optional services.
             </p>
           </div>
         </section>
@@ -54,7 +54,7 @@ const AddOns = () => {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <p className="text-muted-foreground">
-                    Celebrate achievements with custom team appreciation songs. AI-powered creativity, refined by real human producers for emotional resonance.
+                    Celebrate achievements with custom team appreciation songs. Creative production refined by real human producers for emotional resonance.
                   </p>
                   
                   <div>
@@ -153,16 +153,16 @@ const AddOns = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  We recommend adding motivation and coaching services <strong>after</strong> your core AI workflows are delivering measurable results. This ensures:
+                  We recommend adding motivation and coaching services <strong>after</strong> your core workflows are delivering measurable results. This ensures:
                 </p>
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                    <span>Your team has capacity freed up by automation</span>
+                    <span>Your team has capacity freed up by efficient systems</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                    <span>ROI from AI covers the investment in culture</span>
+                    <span>ROI from workflows covers the investment in culture</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
@@ -178,7 +178,7 @@ const AddOns = () => {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              Start with AI, Add Culture Later
+              Start with Execution, Add Culture Later
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
               Get your core workflows delivering results first. We'll help you identify the right time to invest in team culture.
@@ -186,12 +186,12 @@ const AddOns = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free AI diagnostic
+                  Book your free diagnostic
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/ai-solutions">View AI Solutions</Link>
+                <Link to="/solutions">View Solutions</Link>
               </Button>
             </div>
           </div>
