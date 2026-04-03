@@ -77,33 +77,37 @@ const Home = () => {
 
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-2 sm:mb-3 leading-[1.15]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-4 sm:mb-6 leading-[1.15]">
                 Better decisions. Faster execution.
               </h1>
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
+              <h2 className="text-xl sm:text-3xl lg:text-[2.75rem] font-semibold text-foreground/85 mb-3 sm:mb-4 leading-[1.2]">
                 Results in weeks.
               </h2>
-              <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-normal mb-10 sm:mb-14 max-w-3xl mx-auto leading-relaxed px-2">
                 Reduce friction. Increase output. No extra headcount.
               </p>
 
-              {/* Outcome-driven metrics */}
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center mb-8 sm:mb-10 text-base sm:text-lg">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-success" />
-                  <span className="font-medium">Save 5–10 hours per week</span>
+              {/* Proof points */}
+              <p className="text-xs sm:text-sm uppercase tracking-widest text-muted-foreground/70 font-medium mb-3">
+                Typical outcomes
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 justify-center items-center mb-12 sm:mb-14 text-sm sm:text-base">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock className="h-4 w-4 text-primary/70" />
+                  <span>Save 5–10 hours per week</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Target className="h-5 w-5 text-success" />
-                  <span className="font-medium">Increase win rates by 20%</span>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Target className="h-4 w-4 text-primary/70" />
+                  <span>Increase win rates by 20%</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-success" />
-                  <span className="font-medium">Reduce operational errors by 30%</span>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Zap className="h-4 w-4 text-primary/70" />
+                  <span>Reduce operational errors by 30%</span>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center mb-6 sm:mb-8 max-w-md sm:max-w-none mx-auto">
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-center mb-2 max-w-md sm:max-w-none mx-auto">
                 <Button
                   asChild
                   size="lg"
@@ -125,6 +129,9 @@ const Home = () => {
                   </Link>
                 </Button>
               </div>
+              <p className="text-xs sm:text-sm text-muted-foreground/60 mt-2">
+                15–20 minutes. Clear next steps.
+              </p>
             </div>
           </div>
         </section>
