@@ -20,20 +20,19 @@ const AISolutions = () => {
       id: 'kickstart-pro',
       name: 'Kickstart Pro',
       price: '£1,295',
-      tagline: 'Fastest way to get started',
-      description: 'Turn your idea or challenge into a clear direction and a working first system.',
+      tagline: 'Next step after an Outcome Sprint',
+      description: 'Validate your idea and launch with a working first system — fast.',
       includes: [
-        'Idea or problem definition and refinement',
-        'Targeted market and competitor snapshot',
-        'Clear direction and priorities',
-        'ONE working workflow or system (highest impact only)',
+        'Business research & concept validation (competitor scan + high-level plan)',
+        'PWA, website, or landing page',
+        '1–2 custom workflows (e.g. sales or marketing automation)',
         '2 strategy sessions',
         '14–30 days support',
       ],
       outcomes: [
-        'Clear direction',
-        'First working system',
-        'Defined next steps',
+        'Launch with near-zero headcount',
+        'Reduce setup time by 80%',
+        'Clear go-to-market roadmap',
       ],
       limitation: 'Designed for speed and focus — not full custom builds or complex systems.',
       icon: <Rocket className="h-8 w-8" />,
@@ -43,21 +42,20 @@ const AISolutions = () => {
       id: 'kickstart-plus',
       name: 'Kickstart Plus',
       price: '£1,895',
-      tagline: 'Best for turning ideas into working systems',
-      description: 'Build a stronger, more complete working system.',
+      tagline: 'Larger scope. Deeper build.',
+      description: 'For larger scope engagements that need more research and more workflows in place.',
       includes: [
-        'Deeper validation and refinement',
-        'Expanded research and commercial thinking',
-        '2–3 workflows or systems (defined upfront)',
-        'Website, PWA, or system (based on agreed scope)',
-        '2–3 strategy sessions',
-        'Extended support',
+        'Deeper market & competitor research with cash-flow forecasting',
+        'PWA or site plus up to 4 custom workflows',
+        '3 strategy sessions',
+        '30–45 days support',
       ],
       outcomes: [
-        'Working system aligned to your business',
-        'Faster execution with reduced risk',
+        'Stronger commercial foundation',
+        'More automation in place from day one',
+        'Confirmed deliverables and timeline after the Outcome Sprint',
       ],
-      limitation: 'Scope is defined upfront to ensure delivery — complex builds may require further phases.',
+      limitation: 'Final deliverables and timeline are confirmed after the Outcome Sprint.',
       icon: <Sparkles className="h-8 w-8" />,
       popular: true,
     },
@@ -266,7 +264,7 @@ const AISolutions = () => {
                   {tier.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                       <Badge className="bg-primary text-primary-foreground px-4 py-1">
-                        Most Complete
+                        Larger scope
                       </Badge>
                     </div>
                   )}
@@ -434,13 +432,15 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Ongoing Improvement */}
+        {/* Outcomes Assurance (optional retainer) */}
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-3xl mx-auto">
             <Card className="border-dashed">
               <CardHeader>
-                <CardTitle className="text-xl">Ongoing Improvement</CardTitle>
-                <CardDescription>Continue improving what you've built</CardDescription>
+                <CardTitle className="text-xl">Outcomes Assurance (optional retainer)</CardTitle>
+                <CardDescription>
+                  Added after a package is delivered — monthly KPI review, workflow tweaks, and priority support to keep results compounding.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -449,11 +449,11 @@ const AISolutions = () => {
                     <ul className="mt-3 space-y-1.5">
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                        KPI tracking
+                        Monthly KPI review
                       </li>
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                        Workflow upgrades
+                        Workflow tweaks
                       </li>
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
