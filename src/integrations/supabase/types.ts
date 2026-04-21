@@ -3553,6 +3553,33 @@ export type Database = {
           },
         ]
       }
+      sprints: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          sprint_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          sprint_date: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          sprint_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       standardized_quotes: {
         Row: {
           assumptions: string | null
@@ -3647,6 +3674,65 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          external_ref: string | null
+          external_url: string | null
+          id: string
+          labels: Json
+          position: number
+          priority: string
+          source: string
+          sprint_id: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          external_ref?: string | null
+          external_url?: string | null
+          id?: string
+          labels?: Json
+          position?: number
+          priority?: string
+          source?: string
+          sprint_id?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          external_ref?: string | null
+          external_url?: string | null
+          id?: string
+          labels?: Json
+          position?: number
+          priority?: string
+          source?: string
+          sprint_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_sprint_id_fkey"
+            columns: ["sprint_id"]
+            isOneToOne: false
+            referencedRelation: "sprints"
             referencedColumns: ["id"]
           },
         ]
@@ -4802,6 +4888,7 @@ export type Database = {
         }
         Returns: string
       }
+      ensure_sprints: { Args: never; Returns: undefined }
       get_autopilot_history: {
         Args: never
         Returns: {
