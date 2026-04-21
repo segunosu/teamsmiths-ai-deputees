@@ -154,6 +154,74 @@ const Results = () => {
           canNavigateNext={selectedCaseIndex >= 0 && selectedCaseIndex < (caseStudies?.length ?? 0) - 1}
         />
 
+        {/* Example Systems */}
+        <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10 sm:mb-14">
+              <Badge className="mb-4">Capability</Badge>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
+                Example systems we build
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Illustrative systems that show how we turn operational pain into a working solution.
+                Every implementation is shaped to the client.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+              {[
+                {
+                  icon: Factory,
+                  tag: "Manufacturing",
+                  title: "Production risk detection system",
+                  problem:
+                    "Production issues are spotted too late, orders slip, and revenue leaks before anyone can react.",
+                  href: "/examples/production-risk-system",
+                },
+                {
+                  icon: HardHat,
+                  tag: "Construction",
+                  title: "Project risk & revenue system",
+                  problem:
+                    "Construction projects overrun budgets and schedules because risks aren't surfaced early enough.",
+                  href: "/examples/project-risk-system",
+                },
+              ].map((sys) => (
+                <Card key={sys.href} className="flex flex-col p-6 sm:p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <sys.icon className="h-6 w-6" />
+                    </div>
+                    <Badge variant="secondary">{sys.tag}</Badge>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3">
+                    {sys.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-6 flex-1">{sys.problem}</p>
+                  <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                    <Button asChild variant="default" className="w-full sm:w-auto">
+                      <Link to={sys.href}>
+                        See how it works
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full sm:w-auto">
+                      <a
+                        href="https://calendly.com/osu/brief-chat"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <CalendarCheck className="mr-2 h-4 w-4" />
+                        Book a diagnostic
+                      </a>
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto text-center">
