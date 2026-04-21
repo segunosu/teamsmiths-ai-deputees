@@ -12,6 +12,9 @@ import {
   Clock,
   Users,
   Target,
+  Factory,
+  HardHat,
+  CalendarCheck,
 } from "lucide-react";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { Helmet } from "react-helmet-async";
