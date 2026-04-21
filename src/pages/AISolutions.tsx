@@ -266,7 +266,7 @@ const AISolutions = () => {
                   {tier.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                       <Badge className="bg-primary text-primary-foreground px-4 py-1">
-                        Most Complete
+                        Larger scope
                       </Badge>
                     </div>
                   )}
@@ -434,13 +434,15 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Ongoing Improvement */}
+        {/* Outcomes Assurance (optional retainer) */}
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-3xl mx-auto">
             <Card className="border-dashed">
               <CardHeader>
-                <CardTitle className="text-xl">Ongoing Improvement</CardTitle>
-                <CardDescription>Continue improving what you've built</CardDescription>
+                <CardTitle className="text-xl">Outcomes Assurance (optional retainer)</CardTitle>
+                <CardDescription>
+                  Added after a package is delivered — monthly KPI review, workflow tweaks, and priority support to keep results compounding.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -449,11 +451,11 @@ const AISolutions = () => {
                     <ul className="mt-3 space-y-1.5">
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                        KPI tracking
+                        Monthly KPI review
                       </li>
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                        Workflow upgrades
+                        Workflow tweaks
                       </li>
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
