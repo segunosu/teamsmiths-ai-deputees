@@ -65,6 +65,8 @@ import AISolutions from "./pages/AISolutions";
 import PlansAndPricing from "./pages/PlansAndPricing";
 import AddOns from "./pages/AddOns";
 import OutcomeSprints from "./pages/OutcomeSprints";
+import ExampleProductionRiskSystem from "./pages/ExampleProductionRiskSystem";
+import ExampleProjectRiskSystem from "./pages/ExampleProjectRiskSystem";
 
 // Lazy load components
 const Plans = React.lazy(() => import('./pages/Plans'));
@@ -198,6 +200,8 @@ const App = () => (
                   <Route path="/resources" element={<Navigate to="/blog" replace />} />
                   <Route path="/ai-diagnostic" element={<AIDiagnostic />} />
                   <Route path="/outcome-sprints" element={<OutcomeSprints />} />
+                  <Route path="/examples/production-risk-system" element={<ExampleProductionRiskSystem />} />
+                  <Route path="/examples/project-risk-system" element={<ExampleProjectRiskSystem />} />
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

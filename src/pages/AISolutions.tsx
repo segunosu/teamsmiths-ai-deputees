@@ -17,8 +17,8 @@ const AISolutions = () => {
 
   const kickstartTiers = [
     {
-      id: 'kickstart-core',
-      name: 'Kickstart Core',
+      id: 'kickstart-pro',
+      name: 'Kickstart Pro',
       price: '£1,295',
       tagline: 'Fastest way to get started',
       description: 'Turn your idea or challenge into a clear direction and a working first system.',
@@ -40,8 +40,8 @@ const AISolutions = () => {
       popular: false,
     },
     {
-      id: 'kickstart-build',
-      name: 'Kickstart Build',
+      id: 'kickstart-plus',
+      name: 'Kickstart Plus',
       price: '£1,895',
       tagline: 'Best for turning ideas into working systems',
       description: 'Build a stronger, more complete working system.',
@@ -158,8 +158,8 @@ const AISolutions = () => {
       answer: 'An Outcome Sprint is a 60–90 minute facilitated session where you build a working workflow, roadmap, or business concept. Available on-demand (£29–£49), live online (£79–£129), or live in-person (£149–£295). Each attendee leaves with tangible deliverables and clear next actions.',
     },
     {
-      question: 'What\'s the difference between Kickstart Core and Kickstart Build?',
-      answer: 'Kickstart Core (£1,295) gives you a validated direction, clear priorities, and your first working system. Kickstart Build (£1,895) goes further with deeper research, 2–3 workflows, and a complete working system. Both have defined scope to ensure delivery.',
+      question: 'What\'s the difference between Kickstart Pro and Kickstart Plus?',
+      answer: 'Kickstart Pro (£1,295) gives you a validated direction, clear priorities, and your first working system. Kickstart Plus (£1,895) goes further with deeper research, 2–3 workflows, and a complete working system. Both have defined scope to ensure delivery.',
     },
     {
       question: 'When will we see results?',
