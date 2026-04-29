@@ -4,7 +4,16 @@ import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Zap, Users, Monitor, Play, Clock, Target, TrendingUp } from 'lucide-react';
+import {
+  CheckCircle,
+  ArrowRight,
+  Zap,
+  Target,
+  TrendingUp,
+  FileText,
+  ClipboardCheck,
+  MessageSquare,
+} from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 const OutcomeSprints = () => {
@@ -15,87 +24,44 @@ const OutcomeSprints = () => {
     trackEvent('outcome_sprints_view' as any, {} as any);
   }, [trackEvent]);
 
-  const formats = [
-    {
-      id: 'on-demand',
-      icon: <Play className="h-8 w-8" />,
-      title: 'On-Demand',
-      subtitle: 'Recorded + guided execution',
-      price: '£29–£49',
-      launchPrice: null,
-      description: 'Work through the sprint at your own pace with recorded sessions and guided execution templates.',
-      features: [
-        'Pre-recorded facilitation',
-        'Step-by-step execution guide',
-        'Templates & frameworks included',
-        'Complete at your own pace',
-      ],
-    },
-    {
-      id: 'live-online',
-      icon: <Monitor className="h-8 w-8" />,
-      title: 'Live Online',
-      subtitle: 'Zoom with breakout rooms',
-      price: '£79–£129',
-      launchPrice: '£79',
-      description: 'Join a live facilitated session with breakout rooms for hands-on group work.',
-      features: [
-        'Live facilitated session',
-        'Breakout rooms for group work',
-        '3–5 attendees per group',
-        'Real-time feedback & guidance',
-      ],
-    },
-    {
-      id: 'live-in-person',
-      icon: <Users className="h-8 w-8" />,
-      title: 'Live In-Person',
-      subtitle: 'Roundtable sessions',
-      price: '£149–£295',
-      launchPrice: '£149',
-      description: 'Intensive in-person session with roundtable collaboration and direct facilitator access.',
-      features: [
-        'Face-to-face facilitation',
-        'Roundtable collaboration',
-        '3–5 attendees per table',
-        'Networking with peers',
-      ],
-    },
-  ];
-
   return (
     <>
       <Helmet>
-        <title>Outcome Sprints | Build Something Real in 60–90 Minutes | Teamsmiths</title>
-        <meta name="description" content="Build a working workflow, roadmap, or business concept in 60–90 minutes. Small groups. Facilitated execution. No fluff." />
-        <meta name="keywords" content="outcome sprint, business workshop, workflow building, rapid execution" />
+        <title>Discovery Sprint — 1:1 Paid Scoping (£495) | Teamsmiths</title>
+        <meta
+          name="description"
+          content="A 90-minute 1:1 working session that produces an AI Diagnostic Report — your top 3 high-impact opportunities, a detailed design for the first one, and a 90-day plan. £495 — credited to Kickstart if you proceed."
+        />
+        <meta name="keywords" content="ai discovery, ai diagnostic, ai scoping, paid scoping" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
         {/* Hero */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge variant="secondary" className="mb-6">Outcome Sprints</Badge>
+            <Badge variant="secondary" className="mb-6">Discovery Sprint</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-[1.1]">
-              Build something real in 60–90 minutes
+              A working diagnosis of your highest-impact AI opportunities — in 5 working days.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
-              Leave with a working workflow, roadmap, or business concept.
+              90 minutes 1:1 with a senior consultant. A branded AI Diagnostic Report you can share internally. A costed 90-day plan you can act on.
             </p>
-            <p className="text-lg text-muted-foreground font-medium mb-10">
-              Small groups. Facilitated execution. No fluff.
+            <p className="text-lg text-muted-foreground font-medium mb-2">
+              <span className="text-3xl font-bold text-primary">£495</span>
+              <span className="ml-2">— fully credited to Kickstart if you proceed within 60 days.</span>
+            </p>
+            <p className="text-sm text-muted-foreground mb-10">
+              No groups. No fluff. Built for SMB owners and senior leaders who want clarity, not a sales pitch.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Join the next Outcome Sprint
+                  Book your Discovery Sprint
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  See upcoming sessions
-                </a>
+                <a href="#what-you-get">What you get</a>
               </Button>
             </div>
           </div>
@@ -104,38 +70,38 @@ const OutcomeSprints = () => {
         {/* How It Works */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">How it works</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <Card className="text-center border-0 bg-card/80">
                 <CardHeader>
                   <div className="text-5xl font-bold text-primary mb-2">1</div>
-                  <CardTitle className="text-xl">Pre-Session Brief</CardTitle>
+                  <CardTitle className="text-xl">Pre-session brief</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    Share your idea, challenge, or goal. We prepare tailored materials and match you with the right group.
+                    A 15-minute async questionnaire. Top 3 friction points, current tools, team size, where you're losing time or money.
                   </CardDescription>
                 </CardContent>
               </Card>
               <Card className="text-center border-0 bg-card/80">
                 <CardHeader>
                   <div className="text-5xl font-bold text-primary mb-2">2</div>
-                  <CardTitle className="text-xl">Sprint Day</CardTitle>
+                  <CardTitle className="text-xl">90-minute working session</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    60–90 minutes of facilitated execution. Build your workflow, validate your concept, or map your roadmap with expert guidance.
+                    Live 1:1 with a senior consultant. Opportunity scan, workflow shortlist, ROI sizing, and a designed-on-the-call top pick.
                   </CardDescription>
                 </CardContent>
               </Card>
               <Card className="text-center border-0 bg-card/80">
                 <CardHeader>
                   <div className="text-5xl font-bold text-primary mb-2">3</div>
-                  <CardTitle className="text-xl">Follow-Up Pack</CardTitle>
+                  <CardTitle className="text-xl">AI Diagnostic Report</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    Receive your deliverables, action plan, and recommendations for next steps — ready to implement immediately.
+                    Branded PDF delivered within 5 working days. Top 3 opportunities ranked by £ impact, a working design for #1, and a 90-day plan.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -143,105 +109,143 @@ const OutcomeSprints = () => {
           </div>
         </section>
 
-        {/* Deliverables */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
+        {/* What You Leave With */}
+        <section id="what-you-get" className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">What You Leave With</h2>
-            <p className="text-lg text-muted-foreground mb-10">Every attendee walks away with tangible, usable outputs.</p>
-            <div className="grid sm:grid-cols-3 gap-6">
+            <h2 className="text-3xl font-bold mb-4">What you walk away with</h2>
+            <p className="text-lg text-muted-foreground mb-10">
+              An artifact you can share with your co-founder, FD, or board to make the next decision.
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="border-2">
                 <CardContent className="pt-6 text-center">
-                  <Target className="h-10 w-10 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">A Clear Roadmap</h3>
-                  <p className="text-sm text-muted-foreground">Prioritised steps to move from idea to execution.</p>
+                  <FileText className="h-10 w-10 text-primary mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">AI Diagnostic Report</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Your top 3 high-impact opportunities with £-impact estimates and confidence ranges.
+                  </p>
                 </CardContent>
               </Card>
               <Card className="border-2">
                 <CardContent className="pt-6 text-center">
-                  <Zap className="h-10 w-10 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">A Working Workflow</h3>
-                  <p className="text-sm text-muted-foreground">At least one functional workflow you can use immediately.</p>
+                  <Target className="h-10 w-10 text-primary mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">A working design</h3>
+                  <p className="text-sm text-muted-foreground">
+                    A detailed design for the first workflow — the one we'd build first if you proceed.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="border-2">
+                <CardContent className="pt-6 text-center">
+                  <ClipboardCheck className="h-10 w-10 text-primary mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">A 90-day plan</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Sequenced steps with timelines and the recommended next package.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="border-2">
+                <CardContent className="pt-6 text-center">
+                  <MessageSquare className="h-10 w-10 text-primary mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">30-day async Q&A</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Email follow-up window for clarifications after you've digested the report.
+                  </p>
                 </CardContent>
               </Card>
               <Card className="border-2">
                 <CardContent className="pt-6 text-center">
                   <CheckCircle className="h-10 w-10 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">Defined Next Actions</h3>
-                  <p className="text-sm text-muted-foreground">Clear steps for what to do after the sprint.</p>
+                  <h3 className="font-semibold text-lg mb-2">Credit toward Kickstart</h3>
+                  <p className="text-sm text-muted-foreground">
+                    The full £495 is credited toward Kickstart if you proceed within 60 days.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="border-2">
+                <CardContent className="pt-6 text-center">
+                  <Zap className="h-10 w-10 text-primary mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">A clear next step</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Either DIY from the report, upgrade to Kickstart, or walk away — your call.
+                  </p>
                 </CardContent>
               </Card>
             </div>
           </div>
         </section>
 
-        {/* Formats & Pricing */}
+        {/* Single Pricing Block */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4">Choose Your Format</h2>
-            <p className="text-center text-muted-foreground mb-12">Three ways to sprint — pick what works for you.</p>
-            <div className="grid lg:grid-cols-3 gap-8">
-              {formats.map((format) => (
-                <Card key={format.id} className={`shadow-lg hover:shadow-xl transition-all duration-300 ${format.id === 'live-online' ? 'border-primary ring-2 ring-primary/20' : ''}`}>
-                  {format.id === 'live-online' && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <Badge className="bg-primary text-primary-foreground px-4 py-1">Recommended</Badge>
-                    </div>
-                  )}
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-3 bg-primary/10 rounded-xl">{format.icon}</div>
-                      <div>
-                        <CardTitle className="text-xl">{format.title}</CardTitle>
-                        <CardDescription>{format.subtitle}</CardDescription>
-                      </div>
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold text-primary">{format.price}</span>
-                    </div>
-                    {format.launchPrice && (
-                      <Badge variant="secondary" className="w-fit mt-2">Launch price: {format.launchPrice}</Badge>
-                    )}
-                    <p className="text-muted-foreground mt-4 text-sm">{format.description}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 mb-6">
-                      {format.features.map((f, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Button className="w-full" variant={format.id === 'live-online' ? 'default' : 'outline'} asChild>
-                      <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                        {format.id === 'on-demand' ? 'Start on-demand' : 'Join the next sprint'}
-                      </a>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+          <div className="max-w-3xl mx-auto">
+            <Card className="border-2 border-primary shadow-lg">
+              <CardHeader className="text-center">
+                <Badge className="bg-primary text-primary-foreground px-4 py-1 mx-auto mb-3 w-fit">
+                  Discovery Sprint
+                </Badge>
+                <div className="flex items-baseline justify-center gap-2">
+                  <span className="text-5xl font-bold text-primary">£495</span>
+                </div>
+                <CardDescription className="text-base mt-3">
+                  90 minutes 1:1 with a senior consultant · AI Diagnostic Report · 30-day async Q&A · credited to Kickstart
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 mb-6 max-w-md mx-auto">
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                    <span>1:1 working session — no groups, no breakouts</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                    <span>Branded report you can share internally</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                    <span>Top 3 opportunities with £-impact estimates</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                    <span>30 days of async Q&A by email</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                    <span>Full £495 credit toward Kickstart within 60 days</span>
+                  </li>
+                </ul>
+                <Button className="w-full" size="lg" asChild>
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                    Book your Discovery Sprint
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
         {/* Conversion Path */}
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4">What Happens After Your Sprint</h2>
-            <p className="text-center text-muted-foreground mb-12">Three paths forward — you choose what fits.</p>
+            <h2 className="text-3xl font-bold text-center mb-4">After your sprint</h2>
+            <p className="text-center text-muted-foreground mb-12">Three paths forward — you choose.</p>
             <div className="grid md:grid-cols-3 gap-6">
               <Card className="text-center border-2">
                 <CardContent className="pt-6">
                   <div className="text-4xl font-bold text-muted-foreground/40 mb-3">DIY</div>
-                  <h3 className="font-semibold text-lg mb-2">Execute Yourself</h3>
-                  <p className="text-sm text-muted-foreground">Take your deliverables and run with them. You have everything you need.</p>
+                  <h3 className="font-semibold text-lg mb-2">Execute yourself</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Take the report and run with it. You have everything you need to brief your own team or freelancer.
+                  </p>
                 </CardContent>
               </Card>
               <Card className="text-center border-2 border-primary">
                 <CardContent className="pt-6">
-                  <Badge className="mb-3">Most Popular</Badge>
+                  <Badge className="mb-3">Most common</Badge>
                   <h3 className="font-semibold text-lg mb-2">Upgrade to Kickstart</h3>
-                  <p className="text-sm text-muted-foreground mb-4">We implement and refine your sprint outputs into a production-ready solution.</p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    We build, integrate, and put your first workflow into your team's hands. Your £495 comes off the price.
+                  </p>
                   <Button size="sm" variant="outline" asChild>
                     <Link to="/solutions">View Kickstart →</Link>
                   </Button>
@@ -250,8 +254,10 @@ const OutcomeSprints = () => {
               <Card className="text-center border-2">
                 <CardContent className="pt-6">
                   <div className="text-4xl font-bold text-muted-foreground/40 mb-3">∞</div>
-                  <h3 className="font-semibold text-lg mb-2">Retainer</h3>
-                  <p className="text-sm text-muted-foreground">Continuous improvement with our Outcomes Assurance programme. From £295/mo.</p>
+                  <h3 className="font-semibold text-lg mb-2">Outcomes Assurance</h3>
+                  <p className="text-sm text-muted-foreground">
+                    After your build, keep results compounding with our £525/month retainer.
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -262,24 +268,17 @@ const OutcomeSprints = () => {
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              Start fast. Execute faster. Improve continuously.
+              Get clarity on what to do — and what it's worth.
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              An Outcome Sprint is the lowest-risk way to experience Teamsmiths.
+              The Discovery Sprint is the lowest-risk way to find out exactly where AI delivers in your business.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Join the next Outcome Sprint
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Start on-demand
-                </a>
-              </Button>
-            </div>
+            <Button asChild size="lg">
+              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                Book your Discovery Sprint
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </Button>
           </div>
         </section>
       </div>

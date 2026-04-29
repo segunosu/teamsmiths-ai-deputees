@@ -4,7 +4,20 @@ import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ArrowRight, Zap, TrendingUp, BarChart3, Clock, Target, HelpCircle, Rocket, Sparkles, Lightbulb } from 'lucide-react';
+import {
+  CheckCircle,
+  ArrowRight,
+  Zap,
+  TrendingUp,
+  BarChart3,
+  Clock,
+  Target,
+  HelpCircle,
+  Rocket,
+  Sparkles,
+  Lightbulb,
+  ShieldCheck,
+} from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 const AISolutions = () => {
@@ -15,178 +28,173 @@ const AISolutions = () => {
     trackEvent('solutions_view' as any, {} as any);
   }, [trackEvent]);
 
-  const kickstartTiers = [
+  const solutionTiers = [
     {
-      id: 'kickstart-pro',
-      name: 'Kickstart Pro',
-      price: '£1,295',
-      tagline: 'Next step after an Outcome Sprint',
-      description: 'Validate your idea and launch with a working first system — fast.',
+      id: 'discovery',
+      name: 'Discovery Sprint',
+      price: '£495',
+      tagline: 'Paid 1:1 scoping with a senior consultant',
+      description:
+        'A 90-minute working session that produces an AI Diagnostic Report — your top 3 high-impact opportunities, a detailed design for the first one, and a 90-day plan.',
       includes: [
-        'Business research & concept validation (competitor scan + high-level plan)',
-        'PWA, website, or landing page',
-        '1–2 custom workflows (e.g. sales or marketing automation)',
-        '2 strategy sessions',
-        '14–30 days support',
+        'Pre-session brief (15-min async questionnaire)',
+        '90-minute 1:1 working session with a senior consultant',
+        'AI Diagnostic Report delivered within 5 working days',
+        '90-day implementation roadmap with £-impact estimates',
+        '30 days of async Q&A by email',
+        'Full £495 credited toward Kickstart if you proceed within 60 days',
       ],
       outcomes: [
-        'Launch with near-zero headcount',
-        'Reduce setup time by 80%',
-        'Clear go-to-market roadmap',
+        'Top 3 opportunities ranked by £ impact',
+        'A working design for your first workflow',
+        'Clear, costed next step',
       ],
-      limitation: 'Designed for speed and focus — not full custom builds or complex systems.',
+      timeline: '5 working days',
+      icon: <Lightbulb className="h-8 w-8" />,
+      popular: false,
+    },
+    {
+      id: 'kickstart',
+      name: 'Kickstart',
+      price: '£2,950',
+      tagline: 'First production workflow live',
+      description:
+        'Your first end-to-end workflow built, integrated, and put into your team\'s hands. The fastest path to a measurable result.',
+      includes: [
+        'Opportunity Scan refresh',
+        '1–2 production workflows built and integrated',
+        'Standard integrations with your existing tools',
+        'Team training and SOPs',
+        'KPI dashboard',
+        '30 days post-launch support',
+      ],
+      outcomes: [
+        'A live workflow in your stack within weeks',
+        'Save 5–10 hours per week per role',
+        'Clear KPI baseline for what comes next',
+      ],
+      timeline: '2–3 weeks',
       icon: <Rocket className="h-8 w-8" />,
       popular: false,
     },
     {
-      id: 'kickstart-plus',
-      name: 'Kickstart Plus',
-      price: '£1,895',
-      tagline: 'Larger scope. Deeper build.',
-      description: 'For larger scope engagements that need more research and more workflows in place.',
+      id: 'foundation',
+      name: 'Foundation',
+      price: '£7,950',
+      tagline: 'Multi-workflow build across one or two functions',
+      description:
+        'For teams that need more than a single workflow — a foundation across sales, ops, finance, or HR with the integrations and reporting to compound results.',
       includes: [
-        'Deeper market & competitor research with cash-flow forecasting',
-        'PWA or site plus up to 4 custom workflows',
-        '3 strategy sessions',
-        '30–45 days support',
-      ],
-      outcomes: [
-        'Stronger commercial foundation',
-        'More automation in place from day one',
-        'Confirmed deliverables and timeline after the Outcome Sprint',
-      ],
-      limitation: 'Final deliverables and timeline are confirmed after the Outcome Sprint.',
-      icon: <Sparkles className="h-8 w-8" />,
-      popular: true,
-    },
-  ];
-
-  const solutionTiers = [
-    {
-      id: 'starter',
-      name: 'Starter',
-      subtitle: 'Quick Wins',
-      price: '£795',
-      workflows: '1 workflow',
-      timeline: '1–2 weeks',
-      description: 'Quick wins that free up your team immediately',
-      includes: [
-        'Opportunity Scan',
-        '1 workflow',
-        'Basic team training',
-        'KPI dashboard setup',
-        'Team support for 30 days',
-        'Standard integrations',
-        '1 strategy session',
-      ],
-      outcomes: [
-        'Save 5–10 hours per week',
-        'Reduce manual errors by 80%',
-        '95% accuracy on routine tasks',
-      ],
-      icon: <Zap className="h-8 w-8" />,
-      popular: false,
-    },
-    {
-      id: 'growth',
-      name: 'Growth',
-      subtitle: 'Operations, Marketing & Sales',
-      price: '£1,950',
-      workflows: '3 workflows',
-      timeline: '2–4 weeks',
-      tagline: 'Best for scaling revenue and performance',
-      description: 'Drive revenue with intelligent sales and marketing systems',
-      includes: [
-        'Everything in Starter',
-        '3 workflows',
+        'Everything in Kickstart',
+        '3 production workflows',
+        'Premium integrations across your stack',
         'Comprehensive team training',
-        'Premium integrations',
         '3 strategy sessions',
-        'Team support for 45 days',
+        '45 days post-launch support',
       ],
       outcomes: [
-        'Increase win rates by 20%',
-        '32% faster time-to-quote',
-        '35% more leads converted',
+        'Increase win rates by ~20%',
+        '32% faster time-to-quote (typical)',
+        'More leads converted with consistent follow-through',
       ],
+      timeline: '4–6 weeks',
       icon: <TrendingUp className="h-8 w-8" />,
       popular: true,
     },
     {
-      id: 'scale',
-      name: 'Scale',
-      subtitle: 'Full Transformation',
-      price: '£4,950',
-      workflows: '7 workflows',
-      timeline: '4–8 weeks',
-      description: 'Intelligent systems across your business for comprehensive impact',
+      id: 'transformation',
+      name: 'Transformation',
+      price: '£19,500',
+      tagline: 'Cross-functional engine across the business',
+      description:
+        'A connected set of intelligent workflows across the business — one execution layer that compounds wins month-over-month with senior oversight.',
       includes: [
-        'Everything in Growth',
-        '7 workflows',
-        'Advanced training + ongoing',
+        'Everything in Foundation',
+        '7 production workflows',
         'Full custom integrations',
         '7 strategy sessions',
-        'Dedicated account team + 60 days support',
+        'Dedicated account team',
+        '60 days post-launch support',
       ],
       outcomes: [
-        'Full implementation roadmap',
-        'Real-time business intelligence',
-        'Scalable infrastructure',
+        'Real-time business intelligence across functions',
+        'Scalable infrastructure for repeatable execution',
+        'Full implementation roadmap for the next 12 months',
       ],
+      timeline: '8–12 weeks',
       icon: <BarChart3 className="h-8 w-8" />,
       popular: false,
     },
   ];
 
+  const strategicTier = {
+    name: 'Strategic',
+    tagline: 'By application — for engagements above £30,000',
+    description:
+      'Multi-quarter programmes, regulated environments, or executive-level transformation work. We take a small number of these each year.',
+  };
+
   const comparisonFeatures = [
-    { feature: 'Opportunity Scan', starter: true, growth: true, scale: true },
-    { feature: 'Workflow Implementation', starter: '1 workflow', growth: '3 workflows', scale: '7 workflows' },
-    { feature: 'Team Training', starter: 'Basic', growth: 'Comprehensive', scale: 'Advanced + ongoing' },
-    { feature: 'KPI Dashboard', starter: true, growth: true, scale: true },
-    { feature: 'Implementation Time', starter: '1–2 weeks', growth: '2–4 weeks', scale: '4–8 weeks' },
-    { feature: 'Support', starter: 'Team (30 days)', growth: 'Team (45 days)', scale: 'Dedicated account team (60 days)' },
-    { feature: 'Custom Integrations', starter: 'Standard', growth: 'Premium', scale: 'Full custom' },
-    { feature: 'Strategy Sessions', starter: '1', growth: '3', scale: '7' },
-    { feature: 'Optional ongoing improvement', starter: '£295/mo', growth: '£295/mo', scale: '£295/mo' },
+    { feature: 'Workflow implementation', discovery: 'Design only', kickstart: '1–2 workflows', foundation: '3 workflows', transformation: '7 workflows' },
+    { feature: 'Strategy sessions', discovery: '1', kickstart: '1', foundation: '3', transformation: '7' },
+    { feature: 'Team training', discovery: '—', kickstart: 'Basic', foundation: 'Comprehensive', transformation: 'Advanced + ongoing' },
+    { feature: 'KPI dashboard', discovery: false, kickstart: true, foundation: true, transformation: true },
+    { feature: 'Integrations', discovery: '—', kickstart: 'Standard', foundation: 'Premium', transformation: 'Full custom' },
+    { feature: 'Post-launch support', discovery: '30-day async Q&A', kickstart: '30 days', foundation: '45 days', transformation: '60 days + dedicated team' },
+    { feature: 'Typical timeline', discovery: '5 working days', kickstart: '2–3 weeks', foundation: '4–6 weeks', transformation: '8–12 weeks' },
+    { feature: 'Outcomes Assurance retainer', discovery: '£525/mo (optional)', kickstart: '£525/mo (optional)', foundation: '£525/mo (optional)', transformation: '£525/mo (optional)' },
   ];
 
   const faqs = [
     {
-      question: 'What is an Outcome Sprint?',
-      answer: 'An Outcome Sprint is a 60–90 minute facilitated session where you build a working workflow, roadmap, or business concept. Available on-demand (£29–£49), live online (£79–£129), or live in-person (£149–£295). Each attendee leaves with tangible deliverables and clear next actions.',
-    },
-    {
-      question: 'What\'s the difference between Kickstart Pro and Kickstart Plus?',
-      answer: 'Kickstart Pro (£1,295) gives you a validated direction, clear priorities, and your first working system. Kickstart Plus (£1,895) goes further with deeper research, 2–3 workflows, and a complete working system. Both have defined scope to ensure delivery.',
+      question: 'Where should I start?',
+      answer:
+        'Almost everyone starts with the Discovery Sprint. £495, 1:1, and you walk away with an AI Diagnostic Report, a 90-day plan, and a £-impact estimate for your top opportunities. The full £495 is credited toward Kickstart if you proceed within 60 days.',
     },
     {
       question: 'When will we see results?',
-      answer: 'Most clients see measurable results within 2–4 weeks of implementation. Starter workflows typically go live within 1–2 weeks. Kickstart delivery is typically 2–3 weeks depending on scope and responsiveness.',
+      answer:
+        'Discovery delivers within 5 working days. Kickstart workflows typically go live in 2–3 weeks. Most clients see a measurable KPI movement within 4–6 weeks of go-live.',
     },
     {
-      question: 'Is there a money-back guarantee if workflows don\'t deliver?',
-      answer: 'We stand behind our work. If the agreed KPIs aren\'t met within 90 days, we\'ll continue working at no extra cost until they are, or provide a partial refund.',
+      question: 'How are you different from a regular consultancy?',
+      answer:
+        'Three things. Fixed prices on every package below Strategic. A senior consultant on every engagement (no offshore handover). And for selected projects we offer an outcome-bounty pricing model — see below — where part of our fee only unlocks when the agreed KPI moves.',
     },
     {
-      question: 'What\'s included in the Opportunity Scan?',
-      answer: 'A 30-minute diagnostic where we analyze your current processes, identify high-impact use cases, and provide a prioritized roadmap for implementation.',
+      question: 'What is the outcome-bounty pricing model?',
+      answer:
+        'For selected projects and clients, we split the fee 70/30: 70% paid against milestone delivery (the build, training, integration), and a 30% outcome bounty paid only when the agreed KPI is hit within 90 days of go-live. If the KPI does not move, the bounty stays unpaid and we keep working until it does. Available where the KPI is measurable in your numbers and we agree the target up-front.',
+    },
+    {
+      question: 'What is Outcomes Assurance?',
+      answer:
+        'After your initial implementation, you can keep results compounding with a £525/month retainer. It includes a monthly KPI review call, up to 3 hours/month of workflow tweaks, and priority support. Add or cancel any month.',
     },
     {
       question: 'Can I upgrade later?',
-      answer: 'Absolutely. Many clients start with an Outcome Sprint or Kickstart to prove value, then upgrade to Growth or Scale. Your initial investment is credited toward larger projects.',
+      answer:
+        'Yes. Many clients start with Discovery or Kickstart, prove value, then upgrade to Foundation or Transformation. Your initial investment can be credited toward larger engagements within 60 days.',
     },
     {
-      question: 'What is Ongoing Improvement?',
-      answer: 'After your initial implementation, you can continue optimizing with our monthly retainer at £295/month. This includes KPI tracking, workflow upgrades, and priority support.',
+      question: 'Who do you work with?',
+      answer:
+        'UK SMBs — typically £1m–£50m turnover, 10–250 employees, owner-operators or senior leadership teams who can move quickly. We are based in London and Woking, Surrey.',
     },
   ];
 
   return (
     <>
       <Helmet>
-        <title>Solutions | Teamsmiths — Results-Driven Execution for Growing Businesses</title>
-        <meta name="description" content="Validate, design, and launch the right business or product — fast. Kickstart from £1,295. Solutions from £795 to £4,950." />
-        <meta name="keywords" content="business solutions, workflow implementation, fixed pricing, execution, kickstart" />
+        <title>Solutions & Pricing | Teamsmiths — Fixed-Price AI for UK SMBs</title>
+        <meta
+          name="description"
+          content="Fixed-price AI delivery for UK SMBs. Discovery from £495. Kickstart £2,950. Foundation £7,950. Transformation £19,500. Outcome-bounty pricing on selected projects."
+        />
+        <meta
+          name="keywords"
+          content="AI consulting UK, fixed price AI, SMB AI delivery, AI workflows, outcome pricing"
+        />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -194,67 +202,40 @@ const AISolutions = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Solutions That Deliver Measurable Results
+              Fixed-price AI delivery. Measurable outcomes.
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-              Choose your package based on where you are today. Every solution includes implementation, training, and KPI tracking.
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6 leading-relaxed">
+              One simple ladder. Every step has a fixed price, a clear scope, and a measurable outcome — so you know exactly what you're buying.
             </p>
             <p className="text-sm text-muted-foreground mb-10">
-              Fixed scope. Clear outcomes. No hidden costs.
+              Built for UK SMBs. No hidden costs. No long-tail consultancy hours.
             </p>
-          </div>
-        </section>
-
-        {/* Decision Path */}
-        <section className="pb-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">Where are you starting?</h2>
-            <div className="grid sm:grid-cols-2 gap-6">
-              <a href="#kickstart" className="block">
-                <Card className="h-full text-center hover:shadow-lg transition-all duration-300 border-2 hover:border-primary cursor-pointer">
-                  <CardHeader className="pb-3">
-                    <div className="mx-auto mb-3 p-4 bg-primary/10 rounded-2xl w-fit">
-                      <Lightbulb className="h-8 w-8 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg">I have an idea or problem to solve</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">Start with Kickstart — validate, design, and launch fast.</p>
-                  </CardContent>
-                </Card>
-              </a>
-              <a href="#solutions" className="block">
-                <Card className="h-full text-center hover:shadow-lg transition-all duration-300 border-2 hover:border-primary cursor-pointer">
-                  <CardHeader className="pb-3">
-                    <div className="mx-auto mb-3 p-4 bg-primary/10 rounded-2xl w-fit">
-                      <TrendingUp className="h-8 w-8 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg">I want to improve my existing business</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">Choose Starter, Growth, or Scale to boost performance.</p>
-                  </CardContent>
-                </Card>
-              </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg">
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                  Book a free 15-min chat
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </a>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <a href="#tiers">See packages</a>
+              </Button>
             </div>
           </div>
         </section>
 
-        {/* Kickstart Section */}
-        <section id="kickstart" className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-5xl mx-auto">
-            <p className="text-center text-sm font-medium text-primary mb-2">Start with clarity. Build what actually works.</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-2">Start something new (or solve a specific challenge)</h2>
-            <p className="text-center text-sm text-muted-foreground mb-3">Validate, design, and launch the right business or product — fast.</p>
-            <p className="text-center text-xs text-muted-foreground mb-4">
-              <Badge variant="secondary" className="text-xs">Next step after an Outcome Sprint</Badge>
-            </p>
-            <p className="text-center text-sm text-muted-foreground mb-10">
-              Typical delivery: 2–3 weeks depending on scope and responsiveness
-            </p>
+        {/* The ladder */}
+        <section id="tiers" className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-3">Pick where you start</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Almost everyone begins with the Discovery Sprint. From there, you choose how far you take it.
+              </p>
+            </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {kickstartTiers.map((tier) => (
+            <div className="grid lg:grid-cols-4 gap-6">
+              {solutionTiers.map((tier) => (
                 <Card
                   key={tier.id}
                   className={`relative shadow-lg hover:shadow-xl transition-all duration-300 ${
@@ -264,30 +245,30 @@ const AISolutions = () => {
                   {tier.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                       <Badge className="bg-primary text-primary-foreground px-4 py-1">
-                        Larger scope
+                        Most chosen
                       </Badge>
                     </div>
                   )}
 
                   <CardHeader className="pb-4">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 bg-primary/10 rounded-xl">
-                        {tier.icon}
-                      </div>
-                      <div>
-                        <CardTitle className="text-xl font-bold">{tier.name}</CardTitle>
-                      </div>
+                      <div className="p-2 bg-primary/10 rounded-xl">{tier.icon}</div>
+                      <CardTitle className="text-xl font-bold">{tier.name}</CardTitle>
                     </div>
                     <div className="flex items-baseline gap-2">
                       <span className="text-3xl font-bold text-primary">{tier.price}</span>
                     </div>
                     <p className="text-xs font-medium text-primary mt-1">{tier.tagline}</p>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                      <Clock className="h-4 w-4" />
+                      <span>{tier.timeline}</span>
+                    </div>
                     <p className="text-muted-foreground mt-3 text-sm">{tier.description}</p>
                   </CardHeader>
 
                   <CardContent className="space-y-4">
                     <div>
-                      <h4 className="font-semibold mb-2 text-sm">What's Included:</h4>
+                      <h4 className="font-semibold mb-2 text-sm">What's included:</h4>
                       <ul className="space-y-1.5">
                         {tier.includes.map((item, index) => (
                           <li key={index} className="flex items-start gap-2 text-sm">
@@ -299,7 +280,7 @@ const AISolutions = () => {
                     </div>
 
                     <div>
-                      <h4 className="font-semibold mb-2 text-sm">Typical Outcomes:</h4>
+                      <h4 className="font-semibold mb-2 text-sm">Typical outcomes:</h4>
                       <ul className="space-y-1.5">
                         {tier.outcomes.map((outcome, index) => (
                           <li key={index} className="flex items-start gap-2 text-sm">
@@ -310,18 +291,14 @@ const AISolutions = () => {
                       </ul>
                     </div>
 
-                    <p className="text-xs text-muted-foreground italic border-t pt-3">{tier.limitation}</p>
-
-                    <p className="text-xs text-muted-foreground">Optional ongoing improvement available</p>
-
                     <Button
                       className="w-full"
                       size="lg"
-                      variant={tier.popular ? "default" : "outline"}
+                      variant={tier.popular ? 'default' : 'outline'}
                       asChild
                     >
                       <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                        Get Started
+                        Get started
                       </a>
                     </Button>
                   </CardContent>
@@ -335,135 +312,117 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Ongoing Solutions Tiers */}
-        <section id="solutions" className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-2">Improve your existing business</h2>
-            <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
-              Already running a business? Improve performance, reduce cost, and scale output.
-            </p>
-
-            <div className="grid lg:grid-cols-3 gap-6">
-              {solutionTiers.map((tier) => (
-                <Card
-                  key={tier.id}
-                  className={`relative shadow-lg hover:shadow-xl transition-all duration-300 ${
-                    tier.popular ? 'border-primary ring-2 ring-primary/20' : 'border-border'
-                  }`}
-                >
-                  {tier.popular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <Badge className="bg-primary text-primary-foreground px-4 py-1">
-                        Most Popular
-                      </Badge>
-                    </div>
-                  )}
-
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 bg-primary/10 rounded-xl">
-                        {tier.icon}
-                      </div>
-                      <div>
-                        <CardTitle className="text-xl font-bold">{tier.name}</CardTitle>
-                        <CardDescription className="text-sm font-medium">{tier.subtitle}</CardDescription>
-                      </div>
-                    </div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold text-primary">{tier.price}</span>
-                    </div>
-                    {'tagline' in tier && tier.tagline && (
-                      <p className="text-xs font-medium text-primary mt-1">{tier.tagline}</p>
-                    )}
-                    <div className="flex flex-col gap-1 text-sm text-muted-foreground mt-2">
-                      <div className="flex items-center gap-2">
-                        <Target className="h-4 w-4" />
-                        <span>{tier.workflows}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        <span>{tier.timeline}</span>
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground mt-3 text-sm">{tier.description}</p>
-                  </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold mb-2 text-sm">What's Included:</h4>
-                      <ul className="space-y-1.5">
-                        {tier.includes.map((item, index) => (
-                          <li key={index} className="flex items-start gap-2 text-sm">
-                            <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-semibold mb-2 text-sm">Typical Outcomes:</h4>
-                      <ul className="space-y-1.5">
-                        {tier.outcomes.map((outcome, index) => (
-                          <li key={index} className="flex items-start gap-2 text-sm">
-                            <Target className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                            <span className="font-medium">{outcome}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <p className="text-xs text-muted-foreground">Optional ongoing improvement available</p>
-
-                    <Button
-                      className="w-full"
-                      size="lg"
-                      variant={tier.popular ? "default" : "outline"}
-                      asChild
-                    >
-                      <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                        Get Started
-                      </a>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+        {/* Strategic tier — by application */}
+        <section className="py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <Card className="border-dashed border-primary/40">
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-xl">{strategicTier.name}</CardTitle>
+                </div>
+                <CardDescription className="text-sm font-medium text-primary">
+                  {strategicTier.tagline}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">{strategicTier.description}</p>
+                <Button variant="outline" asChild>
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                    Apply for a Strategic engagement
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
-        {/* Outcomes Assurance (optional retainer) */}
-        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        {/* Outcome bounty — how we get paid */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <Badge className="mb-4">How we get paid</Badge>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                Pay for outcomes, not hours
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Most consultancies invoice for time, regardless of result. We don't.
+              </p>
+            </div>
+
+            <Card className="border-primary/30">
+              <CardContent className="p-8">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-primary/10 rounded-xl">
+                        <CheckCircle className="h-5 w-5 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-lg">Milestone delivery — 70%</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Paid against agreed milestones as the build, training and integrations land. Predictable for your finance team.
+                    </p>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-primary/10 rounded-xl">
+                        <Target className="h-5 w-5 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-lg">Outcome bounty — 30%</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Unlocked only when the agreed KPI moves within 90 days of go-live. If it doesn't, the bounty stays unpaid and we keep working until it does.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-border">
+                  <p className="text-sm text-muted-foreground italic">
+                    Available on selected projects where the KPI is measurable in your numbers and the target is agreed up-front. Not every engagement is suitable — we'll tell you in the Discovery Sprint whether yours is.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Outcomes Assurance retainer */}
+        <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             <Card className="border-dashed">
               <CardHeader>
-                <CardTitle className="text-xl">Outcomes Assurance (optional retainer)</CardTitle>
+                <CardTitle className="text-xl">Outcomes Assurance — optional retainer</CardTitle>
                 <CardDescription>
-                  Added after a package is delivered — monthly KPI review, workflow tweaks, and priority support to keep results compounding.
+                  After your build is delivered, keep results compounding. Monthly KPI review, workflow tweaks, and priority support.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div>
-                    <p className="text-2xl font-bold text-primary">£295/month</p>
+                    <p className="text-2xl font-bold text-primary">£525/month</p>
                     <ul className="mt-3 space-y-1.5">
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                        Monthly KPI review
+                        Monthly KPI review call
                       </li>
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                        Workflow tweaks
+                        Up to 3 hours/month of workflow tweaks
                       </li>
                       <li className="flex items-center gap-2 text-sm">
                         <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
-                        Priority support
+                        Priority support — 24-hour response SLA
+                      </li>
+                      <li className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="h-4 w-4 text-success flex-shrink-0" />
+                        Add or cancel any month
                       </li>
                     </ul>
                   </div>
                   <Button variant="outline" asChild>
                     <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                      Learn More
+                      Discuss the retainer
                     </a>
                   </Button>
                 </div>
@@ -472,49 +431,40 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Outcome Sprint Banner */}
-        <section className="py-8 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <Card className="bg-primary/5 border-primary/20">
-              <CardContent className="py-6">
-                <p className="text-base font-medium text-foreground mb-2">
-                  Not ready for a full package?
-                </p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  <strong>Outcome Sprint:</strong> a low-risk way to experience Teamsmiths before choosing a package.
-                </p>
-                <Button variant="outline" size="sm" asChild>
-                  <Link to="/outcome-sprints">Learn more about Outcome Sprints</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* Comparison Table — Solutions only */}
+        {/* Comparison Table */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Compare Solutions</h2>
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12">Compare packages</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b">
                     <th className="text-left py-4 px-3 font-semibold text-sm">Feature</th>
-                    <th className="text-center py-4 px-3 font-semibold text-sm">Starter</th>
-                    <th className="text-center py-4 px-3 font-semibold text-sm bg-primary/5">Growth</th>
-                    <th className="text-center py-4 px-3 font-semibold text-sm">Scale</th>
+                    <th className="text-center py-4 px-3 font-semibold text-sm">Discovery</th>
+                    <th className="text-center py-4 px-3 font-semibold text-sm">Kickstart</th>
+                    <th className="text-center py-4 px-3 font-semibold text-sm bg-primary/5">Foundation</th>
+                    <th className="text-center py-4 px-3 font-semibold text-sm">Transformation</th>
                   </tr>
                 </thead>
                 <tbody>
                   {comparisonFeatures.map((row, index) => (
                     <tr key={index} className="border-b">
                       <td className="py-3 px-3 text-sm">{row.feature}</td>
-                      {(['starter', 'growth', 'scale'] as const).map((col) => (
-                        <td key={col} className={`text-center py-3 px-3 ${col === 'growth' ? 'bg-primary/5' : ''}`}>
+                      {(['discovery', 'kickstart', 'foundation', 'transformation'] as const).map((col) => (
+                        <td
+                          key={col}
+                          className={`text-center py-3 px-3 ${col === 'foundation' ? 'bg-primary/5' : ''}`}
+                        >
                           {typeof row[col] === 'boolean' ? (
-                            row[col] ? <CheckCircle className="h-5 w-5 text-success mx-auto" /> : <span className="text-muted-foreground">—</span>
+                            row[col] ? (
+                              <CheckCircle className="h-5 w-5 text-success mx-auto" />
+                            ) : (
+                              <span className="text-muted-foreground">—</span>
+                            )
                           ) : (
-                            <span className={`text-sm ${col === 'growth' ? 'font-medium' : ''}`}>{row[col]}</span>
+                            <span className={`text-sm ${col === 'foundation' ? 'font-medium' : ''}`}>
+                              {row[col]}
+                            </span>
                           )}
                         </td>
                       ))}
@@ -531,25 +481,30 @@ const AISolutions = () => {
           <div className="max-w-4xl mx-auto text-center">
             <h3 className="text-xl font-bold mb-6 text-foreground">Your path to results</h3>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-2 text-sm">
-              <span className="bg-primary/10 text-primary font-medium px-4 py-2 rounded-full">Outcome Sprint</span>
+              <span className="bg-primary/10 text-primary font-medium px-4 py-2 rounded-full">Discovery Sprint</span>
               <ArrowRight className="h-4 w-4 text-muted-foreground hidden sm:block" />
               <span className="text-muted-foreground sm:hidden">↓</span>
               <span className="bg-primary/10 text-primary font-medium px-4 py-2 rounded-full">Kickstart</span>
               <ArrowRight className="h-4 w-4 text-muted-foreground hidden sm:block" />
               <span className="text-muted-foreground sm:hidden">↓</span>
-              <span className="bg-primary/10 text-primary font-medium px-4 py-2 rounded-full">Solutions</span>
+              <span className="bg-primary/10 text-primary font-medium px-4 py-2 rounded-full">Foundation</span>
               <ArrowRight className="h-4 w-4 text-muted-foreground hidden sm:block" />
               <span className="text-muted-foreground sm:hidden">↓</span>
-              <span className="bg-primary/10 text-primary font-medium px-4 py-2 rounded-full">Ongoing Improvement</span>
+              <span className="bg-primary/10 text-primary font-medium px-4 py-2 rounded-full">Transformation</span>
+              <ArrowRight className="h-4 w-4 text-muted-foreground hidden sm:block" />
+              <span className="text-muted-foreground sm:hidden">↓</span>
+              <span className="bg-primary/10 text-primary font-medium px-4 py-2 rounded-full">Outcomes Assurance</span>
             </div>
-            <p className="text-xs text-muted-foreground mt-4">Or enter directly at any stage that fits your needs.</p>
+            <p className="text-xs text-muted-foreground mt-4">
+              Or enter directly at any stage that fits your needs.
+            </p>
           </div>
         </section>
 
         {/* FAQ Section */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">Frequently asked questions</h2>
 
             <div className="space-y-4">
               {faqs.map((faq, index) => (
@@ -570,7 +525,7 @@ const AISolutions = () => {
             <div className="text-center mt-12">
               <p className="text-muted-foreground mb-4">Have more questions?</p>
               <Button asChild variant="outline">
-                <Link to="/contact">Contact Us</Link>
+                <Link to="/contact">Contact us</Link>
               </Button>
             </div>
           </div>
@@ -580,14 +535,14 @@ const AISolutions = () => {
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              Not sure which package is right for you?
+              Not sure which package fits?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Book a free diagnostic call. We'll analyze your processes and recommend the best starting point.
+              Book a free 15-minute chat. We'll point you to the right starting package — no pressure, no obligation.
             </p>
             <Button asChild size="lg">
               <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                Book your free diagnostic
+                Book a free 15-min chat
                 <ArrowRight className="ml-2 h-5 w-5" />
               </a>
             </Button>
