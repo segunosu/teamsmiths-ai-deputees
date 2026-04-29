@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, TrendingUp, Award, Globe, Target, Zap, ArrowRight, CheckCircle } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Quote, ArrowRight, CheckCircle, Target, Zap, TrendingUp } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { Helmet } from 'react-helmet-async';
 
@@ -14,32 +15,82 @@ const About = () => {
     trackEvent('about_view' as any, {} as any);
   }, [trackEvent]);
 
+  const trackRecord = [
+    {
+      org: 'Philips Engineering',
+      detail: '£22m/year revenue protection through dispute and claims prevention',
+    },
+    {
+      org: 'FTSE turnaround',
+      detail: '10 teams, 90 days · velocity +45% · predictability 70% → 98%',
+    },
+    {
+      org: 'Haleon',
+      detail: 'Predictability >98% · velocity +45% · costs −15%',
+    },
+    {
+      org: 'GSK',
+      detail: 'Predictability 80% → 96% · velocity +40% · costs −8%',
+    },
+    {
+      org: 'Gartner',
+      detail: 'Revenue $3m → $10m in under 5 years · 100% staff retention',
+    },
+    {
+      org: 'Strategy work supporting',
+      detail: 'ICI · Orange · Volkswagen · Motorola · HP — contributing to $3.2bn in new revenue',
+    },
+  ];
+
+  const testimonials = [
+    {
+      quote:
+        'Thank you for your stewardship and counseling to our MotU and WREF sprint teams throughout this year. To achieve a Level 3 in such a short space of time is a testament to your leadership and knowledge of the Agile Framework.',
+      name: 'Jo Taylor',
+      title: 'Senior Director, GSK PLC',
+    },
+    {
+      quote:
+        'Segun has played a pivotal role in our agile transformation journey in GSK and now in Haleon. His dedication, expertise, and unwavering commitment to driving agility and continuous improvement have been nothing short of remarkable.',
+      name: 'Amy Houston',
+      title: 'Director of Product Transformation, Haleon PLC',
+    },
+    {
+      quote:
+        'He hired and led a first-class team that excelled in growing both revenue, and critically margins, well ahead of target. Most noticeable was the strong client renewal rates the team achieved through a clear goal of meeting or beating the expectation of every client.',
+      name: 'Simon Levin',
+      title: 'Group Vice President, Gartner (now Managing Director, The Skills Connection)',
+    },
+  ];
+
   return (
     <>
       <Helmet>
-        <title>About Teamsmiths — Helping Growing Businesses Do More With Less</title>
-        <meta 
-          name="description" 
-          content="Our mission: help growing businesses do more with less by building intelligent systems around repetitive work, boosting revenue, and cutting costs." 
+        <title>About Teamsmiths — Decades of finding what's leaking, now built into AI Engines</title>
+        <meta
+          name="description"
+          content="Teamsmiths is led by Segun Osu. Decades of work helping FTSE companies and multinationals find the productivity and performance they were leaving on the table — now codified into AI Engines for UK SMBs."
         />
-        <meta name="keywords" content="business improvement, intelligent systems, execution engine" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        {/* Hero Section */}
+        {/* Hero */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
+            <Badge className="mb-4">About Teamsmiths</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-[1.1]">
-              Helping Growing Businesses Do More With Less
+              Built on decades of finding what's leaking.
             </h1>
             <p className="text-xl text-muted-foreground font-medium mb-8 max-w-3xl mx-auto leading-relaxed">
-              We believe every growing business deserves access to the same intelligent capabilities that power enterprise success—without the enterprise price tag.
+              Productivity and performance leak quietly. By the time the numbers force a reckoning, it's far more expensive to fix.
             </p>
-            
+            <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+              Most executives don't miss their targets because their people are bad — they miss them because critical issues like delays, claim exposure, and performance gaps surface too late to act on.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free diagnostic
+                  Book a free 15-min chat
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
@@ -50,118 +101,192 @@ const About = () => {
           </div>
         </section>
 
-        {/* Mission Section */}
+        {/* Founder Story */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                Our Mission
-              </h2>
-              <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                To enable organisations to do more with less by building intelligent systems around repetitive work, boosting revenue, and cutting costs—delivering measurable results in weeks.
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">The founder's story</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Why Teamsmiths exists, and the pattern it's built on.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80">
-                <CardHeader className="pb-4">
-                  <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-2xl w-fit">
-                    <Target className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">Simple</CardTitle>
+            <Card className="border-0 bg-card/80">
+              <CardContent className="p-8 sm:p-10">
+                <div className="prose prose-neutral max-w-none text-muted-foreground space-y-4 leading-relaxed">
+                  <p>
+                    Teamsmiths is led by <span className="text-foreground font-semibold">Segun Osu</span>. The career started at <span className="text-foreground font-medium">Balfour Beatty</span> on £25m infrastructure projects. Decades later, after helping FTSE companies and multinationals find the productivity and performance they were leaving on the table, the pattern is always the same:
+                  </p>
+                  <p className="text-foreground font-medium italic border-l-4 border-primary pl-4">
+                    Earlier visibility · the right people working with the right tools · focused on the right commercial outcome.
+                  </p>
+                  <p>
+                    Teamsmiths is built on that pattern — turning decades of experience into <span className="text-foreground font-medium">Engines</span> ready to work in your business. Each Teamsmiths Engine plugs into your existing data, finds the leakage, and delivers commercial outcomes in weeks. No new systems. No data entry.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Track Record */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Selected track record</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Decades of finding productivity and performance gains at every level — projects, business units, and companies.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {trackRecord.map((item, idx) => (
+                <Card key={idx} className="border-l-4 border-l-primary">
+                  <CardContent className="p-5">
+                    <div className="font-semibold text-foreground mb-1">{item.org}</div>
+                    <div className="text-sm text-muted-foreground">{item.detail}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <p className="text-center text-xs text-muted-foreground/80 mt-8 italic max-w-3xl mx-auto">
+              Track record reflects the founder's prior work supporting these organisations across various roles and engagements.
+            </p>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">In their words</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Selected client comments from prior engagements.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {testimonials.map((t, idx) => (
+                <Card key={idx} className="bg-card/80 border-0 shadow-sm">
+                  <CardContent className="p-6">
+                    <Quote className="h-8 w-8 text-primary/40 mb-4" />
+                    <blockquote className="text-sm text-muted-foreground italic leading-relaxed mb-6">
+                      "{t.quote}"
+                    </blockquote>
+                    <div className="border-t pt-4">
+                      <div className="font-semibold text-foreground text-sm">{t.name}</div>
+                      <div className="text-xs text-muted-foreground">{t.title}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* What's Live Now */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Live now and forming founding cohorts</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Three Engines, plugging into your existing data, delivering commercial outcomes in weeks.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className="border-2">
+                <CardHeader>
+                  <Badge variant="secondary" className="w-fit mb-2">Construction</Badge>
+                  <CardTitle className="text-lg">Construction Revenue Risk Engine</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base leading-relaxed">
-                    No complex jargon. We solve the problem in front of you with proven workflows.
-                  </CardDescription>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Surfaces delay risks and claim opportunities early enough to benefit, by monitoring your project updates and baseline, with oversight from a domain expert.
+                  </p>
+                  <Badge className="text-xs">Live · onboarding UK contractors</Badge>
                 </CardContent>
               </Card>
 
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80">
-                <CardHeader className="pb-4">
-                  <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-2xl w-fit">
-                    <Zap className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">Fast</CardTitle>
+              <Card className="border-2">
+                <CardHeader>
+                  <Badge variant="secondary" className="w-fit mb-2">Manufacturing</Badge>
+                  <CardTitle className="text-lg">Manufacturing Order Risk Engine</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base leading-relaxed">
-                    Results in weeks, not months. Our productized approach means rapid execution.
-                  </CardDescription>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Spots order delivery exposure before it costs you, by reading machine signals and translating them into role-specific actions.
+                  </p>
+                  <Badge variant="outline" className="text-xs">Validated prototype · cohort forming</Badge>
                 </CardContent>
               </Card>
 
-              <Card className="text-center shadow-sm hover:shadow-lg transition-all duration-300 border-0 bg-card/80">
-                <CardHeader className="pb-4">
-                  <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-2xl w-fit">
-                    <TrendingUp className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold">Measurable</CardTitle>
+              <Card className="border-2">
+                <CardHeader>
+                  <Badge variant="secondary" className="w-fit mb-2">Cross-functional</Badge>
+                  <CardTitle className="text-lg">Agile Delivery Engine</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base leading-relaxed">
-                    Every outcome tracked in your numbers. Proof over promises, always.
-                  </CardDescription>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Cuts delivery time and improves outcome predictability across business and technology teams.
+                  </p>
+                  <Badge variant="outline" className="text-xs">Cohort forming</Badge>
                 </CardContent>
               </Card>
             </div>
           </div>
         </section>
 
-        {/* Methodology Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
+        {/* What Makes Us Different */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                Our Methodology
-              </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                We combine always-on intelligent workflows with human oversight — a decision and execution engine powered by agent orchestration.
-              </p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">What makes us different</h2>
             </div>
 
-            <Card className="bg-muted/30 border-0">
+            <Card className="bg-card/80 border-0">
               <CardContent className="p-8">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <h3 className="text-xl font-semibold mb-4">How It Works</h3>
+                    <h3 className="text-xl font-semibold mb-4">How we work</h3>
                     <ul className="space-y-3">
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Intelligent workflows handle repetitive tasks 24/7</span>
+                        <span className="text-muted-foreground">Plugs into your existing data — no new systems, no data entry</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Human strategists ensure quality and alignment</span>
+                        <span className="text-muted-foreground">Senior consultant on every engagement</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">KPI dashboards track every outcome</span>
+                        <span className="text-muted-foreground">Outcomes measured in your numbers, every time</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Continuous optimization based on results</span>
+                        <span className="text-muted-foreground">Continuous optimisation after delivery</span>
                       </li>
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-4">What Makes Us Different</h3>
+                    <h3 className="text-xl font-semibold mb-4">How we charge</h3>
                     <ul className="space-y-3">
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Fixed pricing, no hourly billing</span>
+                        <span className="text-muted-foreground">Fixed prices — no hourly billing surprises</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Results guaranteed or we keep working</span>
+                        <span className="text-muted-foreground">Outcome-bounty pricing on selected projects (70/30 split)</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Principal consultant on every project</span>
+                        <span className="text-muted-foreground">Discovery Sprint credit toward your first build</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">SME-focused, enterprise-quality</span>
+                        <span className="text-muted-foreground">SMB-focused, enterprise-quality</span>
                       </li>
                     </ul>
                   </div>
@@ -175,20 +300,20 @@ const About = () => {
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-6">
-              Ready to Turn Ideas Into Results?
+              Ready to find what's leaking in your business?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Book a free diagnostic and get a personalized roadmap for your business.
+              Start with a Discovery Sprint, or book a free 15-minute chat first.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free diagnostic
+                  Book a free 15-min chat
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="/results">See case studies</Link>
+                <Link to="/outcome-sprints">Discovery Sprint — £495</Link>
               </Button>
             </div>
           </div>

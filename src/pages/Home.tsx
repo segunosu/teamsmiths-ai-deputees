@@ -58,14 +58,14 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Better Decisions. Faster Execution. Results in Weeks | Teamsmiths</title>
+        <title>Teamsmiths — Fixed-Price AI for UK SMBs. Results in Weeks.</title>
         <meta
           name="description"
-          content="Reduce friction. Increase output. No extra headcount. Fixed pricing, measurable outcomes, results in weeks."
+          content="Fixed-price AI delivery for UK SMBs. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty pricing on selected projects. London & Woking, Surrey, UK."
         />
         <meta
           name="keywords"
-          content="business improvement, workflow execution, cost reduction, revenue growth"
+          content="AI consulting UK, SMB AI delivery, fixed price AI, AI workflow, outcome pricing"
         />
       </Helmet>
 
@@ -115,12 +115,12 @@ const Home = () => {
                     className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                   >
                     <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                      Book your free diagnostic
+                      Book a free 15-min chat
                       <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                     </a>
                   </Button>
                   <p className="text-xs text-muted-foreground/60 mt-1.5">
-                    15–20 minutes. Clear next steps.
+                    15 minutes. Honest answer on whether we can help.
                   </p>
                 </div>
                 <Button
@@ -130,7 +130,7 @@ const Home = () => {
                   asChild
                 >
                   <Link to="/outcome-sprints">
-                    Join an Outcome Sprint
+                    Discovery Sprint — £495
                   </Link>
                 </Button>
               </div>
@@ -212,40 +212,40 @@ const Home = () => {
           </div>
         </section>
 
-        {/* OUTCOME SPRINT SECTION */}
+        {/* DISCOVERY SPRINT SECTION */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">
-              Start with an Outcome Sprint
+              Start with a Discovery Sprint
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              Build a workflow, roadmap, or business idea in 60–90 minutes.<br />
-              Small groups. Facilitated execution. Immediate value.
+              90 minutes 1:1 with a senior consultant. A branded AI Diagnostic Report within 5 working days.<br />
+              <span className="font-medium text-foreground">£495 — fully credited to Kickstart if you proceed.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <CheckCircle className="h-5 w-5 text-success" />
-                Low-risk starting point
+                Top 3 opportunities ranked by £ impact
               </div>
               <div className="flex items-center gap-2 text-sm font-medium">
                 <CheckCircle className="h-5 w-5 text-success" />
-                3–5 leaders per group
+                90-day plan you can act on
               </div>
               <div className="flex items-center gap-2 text-sm font-medium">
                 <CheckCircle className="h-5 w-5 text-success" />
-                Optional ongoing improvement available
+                30 days of async Q&amp;A
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button size="lg" asChild>
                 <Link to="/outcome-sprints">
-                  Join the next Outcome Sprint
+                  Book your Discovery Sprint
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link to="/outcome-sprints">
-                  Start on-demand
+                <Link to="/solutions">
+                  See all packages
                 </Link>
               </Button>
             </div>
@@ -258,7 +258,10 @@ const Home = () => {
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">Results</h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-                Real projects. Measurable outcomes.
+                The kind of outcomes we build toward.
+              </p>
+              <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto mt-3 italic">
+                Illustrative scenarios drawn from typical engagements. Real named cohorts coming soon — get in touch.
               </p>
             </div>
 
