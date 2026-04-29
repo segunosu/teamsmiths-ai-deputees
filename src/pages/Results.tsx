@@ -173,18 +173,18 @@ const Results = () => {
                 {
                   icon: Factory,
                   tag: "Manufacturing",
-                  title: "Production risk detection system",
+                  title: "Order Risk Engine",
                   problem:
                     "Production issues are spotted too late, orders slip, and revenue leaks before anyone can react.",
-                  href: "/examples/production-risk-system",
+                  href: "/examples/order-risk-engine",
                 },
                 {
                   icon: HardHat,
                   tag: "Construction",
-                  title: "Project risk & revenue system",
+                  title: "Revenue Risk Engine",
                   problem:
                     "Construction projects overrun budgets and schedules because risks aren't surfaced early enough.",
-                  href: "/examples/project-risk-system",
+                  href: "/examples/revenue-risk-engine",
                 },
               ].map((sys) => (
                 <Card key={sys.href} className="flex flex-col p-6 sm:p-8">

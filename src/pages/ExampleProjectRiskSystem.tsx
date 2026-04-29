@@ -39,10 +39,10 @@ const ExampleProjectRiskSystem = () => {
   return (
     <>
       <Helmet>
-        <title>Project risk & revenue system | Example | Teamsmiths</title>
+        <title>Revenue Risk Engine | Example | Teamsmiths</title>
         <meta
           name="description"
-          content="Example system that surfaces project risks early, quantifies cost and schedule impact, and proposes interventions."
+          content="Example Revenue Risk Engine that surfaces project risks early, quantifies cost and schedule impact, and proposes interventions."
         />
       </Helmet>
 
@@ -57,7 +57,7 @@ const ExampleProjectRiskSystem = () => {
               </div>
               <div>
                 <h1 className="text-3xl sm:text-5xl font-bold text-foreground leading-[1.15]">
-                  Project risk &amp; revenue system
+                  Revenue Risk Engine
                 </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground mt-4 max-w-3xl">
                   Spot project risks before they hit the budget. A practical
@@ -97,9 +97,10 @@ const ExampleProjectRiskSystem = () => {
               What the system does
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg max-w-3xl mb-8">
-              The system continuously checks project signals, classifies risks
-              as they emerge, quantifies their financial and schedule impact,
-              and proposes the next intervention to keep the project on track.
+              The Revenue Risk Engine continuously checks project signals,
+              classifies risks as they emerge, quantifies their financial and
+              schedule impact, and proposes the next intervention to keep the
+              project on track.
             </p>
 
             <Card>
@@ -150,12 +151,13 @@ const ExampleProjectRiskSystem = () => {
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-              How to get a system like this
+              How to get a Revenue Risk Engine like this
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-2xl mx-auto">
-              Systems like this are designed in an Outcome Sprint and built
-              through Kickstart or Growth. We tailor the logic and integrations
-              to your delivery model.
+              Click below to book your free diagnostic. In our brief 1:1,
+              we’ll co-create your roadmap and design the foundations of your
+              project. No obligation, of course. If you just want to understand
+              what is possible with automation and AI, join an Outcome Sprint.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg">
