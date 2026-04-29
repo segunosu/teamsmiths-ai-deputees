@@ -15,6 +15,7 @@ import {
   Factory,
   HardHat,
   CalendarCheck,
+  Quote,
 } from "lucide-react";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { Helmet } from "react-helmet-async";
@@ -56,25 +57,40 @@ const Results = () => {
     setSelectedCaseSlug(caseStudies[selectedCaseIndex + 1].slug);
   };
 
-  // Summary stats
+  // Founder track-record stats (real, sourced from prior delivery work)
   const summaryStats = [
-    { icon: Clock, label: "Average time saved", value: "8+ hours/week" },
-    { icon: TrendingUp, label: "Typical ROI", value: "300%+" },
-    { icon: Target, label: "Implementation time", value: "7-14 days" },
-    { icon: BarChart3, label: "Success rate", value: "95%" },
+    { icon: TrendingUp, label: "Velocity uplift (FTSE turnaround)", value: "+45%" },
+    { icon: Target, label: "Predictability lift (Haleon, GSK)", value: "70% → 98%" },
+    { icon: Clock, label: "Annual revenue protected (Philips)", value: "£22m" },
+    { icon: BarChart3, label: "Revenue growth (Gartner, <5 yrs)", value: "$3m → $10m" },
+  ];
+
+  const namedTestimonials = [
+    {
+      quote: "Thanks for making the SJB Club monitoring infinitely easier.",
+      name: "Ani McGill",
+      title: "Executive Head, SJB · CEO, Xavier Catholic Education Trust",
+      context: "On the Rebate App — automated tax rebate entitlement, ~1 headcount of manual work eliminated.",
+    },
+    {
+      quote: "The team is great and the project manager provided an essential bridge, keeping work organised and on track. So far we've had an excellent experience.",
+      name: "Marco Piscitelli",
+      title: "Director, Thriize / Vertis Media",
+      context: "On the AI-enabled advertising portal — delivered in less than half the time of a traditional code-driven build.",
+    },
   ];
 
   return (
     <>
       <Helmet>
-        <title>Case Studies & Results | Teamsmiths</title>
+        <title>Results & Case Studies | Teamsmiths — Track Record Behind the Engines</title>
         <meta
           name="description"
-          content="Real results from real businesses. Measurable outcomes including time saved, revenue increased, and costs reduced."
+          content="Founder track record across Philips, Haleon, GSK, Gartner. Plus illustrative scenarios and named client comments from prior delivery work."
         />
         <meta
           name="keywords"
-          content="case studies, business results, AI ROI, success stories"
+          content="case studies, business results, AI ROI, founder track record"
         />
       </Helmet>
 
@@ -82,25 +98,62 @@ const Results = () => {
         {/* Hero Section */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto text-center">
-            <Badge className="mb-4">Case Studies</Badge>
+            <Badge className="mb-4">Track record</Badge>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-              Real Results from Real Businesses
+              The track record behind the Engines
             </h1>
             <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-              Every project we take on, we measure. See how businesses are using our solutions to save time, increase revenue, and reduce costs.
+              Decades of finding productivity and performance gains across FTSE pharma, professional services, and infrastructure delivery — now codified into AI Engines for UK SMBs.
             </p>
           </div>
         </section>
 
-        {/* Summary Stats */}
+        {/* Founder Track-Record Stats */}
         <section className="py-8 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-6">
+              <p className="text-sm uppercase tracking-wider text-muted-foreground/80 font-medium">
+                From the founder's prior delivery work
+              </p>
+            </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {summaryStats.map((stat, index) => (
                 <Card key={index} className="text-center p-4 sm:p-6">
                   <stat.icon className="h-8 w-8 text-primary mx-auto mb-2" />
-                  <div className="text-2xl sm:text-3xl font-bold text-foreground">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-xl sm:text-2xl font-bold text-foreground">{stat.value}</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">{stat.label}</div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Named Client Comments */}
+        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
+                Named client comments
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Selected feedback from prior engagements. More named cohorts joining shortly.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {namedTestimonials.map((t, idx) => (
+                <Card key={idx} className="bg-card/80 border-l-4 border-l-primary">
+                  <CardContent className="p-6">
+                    <Quote className="h-8 w-8 text-primary/40 mb-4" />
+                    <blockquote className="text-base text-foreground italic leading-relaxed mb-6">
+                      "{t.quote}"
+                    </blockquote>
+                    <div className="border-t pt-4">
+                      <div className="font-semibold text-foreground text-sm">{t.name}</div>
+                      <div className="text-xs text-muted-foreground">{t.title}</div>
+                      <div className="text-xs text-muted-foreground/80 italic mt-2">{t.context}</div>
+                    </div>
+                  </CardContent>
                 </Card>
               ))}
             </div>
@@ -108,14 +161,17 @@ const Results = () => {
         </section>
 
         {/* Case Studies Grid */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                Workflows in Action
+                Workflows in action
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Each case study shows the challenge, the solution deployed, and the measurable results achieved.
+                Each card shows the kind of challenge, the workflow we'd build, and the measurable result you should expect.
+              </p>
+              <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto mt-3 italic">
+                Illustrative scenarios drawn from typical engagements. Real named cohorts coming soon — get in touch if you'd like to be one.
               </p>
             </div>
 

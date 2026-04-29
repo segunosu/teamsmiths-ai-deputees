@@ -58,10 +58,25 @@ export const Footer = () => {
           </div>
         </div>
 
+        {/* Registration & compliance line */}
+        <div className="border-t border-primary-foreground/20 pt-8 pb-4">
+          <div className="text-center text-primary-foreground/70 text-xs space-y-1">
+            <p>
+              <span className="font-medium">Buildze Ltd</span>, trading as Teamsmiths · Registered in England and Wales
+            </p>
+            <p>
+              London &amp; Woking, Surrey, United Kingdom
+            </p>
+            <p>
+              ICO registered · UK GDPR compliant
+            </p>
+          </div>
+        </div>
+
         <div className="border-t border-primary-foreground/20 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
             <div className="text-primary-foreground/70 text-sm">
-              © {new Date().getFullYear()} Teamsmiths. All rights reserved.
+              © {new Date().getFullYear()} Buildze Ltd, trading as Teamsmiths. All rights reserved.
             </div>
             
             {/* Social Media Icons */}
