@@ -10,7 +10,7 @@ const Blog = () => {
     {
       id: 1,
       title: 'The Future of AI-Powered Business Consulting',
-      excerpt: 'How Deputee™ AI is transforming the way businesses approach strategic consulting and operational improvement.',
+      excerpt: 'How agentic AI is transforming the way UK SMBs approach strategic consulting and operational improvement.',
       date: '2024-01-15',
       readTime: '5 min read',
       category: 'AI & Technology',
@@ -19,7 +19,7 @@ const Blog = () => {
     {
       id: 2,
       title: 'Case Study: 300% Sales Increase in 8 Weeks',
-      excerpt: 'Deep dive into how we helped a SaaS startup triple their sales using our Deputee™ AI methodology.',
+      excerpt: 'Deep dive into how we helped a SaaS startup triple their sales using our outcome-driven AI delivery methodology.',
       date: '2024-01-10',
       readTime: '8 min read',
       category: 'Case Studies',
