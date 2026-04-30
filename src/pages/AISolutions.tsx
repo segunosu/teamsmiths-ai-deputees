@@ -246,10 +246,10 @@ const AISolutions = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-[1.1]">
-              Bring the problem.<br className="hidden sm:block" /> We'll build the engine.<br className="hidden sm:block" /> We earn on the outcome.
+              Bring the problem.<br className="hidden sm:block" /> We'll build the engine in days, not months.<br className="hidden sm:block" /> When your KPI moves, we earn a bounty <span className="text-base sm:text-lg lg:text-2xl font-medium text-muted-foreground/80">(selected engagements)</span>.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6 leading-relaxed">
-              Custom engines designed and built for your specific business problem. Live in days. Outcome bounty available on selected engagements.
+              Custom engines designed and built for your specific business problem.
             </p>
             <p className="text-sm text-muted-foreground mb-10">
               Built for UK SMBs. Senior business performance lead on every engagement.
