@@ -81,20 +81,19 @@ The key isn't detection — most teams can already detect issues. It's the **tim
     summary:
       'A 144-session mental fitness curriculum with safeguarding-by-design — translating a six-figure content build into a four-figure software problem.',
     highlights: [
-      { value: '£10–£18', label: 'per session (vs £1,100–£2,500)' },
-      { value: '99%', label: 'reduction in unit content cost' },
-      { value: '144', label: 'sessions, 3 age bands' },
-      { value: '£1,469–£2,592', label: 'full corpus' },
+      { value: '£158k–£360k', label: 'what this would cost the traditional way' },
+      { value: 'A fraction', label: 'of that, via small monthly subscription' },
+      { value: '144 sessions', label: 'across 3 age bands' },
     ],
     body: `One in five UK children now has a probable mental disorder (NHS Digital, 2023). 77% of elite youth athletes report mental health challenges (IOC, 2023). Yet none of the **44,000 FA-affiliated clubs** in England have a structured, low-friction tool they can drop into a Tuesday-night training session. The FA's Grassroots Strategy 2024–28 explicitly calls for digital mental wellbeing tools; nothing on the market answers that brief at grassroots price points.
 
-**The Player's Mind** is a three-app system covering the safeguarding triangle: a child-facing Player PWA, a Coach app with 14-day pattern-based wellbeing signals, and a Parent app delivering a weekly digest with conversation starters. Around it sits a **48-week curriculum across three age bands (7–9, 10–12, 13–14) — 144 sessions** in total, each 10–15 minutes. Safeguarding boundaries are enforced at the database layer: parents never see raw mood data, coaches never see individual answers, TPM itself never sees the check-ins. UK GDPR, KCSIE 2024 and the ICO Age-Appropriate Design Code are built into the schema, not bolted on.
+**The Player's Mind** is a three-app system covering the safeguarding triangle: a child-facing Player app, a Coach app with 14-day pattern-based wellbeing signals, and a Parent app delivering a weekly digest with conversation starters. Around it sits a **48-week curriculum across three age bands (7–9, 10–12, 13–14) — 144 sessions** in total, each 10–15 minutes. Safeguarding boundaries are enforced at the database layer: parents never see raw mood data, coaches never see individual answers, TPM itself never sees the check-ins. UK GDPR, KCSIE 2024 and the ICO Age-Appropriate Design Code are built into the schema, not bolted on.
 
-What makes this commercially viable is the AI-native production pipeline. A traditional youth-coaching video curriculum of this length and quality would cost **£1,100–£2,500 per session** — between **£158,000 and £360,000** for all 144 sessions. By chaining Claude (script authoring), ElevenLabs (UK voice narration) and HeyGen Avatar IV (1080p video render with captions) into an automated harness with Supabase storage, the verified per-session cost lands at **£10.20–£18.00** — putting the full corpus at **£1,469–£2,592**. A roughly **99% reduction in unit content cost**, while preserving age-banded scripting, accent-correct narration and accessibility-grade captions.
+A traditional youth-coaching video curriculum of this length and quality would cost **£1,100–£2,500 per session** — between **£158,000 and £360,000** for all 144 sessions. **The Player's Mind** delivers the same quality bar at a fraction of that cost, passed to clubs as a small monthly subscription rather than a six-figure content budget. The same pipeline — guided by a qualified psychotherapist — can re-render an updated session in hours rather than weeks, so the curriculum can respond to feedback from pilot clubs without a fresh production budget.
 
 For a club, TPM is the first tool that lets a volunteer coach support a player's confidence, focus and resilience without pretending to be a therapist and without adding paperwork. For a parent, the weekly digest replaces the unanswerable "how was training?" with a specific, evidence-backed conversation starter. For a county FA, it's a digital wellbeing offering they can put in front of every grassroots club in their patch — with the safeguarding work already done. **A children's mental fitness curriculum has been translated from a six-figure content problem into a four-figure software problem.**`,
     disclaimer:
-      'Production-cost figures (£10–£18 per session, £1,469–£2,592 corpus) are real and verified. Engagement and cohort outcomes are projected from the engine design; pilots forming now.',
+      'Traditional production cost (£1,100–£2,500 per session) reflects industry-standard rates for this type of curriculum. The Player\'s Mind is delivered to clubs at a small monthly subscription, with content production guided by a qualified psychotherapist. Engagement and cohort outcomes are projected from the engine design; pilots forming now.',
   },
   {
     slug: 'songita',
