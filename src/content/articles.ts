@@ -141,29 +141,59 @@ Sources: gov.uk Council Tax Manual; Local Government Finance Act 1992 (legislati
   {
     slug: 'meeting-intelligence-engine',
     title: 'Meeting Intelligence Engine',
-    subtitle: 'The original Engine — built at Haleon, the genesis of the Teamsmiths pattern',
+    subtitle: 'Built under pressure, codified into the Teamsmiths pattern',
     category: 'Team Performance & Coaching',
     status: 'Live · the original Engine',
     date: '2026-04-05',
     summary:
-      'The build that became the foundation of every Teamsmiths Engine that followed — and the one that drove the Haleon, GSK and FTSE-turnaround numbers on the founder\'s public track record.',
-    body: `Most leadership teams don't lack frameworks — they lack the discipline to apply them consistently across hundreds of meetings, dozens of stakeholders, and dozens of priority calls every week. The Meeting Intelligence Engine was the original Engine — built while the founder was running agile transformation at Haleon (and previously at GSK), and the technical pattern that would later become the Teamsmiths Engine library.
+      'The build the rest of the Teamsmiths engine portfolio sits on — created in the founder\'s own time, on fully anonymised data, when a global healthcare client doubled the scope of an agile transformation engagement with no extra resources.',
+    body: `The Meeting Intelligence Engine — known internally as Deputee — is the build that the rest of the Teamsmiths engine portfolio sits on. It was created not as a planned product but as a response to a real client problem the founder was contracted into, as an independent consultant: a global healthcare organisation, mid-demerger, that needed to scale agile delivery from five teams to ten with no additional resources, no additional headcount, and no additional compensation. The engine was built in the founder's own time, against fully anonymised data, and quietly carried the workload that made the doubled scope possible.
 
-The challenge at Haleon was familiar to anyone running a multi-team transformation programme: meetings produced decisions, but those decisions did not always become actions, and those actions did not always reach the right person, on the right day, with the right framing. Coaching at scale meant either hiring a small army of senior agile coaches and sales coaches (expensive, slow to ramp), or finding a way to extract the framework — Scrum, BANT, MEDIC, the Tuckman team-development model — and apply it consistently across every conversation.
+This article tells the story across two phases — the pre-merger transformation that proved the playbook, and the post-merger expansion that produced Deputee — and then explains what the same pattern now does in every Teamsmiths engagement.
 
-The Meeting Intelligence Engine was designed to solve that. It transcribed live meetings, classified the conversation against a chosen framework (or a custom viewpoint loaded by the user — Jeff Sutherland on Scrum, David Tracey on sales, or the team's own playbook), and translated the transcript into next-best actions. Those actions were issued as individual nudges to the right people, fed automatically into Jira and the CRM as updates, and used as the basis for individualised micro-coaching prompts. The engine effectively operated as an always-on, framework-aligned coach across the team, freeing senior leaders to focus on the harder calls that needed a human.
+## Phase 1 — Pre-merger: 40% velocity uplift across five teams
 
-The impact reported on the founder's public track record sits on top of this Engine pattern. The published numbers — Haleon predictability >98%, velocity +45%, costs −15%; GSK predictability 80% → 96%, velocity +40%, costs −8%; FTSE turnaround across 10 teams in 90 days, +45% velocity, predictability 70% → 98% — describe the outcomes of programmes that the Engine helped run. Conservatively projected, the Engine's structural contribution to those numbers includes:
+The starting context: a global healthcare organisation preparing for a demerger and listing on the London market under tight deadlines. Five of its key teams — a mix of business and technology professionals, including the developers behind a mission-critical consumer healthcare app, backend engineers and office infrastructure product experts — were running behind. Their agile maturity was low and the deadline was non-negotiable.
 
-- Approximately 80% reduction in headcount cost typically associated with embedded sales, management, leadership and agile coaches at the same coverage level — by automating the repeatable parts of the coaching cycle and reserving senior coaches for the cases that genuinely needed a human.
+The brief was to lift performance using a structured, predictable approach. The intervention combined Scrum (rolled out across all five teams over three months in an adapted form), team resizing and restructuring (focused on specific products to reduce dependencies), an MVP approach for the consumer app, and targeted maturity interventions to take the teams from low to high on the agile maturity scale.
 
-- Around 35% faster team advancement through the Tuckman stages (forming → storming → norming → performing), by surfacing the patterns that hold teams back and nudging interventions earlier than a weekly retrospective could.
+The outcomes were:
 
-- Around 40% reduction in manual inputs into work-tracking applications such as Jira, by translating spoken decisions into structured updates without staff retyping them — and a similar release of senior time for higher-value strategy work.
+- Predictability: increased from about 80% to over 94%
+- Velocity: rose by an average of 40%
+- Cost reduction: 8% via process revisions
+- Performance improvement: equivalent to adding five team members
+- Deadline: all business outcomes met ahead of schedule
 
-The engine was open-sourced as a foundation pattern at github.com/segunosu/Deputee, and the same shape — transcribe, classify against a framework, issue role-specific actions with deadlines — is now the connective tissue across the Teamsmiths Engine portfolio. The Construction Revenue Risk Engine and the Manufacturing Order Risk Engine apply that logic to project and production data. The Player's Mind applies it to youth-athlete check-ins. The Calarossa Pool Pass applies it to access control. Council Tax Deputee applies it to statutory rules and evidence packs.
+By the end of this phase the playbook was working. The framework was right. The discipline was sticking. What changed next was not the playbook — it was the load.
 
-The structural takeaway for a business decision-maker is the one that mattered at Haleon and matters now. Coaching, performance and decision-making at scale used to require headcount. With the Engine pattern, the framework is the headcount — and the framework runs at the speed of the meeting, not at the speed of the next 1:1.${closingNote}`,
+## Phase 2 — Post-merger: doubled scope, zero extra resources, the birth of Deputee
+
+After the demerger, the same client expanded scope: ten teams, varying agile maturity from low to average, covering both business and technology, served by the same single coach. The brief was explicit — same coach, double the teams, no additional headcount, no additional compensation. The teams needed consistency, the organisation wanted higher predictability without increasing the workload on people, and the coach was expected to do twice the work in the same hours.
+
+That pressure produced Deputee. Built in the founder's own time, against fully anonymised data, the engine took the repeatable parts of the coaching cycle — meeting transcription, classification against the chosen framework (Scrum, BANT, MEDIC, Tuckman team-development model, or a custom viewpoint loaded by the user), translation of decisions into role-specific actions with deadlines, automated nudges, and structured updates into Jira and the CRM — and ran them at the speed of the meeting rather than the speed of the next 1:1. PI planning sessions ran quarterly on SAFe lines for strategic alignment. Risks and dependencies were surfaced early. The senior coach's time was reserved for the cases that genuinely needed a human.
+
+The post-merger outcomes:
+
+- Predictability: consistently over 98% across all ten teams
+- Velocity: an additional 45% growth on top of the prior gains
+- Cost reduction: a further 15%, building on the previous 8%
+- Performance improvement: equivalent to adding eight team members
+- Coverage: a single coach effectively running ten teams, with productivity boosted by approximately 50%
+
+The numbers travelled — they are now part of the founder's published track record, and the testimonials from senior leaders at the client speak for themselves. What did not travel, until now, was the engine that produced them.
+
+## What Deputee became
+
+The pattern Deputee proved at the doubled-scope client is the same pattern that now sits at the centre of every Teamsmiths engine. Transcribe the signal. Classify against a chosen framework or viewpoint (BANT, MEDIC, Scrum, Tuckman, or trusted external coaches such as Jeff Sutherland on Scrum or David Tracey on sales). Translate into role-specific actions with deadlines. Issue them as nudges, dashboard updates, or automated entries in the systems people already use. Reserve human attention for the cases that genuinely need it.
+
+Open-sourced as a reference foundation at github.com/segunosu/Deputee, this is the connective tissue across the Teamsmiths Engine portfolio. The Construction Revenue Risk Engine and the Manufacturing Order Risk Engine apply that logic to project and production data. The Player's Mind applies it to youth-athlete check-ins. The Calarossa Pool Pass applies it to access control. Council Tax Deputee applies it to statutory rules and evidence packs.
+
+## The structural takeaway
+
+Coaching, performance and decision-making at scale used to require headcount. With this pattern, the framework is the headcount — and the framework runs at the speed of the meeting, not at the speed of the next 1:1. That is the lever that compresses cost, lifts predictability, and lets one senior person cover work that previously required ten.
+
+The numbers above are from delivered engagements where the founder was contracted as an independent consultant, with the work and outcomes attributed to that role. Deputee itself was built in the founder's own time, against fully anonymised client data, and is now codified as the foundation pattern of every Teamsmiths build.`,
   },
 ];
 
