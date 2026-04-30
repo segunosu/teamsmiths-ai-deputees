@@ -35,10 +35,7 @@ const Blog = () => {
             Engines we've built. What they delivered.
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Long-form case studies of every engine in the Teamsmiths portfolio — what the buyer's problem was, how the engine solved it, and what it changed quantitatively and qualitatively.
-          </p>
-          <p className="text-sm text-muted-foreground/80 italic mt-4 max-w-2xl mx-auto">
-            Quantitative figures across these articles are projected or illustrative based on engine design and the founder's prior delivery work, except where explicitly attributed to a named, dated engagement.
+            What the buyer's problem was, how the engine solved it, and what it changed.
           </p>
         </div>
       </section>

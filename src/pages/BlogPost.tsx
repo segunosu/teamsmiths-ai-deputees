@@ -4,8 +4,52 @@ import { Helmet } from 'react-helmet-async';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CalendarDays, ArrowLeft, ArrowRight } from 'lucide-react';
+import { CalendarDays, ArrowLeft, ArrowRight, Info } from 'lucide-react';
 import { getArticleBySlug, articles } from '@/content/articles';
+
+// Parse a single line of body text and return JSX nodes.
+// Supports **bold** spans for emphasising numbers and engine names.
+const renderInline = (text: string): React.ReactNode[] => {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={i} className="text-foreground font-semibold">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return <React.Fragment key={i}>{part}</React.Fragment>;
+  });
+};
+
+// Render the body string into structured paragraphs and section headings.
+// Convention: a paragraph that starts with "## " is a section subheading.
+const renderBody = (body: string): React.ReactNode => {
+  const blocks = body.split(/\n\n+/).filter((b) => b.trim().length > 0);
+  return blocks.map((block, idx) => {
+    const trimmed = block.trim();
+    if (trimmed.startsWith('## ')) {
+      const headingText = trimmed.slice(3).trim();
+      return (
+        <h2
+          key={idx}
+          className="text-xl sm:text-2xl font-bold text-foreground mt-10 mb-4 leading-tight"
+        >
+          {renderInline(headingText)}
+        </h2>
+      );
+    }
+    return (
+      <p
+        key={idx}
+        className="text-muted-foreground leading-relaxed mb-5 text-base sm:text-lg"
+      >
+        {renderInline(trimmed)}
+      </p>
+    );
+  });
+};
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -19,10 +63,6 @@ const BlogPost = () => {
     return <Navigate to="/blog" replace />;
   }
 
-  // Render body as paragraphs separated by blank lines
-  const paragraphs = article.body.split(/\n\n+/).filter((p) => p.trim().length > 0);
-
-  // Find next/prev articles for navigation
   const currentIdx = articles.findIndex((a) => a.slug === article.slug);
   const prevArticle = currentIdx > 0 ? articles[currentIdx - 1] : null;
   const nextArticle = currentIdx < articles.length - 1 ? articles[currentIdx + 1] : null;
@@ -45,7 +85,7 @@ const BlogPost = () => {
       </div>
 
       {/* Article Hero */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
+      <section className="py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <Badge variant="secondary">{article.category}</Badge>
@@ -74,21 +114,57 @@ const BlogPost = () => {
         </div>
       </section>
 
-      {/* Article Body */}
-      <article className="px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="max-w-3xl mx-auto">
-          <div className="prose prose-neutral max-w-none">
-            {paragraphs.map((para, idx) => (
-              <p
-                key={idx}
-                className="text-muted-foreground leading-relaxed mb-5 text-base sm:text-lg"
-              >
-                {para}
-              </p>
-            ))}
+      {/* Highlights — numbers POP */}
+      {article.highlights && article.highlights.length > 0 && (
+        <section className="px-4 sm:px-6 lg:px-8 mb-8">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-primary/5 border-primary/20">
+              <CardContent className="p-6">
+                <p className="text-xs uppercase tracking-wider text-primary/80 font-semibold mb-4">
+                  At a glance
+                </p>
+                <div
+                  className={`grid gap-4 ${
+                    article.highlights.length === 4
+                      ? 'grid-cols-2 sm:grid-cols-4'
+                      : 'grid-cols-2 sm:grid-cols-3'
+                  }`}
+                >
+                  {article.highlights.map((h, i) => (
+                    <div key={i} className="text-center sm:text-left">
+                      <div className="text-2xl sm:text-3xl font-bold text-primary leading-tight">
+                        {h.value}
+                      </div>
+                      <div className="text-xs sm:text-sm text-muted-foreground mt-1 leading-snug">
+                        {h.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
+        </section>
+      )}
+
+      {/* Article Body */}
+      <article className="px-4 sm:px-6 lg:px-8 pb-10">
+        <div className="max-w-3xl mx-auto">
+          {renderBody(article.body)}
         </div>
       </article>
+
+      {/* Per-article disclaimer */}
+      {article.disclaimer && (
+        <section className="px-4 sm:px-6 lg:px-8 pb-10">
+          <div className="max-w-3xl mx-auto">
+            <div className="flex items-start gap-3 text-xs text-muted-foreground/80 italic border-l-2 border-muted-foreground/20 pl-4 py-2">
+              <Info className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
+              <span>{article.disclaimer}</span>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
