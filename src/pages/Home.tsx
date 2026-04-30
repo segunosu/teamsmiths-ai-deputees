@@ -102,7 +102,7 @@ const Home = () => {
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground/80 font-normal">
                   <Zap className="h-3.5 w-3.5 text-primary/60" />
-                  <span>Reduce operational errors by 30%</span>
+                  <span>Reduce costs by 45%</span>
                 </div>
               </div>
 
@@ -219,8 +219,8 @@ const Home = () => {
               Start with a Discovery Sprint
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              90 minutes 1:1 with a senior consultant. A branded AI Diagnostic Report within 5 working days.<br />
-              <span className="font-medium text-foreground">£495 — fully credited to Kickstart if you proceed.</span>
+              90 minutes 1:1 with a senior business performance lead. A branded AI Diagnostic Report delivered within days.<br />
+              <span className="font-medium text-foreground">£495 — fully credited to your first build if you proceed within 60 days.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
               <div className="flex items-center gap-2 text-sm font-medium">

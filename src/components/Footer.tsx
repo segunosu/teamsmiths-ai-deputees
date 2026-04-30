@@ -116,14 +116,6 @@ export const Footer = () => {
               </a>
             </div>
 
-            <div className="flex space-x-6 text-sm">
-              <Link to="/accessibility" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Accessibility
-              </Link>
-              <Link to="/sitemap" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                Sitemap
-              </Link>
-            </div>
           </div>
         </div>
       </div>
