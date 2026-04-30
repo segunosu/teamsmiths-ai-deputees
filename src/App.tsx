@@ -55,6 +55,7 @@ import DataProtection from "./pages/DataProtection";
 import Compliance from "./pages/Compliance";
 import NotFound from "./pages/NotFound";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import BusinessImpact from "./pages/BusinessImpact";
 import Start from "./pages/Start";
 import MotivationAndAppreciation from "./pages/MotivationAndAppreciation";
@@ -177,6 +178,7 @@ const App = () => (
                   <Route path="/admin/qa" element={<QADashboard />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/plan-confirmation" element={
                     <React.Suspense fallback={<div>Loading...</div>}>
