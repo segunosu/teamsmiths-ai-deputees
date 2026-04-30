@@ -27,12 +27,12 @@ const OutcomeSprints = () => {
   return (
     <>
       <Helmet>
-        <title>Discovery Sprint — 1:1 Paid Scoping (£495) | Teamsmiths</title>
+        <title>Discovery Sprint £495 — Design Your Custom Engine in 90 Minutes | Teamsmiths</title>
         <meta
           name="description"
-          content="A 90-minute 1:1 working session that produces an AI Diagnostic Report — your top 3 high-impact opportunities, a detailed design for the first one, and a 90-day plan. £495 — credited to Kickstart if you proceed."
+          content="90 minutes 1:1 with a senior business performance lead. Walk away with a designed engine, a 90-day plan, and a £-impact estimate for your top opportunities. £495 — credited to your first build if you proceed."
         />
-        <meta name="keywords" content="ai discovery, ai diagnostic, ai scoping, paid scoping" />
+        <meta name="keywords" content="ai discovery, custom engine design, ai diagnostic, paid scoping" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -41,14 +41,14 @@ const OutcomeSprints = () => {
           <div className="max-w-4xl mx-auto text-center">
             <Badge variant="secondary" className="mb-6">Discovery Sprint</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-[1.1]">
-              A working diagnosis of your highest-impact AI opportunities — in 5 working days.
+              Design your custom engine in 90 minutes.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
-              90 minutes 1:1 with a senior consultant. A branded AI Diagnostic Report you can share internally. A costed 90-day plan you can act on.
+              90 minutes 1:1 with a senior business performance lead. A branded AI Diagnostic Report. A working design for the engine we'd build first. A 90-day plan you can act on.
             </p>
             <p className="text-lg text-muted-foreground font-medium mb-2">
               <span className="text-3xl font-bold text-primary">£495</span>
-              <span className="ml-2">— fully credited to Kickstart if you proceed within 60 days.</span>
+              <span className="ml-2">— fully credited to your first build if you proceed within 60 days.</span>
             </p>
             <p className="text-sm text-muted-foreground mb-10">
               No groups. No fluff. Built for SMB owners and senior leaders who want clarity, not a sales pitch.
@@ -90,7 +90,7 @@ const OutcomeSprints = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    Live 1:1 with a senior consultant. Opportunity scan, workflow shortlist, ROI sizing, and a designed-on-the-call top pick.
+                    Live 1:1 with a senior business performance lead. Opportunity scan, engine shortlist, ROI sizing, and a designed-on-the-call engine for the top pick.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -129,9 +129,9 @@ const OutcomeSprints = () => {
               <Card className="border-2">
                 <CardContent className="pt-6 text-center">
                   <Target className="h-10 w-10 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">A working design</h3>
+                  <h3 className="font-semibold text-lg mb-2">A designed engine</h3>
                   <p className="text-sm text-muted-foreground">
-                    A detailed design for the first workflow — the one we'd build first if you proceed.
+                    A working design for the engine we'd build first — tailored to your specific problem, not pulled from a menu.
                   </p>
                 </CardContent>
               </Card>
@@ -156,9 +156,9 @@ const OutcomeSprints = () => {
               <Card className="border-2">
                 <CardContent className="pt-6 text-center">
                   <CheckCircle className="h-10 w-10 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">Credit toward Kickstart</h3>
+                  <h3 className="font-semibold text-lg mb-2">Credit toward your first build</h3>
                   <p className="text-sm text-muted-foreground">
-                    The full £495 is credited toward Kickstart if you proceed within 60 days.
+                    The full £495 is credited toward your first build if you proceed within 60 days.
                   </p>
                 </CardContent>
               </Card>
@@ -187,7 +187,7 @@ const OutcomeSprints = () => {
                   <span className="text-5xl font-bold text-primary">£495</span>
                 </div>
                 <CardDescription className="text-base mt-3">
-                  90 minutes 1:1 with a senior consultant · AI Diagnostic Report · 30-day async Q&A · credited to Kickstart
+                  90 minutes 1:1 with a senior business performance lead · AI Diagnostic Report · designed engine · 30-day async Q&A · credited to your first build
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -195,6 +195,10 @@ const OutcomeSprints = () => {
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
                     <span>1:1 working session — no groups, no breakouts</span>
+                  </li>
+                  <li className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                    <span>Designed engine for your top opportunity</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
@@ -210,7 +214,7 @@ const OutcomeSprints = () => {
                   </li>
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                    <span>Full £495 credit toward Kickstart within 60 days</span>
+                    <span>Full £495 credit toward your first build within 60 days</span>
                   </li>
                 </ul>
                 <Button className="w-full" size="lg" asChild>

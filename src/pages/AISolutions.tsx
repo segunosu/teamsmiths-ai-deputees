@@ -7,16 +7,13 @@ import { Badge } from '@/components/ui/badge';
 import {
   CheckCircle,
   ArrowRight,
-  Zap,
-  TrendingUp,
-  BarChart3,
-  Clock,
   Target,
   HelpCircle,
   Rocket,
   Sparkles,
   Lightbulb,
-  ShieldCheck,
+  Layers,
+  Network,
 } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
@@ -28,52 +25,95 @@ const AISolutions = () => {
     trackEvent('solutions_view' as any, {} as any);
   }, [trackEvent]);
 
-  const solutionTiers = [
+  // Engines we've built or designed — credibility wall, not a fixed catalogue
+  const engineWall = [
     {
-      id: 'discovery',
-      name: 'Discovery Sprint',
-      price: '£495',
-      tagline: 'Paid 1:1 scoping with a senior consultant',
-      description:
-        'A 90-minute working session that produces an AI Diagnostic Report — your top 3 high-impact opportunities, a detailed design for the first one, and a 90-day plan.',
-      includes: [
-        'Pre-session brief (15-min async questionnaire)',
-        '90-minute 1:1 working session with a senior consultant',
-        'AI Diagnostic Report delivered within 5 working days',
-        '90-day implementation roadmap with £-impact estimates',
-        '30 days of async Q&A by email',
-        'Full £495 credited toward Kickstart if you proceed within 60 days',
-      ],
-      outcomes: [
-        'Top 3 opportunities ranked by £ impact',
-        'A working design for your first workflow',
-        'Clear, costed next step',
-      ],
-      timeline: '5 working days',
-      icon: <Lightbulb className="h-8 w-8" />,
-      popular: false,
+      name: 'Construction Revenue Risk Engine',
+      desc: 'Surfaces delay risks and claim opportunities early enough to benefit, by monitoring project updates and baseline.',
+      status: 'Live · onboarding UK contractors',
+      href: '/examples/revenue-risk-engine',
     },
+    {
+      name: 'Manufacturing Order Risk Engine',
+      desc: 'Spots order delivery exposure before it costs you, by reading machine signals and translating them into role-specific actions.',
+      status: 'Validated prototype · cohort forming',
+      href: '/examples/order-risk-engine',
+    },
+    {
+      name: 'Sports Club Membership Engine',
+      desc: 'Bookings + admissions + compliance + QR access. Removes manual admin overhead and grows the addressable member base.',
+      status: 'Live with clients',
+    },
+    {
+      name: 'Mental Fitness Engine for Sports Clubs',
+      desc: 'On-demand mental fitness content synced with coaches and parents. Safeguarding, compliance and privacy built in.',
+      status: 'Designed · cohort forming',
+    },
+    {
+      name: 'Songita — Personalised Music & Video Engine',
+      desc: 'Custom songs and videos for occasions, hospitality, events and team recognition. Front-end + back-end, used by consumers and businesses.',
+      status: 'Live with consumers and businesses',
+    },
+    {
+      name: 'Meeting Intelligence Engine',
+      desc: 'Transcribes meetings and turns them into next-best actions, individual nudges, training, coaching and automated CRM/Jira updates. Bring your own framework or pick BANT, MEDIC, SCRUM, etc.',
+      status: 'Live · the original Engine',
+    },
+    {
+      name: 'Quote Booster',
+      desc: 'Streamlined quoting with dynamic pricing — faster turnaround, higher win rate.',
+      status: 'Designed · ready to deploy',
+    },
+    {
+      name: 'Cashflow Nudges',
+      desc: 'Automated invoice reminders with polite escalation — DSO down, aged invoices down.',
+      status: 'Designed · ready to deploy',
+    },
+    {
+      name: 'Follow-up Engine',
+      desc: 'Smart, automated follow-ups so deals never slip through the cracks.',
+      status: 'Designed · ready to deploy',
+    },
+    {
+      name: 'Proposal Speed-up',
+      desc: 'Drafts proposals from your last call — branded, tracked, and faster.',
+      status: 'Designed · ready to deploy',
+    },
+    {
+      name: 'New-Hire Onboarding Kit',
+      desc: 'Structured 30-day onboarding with SOPs, milestones and tracking.',
+      status: 'Designed · ready to deploy',
+    },
+    {
+      name: 'Meeting-to-Minutes',
+      desc: 'Meeting notes flow automatically into your task system — actions get followed up.',
+      status: 'Designed · ready to deploy',
+    },
+  ];
+
+  const tiers = [
     {
       id: 'kickstart',
       name: 'Kickstart',
       price: '£2,950',
-      tagline: 'First production workflow live',
+      tagline: 'One engine. One painful KPI. Live in days.',
       description:
-        'Your first end-to-end workflow built, integrated, and put into your team\'s hands. The fastest path to a measurable result.',
+        'Pick one problem that\'s eating your team\'s hours or your business\'s margin. We design and deploy the engine for it.',
       includes: [
-        'Opportunity Scan refresh',
-        '1–2 production workflows built and integrated',
+        'One engine designed and deployed in your business',
+        'Templated config with your data',
         'Standard integrations with your existing tools',
         'Team training and SOPs',
         'KPI dashboard',
         '30 days post-launch support',
       ],
-      outcomes: [
-        'A live workflow in your stack within weeks',
-        'Save 5–10 hours per week per role',
-        'Clear KPI baseline for what comes next',
+      examples: [
+        'Cashflow Nudges — templated, wired into your accounting tool',
+        'Construction Revenue Risk — single project, dashboards-only configuration',
+        'Meeting Intelligence Engine — your meetings flowing into action lists',
+        'Quote Booster — dynamic pricing wired into your CRM',
       ],
-      timeline: '2–3 weeks',
+      timeline: 'Days, not weeks',
       icon: <Rocket className="h-8 w-8" />,
       popular: false,
     },
@@ -81,48 +121,50 @@ const AISolutions = () => {
       id: 'foundation',
       name: 'Foundation',
       price: '£7,950',
-      tagline: 'Multi-workflow build across one or two functions',
+      tagline: 'One engine deeper, or two coordinated.',
       description:
-        'For teams that need more than a single workflow — a foundation across sales, ops, finance, or HR with the integrations and reporting to compound results.',
+        'More ambition than a single workflow. A deeper, more custom build — or two engines wired together to lift performance across one function or domain.',
       includes: [
-        'Everything in Kickstart',
-        '3 production workflows',
+        'Deeper customization, or two engines coordinated',
         'Premium integrations across your stack',
         'Comprehensive team training',
         '3 strategy sessions',
+        'Light governance and change-management overlay',
         '45 days post-launch support',
       ],
-      outcomes: [
-        'Increase win rates by ~20%',
-        '32% faster time-to-quote (typical)',
-        'More leads converted with consistent follow-through',
+      examples: [
+        'Construction Revenue Risk — multi-project, custom LD logic, role-based escalations',
+        'Sports Club Membership Engine — booking + admissions + compliance + QR',
+        'Sales engine — lead capture + qualification + quoting + follow-up, wired together',
+        'Finance close — invoice processing + cashflow nudges + reporting',
       ],
-      timeline: '4–6 weeks',
-      icon: <TrendingUp className="h-8 w-8" />,
+      timeline: 'Weeks, not months',
+      icon: <Layers className="h-8 w-8" />,
       popular: true,
     },
     {
       id: 'transformation',
       name: 'Transformation',
       price: '£19,500',
-      tagline: 'Cross-functional engine across the business',
+      tagline: 'An engine portfolio across the business.',
       description:
-        'A connected set of intelligent workflows across the business — one execution layer that compounds wins month-over-month with senior oversight.',
+        'A connected set of engines across functions or sites — one execution layer that compounds wins month-over-month, with senior oversight throughout.',
       includes: [
-        'Everything in Foundation',
-        '7 production workflows',
+        'A portfolio of engines wired together',
         'Full custom integrations',
         '7 strategy sessions',
         'Dedicated account team',
+        'Governance, change management and rollout planning',
         '60 days post-launch support',
       ],
-      outcomes: [
-        'Real-time business intelligence across functions',
-        'Scalable infrastructure for repeatable execution',
-        'Full implementation roadmap for the next 12 months',
+      examples: [
+        'Construction Risk + Cashflow + Meeting Intelligence, wired together for a tier-2 contractor across sites',
+        'Cross-functional command centre: sales + ops + finance, with role-based actions',
+        'Multi-tenant Songita rollout for a hospitality chain',
+        'End-to-end revenue engine: marketing → sales → success → renewal, all instrumented',
       ],
-      timeline: '8–12 weeks',
-      icon: <BarChart3 className="h-8 w-8" />,
+      timeline: '4–8 weeks',
+      icon: <Network className="h-8 w-8" />,
       popular: false,
     },
   ];
@@ -131,111 +173,200 @@ const AISolutions = () => {
     name: 'Strategic',
     tagline: 'By application — for engagements above £30,000',
     description:
-      'Multi-quarter programmes, regulated environments, or executive-level transformation work. We take a small number of these each year.',
+      'Multi-quarter programmes, regulated environments, or organisation-wide rollout. We take a small number of these each year.',
   };
 
   const comparisonFeatures = [
-    { feature: 'Workflow implementation', discovery: 'Design only', kickstart: '1–2 workflows', foundation: '3 workflows', transformation: '7 workflows' },
-    { feature: 'Strategy sessions', discovery: '1', kickstart: '1', foundation: '3', transformation: '7' },
-    { feature: 'Team training', discovery: '—', kickstart: 'Basic', foundation: 'Comprehensive', transformation: 'Advanced + ongoing' },
-    { feature: 'KPI dashboard', discovery: false, kickstart: true, foundation: true, transformation: true },
-    { feature: 'Integrations', discovery: '—', kickstart: 'Standard', foundation: 'Premium', transformation: 'Full custom' },
-    { feature: 'Post-launch support', discovery: '30-day async Q&A', kickstart: '30 days', foundation: '45 days', transformation: '60 days + dedicated team' },
-    { feature: 'Typical timeline', discovery: '5 working days', kickstart: '2–3 weeks', foundation: '4–6 weeks', transformation: '8–12 weeks' },
-    { feature: 'Outcomes Assurance retainer', discovery: '£525/mo (optional)', kickstart: '£525/mo (optional)', foundation: '£525/mo (optional)', transformation: '£525/mo (optional)' },
+    { feature: 'Engines deployed', kickstart: 'One', foundation: 'One deeper, or two', transformation: 'A portfolio' },
+    { feature: 'Customization', kickstart: 'Templated', foundation: 'Custom', transformation: 'Full custom' },
+    { feature: 'Integrations', kickstart: 'Standard', foundation: 'Premium', transformation: 'Full custom' },
+    { feature: 'Strategy sessions', kickstart: '1', foundation: '3', transformation: '7' },
+    { feature: 'Team training', kickstart: 'Basic', foundation: 'Comprehensive', transformation: 'Advanced + ongoing' },
+    { feature: 'Governance overlay', kickstart: '—', foundation: 'Light', transformation: 'Full' },
+    { feature: 'Post-launch support', kickstart: '30 days', foundation: '45 days', transformation: '60 days + dedicated team' },
+    { feature: 'Typical timeline', kickstart: 'Days', foundation: 'Weeks', transformation: '4–8 weeks' },
+    { feature: 'Outcome bounty available', kickstart: 'Selected projects', foundation: 'Selected projects', transformation: 'Selected projects' },
+    { feature: 'Outcomes Assurance retainer', kickstart: '£525/mo (optional)', foundation: '£525/mo (optional)', transformation: '£525/mo (optional)' },
   ];
 
   const faqs = [
     {
       question: 'Where should I start?',
       answer:
-        'Almost everyone starts with the Discovery Sprint. £495, 1:1, and you walk away with an AI Diagnostic Report, a 90-day plan, and a £-impact estimate for your top opportunities. The full £495 is credited toward Kickstart if you proceed within 60 days.',
+        'Almost everyone starts with the Discovery Sprint. £495, 90 minutes 1:1 with a senior business performance lead, and you walk away with an AI Diagnostic Report — your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £495 is credited to your first build if you proceed within 60 days.',
     },
     {
-      question: 'When will we see results?',
+      question: 'How do you build engines so fast?',
       answer:
-        'Discovery delivers within 5 working days. Kickstart workflows typically go live in 2–3 weeks. Most clients see a measurable KPI movement within 4–6 weeks of go-live.',
+        'Decades of finding what\'s leaking + AI compressing the build time = engines that used to take months arrive in days. The bottleneck shifts from build effort to discovery and design — which is exactly what the Discovery Sprint solves.',
     },
     {
       question: 'How are you different from a regular consultancy?',
       answer:
-        'Three things. Fixed prices on every package below Strategic. A senior consultant on every engagement (no offshore handover). And for selected projects we offer an outcome-bounty pricing model — see below — where part of our fee only unlocks when the agreed KPI moves.',
+        'Three things. Fixed prices on every package below Strategic. A senior business performance lead on every engagement (no offshore handover). And for selected projects we offer an outcome-bounty pricing model — see "How we get paid" below — where part of our fee only unlocks when the agreed KPI moves.',
     },
     {
       question: 'What is the outcome-bounty pricing model?',
       answer:
-        'For selected projects and clients, we split the fee 70/30: 70% paid against milestone delivery (the build, training, integration), and a 30% outcome bounty paid only when the agreed KPI is hit within 90 days of go-live. If the KPI does not move, the bounty stays unpaid and we keep working until it does. Available where the KPI is measurable in your numbers and we agree the target up-front.',
+        'For selected projects and clients, we split the fee 70/30: 70% paid against milestone delivery (the build, training, integration), and a 30% outcome bounty paid only when the agreed KPI is hit within 90 days of go-live. If the KPI does not move, the bounty stays unpaid and we keep working until it does. Available where the KPI is measurable in your numbers and the target is agreed up-front. We\'ll tell you in the Discovery Sprint whether your engagement is suitable.',
+    },
+    {
+      question: 'What if my problem isn\'t in the engine list?',
+      answer:
+        'Then we design and build a new engine for it. The list above shows what we\'ve already built or designed — it\'s not the menu. If you can describe the problem, we can build the engine. Bring it to a Discovery Sprint and we\'ll scope it 1:1.',
     },
     {
       question: 'What is Outcomes Assurance?',
       answer:
-        'After your initial implementation, you can keep results compounding with a £525/month retainer. It includes a monthly KPI review call, up to 3 hours/month of workflow tweaks, and priority support. Add or cancel any month.',
-    },
-    {
-      question: 'Can I upgrade later?',
-      answer:
-        'Yes. Many clients start with Discovery or Kickstart, prove value, then upgrade to Foundation or Transformation. Your initial investment can be credited toward larger engagements within 60 days.',
+        'After your initial build is delivered, you can keep results compounding with a £525/month retainer. It includes a monthly KPI review call, up to 3 hours/month of workflow tweaks, and priority support. Add or cancel any month.',
     },
     {
       question: 'Who do you work with?',
       answer:
-        'UK SMBs — typically £1m–£50m turnover, 10–250 employees, owner-operators or senior leadership teams who can move quickly. We are based in London and Woking, Surrey.',
+        'UK SMBs — typically £1m–£50m turnover, 10–250 employees, owner-operators or senior leadership teams who can move quickly. Buildze Ltd, trading as Teamsmiths. Based in London and Woking, Surrey.',
     },
   ];
 
   return (
     <>
       <Helmet>
-        <title>Solutions & Pricing | Teamsmiths — Fixed-Price AI for UK SMBs</title>
+        <title>Solutions & Pricing | Teamsmiths — Bring the problem. We'll build the engine.</title>
         <meta
           name="description"
-          content="Fixed-price AI delivery for UK SMBs. Discovery from £495. Kickstart £2,950. Foundation £7,950. Transformation £19,500. Outcome-bounty pricing on selected projects."
+          content="Custom engines for your business problem. Live in days. Priced on the outcome they unlock. Discovery Sprint £495. Kickstart £2,950. Foundation £7,950. Transformation £19,500."
         />
         <meta
           name="keywords"
-          content="AI consulting UK, fixed price AI, SMB AI delivery, AI workflows, outcome pricing"
+          content="AI consulting UK, custom engines, fixed price AI, SMB AI delivery, outcome pricing, outcome bounty"
         />
       </Helmet>
 
       <div className="min-h-screen bg-background">
         {/* Hero Section */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Fixed-price AI delivery. Measurable outcomes.
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-[1.1]">
+              Bring the problem.<br className="hidden sm:block" /> We'll build the engine.<br className="hidden sm:block" /> You pay on the outcome.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6 leading-relaxed">
-              One simple ladder. Every step has a fixed price, a clear scope, and a measurable outcome — so you know exactly what you're buying.
+              Custom engines designed and built for your specific business problem. Live in days. Priced on the outcome they unlock.
             </p>
             <p className="text-sm text-muted-foreground mb-10">
-              Built for UK SMBs. No hidden costs. No long-tail consultancy hours.
+              Built for UK SMBs. Senior business performance lead on every engagement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book a free 15-min chat
+                <Link to="/outcome-sprints">
+                  Start with a Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
+                </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <a href="#tiers">See packages</a>
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                  Book a free 15-min chat
+                </a>
               </Button>
             </div>
           </div>
         </section>
 
-        {/* The ladder */}
-        <section id="tiers" className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        {/* How this works — three-line equation */}
+        <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-8">
+              <Badge className="mb-3">How this works</Badge>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3">Why "in days" is the new normal</h2>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              <Card className="text-center border-0 bg-card/80">
+                <CardContent className="p-6">
+                  <div className="text-4xl font-bold text-primary mb-2">+</div>
+                  <p className="text-sm font-semibold text-foreground mb-1">Decades of finding what's leaking</p>
+                  <p className="text-xs text-muted-foreground">FTSE pharma turnaround. Infrastructure delivery. Strategy across global firms. The pattern is always the same — earlier visibility, the right people, the right tools.</p>
+                </CardContent>
+              </Card>
+              <Card className="text-center border-0 bg-card/80">
+                <CardContent className="p-6">
+                  <div className="text-4xl font-bold text-primary mb-2">×</div>
+                  <p className="text-sm font-semibold text-foreground mb-1">Build time collapsed</p>
+                  <p className="text-xs text-muted-foreground">What used to take months now takes days. The bottleneck is no longer effort — it's discovery and design. That's what the Discovery Sprint exists for.</p>
+                </CardContent>
+              </Card>
+              <Card className="text-center border-0 bg-card/80">
+                <CardContent className="p-6">
+                  <div className="text-4xl font-bold text-primary mb-2">=</div>
+                  <p className="text-sm font-semibold text-foreground mb-1">Custom engines, fast, priced on outcomes</p>
+                  <p className="text-xs text-muted-foreground">We design and build the engine for your specific problem. You pay against milestones, plus a bounty only if the KPI moves.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* What we've built so far — credibility wall */}
+        <section id="engines" className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-3">Pick where you start</h2>
+              <Badge variant="secondary" className="mb-3">Engines we've built or designed</Badge>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-3">A taste, not a menu.</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Almost everyone begins with the Discovery Sprint. From there, you choose how far you take it.
+                These are engines we've already built or designed. The full breadth is whatever you can describe and we can imagine — bring the problem, and we'll design the engine for it.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-4 gap-6">
-              {solutionTiers.map((tier) => (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {engineWall.map((engine) => {
+                const card = (
+                  <Card key={engine.name} className="h-full border-l-4 border-l-primary/40 hover:border-l-primary hover:shadow-md transition-all">
+                    <CardContent className="p-5">
+                      <div className="font-semibold text-foreground mb-2 text-sm">{engine.name}</div>
+                      <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{engine.desc}</p>
+                      <Badge variant="outline" className="text-[10px]">{engine.status}</Badge>
+                    </CardContent>
+                  </Card>
+                );
+                return engine.href ? (
+                  <Link key={engine.name} to={engine.href} className="block">
+                    {card}
+                  </Link>
+                ) : (
+                  <div key={engine.name}>{card}</div>
+                );
+              })}
+            </div>
+
+            <p className="text-center text-xs text-muted-foreground/80 italic mt-8 max-w-3xl mx-auto">
+              Outcomes shown across this page are projected or illustrative based on engine design and the founder's prior delivery work. Real named cohorts coming soon.
+            </p>
+
+            <div className="text-center mt-8">
+              <h3 className="text-2xl font-bold mb-3">What would you build?</h3>
+              <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
+                Pick a problem. We'll design the engine for it in a 90-minute Discovery Sprint.
+              </p>
+              <Button size="lg" asChild>
+                <Link to="/outcome-sprints">
+                  Book a Discovery Sprint — £495
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Tier ladder — depth, not domain */}
+        <section id="tiers" className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10">
+              <Badge className="mb-3">Pick the depth</Badge>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-3">Same engine, different depths.</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Tiers reflect <span className="font-medium text-foreground">how custom, how integrated and how supported</span> — not how long the build takes. With AI compression, every tier ships fast.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-6">
+              {tiers.map((tier) => (
                 <Card
                   key={tier.id}
                   className={`relative shadow-lg hover:shadow-xl transition-all duration-300 ${
@@ -259,33 +390,30 @@ const AISolutions = () => {
                       <span className="text-3xl font-bold text-primary">{tier.price}</span>
                     </div>
                     <p className="text-xs font-medium text-primary mt-1">{tier.tagline}</p>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
-                      <Clock className="h-4 w-4" />
-                      <span>{tier.timeline}</span>
-                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">Live in: {tier.timeline}</p>
                     <p className="text-muted-foreground mt-3 text-sm">{tier.description}</p>
                   </CardHeader>
 
                   <CardContent className="space-y-4">
                     <div>
-                      <h4 className="font-semibold mb-2 text-sm">What's included:</h4>
+                      <h4 className="font-semibold mb-2 text-sm">Things we'd build at this depth:</h4>
                       <ul className="space-y-1.5">
-                        {tier.includes.map((item, index) => (
+                        {tier.examples.map((ex, index) => (
                           <li key={index} className="flex items-start gap-2 text-sm">
-                            <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                            <span>{item}</span>
+                            <Target className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                            <span className="text-muted-foreground">{ex}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div>
-                      <h4 className="font-semibold mb-2 text-sm">Typical outcomes:</h4>
+                    <div className="pt-2 border-t">
+                      <h4 className="font-semibold mb-2 text-sm">Includes:</h4>
                       <ul className="space-y-1.5">
-                        {tier.outcomes.map((outcome, index) => (
+                        {tier.includes.map((item, index) => (
                           <li key={index} className="flex items-start gap-2 text-sm">
-                            <Target className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                            <span className="font-medium">{outcome}</span>
+                            <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                            <span className="text-xs text-muted-foreground">{item}</span>
                           </li>
                         ))}
                       </ul>
@@ -307,7 +435,7 @@ const AISolutions = () => {
             </div>
 
             <p className="text-center text-sm text-muted-foreground mt-8">
-              Fixed scope. Clear outcomes. No hidden costs.
+              Fixed price. Senior lead on every engagement. Outcome bounty available on selected projects.
             </p>
           </div>
         </section>
@@ -337,13 +465,13 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Outcome bounty — how we get paid */}
+        {/* How we get paid — outcome bounty centerpiece */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
               <Badge className="mb-4">How we get paid</Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                Pay for outcomes, not hours
+                We earn the bounty when your KPI moves.
               </h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 Most consultancies invoice for time, regardless of result. We don't.
@@ -440,7 +568,6 @@ const AISolutions = () => {
                 <thead>
                   <tr className="border-b">
                     <th className="text-left py-4 px-3 font-semibold text-sm">Feature</th>
-                    <th className="text-center py-4 px-3 font-semibold text-sm">Discovery</th>
                     <th className="text-center py-4 px-3 font-semibold text-sm">Kickstart</th>
                     <th className="text-center py-4 px-3 font-semibold text-sm bg-primary/5">Foundation</th>
                     <th className="text-center py-4 px-3 font-semibold text-sm">Transformation</th>
@@ -450,22 +577,14 @@ const AISolutions = () => {
                   {comparisonFeatures.map((row, index) => (
                     <tr key={index} className="border-b">
                       <td className="py-3 px-3 text-sm">{row.feature}</td>
-                      {(['discovery', 'kickstart', 'foundation', 'transformation'] as const).map((col) => (
+                      {(['kickstart', 'foundation', 'transformation'] as const).map((col) => (
                         <td
                           key={col}
                           className={`text-center py-3 px-3 ${col === 'foundation' ? 'bg-primary/5' : ''}`}
                         >
-                          {typeof row[col] === 'boolean' ? (
-                            row[col] ? (
-                              <CheckCircle className="h-5 w-5 text-success mx-auto" />
-                            ) : (
-                              <span className="text-muted-foreground">—</span>
-                            )
-                          ) : (
-                            <span className={`text-sm ${col === 'foundation' ? 'font-medium' : ''}`}>
-                              {row[col]}
-                            </span>
-                          )}
+                          <span className={`text-sm ${col === 'foundation' ? 'font-medium' : ''}`}>
+                            {row[col]}
+                          </span>
                         </td>
                       ))}
                     </tr>
@@ -535,17 +654,24 @@ const AISolutions = () => {
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              Not sure which package fits?
+              What would you build?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Book a free 15-minute chat. We'll point you to the right starting package — no pressure, no obligation.
+              Start with a Discovery Sprint and we'll design the engine for your problem in 90 minutes.
             </p>
-            <Button asChild size="lg">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                Book a free 15-min chat
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg">
+                <Link to="/outcome-sprints">
+                  Book a Discovery Sprint — £495
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                  Book a free 15-min chat
+                </a>
+              </Button>
+            </div>
           </div>
         </section>
       </div>
