@@ -58,10 +58,10 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Teamsmiths — Custom Engines That Move Your Numbers. Live in Days.</title>
+        <title>Teamsmiths — Bring the problem. We build the engine that solves it.</title>
         <meta
           name="description"
-          content="Custom engines that fix the problems eating your margin. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty available on selected projects. AI under the hood where it adds value. Founder-led from London & Woking, Surrey, UK."
+          content="Bring the problem. We build the AI + human engine that solves it. Days, not months. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty on selected projects. Founder-led from London & Woking, Surrey, UK."
         />
         <meta
           name="keywords"
@@ -78,13 +78,13 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-                Custom engines for the problems eating your margin. Live in days, not months.
+                Bring the problem. We build the AI + human engine that solves it.
               </h1>
               <p className="text-lg sm:text-xl lg:text-2xl text-foreground/80 font-medium mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
-                Bring one painful KPI. We'll build the engine that moves it.
+                Days, not months. Fixed price. Plugs into the data you already have.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground/90 max-w-2xl mx-auto mb-10 sm:mb-12 leading-relaxed px-2">
-                <span className="text-foreground font-medium">An engine</span> = a custom-built system that solves one painful problem and moves the KPI behind it. Plugs into the data you already have. Ships in days. Your team trains for an hour, not weeks.
+                <span className="text-foreground font-medium">An engine</span> = a custom-built system — AI doing the heavy lifting, humans where judgement matters — that solves one painful problem and moves the KPI behind it.
               </p>
 
               {/* CTAs — primary paid Discovery Sprint, secondary free chat */}

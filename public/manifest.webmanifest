@@ -1,11 +1,11 @@
 {
-  "name": "Teamsmiths — Custom Engines That Move Your Numbers",
+  "name": "Teamsmiths — Bring the problem. We build the engine that solves it.",
   "short_name": "Teamsmiths",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0F172A",
   "theme_color": "#0F172A",
-  "description": "Custom engines for the problems eating your margin. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty available on selected projects.",
+  "description": "Bring the problem. We build the AI + human engine that solves it. Days, not months. Discovery Sprint £495. Kickstart £2,950.",
   "icons": [
     {
       "src": "/icon-192.png",
