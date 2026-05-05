@@ -30,7 +30,7 @@ const OutcomeSprints = () => {
         <title>Discovery Sprint £495 — Design Your Custom Engine in 90 Minutes | Teamsmiths</title>
         <meta
           name="description"
-          content="90 minutes 1:1 with a senior business performance lead. Walk away with a designed engine, a 90-day plan, and a £-impact estimate for your top opportunities. £495 — credited to your first build if you proceed."
+          content="90 minutes 1:1 with a Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner). Walk away with a designed engine, a 90-day plan, and a £-impact estimate for your top opportunities. £495 — credited to your first build if you proceed."
         />
         <meta name="keywords" content="ai discovery, custom engine design, ai diagnostic, paid scoping" />
       </Helmet>
@@ -44,21 +44,21 @@ const OutcomeSprints = () => {
               Design your custom engine in 90 minutes.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
-              90 minutes 1:1 with a senior business performance lead. A branded AI Diagnostic Report. A working design for the engine we'd build first. A 90-day plan you can act on.
+              90 minutes 1:1 with a Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner). A branded AI Diagnostic Report. A working design for the engine we'd build first. A 90-day plan you can act on.
             </p>
-            <p className="text-lg text-muted-foreground font-medium mb-2">
-              <span className="text-3xl font-bold text-primary">£495</span>
-              <span className="ml-2">— fully credited to your first build if you proceed within 60 days.</span>
+            <p className="text-3xl font-bold text-primary mb-1">£495</p>
+            <p className="text-base text-muted-foreground font-medium mb-2">
+              Fully credited to your first build if you proceed within 60 days.
             </p>
             <p className="text-sm text-muted-foreground mb-10">
               No groups. No fluff. Built for SMB owners and senior leaders who want clarity, not a sales pitch.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your Discovery Sprint
+                <Link to="/discovery-sprint/checkout">
+                  Book your Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
+                </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <a href="#what-you-get">What you get</a>
@@ -90,7 +90,7 @@ const OutcomeSprints = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    Live 1:1 with a senior business performance lead. Opportunity scan, engine shortlist, ROI sizing, and a designed-on-the-call engine for the top pick.
+                    Live 1:1 with a Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner). Opportunity scan, engine shortlist, ROI sizing, and a designed-on-the-call engine for the top pick.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -187,7 +187,7 @@ const OutcomeSprints = () => {
                   <span className="text-5xl font-bold text-primary">£495</span>
                 </div>
                 <CardDescription className="text-base mt-3">
-                  90 minutes 1:1 with a senior business performance lead · AI Diagnostic Report · designed engine · 30-day async Q&A · credited to your first build
+                  90 minutes 1:1 with a Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner) · AI Diagnostic Report · designed engine · 30-day async Q&A · credited to your first build
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -218,10 +218,10 @@ const OutcomeSprints = () => {
                   </li>
                 </ul>
                 <Button className="w-full" size="lg" asChild>
-                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                    Book your Discovery Sprint
+                  <Link to="/discovery-sprint/checkout">
+                    Book your Discovery Sprint — £495
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </a>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
@@ -278,10 +278,10 @@ const OutcomeSprints = () => {
               The Discovery Sprint is the lowest-risk way to find out exactly where AI delivers in your business.
             </p>
             <Button asChild size="lg">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                Book your Discovery Sprint
+              <Link to="/discovery-sprint/checkout">
+                Book your Discovery Sprint — £495
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
+              </Link>
             </Button>
           </div>
         </section>

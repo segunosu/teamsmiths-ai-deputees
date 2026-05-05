@@ -165,10 +165,10 @@ const Results = () => {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                Workflows in action
+                Engines in action
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Each card shows the kind of challenge, the workflow we'd build, and the measurable result you should expect.
+                Each card shows the kind of challenge, the engine we'd build, and the measurable result you should expect.
               </p>
               <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto mt-3 italic">
                 Illustrative scenarios drawn from typical engagements. Real named cohorts coming soon — get in touch if you'd like to be one.
@@ -219,8 +219,8 @@ const Results = () => {
                 Example systems we build
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Illustrative systems that show how we turn operational pain into a working solution.
-                Every implementation is shaped to the client.
+                Illustrative engines that show how we turn operational pain into measurable outcomes.
+                Every engine is shaped to the client.
               </p>
             </div>
 
@@ -282,22 +282,22 @@ const Results = () => {
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl sm:text-4xl font-bold text-foreground mb-6">
-              Ready to achieve similar results?
+              Want results like these in your own numbers?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a free diagnostic call and we'll identify the workflows that will deliver the biggest impact for your business.
+              Book a Discovery Sprint and we'll design the engine for your specific problem in 90 minutes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free diagnostic
+                <Link to="/discovery-sprint">
+                  Book a Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
+                </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 h-auto">
-                <Link to="/solutions">
-                  Explore Solutions
-                </Link>
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                  Not ready? 15-min fit call →
+                </a>
               </Button>
             </div>
           </div>

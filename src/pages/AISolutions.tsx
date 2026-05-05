@@ -193,7 +193,7 @@ const AISolutions = () => {
     {
       question: 'Where should I start?',
       answer:
-        'Almost everyone starts with the Discovery Sprint. £495, 90 minutes 1:1 with a senior business performance lead, and you walk away with an AI Diagnostic Report — your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £495 is credited to your first build if you proceed within 60 days.',
+        'Almost everyone starts with the Discovery Sprint. £495, 90 minutes 1:1 with a Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner), and you walk away with an AI Diagnostic Report — your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £495 is credited to your first build if you proceed within 60 days.',
     },
     {
       question: 'How do you build engines so fast?',
@@ -203,7 +203,7 @@ const AISolutions = () => {
     {
       question: 'How are you different from a regular consultancy?',
       answer:
-        'Three things. Fixed prices on every package below Strategic. A senior business performance lead on every engagement (no offshore handover). And for selected projects we offer an outcome-bounty pricing model — see "How we get paid" below — where part of our fee only unlocks when the agreed KPI moves.',
+        'Three things. Fixed prices on every package below Strategic. A Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner) on every engagement (no offshore handover). And for selected projects we offer an outcome-bounty pricing model — see "How we get paid" below — where part of our fee only unlocks when the agreed KPI moves.',
     },
     {
       question: 'What is the outcome-bounty pricing model?',
@@ -245,28 +245,28 @@ const AISolutions = () => {
         {/* Hero Section */}
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-[1.1]">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-[1.15]">
               Bring the problem. We'll build the engine that fixes it — in days, not months.
             </h1>
-            <p className="text-xl sm:text-2xl text-foreground font-medium max-w-3xl mx-auto mb-4 leading-relaxed">
+            <p className="text-lg sm:text-xl lg:text-2xl text-foreground font-medium max-w-3xl mx-auto mb-4 leading-relaxed">
               When your KPI moves, we earn a bounty <span className="text-muted-foreground/80 font-normal">(selected engagements)</span>.
             </p>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6 leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto mb-6 leading-relaxed">
               Custom engines designed and built for your specific business problem.
             </p>
             <p className="text-sm text-muted-foreground mb-10">
-              Built for UK SMBs. Senior business performance lead on every engagement.
+              Built for UK SMBs. Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner) on every engagement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <Link to="/outcome-sprints">
+                <Link to="/discovery-sprint">
                   Start with a Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book a free 15-min chat
+                  Not ready? 15-min fit call →
                 </a>
               </Button>
             </div>
@@ -348,7 +348,7 @@ const AISolutions = () => {
                 Pick a problem. We'll design the engine for it in a 90-minute Discovery Sprint.
               </p>
               <Button size="lg" asChild>
-                <Link to="/outcome-sprints">
+                <Link to="/discovery-sprint">
                   Book a Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -428,9 +428,9 @@ const AISolutions = () => {
                       variant={tier.popular ? 'default' : 'outline'}
                       asChild
                     >
-                      <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                        Get started
-                      </a>
+                      <Link to="/discovery-sprint">
+                        {tier.id === 'transformation' ? 'Apply for Transformation →' : `Scope my ${tier.name} →`}
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -438,7 +438,7 @@ const AISolutions = () => {
             </div>
 
             <p className="text-center text-sm text-muted-foreground mt-8">
-              Fixed price. Senior lead on every engagement. Outcome bounty available on selected projects.
+              Fixed price. Segun Osu on every engagement. Outcome bounty available on selected projects.
             </p>
           </div>
         </section>
@@ -565,7 +565,7 @@ const AISolutions = () => {
         {/* Comparison Table */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">Compare packages</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">Compare engines by depth</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
@@ -664,7 +664,7 @@ const AISolutions = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <Link to="/outcome-sprints">
+                <Link to="/discovery-sprint">
                   Book a Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>

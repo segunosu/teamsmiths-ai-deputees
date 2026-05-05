@@ -170,7 +170,7 @@ const ExampleProductionRiskSystem = () => {
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/outcome-sprints">Book a Discovery Sprint</Link>
+                <Link to="/discovery-sprint">Book a Discovery Sprint — £495</Link>
               </Button>
               <Button asChild variant="ghost" size="lg">
                 <Link to="/solutions">Explore packages</Link>

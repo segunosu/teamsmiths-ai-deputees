@@ -145,7 +145,7 @@ const Blog = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link to="/outcome-sprints">
+              <Link to="/discovery-sprint">
                 Book a Discovery Sprint — £495
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>

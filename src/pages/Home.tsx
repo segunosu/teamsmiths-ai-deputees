@@ -77,63 +77,42 @@ const Home = () => {
 
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 sm:mb-8 leading-[1.15]">
-                Better decisions. Faster execution.
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4 sm:mb-6 leading-[1.15]">
+                Custom AI engines for UK SMBs — live in days, priced on the outcome.
               </h1>
-              <h2 className="text-xl sm:text-3xl lg:text-[2.75rem] font-semibold text-foreground/[0.87] mb-3 sm:mb-4 leading-[1.2]">
-                Results in weeks.
-              </h2>
-              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-normal mb-10 sm:mb-14 max-w-3xl mx-auto leading-relaxed px-2">
-                Reduce friction. Increase output. No extra headcount.
+              <p className="text-lg sm:text-xl lg:text-2xl text-foreground/80 font-medium mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
+                Bring one painful KPI. We'll build the engine that moves it.
+              </p>
+              <p className="text-sm sm:text-base text-muted-foreground/90 max-w-2xl mx-auto mb-10 sm:mb-12 leading-relaxed px-2">
+                <span className="text-foreground font-medium">An engine</span> = a small, custom AI workflow plugged into your existing tools. Moves one KPI. No new systems, no data entry.
               </p>
 
-              {/* Proof points */}
-              <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground/80 font-medium mb-3">
-                Typical outcomes
-              </p>
-              <div className="flex flex-col sm:flex-row gap-6 sm:gap-16 justify-center items-center mb-16 sm:mb-20 text-sm sm:text-base">
-                <div className="flex items-center gap-2 text-muted-foreground/80 font-normal">
-                  <Clock className="h-3.5 w-3.5 text-primary/60" />
-                  <span>Save 5–10 hours per week</span>
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground/80 font-normal">
-                  <Target className="h-3.5 w-3.5 text-primary/60" />
-                  <span>Increase win rates by 20%</span>
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground/80 font-normal">
-                  <Zap className="h-3.5 w-3.5 text-primary/60" />
-                  <span>Reduce costs by 45%</span>
-                </div>
-              </div>
-
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-start max-w-md sm:max-w-none mx-auto">
-                <div className="flex flex-col items-center">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
-                  >
-                    <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                      Book a free 15-min chat
-                      <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
-                    </a>
-                  </Button>
-                  <p className="text-xs text-muted-foreground/60 mt-1.5">
-                    15 minutes. Honest answer on whether we can help.
-                  </p>
-                </div>
+              {/* CTAs — primary paid Discovery Sprint, secondary free chat */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-md sm:max-w-none mx-auto mb-3">
+                <Button
+                  asChild
+                  size="lg"
+                  className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
+                >
+                  <Link to="/discovery-sprint">
+                    Book a Discovery Sprint — £495
+                    <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
+                  </Link>
+                </Button>
                 <Button
                   variant="outline"
                   size="lg"
-                  className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto self-center sm:self-start"
+                  className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                   asChild
                 >
-                  <Link to="/outcome-sprints">
-                    Discovery Sprint — £495
-                  </Link>
+                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                    Not ready? 15-min fit call →
+                  </a>
                 </Button>
               </div>
+              <p className="text-xs text-muted-foreground/70 mt-1">
+                90 mins 1:1 with Segun Osu. Fully credited to your first build within 60 days.
+              </p>
             </div>
           </div>
         </section>
@@ -176,7 +155,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Deploy proven workflows to streamline tasks, generate leads and support decision-making. Live in days, not months.
+                    Deploy your custom engine — plugged into your existing tools, moving one KPI. Live in days, not months.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -218,9 +197,11 @@ const Home = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">
               Start with a Discovery Sprint
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              90 minutes 1:1 with a senior business performance lead. A branded AI Diagnostic Report delivered within days.<br />
-              <span className="font-medium text-foreground">£495 — fully credited to your first build if you proceed within 60 days.</span>
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
+              90 minutes 1:1 with Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner). A branded AI Diagnostic Report delivered within days.
+            </p>
+            <p className="text-base sm:text-lg font-medium text-foreground max-w-3xl mx-auto mb-8">
+              £495 — fully credited to your first build if you proceed within 60 days.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
               <div className="flex items-center gap-2 text-sm font-medium">
@@ -238,14 +219,14 @@ const Home = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button size="lg" asChild>
-                <Link to="/outcome-sprints">
-                  Book your Discovery Sprint
+                <Link to="/discovery-sprint">
+                  Book a Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link to="/solutions">
-                  See all packages
+                  See the engines
                 </Link>
               </Button>
             </div>
@@ -260,8 +241,8 @@ const Home = () => {
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
                 The kind of outcomes we build toward.
               </p>
-              <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto mt-3 italic">
-                Illustrative scenarios drawn from typical engagements. Real named cohorts coming soon — get in touch.
+              <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto mt-3">
+                See <Link to="/results" className="text-primary underline-offset-2 hover:underline">named track record</Link> for the founder's prior delivery work — Philips, Haleon, GSK, Gartner.
               </p>
             </div>
 
@@ -288,7 +269,7 @@ const Home = () => {
             )}
 
             <div className="text-center mt-12">
-              <p className="text-sm text-muted-foreground mb-6">Every workflow we deploy, we measure. You should expect the same.</p>
+              <p className="text-sm text-muted-foreground mb-6">Every engine we deploy, we measure. You should expect the same.</p>
               <Button variant="outline" asChild>
                 <Link to="/results">
                   See all case studies
@@ -313,24 +294,24 @@ const Home = () => {
         {/* FINAL CTA */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 pb-24 sm:pb-28 lg:pb-24">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 sm:mb-10 px-4">
-              Ready to see what's possible for your business?
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 sm:mb-8 px-4 leading-tight">
+              One paid sprint. Three opportunities ranked by £-impact. A 90-day plan you can act on Monday.
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a free 30-minute diagnostic call. We'll identify your highest-impact opportunities and show you exactly what's achievable.
+              90 minutes 1:1 with Segun Osu. £495 — fully credited to your first build within 60 days.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">
               <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book your free diagnostic
+                <Link to="/discovery-sprint">
+                  Book a Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
-                </a>
+                </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
-                <Link to="/outcome-sprints">
-                  Book a Discovery Sprint
-                </Link>
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                  Not ready? 15-min fit call →
+                </a>
               </Button>
             </div>
           </div>

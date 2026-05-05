@@ -78,24 +78,23 @@ const About = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-4">About Teamsmiths</Badge>
-            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-[1.1]">
-              Built on decades of finding what's leaking.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-[1.15]">
+              Segun Osu has spent 25 years finding the margin leaking out of FTSE businesses. Now he builds engines that do the same for yours.
             </h1>
-            <p className="text-xl text-muted-foreground font-medium mb-8 max-w-3xl mx-auto leading-relaxed">
-              Productivity and performance leak quietly. By the time the numbers force a reckoning, it's far more expensive to fix.
-            </p>
             <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-              Most executives don't miss their targets because their people are bad — they miss them because critical issues like delays, claim exposure, and performance gaps surface too late to act on.
+              Most executives don't miss their targets because their people are bad — they miss them because critical issues like delays, claim exposure, and performance gaps surface too late to act on. Earlier visibility, the right people, the right tools — that's the pattern, now codified into engines.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
-                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                  Book a free 15-min chat
+                <Link to="/discovery-sprint">
+                  Book a Discovery Sprint — £495
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </a>
+                </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="/results">See case studies</Link>
+                <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
+                  Not ready? 15-min fit call →
+                </a>
               </Button>
             </div>
           </div>
@@ -257,7 +256,7 @@ const About = () => {
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Senior consultant on every engagement</span>
+                        <span className="text-muted-foreground">Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner) on every engagement</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
@@ -313,7 +312,7 @@ const About = () => {
                 </a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="/outcome-sprints">Discovery Sprint — £495</Link>
+                <Link to="/discovery-sprint">Discovery Sprint — £495</Link>
               </Button>
             </div>
           </div>

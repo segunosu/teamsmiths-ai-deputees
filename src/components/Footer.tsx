@@ -18,9 +18,9 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Resources</h3>
             <ul className="space-y-3">
-              <li><Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Insights Blog</Link></li>
-              <li><a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Diagnostic & Roadmap</a></li>
-              <li><Link to="/ai-impact-maturity" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Readiness Assessment</Link></li>
+              <li><Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Case studies</Link></li>
+              <li><Link to="/discovery-sprint" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Discovery Sprint — £495</Link></li>
+              <li><Link to="/ai-impact-maturity" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Free AI Readiness Check</Link></li>
             </ul>
           </div>
 

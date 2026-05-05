@@ -17,9 +17,9 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const navigationItems = [
-  { label: 'Solutions', path: '/solutions', tooltip: 'Packages with fixed pricing' },
-  { label: 'Results', path: '/results', tooltip: 'Case studies with measurable outcomes' },
-  { label: 'Discovery Sprint', path: '/outcome-sprints', tooltip: 'Design your engine in 90 minutes — £495' },
+  { label: 'Solutions', path: '/solutions', tooltip: 'Engines with fixed pricing' },
+  { label: 'Results', path: '/results', tooltip: 'Track record and case studies' },
+  { label: 'Discovery Sprint', path: '/discovery-sprint', tooltip: 'Design your engine in 90 minutes — £495' },
 ];
 
 export const Navigation = () => {
@@ -60,10 +60,10 @@ export const Navigation = () => {
           {/* Logo */}
           <div className="flex-shrink-0 overflow-visible" style={{ position: 'relative', zIndex: 1 }}>
             <Link to="/" className="flex items-center" style={{ pointerEvents: 'auto' }}>
-              <img 
-                src={teamsmithsLogo} 
-                alt="Team Smiths Logo" 
-                style={{ height: '132px', maxHeight: 'none', width: 'auto' }}
+              <img
+                src={teamsmithsLogo}
+                alt="Teamsmiths Logo"
+                className="h-12 sm:h-16 lg:h-20 w-auto"
               />
             </Link>
           </div>
@@ -93,9 +93,9 @@ export const Navigation = () => {
           <div className="hidden lg:flex items-center">
             {/* Primary CTA - always visible */}
             <Button asChild size="sm" className="text-sm font-medium">
-              <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                Book your free diagnostic
-              </a>
+              <Link to="/discovery-sprint">
+                Book a Discovery Sprint — £495
+              </Link>
             </Button>
 
             {/* Secondary icons - logged in only, with spacing */}
@@ -215,8 +215,13 @@ export const Navigation = () => {
                 ) : (
                   <div className="space-y-1">
                     <Button asChild className="w-full justify-start">
+                      <Link to="/discovery-sprint" onClick={() => setIsMenuOpen(false)}>
+                        Book a Discovery Sprint — £495
+                      </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full justify-start">
                       <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>
-                        Book diagnostic
+                        Not ready? 15-min fit call
                       </a>
                     </Button>
                   </div>

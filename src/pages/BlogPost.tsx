@@ -173,18 +173,18 @@ const BlogPost = () => {
             Bring your problem. We'll design the engine.
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            90 minutes 1:1 with a senior business performance lead. £495 — fully credited to your first build if you proceed within 60 days.
+            90 minutes 1:1 with Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner). £495 — fully credited to your first build if you proceed within 60 days.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link to="/outcome-sprints">
+              <Link to="/discovery-sprint">
                 Book a Discovery Sprint — £495
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                Book a free 15-min chat
+                Not ready? 15-min fit call →
               </a>
             </Button>
           </div>
