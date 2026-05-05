@@ -81,27 +81,27 @@ const Home = () => {
                 Bring the problem.<br /> We build the solution engine.
               </h1>
               <h2 className="text-xl sm:text-3xl lg:text-[2.75rem] font-semibold text-foreground/[0.87] mb-3 sm:mb-4 leading-[1.2]">
-                Human craft. AI speed. Measurable outcomes.
+                Expert strategy. AI speed. Measurable outcomes.
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-normal mb-10 sm:mb-14 max-w-3xl mx-auto leading-relaxed px-2">
                 Reduce friction. Increase output. No extra headcount.
               </p>
 
               {/* Proof points */}
-              <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-muted-foreground/80 font-medium mb-3">
+              <p className="text-sm sm:text-base uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
                 Typical outcomes
               </p>
               <div className="flex flex-col sm:flex-row gap-6 sm:gap-16 justify-center items-center mb-16 sm:mb-20 text-sm sm:text-base">
-                <div className="flex items-center gap-2 text-muted-foreground/80 font-normal">
-                  <Clock className="h-3.5 w-3.5 text-primary/60" />
+                <div className="flex items-center gap-2 text-muted-foreground font-normal">
+                  <Clock className="h-3.5 w-3.5 text-primary/80" />
                   <span>Save 5–10 hours per week</span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground/80 font-normal">
-                  <Target className="h-3.5 w-3.5 text-primary/60" />
+                <div className="flex items-center gap-2 text-muted-foreground font-normal">
+                  <Target className="h-3.5 w-3.5 text-primary/80" />
                   <span>Increase win rates by 20%</span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground/80 font-normal">
-                  <Zap className="h-3.5 w-3.5 text-primary/60" />
+                <div className="flex items-center gap-2 text-muted-foreground font-normal">
+                  <Zap className="h-3.5 w-3.5 text-primary/80" />
                   <span>Reduce costs by 45%</span>
                 </div>
               </div>
