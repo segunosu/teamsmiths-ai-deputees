@@ -113,7 +113,7 @@ const AISolutions = () => {
         'Meeting Intelligence Engine — your meetings flowing into action lists',
         'Quote Booster — dynamic pricing wired into your CRM',
       ],
-      timeline: 'Days, not weeks',
+      timeline: 'Days, not months',
       icon: <Rocket className="h-8 w-8" />,
       popular: false,
     },
@@ -246,9 +246,12 @@ const AISolutions = () => {
         <section className="py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-[1.1]">
-              Bring the problem.<br className="hidden sm:block" /> We'll build the engine in days, not months.<br className="hidden sm:block" /> When your KPI moves, we earn a bounty <span className="text-base sm:text-lg lg:text-2xl font-medium text-muted-foreground/80">(selected engagements)</span>.
+              Bring the problem. We'll build the engine that fixes it — in days, not months.
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6 leading-relaxed">
+            <p className="text-xl sm:text-2xl text-foreground font-medium max-w-3xl mx-auto mb-4 leading-relaxed">
+              When your KPI moves, we earn a bounty <span className="text-muted-foreground/80 font-normal">(selected engagements)</span>.
+            </p>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6 leading-relaxed">
               Custom engines designed and built for your specific business problem.
             </p>
             <p className="text-sm text-muted-foreground mb-10">
