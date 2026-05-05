@@ -78,7 +78,7 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 sm:mb-8 leading-[1.15]">
-                Bring the problem. We build the solution engine.
+                Bring the problem.<br /> We build the solution engine.
               </h1>
               <h2 className="text-xl sm:text-3xl lg:text-[2.75rem] font-semibold text-foreground/[0.87] mb-3 sm:mb-4 leading-[1.2]">
                 Human craft. AI speed. Measurable outcomes.
