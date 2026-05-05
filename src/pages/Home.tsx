@@ -329,7 +329,7 @@ const Home = () => {
               </Button>
               <Button asChild variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <Link to="/outcome-sprints">
-                  Join an Outcome Sprint
+                  Book a Discovery Sprint
                 </Link>
               </Button>
             </div>
