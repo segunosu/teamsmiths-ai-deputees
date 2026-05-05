@@ -58,14 +58,14 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Teamsmiths — Fixed-Price AI for UK SMBs. Results in Weeks.</title>
+        <title>Teamsmiths — Custom Engines That Move Your Numbers. Live in Days.</title>
         <meta
           name="description"
-          content="Fixed-price AI delivery for UK SMBs. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty pricing on selected projects. London & Woking, Surrey, UK."
+          content="Custom engines that fix the problems eating your margin. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty available on selected projects. AI under the hood where it adds value. Founder-led from London & Woking, Surrey, UK."
         />
         <meta
           name="keywords"
-          content="AI consulting UK, SMB AI delivery, fixed price AI, AI workflow, outcome pricing"
+          content="business engines, custom AI consulting, fixed price AI, business automation, outcome pricing, AI for SMB"
         />
       </Helmet>
 
@@ -78,13 +78,13 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4 sm:mb-6 leading-[1.15]">
-                Custom AI engines for UK SMBs — live in days, priced on the outcome.
+                Custom engines for the problems eating your margin. Live in days, not months.
               </h1>
               <p className="text-lg sm:text-xl lg:text-2xl text-foreground/80 font-medium mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2">
                 Bring one painful KPI. We'll build the engine that moves it.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground/90 max-w-2xl mx-auto mb-10 sm:mb-12 leading-relaxed px-2">
-                <span className="text-foreground font-medium">An engine</span> = a small, custom AI workflow plugged into your existing tools. Moves one KPI. No new systems, no data entry.
+                <span className="text-foreground font-medium">An engine</span> = a custom-built system that solves one painful problem and moves the KPI behind it. Plugs into the data you already have. Ships in days. Your team trains for an hour, not weeks.
               </p>
 
               {/* CTAs — primary paid Discovery Sprint, secondary free chat */}
@@ -111,7 +111,7 @@ const Home = () => {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground/70 mt-1">
-                90 mins 1:1 with Segun Osu. Fully credited to your first build within 60 days.
+                90 mins 1:1 with the founder. Fully credited to your first build within 60 days.
               </p>
             </div>
           </div>
@@ -198,7 +198,7 @@ const Home = () => {
               Start with a Discovery Sprint
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
-              90 minutes 1:1 with Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner). A branded AI Diagnostic Report delivered within days.
+              90 minutes 1:1 with the founder — an ex-FTSE turnaround lead (Haleon, GSK, Gartner). A branded AI Diagnostic Report delivered within days.
             </p>
             <p className="text-base sm:text-lg font-medium text-foreground max-w-3xl mx-auto mb-8">
               £495 — fully credited to your first build if you proceed within 60 days.
@@ -298,7 +298,7 @@ const Home = () => {
               One paid sprint. Three opportunities ranked by £-impact. A 90-day plan you can act on Monday.
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              90 minutes 1:1 with Segun Osu. £495 — fully credited to your first build within 60 days.
+              90 minutes 1:1 with the founder. £495 — fully credited to your first build within 60 days.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">

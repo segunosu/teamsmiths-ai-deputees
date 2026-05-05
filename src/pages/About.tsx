@@ -66,10 +66,10 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>About Teamsmiths — Decades of finding what's leaking, now built into AI Engines</title>
+        <title>About Teamsmiths — Decades of finding what's leaking, now codified into engines</title>
         <meta
           name="description"
-          content="Teamsmiths is led by Segun Osu. Decades of work helping FTSE companies and multinationals find the productivity and performance they were leaving on the table — now codified into AI Engines for UK SMBs."
+          content="Teamsmiths is led by Segun Osu. Decades of work helping FTSE companies and multinationals find the productivity and performance they were leaving on the table — now codified into engines that ship in days."
         />
       </Helmet>
 

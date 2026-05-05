@@ -1,11 +1,11 @@
 {
-  "name": "Teamsmiths — Fixed-Price AI for UK SMBs",
+  "name": "Teamsmiths — Custom Engines That Move Your Numbers",
   "short_name": "Teamsmiths",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0F172A",
   "theme_color": "#0F172A",
-  "description": "Fixed-price AI delivery for UK SMBs. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty pricing on selected projects.",
+  "description": "Custom engines for the problems eating your margin. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty available on selected projects.",
   "icons": [
     {
       "src": "/icon-192.png",

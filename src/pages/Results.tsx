@@ -103,7 +103,7 @@ const Results = () => {
               The track record behind the Engines
             </h1>
             <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-              Decades of finding productivity and performance gains across FTSE pharma, professional services, and infrastructure delivery — now codified into AI Engines for UK SMBs.
+              Decades of finding productivity and performance gains across FTSE pharma, professional services, and infrastructure delivery — now codified into engines that ship in days.
             </p>
           </div>
         </section>

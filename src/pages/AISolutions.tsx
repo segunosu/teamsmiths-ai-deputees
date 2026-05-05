@@ -193,7 +193,7 @@ const AISolutions = () => {
     {
       question: 'Where should I start?',
       answer:
-        'Almost everyone starts with the Discovery Sprint. £495, 90 minutes 1:1 with a Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner), and you walk away with an AI Diagnostic Report — your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £495 is credited to your first build if you proceed within 60 days.',
+        'Almost everyone starts with the Discovery Sprint. £495, 90 minutes 1:1 with a an ex-FTSE turnaround lead (Haleon, GSK, Gartner), and you walk away with an AI Diagnostic Report — your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £495 is credited to your first build if you proceed within 60 days.',
     },
     {
       question: 'How do you build engines so fast?',
@@ -203,7 +203,7 @@ const AISolutions = () => {
     {
       question: 'How are you different from a regular consultancy?',
       answer:
-        'Three things. Fixed prices on every package below Strategic. A Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner) on every engagement (no offshore handover). And for selected projects we offer an outcome-bounty pricing model — see "How we get paid" below — where part of our fee only unlocks when the agreed KPI moves.',
+        'Three things. Fixed prices on every package below Strategic. A an ex-FTSE turnaround lead (Haleon, GSK, Gartner) on every engagement (no offshore handover). And for selected projects we offer an outcome-bounty pricing model — see "How we get paid" below — where part of our fee only unlocks when the agreed KPI moves.',
     },
     {
       question: 'What is the outcome-bounty pricing model?',
@@ -255,7 +255,7 @@ const AISolutions = () => {
               Custom engines designed and built for your specific business problem.
             </p>
             <p className="text-sm text-muted-foreground mb-10">
-              Built for UK SMBs. Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner) on every engagement.
+              Built for UK SMBs. An ex-FTSE turnaround lead (Haleon, GSK, Gartner) on every engagement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
@@ -438,7 +438,7 @@ const AISolutions = () => {
             </div>
 
             <p className="text-center text-sm text-muted-foreground mt-8">
-              Fixed price. Segun Osu on every engagement. Outcome bounty available on selected projects.
+              Fixed price. Senior FTSE-credentialled lead on every engagement. Outcome bounty available on selected projects.
             </p>
           </div>
         </section>
