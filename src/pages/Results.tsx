@@ -60,12 +60,42 @@ const Results = () => {
     setSelectedCaseSlug(caseStudies[selectedCaseIndex + 1].slug);
   };
 
-  // Founder track-record stats (real, sourced from prior delivery work)
-  const summaryStats = [
-    { icon: TrendingUp, label: "Velocity uplift (FTSE turnaround)", value: "+45%" },
-    { icon: Target, label: "Predictability lift (Haleon, GSK)", value: "70% → 98%" },
-    { icon: Clock, label: "Annual revenue protected (Philips)", value: "£22m" },
-    { icon: BarChart3, label: "Revenue growth (Gartner, <5 yrs)", value: "$3m → $10m" },
+  // Named engagements from the founder's prior delivery work
+  const namedEngagements = [
+    {
+      client: "Haleon PLC",
+      period: "2022–23 · 6 months",
+      brief: "Coordinated Bain on smart retail shelf rollout across the FTSE pharma portfolio.",
+      metrics: [
+        { value: "+45%", label: "Performance lift" },
+        { value: "15%", label: "Cost reduction" },
+        { value: "~99%", label: "Delivery predictability" },
+      ],
+    },
+    {
+      client: "GSK PLC",
+      period: "Multi-year",
+      brief: "Cross-functional uplift across product, engineering and data. Coordinated EY and BCG.",
+      metrics: [
+        { value: "+40%", label: "Performance lift" },
+      ],
+    },
+    {
+      client: "Gartner",
+      period: "5 years",
+      brief: "Led EMEA portfolio growth — the team and the numbers.",
+      metrics: [
+        { value: "$3M → $10M", label: "EMEA portfolio growth" },
+      ],
+    },
+    {
+      client: "Philips Italy",
+      period: "12 months",
+      brief: "Accounts Receivable clearance programme.",
+      metrics: [
+        { value: "£25M", label: "AR cleared in a year" },
+      ],
+    },
   ];
 
   const namedTestimonials = [
@@ -111,23 +141,44 @@ const Results = () => {
           </div>
         </section>
 
-        {/* Founder Track-Record Stats */}
-        <section className="py-8 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        {/* Named engagements — the actual track record */}
+        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-6">
-              <p className="text-sm uppercase tracking-wider text-muted-foreground/80 font-medium">
-                From the founder's prior delivery work
+            <div className="text-center mb-8 sm:mb-10">
+              <p className="text-xs sm:text-sm uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">
+                The founder's prior delivery work
               </p>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+                Named engagements. Real numbers.
+              </h2>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {summaryStats.map((stat, index) => (
-                <Card key={index} className="text-center p-4 sm:p-6">
-                  <stat.icon className="h-8 w-8 text-primary mx-auto mb-2" />
-                  <div className="text-xl sm:text-2xl font-bold text-foreground">{stat.value}</div>
-                  <div className="text-xs sm:text-sm text-muted-foreground mt-1">{stat.label}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              {namedEngagements.map((eng, idx) => (
+                <Card key={idx} className="p-5 sm:p-6 border-l-4 border-l-primary">
+                  <div className="flex items-baseline justify-between mb-2 flex-wrap gap-2">
+                    <div className="font-bold text-foreground text-lg sm:text-xl">{eng.client}</div>
+                    <Badge variant="outline" className="text-[10px]">{eng.period}</Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{eng.brief}</p>
+                  <div className="flex flex-wrap justify-around gap-4 pt-3 border-t border-border/60">
+                    {eng.metrics.map((m, i) => (
+                      <div key={i} className="text-center">
+                        <div className="text-lg sm:text-xl font-bold text-primary">{m.value}</div>
+                        <div className="text-[10px] sm:text-xs text-muted-foreground leading-tight mt-1">
+                          {m.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </Card>
               ))}
             </div>
+            <p className="text-center text-sm text-muted-foreground mt-6">
+              Also worked with: <span className="text-foreground/80 font-medium">Ogier Group · Reuters</span>
+            </p>
+            <p className="text-center text-xs text-muted-foreground/70 mt-3 max-w-2xl mx-auto">
+              Credentials: Oxford AI Governance · Wharton AI Strategy &amp; Governance
+            </p>
           </div>
         </section>
 
