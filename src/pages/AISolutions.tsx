@@ -14,6 +14,7 @@ import {
   Lightbulb,
   Layers,
   Network,
+  ExternalLink,
 } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
@@ -25,29 +26,46 @@ const AISolutions = () => {
     trackEvent('solutions_view' as any, {} as any);
   }, [trackEvent]);
 
-  // Engines we've built or designed — credibility wall, not a fixed catalogue
-  const engineWall = [
-    {
-      name: 'Construction Revenue Risk Engine',
-      desc: 'Surfaces delay risks and claim opportunities early enough to benefit, by monitoring project updates and baseline.',
-      status: 'Live · onboarding UK contractors',
-      href: '/examples/revenue-risk-engine',
-    },
+  // Live engines — buyer can try the actual product right now
+  const liveEngines = [
     {
       name: 'Manufacturing Order Risk Engine',
-      desc: 'Spots order delivery exposure before it costs you, by reading machine signals and translating them into role-specific actions.',
-      status: 'Validated prototype · cohort forming',
+      sector: 'Manufacturing',
+      desc: 'Spots order-delivery exposure before it costs you. Reads machine and shop-floor signals and translates them into role-specific decision cards with countdown deadlines.',
+      status: 'Live · try the demo',
       href: '/examples/order-risk-engine',
+      demoUrl: 'https://order-risk-engine.deputee.ai/',
     },
+    {
+      name: 'Construction Revenue Risk Engine',
+      sector: 'Construction',
+      desc: 'Surfaces programme drift and the £ liquidated-damages exposure before it locks in. Role-based decision cards escalate if ignored.',
+      status: 'Live · try the demo',
+      href: '/examples/revenue-risk-engine',
+      demoUrl: 'https://revenue-risk-engine.deputee.ai/',
+    },
+    {
+      name: 'Procurement Engine',
+      sector: 'Procurement',
+      desc: 'AI procurement deputy for mid-market £25k–£500k decisions. Structured brief → 3–5 pre-qualified vendors → buyer-supervised counter-offer → agreement in principle PDF.',
+      status: 'Live · try the demo',
+      demoUrl: 'https://procurement.deputee.ai/',
+    },
+    {
+      name: 'AI Governance Engine',
+      sector: 'Governance',
+      desc: 'The 4Ps framework — Primed, Principled, Practised, Protected. Start with the free 20-question self-assessment, then a one-P-per-week 30-day rollout.',
+      status: 'Live · free 4Ps self-assessment',
+      demoUrl: 'https://governance.deputee.ai/',
+    },
+  ];
+
+  // Engines already deployed with paying clients (no public demo)
+  const deployedEngines = [
     {
       name: 'Sports Club Membership Engine',
       desc: 'Bookings + admissions + compliance + QR access. Removes manual admin overhead and grows the addressable member base.',
       status: 'Live with clients',
-    },
-    {
-      name: 'Mental Fitness Engine for Sports Clubs',
-      desc: 'On-demand mental fitness content synced with coaches and parents. Safeguarding, compliance and privacy built in.',
-      status: 'Designed · cohort forming',
     },
     {
       name: 'Songita — Personalised Music & Video Engine',
@@ -59,35 +77,38 @@ const AISolutions = () => {
       desc: 'Transcribes meetings and turns them into next-best actions, individual nudges, training, coaching and automated CRM/Jira updates. Bring your own framework or pick BANT, MEDIC, SCRUM, etc.',
       status: 'Live · the original Engine',
     },
+  ];
+
+  // Designs ready to deploy on demand — shown as compact list, not full cards
+  const pipelineDesigns = [
+    'Mental Fitness Engine for Sports Clubs',
+    'Quote Booster (dynamic pricing)',
+    'Cashflow Nudges (invoice reminders)',
+    'Follow-up Engine',
+    'Proposal Speed-up',
+    'New-Hire Onboarding Kit',
+    'Meeting-to-Minutes',
+  ];
+
+  // Engines built beyond the SMB lane — proof of capability across domains
+  const beyondSMBEngines = [
     {
-      name: 'Quote Booster',
-      desc: 'Streamlined quoting with dynamic pricing — faster turnaround, higher win rate.',
-      status: 'Designed · ready to deploy',
+      name: 'Coach Deputee',
+      sector: 'Consumer',
+      desc: 'Daily AI mentor council for individual professionals. Multi-perspective reflection in under 5 minutes; weekly checkpoint audits.',
+      demoUrl: 'https://coach.deputee.ai/',
     },
     {
-      name: 'Cashflow Nudges',
-      desc: 'Automated invoice reminders with polite escalation — DSO down, aged invoices down.',
-      status: 'Designed · ready to deploy',
+      name: 'Positive Changes',
+      sector: 'Therapy',
+      desc: 'CBT/REBT therapist companion. Clients complete therapist-assigned homework; AI pre-reviews for cognitive distortions and risk language.',
+      demoUrl: 'https://positivechanges.deputee.ai/',
     },
     {
-      name: 'Follow-up Engine',
-      desc: 'Smart, automated follow-ups so deals never slip through the cracks.',
-      status: 'Designed · ready to deploy',
-    },
-    {
-      name: 'Proposal Speed-up',
-      desc: 'Drafts proposals from your last call — branded, tracked, and faster.',
-      status: 'Designed · ready to deploy',
-    },
-    {
-      name: 'New-Hire Onboarding Kit',
-      desc: 'Structured 30-day onboarding with SOPs, milestones and tracking.',
-      status: 'Designed · ready to deploy',
-    },
-    {
-      name: 'Meeting-to-Minutes',
-      desc: 'Meeting notes flow automatically into your task system — actions get followed up.',
-      status: 'Designed · ready to deploy',
+      name: "TPM — The Player's Mind",
+      sector: 'Youth football',
+      desc: 'Weekly mental-fitness toolkit for grassroots clubs and academies. Player, Coach and Parent views, with safeguarding routed to the Welfare Officer.',
+      demoUrl: 'https://tpm.deputee.ai/',
     },
   ];
 
@@ -306,46 +327,116 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* What we've built so far — credibility wall */}
+        {/* Engines — live, deployed, in the pipeline, and beyond-SMB */}
         <section id="engines" className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
-              <Badge variant="secondary" className="mb-3">Engines we've built or designed</Badge>
+              <Badge variant="secondary" className="mb-3">Engines we've built</Badge>
               <h2 className="text-3xl sm:text-4xl font-bold mb-3">A taste, not a menu.</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                These are engines we've already built or designed. The full breadth is whatever you can describe and we can imagine — bring the problem, and we'll design the engine for it.
+                These are real engines, in the wild. Bring a problem we haven't met yet — we'll design the engine for it.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {engineWall.map((engine) => {
-                const card = (
-                  <Card key={engine.name} className="h-full border-l-4 border-l-primary/40 hover:border-l-primary hover:shadow-md transition-all">
+            {/* Live engines — try the demo */}
+            <div className="mb-14">
+              <div className="text-center mb-6">
+                <Badge className="mb-2">Live · try the demo</Badge>
+                <h3 className="text-xl sm:text-2xl font-bold">Engines you can try right now</h3>
+              </div>
+              <div className="grid md:grid-cols-2 gap-5">
+                {liveEngines.map((engine) => (
+                  <Card
+                    key={engine.name}
+                    className="h-full border-l-4 border-l-primary hover:shadow-md transition-all"
+                  >
                     <CardContent className="p-5">
-                      <div className="font-semibold text-foreground mb-2 text-sm">{engine.name}</div>
-                      <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{engine.desc}</p>
-                      <Badge variant="outline" className="text-[10px]">{engine.status}</Badge>
+                      <Badge variant="secondary" className="text-[10px] mb-3">
+                        {engine.sector}
+                      </Badge>
+                      <div className="font-semibold text-foreground mb-2 text-base">
+                        {engine.name}
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                        {engine.desc}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <Button asChild size="sm" variant="default">
+                          <a
+                            href={engine.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Try the live demo
+                            <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                          </a>
+                        </Button>
+                        {engine.href && (
+                          <Button asChild size="sm" variant="outline">
+                            <Link to={engine.href}>See how it works</Link>
+                          </Button>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
-                );
-                return engine.href ? (
-                  <Link key={engine.name} to={engine.href} className="block">
-                    {card}
-                  </Link>
-                ) : (
-                  <div key={engine.name}>{card}</div>
-                );
-              })}
+                ))}
+              </div>
             </div>
 
-            <p className="text-center text-xs text-muted-foreground/80 italic mt-8 max-w-3xl mx-auto">
-              Outcomes shown across this page are projected or illustrative based on engine design and the founder's prior delivery work. Real named cohorts coming soon.
-            </p>
+            {/* Deployed with clients */}
+            <div className="mb-14">
+              <div className="text-center mb-6">
+                <Badge variant="outline" className="mb-2">Deployed</Badge>
+                <h3 className="text-xl sm:text-2xl font-bold">Already running with clients</h3>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                {deployedEngines.map((engine) => (
+                  <Card
+                    key={engine.name}
+                    className="h-full border-l-4 border-l-primary/40"
+                  >
+                    <CardContent className="p-5">
+                      <div className="font-semibold text-foreground mb-2 text-sm">
+                        {engine.name}
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+                        {engine.desc}
+                      </p>
+                      <Badge variant="outline" className="text-[10px]">
+                        {engine.status}
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
 
-            <div className="text-center mt-8">
-              <h3 className="text-2xl font-bold mb-3">What would you build?</h3>
+            {/* Pipeline designs — compact strip */}
+            <div className="mb-14">
+              <div className="text-center mb-4">
+                <h4 className="text-xs font-semibold tracking-[0.18em] uppercase text-muted-foreground">
+                  Designs ready to deploy on demand
+                </h4>
+                <p className="text-xs text-muted-foreground/80 mt-1">
+                  Templated patterns — bring your variant.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center max-w-3xl mx-auto">
+                {pipelineDesigns.map((name) => (
+                  <span
+                    key={name}
+                    className="text-xs text-muted-foreground bg-muted/60 px-3 py-1.5 rounded-full border border-border/40"
+                  >
+                    {name}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-center mt-10">
+              <h3 className="text-2xl font-bold mb-3">Don't see your problem?</h3>
               <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Pick a problem. We'll design the engine for it in a 90-minute Discovery Sprint.
+                Bring it. We'll design the engine for it in a 90-minute Discovery Sprint.
               </p>
               <Button size="lg" asChild>
                 <Link to="/discovery-sprint">
@@ -353,6 +444,49 @@ const AISolutions = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
+            </div>
+
+            {/* Beyond the SMB lane */}
+            <div className="mt-20 pt-12 border-t border-border/60">
+              <div className="text-center mb-6">
+                <Badge variant="secondary" className="mb-2">Beyond the SMB lane</Badge>
+                <h3 className="text-xl sm:text-2xl font-bold">
+                  Engines we've also built in other domains
+                </h3>
+                <p className="text-sm text-muted-foreground mt-2 max-w-2xl mx-auto">
+                  Proof we can shape an engine for any problem — including outside our primary B2B-SMB focus.
+                </p>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                {beyondSMBEngines.map((engine) => (
+                  <Card
+                    key={engine.name}
+                    className="h-full border-l-4 border-l-primary/30 hover:border-l-primary/60 hover:shadow-md transition-all"
+                  >
+                    <CardContent className="p-5">
+                      <Badge variant="secondary" className="text-[10px] mb-2">
+                        {engine.sector}
+                      </Badge>
+                      <div className="font-semibold text-foreground mb-2 text-sm">
+                        {engine.name}
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+                        {engine.desc}
+                      </p>
+                      <Button asChild size="sm" variant="ghost" className="text-xs px-2 h-auto py-1">
+                        <a
+                          href={engine.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          See the live product
+                          <ExternalLink className="ml-1 h-3 w-3" />
+                        </a>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </section>

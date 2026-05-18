@@ -16,6 +16,9 @@ import {
   HardHat,
   CalendarCheck,
   Quote,
+  ShoppingCart,
+  Shield,
+  ExternalLink,
 } from "lucide-react";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { Helmet } from "react-helmet-async";
@@ -210,17 +213,16 @@ const Results = () => {
           canNavigateNext={selectedCaseIndex >= 0 && selectedCaseIndex < (caseStudies?.length ?? 0) - 1}
         />
 
-        {/* Example Systems */}
+        {/* Live Engines — try the demo */}
         <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-14">
-              <Badge className="mb-4">Capability</Badge>
+              <Badge className="mb-4">Live engines</Badge>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                Example systems we build
+                Real engines you can try right now
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Illustrative engines that show how we turn operational pain into measurable outcomes.
-                Every engine is shaped to the client.
+                Four live engines, in the wild. Each one solves a specific problem for a specific buyer. Click through to see them running.
               </p>
             </div>
 
@@ -231,19 +233,37 @@ const Results = () => {
                   tag: "Manufacturing",
                   title: "Order Risk Engine",
                   problem:
-                    "Production issues are spotted too late, orders slip, and revenue leaks before anyone can react.",
+                    "Production issues are spotted too late, orders slip, and revenue leaks before anyone can react. The engine reads machine signals and turns them into role-specific decision cards.",
                   href: "/examples/order-risk-engine",
+                  demoUrl: "https://order-risk-engine.deputee.ai/",
                 },
                 {
                   icon: HardHat,
                   tag: "Construction",
                   title: "Revenue Risk Engine",
                   problem:
-                    "Construction projects overrun budgets and schedules because risks aren't surfaced early enough.",
+                    "Construction projects overrun budgets and schedules because risks aren't surfaced early enough. The engine flags programme drift and the £ liquidated-damages exposure before it locks in.",
                   href: "/examples/revenue-risk-engine",
+                  demoUrl: "https://revenue-risk-engine.deputee.ai/",
+                },
+                {
+                  icon: ShoppingCart,
+                  tag: "Procurement",
+                  title: "Procurement Engine",
+                  problem:
+                    "Mid-market £25k–£500k procurement decisions made under time pressure with no procurement department. The engine structures the brief, shortlists 3–5 pre-qualified vendors, drafts buyer-supervised counter-offers, and outputs an agreement in principle.",
+                  demoUrl: "https://procurement.deputee.ai/",
+                },
+                {
+                  icon: Shield,
+                  tag: "Governance",
+                  title: "AI Governance Engine",
+                  problem:
+                    "Most AI governance is theatre — written for regulators with no decision rights and audit trails that don't hold under challenge. The 4Ps engine (Primed, Principled, Practised, Protected) gives operators a one-P-per-week 30-day rollout. Free 20-question self-assessment to start.",
+                  demoUrl: "https://governance.deputee.ai/",
                 },
               ].map((sys) => (
-                <Card key={sys.href} className="flex flex-col p-6 sm:p-8">
+                <Card key={sys.title} className="flex flex-col p-6 sm:p-8">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                       <sys.icon className="h-6 w-6" />
@@ -256,24 +276,78 @@ const Results = () => {
                   <p className="text-muted-foreground mb-6 flex-1">{sys.problem}</p>
                   <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                     <Button asChild variant="default" className="w-full sm:w-auto">
-                      <Link to={sys.href}>
-                        See how it works
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button asChild variant="outline" className="w-full sm:w-auto">
                       <a
-                        href="https://calendly.com/osu/brief-chat"
+                        href={sys.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <CalendarCheck className="mr-2 h-4 w-4" />
-                        Book a diagnostic
+                        Try the live demo
+                        <ExternalLink className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
+                    {sys.href && (
+                      <Button asChild variant="outline" className="w-full sm:w-auto">
+                        <Link to={sys.href}>
+                          See how it works
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    )}
                   </div>
                 </Card>
               ))}
+            </div>
+
+            {/* Beyond the SMB lane — small footer strip */}
+            <div className="mt-16 pt-10 border-t border-border/60">
+              <div className="text-center mb-6">
+                <Badge variant="secondary" className="mb-2">Beyond the SMB lane</Badge>
+                <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                  Engines we've also built in other domains
+                </h3>
+                <p className="text-sm text-muted-foreground mt-2 max-w-2xl mx-auto">
+                  Proof we can shape an engine for any problem.
+                </p>
+              </div>
+              <div className="grid md:grid-cols-3 gap-3 max-w-5xl mx-auto">
+                {[
+                  {
+                    name: "Coach Deputee",
+                    tag: "Consumer",
+                    desc: "Daily AI mentor council for individual professionals.",
+                    demoUrl: "https://coach.deputee.ai/",
+                  },
+                  {
+                    name: "Positive Changes",
+                    tag: "Therapy",
+                    desc: "CBT/REBT therapist companion with AI-prepared client homework.",
+                    demoUrl: "https://positivechanges.deputee.ai/",
+                  },
+                  {
+                    name: "TPM — The Player's Mind",
+                    tag: "Youth football",
+                    desc: "Mental-fitness toolkit for grassroots clubs and academies.",
+                    demoUrl: "https://tpm.deputee.ai/",
+                  },
+                ].map((e) => (
+                  <Card key={e.name} className="border-l-4 border-l-primary/30 hover:shadow-md transition-all">
+                    <CardContent className="p-4">
+                      <Badge variant="secondary" className="text-[10px] mb-2">{e.tag}</Badge>
+                      <div className="font-semibold text-foreground text-sm mb-1.5">{e.name}</div>
+                      <p className="text-xs text-muted-foreground mb-2.5 leading-relaxed">{e.desc}</p>
+                      <a
+                        href={e.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-primary hover:underline inline-flex items-center"
+                      >
+                        See the live product
+                        <ExternalLink className="ml-1 h-3 w-3" />
+                      </a>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </section>
