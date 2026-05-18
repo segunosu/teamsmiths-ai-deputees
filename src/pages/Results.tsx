@@ -73,7 +73,7 @@ const Results = () => {
       ],
       context: {
         client: "Haleon PLC",
-        detail: "Post-demerger agile + AI transformation. Also Bain-coordinated smart-retail AI rollout.",
+        detail: "Post-demerger agile + AI transformation across 10 product, engineering and data teams",
       },
     },
     {
