@@ -77,6 +77,19 @@ const Results = () => {
       },
     },
     {
+      headline: "$1M ARR within 12 months",
+      timeframe: "Co-founded · multi-category B2B procurement engine",
+      supporting: [
+        "800+ suppliers onboarded to the buyer-supplier marketplace",
+        "New procurement categories spun up in a few clicks",
+        "Marketing landing pages generated in a few clicks",
+      ],
+      context: {
+        client: "BusinessBuyGuide",
+        detail: "Self-service B2B procurement marketplace · cofounded",
+      },
+    },
+    {
       headline: "80% → 94%+ predictability",
       timeframe: "in 3 months, ahead of the demerger deadline",
       supporting: [
@@ -105,15 +118,26 @@ const Results = () => {
     {
       headline: "$3M → $10M",
       timeframe: "EMEA portfolio growth over 5 years",
+      supporting: [
+        "Delivery times halved through process redesign",
+        "Significantly improved client retention",
+        "Strategic partner alliances expanded digital reach",
+      ],
       context: {
-        client: "Gartner",
+        client: "Gartner Inc.",
+        detail: "Senior Product Director · Digital Media & eCommerce EMEA · full P&L",
       },
     },
     {
-      headline: "£25M cleared",
-      timeframe: "Accounts Receivable in 12 months",
+      headline: "£22M revenue safeguarded annually",
+      timeframe: "Bespoke project management application · ongoing impact",
+      supporting: [
+        "Built and delivered hands-on as Consultant and Developer",
+        "Custom engine — built for the business, not packaged",
+      ],
       context: {
         client: "Philips Italy",
+        detail: "Year-on-year revenue protection",
       },
     },
   ];
