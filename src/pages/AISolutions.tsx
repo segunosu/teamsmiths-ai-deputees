@@ -34,7 +34,7 @@ const AISolutions = () => {
       desc: 'Spots order-delivery exposure before it costs you. Reads machine and shop-floor signals and translates them into role-specific decision cards with countdown deadlines.',
       status: 'Live · try the demo',
       href: '/examples/order-risk-engine',
-      demoUrl: 'https://order-risk-engine.deputee.ai/',
+      demoUrl: 'https://order-risk-engine.deputee.ai/intro',
     },
     {
       name: 'Construction Revenue Risk Engine',

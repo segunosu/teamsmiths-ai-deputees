@@ -63,20 +63,43 @@ const Results = () => {
   // Outcomes the engines now codify — patterns that have already moved numbers at scale
   const trackRecordOutcomes = [
     {
-      headline: "~99% delivery predictability",
-      timeframe: "in 3 months",
-      supporting: ["+45% performance lift", "15% cost reduction (over 6 months)"],
+      headline: "98%+ delivery predictability",
+      timeframe: "across 10 teams — powered by AI + automation",
+      supporting: [
+        "+45% velocity across all teams",
+        "15% cost reduction",
+        "Output equivalent to +8 additional people",
+        "1 coach managing 2× normal capacity, thanks to AI",
+      ],
       context: {
         client: "Haleon PLC",
-        detail: "Smart retail shelf rollout · Bain-coordinated",
+        detail: "Post-demerger agile + AI transformation. Also Bain-coordinated smart-retail AI rollout.",
       },
     },
     {
-      headline: "+40% performance lift",
-      timeframe: "across product, engineering and data",
+      headline: "80% → 94%+ predictability",
+      timeframe: "in 3 months, ahead of the demerger deadline",
+      supporting: [
+        "+40% velocity across all teams",
+        "8% cost reduction",
+        "Output equivalent to +5 additional people",
+      ],
       context: {
         client: "GSK PLC",
-        detail: "EY and BCG coordinated",
+        detail: "5-team scrum transformation · demerger and London listing prep",
+      },
+    },
+    {
+      headline: "50% reduction in time-to-milestone",
+      timeframe: "Corporate governance overhaul across 7 teams",
+      supporting: [
+        "Top 5 group-wide risks identified and managed",
+        "Real-time board reporting via Power BI",
+        "Modern compliance tools rolled out (CDD Toolkit, ID Pal)",
+      ],
+      context: {
+        client: "Ogier Group",
+        detail: "Multi-jurisdictional legal & fiduciary firm",
       },
     },
     {
@@ -180,7 +203,7 @@ const Results = () => {
               ))}
             </div>
             <p className="text-center text-sm text-muted-foreground mt-6">
-              Also delivered for: <span className="text-foreground/80 font-medium">Ogier Group · Reuters</span>
+              Also delivered for: <span className="text-foreground/80 font-medium">Reuters</span>
             </p>
             <p className="text-center text-xs text-muted-foreground/70 mt-3 max-w-2xl mx-auto">
               Credentials: Oxford AI Governance · Wharton AI Strategy &amp; Governance
@@ -220,56 +243,6 @@ const Results = () => {
           </div>
         </section>
 
-        {/* Case Studies Grid */}
-        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10 sm:mb-16">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                Engines in action
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Each card shows the kind of challenge, the engine we'd build, and the measurable result you should expect.
-              </p>
-              <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto mt-3 italic">
-                Illustrative scenarios drawn from typical engagements. Real named cohorts coming soon — get in touch if you'd like to be one.
-              </p>
-            </div>
-
-            {caseStudiesLoading ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Card key={i} className="p-4 sm:p-6 animate-pulse">
-                    <div className="h-5 sm:h-6 bg-muted rounded mb-3 sm:mb-4"></div>
-                    <div className="h-3 sm:h-4 bg-muted rounded mb-2"></div>
-                    <div className="h-16 sm:h-20 bg-muted rounded"></div>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {caseStudies?.map((caseStudy) => (
-                  <CaseStudyCard
-                    key={caseStudy.id}
-                    caseStudy={caseStudy}
-                    onOpenModal={() => handleOpenModal(caseStudy.slug)}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Case Study Modal */}
-        <CaseStudyModal
-          caseStudy={selectedCase}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          onPrev={handlePrevCase}
-          onNext={handleNextCase}
-          canNavigatePrev={selectedCaseIndex > 0}
-          canNavigateNext={selectedCaseIndex >= 0 && selectedCaseIndex < (caseStudies?.length ?? 0) - 1}
-        />
-
         {/* Live Engines — try the demo */}
         <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -292,7 +265,7 @@ const Results = () => {
                   problem:
                     "Production issues are spotted too late, orders slip, and revenue leaks before anyone can react. The engine reads machine signals and turns them into role-specific decision cards.",
                   href: "/examples/order-risk-engine",
-                  demoUrl: "https://order-risk-engine.deputee.ai/",
+                  demoUrl: "https://order-risk-engine.deputee.ai/intro",
                 },
                 {
                   icon: HardHat,
@@ -408,6 +381,54 @@ const Results = () => {
             </div>
           </div>
         </section>
+
+        {/* Engines in action — case studies showing the breadth of problems we solve */}
+        <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10 sm:mb-16">
+              <Badge className="mb-4">Engines in action</Badge>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
+                Engines built across every kind of problem we've met.
+              </h2>
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+                Each card shows the challenge, the engine that solves it, and the measurable result. Pick the closest match — or bring a problem we haven't met yet.
+              </p>
+            </div>
+
+            {caseStudiesLoading ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Card key={i} className="p-4 sm:p-6 animate-pulse">
+                    <div className="h-5 sm:h-6 bg-muted rounded mb-3 sm:mb-4"></div>
+                    <div className="h-3 sm:h-4 bg-muted rounded mb-2"></div>
+                    <div className="h-16 sm:h-20 bg-muted rounded"></div>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {caseStudies?.map((caseStudy) => (
+                  <CaseStudyCard
+                    key={caseStudy.id}
+                    caseStudy={caseStudy}
+                    onOpenModal={() => handleOpenModal(caseStudy.slug)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Case Study Modal */}
+        <CaseStudyModal
+          caseStudy={selectedCase}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onPrev={handlePrevCase}
+          onNext={handleNextCase}
+          canNavigatePrev={selectedCaseIndex > 0}
+          canNavigateNext={selectedCaseIndex >= 0 && selectedCaseIndex < (caseStudies?.length ?? 0) - 1}
+        />
 
         {/* CTA Section */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
