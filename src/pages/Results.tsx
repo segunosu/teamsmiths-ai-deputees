@@ -61,93 +61,58 @@ const Results = () => {
   };
 
   // Outcomes the engines now codify — patterns that have already moved numbers at scale
+  // Compressed format: client name + big bold metric + one-line context
   const trackRecordOutcomes = [
     {
+      client: "Haleon PLC",
       headline: "98%+ delivery predictability",
-      timeframe: "across 10 teams — powered by AI + automation",
-      supporting: [
-        "+45% velocity across all teams",
-        "15% cost reduction",
-        "Output equivalent to +8 additional people",
-        "1 coach managing 2× normal capacity, thanks to AI",
-      ],
-      context: {
-        client: "Haleon PLC",
-        detail: "Post-demerger agile + AI transformation across 10 product, engineering and data teams",
-      },
+      context: "10 teams · +45% velocity · 15% cost reduction · powered by AI",
     },
     {
-      headline: "$1M ARR within 12 months",
-      timeframe: "Co-founded · multi-category B2B procurement engine",
-      supporting: [
-        "800+ suppliers onboarded to the buyer-supplier marketplace",
-        "New procurement categories spun up in a few clicks",
-        "Marketing landing pages generated in a few clicks",
-      ],
-      context: {
-        client: "BusinessBuyGuide",
-        detail: "Self-service B2B procurement marketplace · cofounded",
-      },
+      client: "BusinessBuyGuide",
+      headline: "$1M ARR in 12 months",
+      context: "Cofounded · multi-category B2B procurement engine · 800+ suppliers",
     },
     {
-      headline: "80% → 94%+ predictability",
-      timeframe: "in 3 months, ahead of the demerger deadline",
-      supporting: [
-        "+40% velocity across all teams",
-        "8% cost reduction",
-        "Output equivalent to +5 additional people",
-      ],
-      context: {
-        client: "GSK PLC",
-        detail: "5-team scrum transformation · demerger and London listing prep",
-      },
+      client: "GSK PLC",
+      headline: "80% → 94%+ predictability in 3 months",
+      context: "5 teams · +40% velocity · 8% cost reduction · pre-demerger",
     },
     {
-      headline: "50% reduction in time-to-milestone",
-      timeframe: "Corporate governance overhaul across 7 teams",
-      supporting: [
-        "Top 5 group-wide risks identified and managed",
-        "Real-time board reporting via Power BI",
-        "Modern compliance tools rolled out (CDD Toolkit, ID Pal)",
-      ],
-      context: {
-        client: "Ogier Group",
-        detail: "Multi-jurisdictional legal & fiduciary firm",
-      },
+      client: "Ogier Group",
+      headline: "50% time-to-milestone reduction",
+      context: "Corporate governance overhaul · 7 teams · top 5 risks managed",
     },
     {
+      client: "Gartner Inc.",
       headline: "$3M → $10M",
-      timeframe: "EMEA portfolio growth over 5 years",
-      supporting: [
-        "Delivery times halved through process redesign",
-        "Significantly improved client retention",
-        "Strategic partner alliances expanded digital reach",
-      ],
-      context: {
-        client: "Gartner Inc.",
-        detail: "Senior Product Director · Digital Media & eCommerce EMEA · full P&L",
-      },
+      context: "EMEA portfolio growth · 5 years · halved delivery, improved retention",
     },
     {
+      client: "Philips Italy",
       headline: "£22M revenue safeguarded annually",
-      timeframe: "Bespoke project management application · ongoing impact",
-      supporting: [
-        "Built and delivered hands-on as Consultant and Developer",
-        "Custom engine — built for the business, not packaged",
-      ],
-      context: {
-        client: "Philips Italy",
-        detail: "Year-on-year revenue protection",
-      },
+      context: "Bespoke project management application · built hands-on",
     },
   ];
 
   const namedTestimonials = [
     {
-      quote: "Thanks for making the SJB Club monitoring infinitely easier.",
-      name: "Ani McGill",
-      title: "Executive Head, SJB · CEO, Xavier Catholic Education Trust",
-      context: "On the Rebate App — automated tax rebate entitlement, ~1 headcount of manual work eliminated.",
+      quote: "He hired and led a first-class team that excelled in growing both revenue, and critically margins, well ahead of target. Most noticeable for me however was the strong client renewal rates the team was able to achieve through a clear goal of meeting or beating the expectation of every client.",
+      name: "Simon Levin",
+      title: "Group Vice President, Gartner (now Managing Director, The Skills Connection)",
+      context: "On the Gartner EMEA Digital Media & eCommerce portfolio.",
+    },
+    {
+      quote: "Segun has played a pivotal role in our agile transformation journey in GSK and now in Haleon. His dedication, expertise, and unwavering commitment to driving agility and continuous improvement have been nothing short of remarkable.",
+      name: "Amy Houston",
+      title: "Director of Product Transformation, Haleon PLC",
+      context: "On the post-demerger agile + AI transformation across 10 teams.",
+    },
+    {
+      quote: "Thank you for your stewardship and counseling to our MotU and WREF sprint teams throughout this year. To achieve a Level 3 in such a short space of time is a testament to your leadership and knowledge of the Agile Framework.",
+      name: "Jo Taylor",
+      title: "Senior Director, GSK PLC",
+      context: "On the pre-demerger transformation — 5 teams to Level 3 in 3 months.",
     },
     {
       quote: "The team is great and the project manager provided an essential bridge, keeping work organised and on track. So far we've had an excellent experience.",
@@ -185,7 +150,7 @@ const Results = () => {
           </div>
         </section>
 
-        {/* Track record — outcomes that the engines now codify */}
+        {/* Track record — compressed credentials wall */}
         <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-8 sm:mb-10">
@@ -193,43 +158,28 @@ const Results = () => {
                 Patterns that have moved numbers at FTSE scale.
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                Same playbook, now shipped as engines.
+                Numbers our founder has moved at FTSE scale — now codified into the engines we build for SMBs.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
               {trackRecordOutcomes.map((o, idx) => (
                 <Card key={idx} className="p-5 sm:p-6 border-l-4 border-l-primary">
-                  <div className="mb-3">
-                    <div className="text-2xl sm:text-3xl font-bold text-primary leading-tight">
-                      {o.headline}
-                    </div>
-                    <div className="text-sm font-medium text-foreground/80 mt-1">
-                      {o.timeframe}
-                    </div>
+                  <div className="text-xs uppercase tracking-[0.15em] font-bold text-primary mb-3">
+                    {o.client}
                   </div>
-                  {o.supporting && (
-                    <ul className="space-y-1 mb-4">
-                      {o.supporting.map((s, i) => (
-                        <li key={i} className="text-xs text-muted-foreground flex items-start gap-1.5">
-                          <span className="text-primary/60 mt-0.5">+</span>
-                          <span>{s}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <div className="pt-3 border-t border-border/60 text-sm">
-                    <span className="font-semibold text-foreground">{o.context.client}</span>
-                    {o.context.detail && (
-                      <span className="text-muted-foreground"> · {o.context.detail}</span>
-                    )}
+                  <div className="text-2xl sm:text-[1.65rem] font-bold text-foreground leading-tight mb-3">
+                    {o.headline}
+                  </div>
+                  <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    {o.context}
                   </div>
                 </Card>
               ))}
             </div>
-            <p className="text-center text-sm text-muted-foreground mt-6">
+            <p className="text-center text-sm text-muted-foreground mt-8">
               Also delivered for: <span className="text-foreground/80 font-medium">Reuters</span>
             </p>
-            <p className="text-center text-xs text-muted-foreground/70 mt-3 max-w-2xl mx-auto">
+            <p className="text-center text-xs text-muted-foreground/70 mt-2 max-w-2xl mx-auto">
               Credentials: Oxford AI Governance · Wharton AI Strategy &amp; Governance
             </p>
           </div>
@@ -243,22 +193,22 @@ const Results = () => {
                 Named client comments
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Selected feedback from prior engagements. More named cohorts joining shortly.
+                Direct quotes from senior leaders at the companies above.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
               {namedTestimonials.map((t, idx) => (
                 <Card key={idx} className="bg-card/80 border-l-4 border-l-primary">
-                  <CardContent className="p-6">
-                    <Quote className="h-8 w-8 text-primary/40 mb-4" />
-                    <blockquote className="text-base text-foreground italic leading-relaxed mb-6">
+                  <CardContent className="p-5 sm:p-6">
+                    <Quote className="h-6 w-6 text-primary/40 mb-3" />
+                    <blockquote className="text-sm sm:text-base text-foreground italic leading-relaxed mb-4">
                       "{t.quote}"
                     </blockquote>
-                    <div className="border-t pt-4">
+                    <div className="border-t pt-3">
                       <div className="font-semibold text-foreground text-sm">{t.name}</div>
                       <div className="text-xs text-muted-foreground">{t.title}</div>
-                      <div className="text-xs text-muted-foreground/80 italic mt-2">{t.context}</div>
+                      <div className="text-xs text-muted-foreground/80 italic mt-1.5">{t.context}</div>
                     </div>
                   </CardContent>
                 </Card>
