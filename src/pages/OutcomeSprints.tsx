@@ -27,10 +27,10 @@ const OutcomeSprints = () => {
   return (
     <>
       <Helmet>
-        <title>Discovery Sprint £495 — Design Your Custom Engine in 90 Minutes | Teamsmiths</title>
+        <title>Discovery Sprint £495 — Scope Your Custom Engine | Teamsmiths</title>
         <meta
           name="description"
-          content="90 minutes 1:1 with a an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Walk away with a designed engine, a 90-day plan, and a £-impact estimate for your top opportunities. £495 — credited to your first build if you proceed."
+          content="90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Blueprint delivered within days: AI Diagnostic Report, working engine design, and 90-day plan. £495 — credited to your first build if you proceed."
         />
         <meta name="keywords" content="ai discovery, custom engine design, ai diagnostic, paid scoping" />
       </Helmet>
@@ -41,10 +41,10 @@ const OutcomeSprints = () => {
           <div className="max-w-4xl mx-auto text-center">
             <Badge variant="secondary" className="mb-6">Discovery Sprint</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-[1.1]">
-              Design your custom engine in 90 minutes.
+              Scope your custom engine. Blueprint within days.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
-              90 minutes 1:1 with a an ex-FTSE turnaround lead (Haleon, GSK, Gartner). A branded AI Diagnostic Report. A working design for the engine we'd build first. A 90-day plan you can act on.
+              90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner) to start designing the engine for your problem. Within days we deliver the blueprint: AI Diagnostic Report, a working design for the engine we'd build first, and a 90-day plan you can act on.
             </p>
             <p className="text-3xl font-bold text-primary mb-1">£495</p>
             <p className="text-base text-muted-foreground font-medium mb-2">
@@ -90,7 +90,7 @@ const OutcomeSprints = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base">
-                    Live 1:1 with a an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Opportunity scan, engine shortlist, ROI sizing, and a designed-on-the-call engine for the top pick.
+                    Live 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Opportunity scan, engine shortlist, ROI sizing, and we start designing the engine for the top pick.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -129,9 +129,9 @@ const OutcomeSprints = () => {
               <Card className="border-2">
                 <CardContent className="pt-6 text-center">
                   <Target className="h-10 w-10 text-primary mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">A designed engine</h3>
+                  <h3 className="font-semibold text-lg mb-2">Engine blueprint</h3>
                   <p className="text-sm text-muted-foreground">
-                    A working design for the engine we'd build first — tailored to your specific problem, not pulled from a menu.
+                    A working blueprint for the engine we'd build first — tailored to your specific problem, not pulled from a menu. Delivered within days.
                   </p>
                 </CardContent>
               </Card>
@@ -187,7 +187,7 @@ const OutcomeSprints = () => {
                   <span className="text-5xl font-bold text-primary">£495</span>
                 </div>
                 <CardDescription className="text-base mt-3">
-                  90 minutes 1:1 with a an ex-FTSE turnaround lead (Haleon, GSK, Gartner) · AI Diagnostic Report · designed engine · 30-day async Q&A · credited to your first build
+                  90 min 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner) · Blueprint within days · AI Diagnostic Report · engine design · 30-day async Q&amp;A · credited to your first build
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -198,7 +198,7 @@ const OutcomeSprints = () => {
                   </li>
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                    <span>Designed engine for your top opportunity</span>
+                    <span>Engine blueprint for your top opportunity (within days)</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />

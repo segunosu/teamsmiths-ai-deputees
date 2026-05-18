@@ -214,7 +214,7 @@ const AISolutions = () => {
     {
       question: 'Where should I start?',
       answer:
-        'Almost everyone starts with the Discovery Sprint. £495, 90 minutes 1:1 with a an ex-FTSE turnaround lead (Haleon, GSK, Gartner), and you walk away with an AI Diagnostic Report — your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £495 is credited to your first build if you proceed within 60 days.',
+        'Almost everyone starts with the Discovery Sprint. £495, 90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner) to scope your top opportunities and start designing the first engine. We then deliver the full blueprint within days — an AI Diagnostic Report, your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £495 is credited to your first build if you proceed within 60 days.',
     },
     {
       question: 'How do you build engines so fast?',
@@ -436,7 +436,7 @@ const AISolutions = () => {
             <div className="text-center mt-10">
               <h3 className="text-2xl font-bold mb-3">Don't see your problem?</h3>
               <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                Bring it. We'll design the engine for it in a 90-minute Discovery Sprint.
+                Bring it. We'll start designing the engine in a 90-minute Discovery Sprint and deliver the blueprint within days.
               </p>
               <Button size="lg" asChild>
                 <Link to="/discovery-sprint">
@@ -794,7 +794,7 @@ const AISolutions = () => {
               What would you build?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Start with a Discovery Sprint and we'll design the engine for your problem in 90 minutes.
+              Start with a Discovery Sprint. 90 minutes 1:1 with the founder to scope your engine. We deliver the blueprint within days. £495 — credited to your build if you proceed with us.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">

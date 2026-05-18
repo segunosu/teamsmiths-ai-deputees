@@ -19,7 +19,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const navigationItems = [
   { label: 'Solutions', path: '/solutions', tooltip: 'Engines with fixed pricing' },
   { label: 'Results', path: '/results', tooltip: 'Track record and case studies' },
-  { label: 'Discovery Sprint', path: '/discovery-sprint', tooltip: 'Design your engine in 90 minutes — £495' },
+  { label: 'Discovery Sprint', path: '/discovery-sprint', tooltip: '90 min session. Blueprint in days. £495 credited to build.' },
 ];
 
 export const Navigation = () => {

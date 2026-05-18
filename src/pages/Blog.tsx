@@ -141,7 +141,7 @@ const Blog = () => {
             What would you build?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Pick a problem. We'll design the engine for it in a 90-minute Discovery Sprint.
+            Pick a problem. We'll start designing the engine in a 90-minute Discovery Sprint and deliver the blueprint within days.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">

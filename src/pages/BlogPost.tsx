@@ -170,10 +170,10 @@ const BlogPost = () => {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-            Bring your problem. We'll design the engine.
+            Bring your problem. We'll start designing the engine.
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            90 minutes 1:1 with the founder — an ex-FTSE turnaround lead (Haleon, GSK, Gartner). £495 — fully credited to your first build if you proceed within 60 days.
+            90 minutes 1:1 with the founder — an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Blueprint delivered within days. £495 — fully credited to your first build if you proceed within 60 days.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">

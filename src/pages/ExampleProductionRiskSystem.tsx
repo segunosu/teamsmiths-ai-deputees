@@ -155,8 +155,9 @@ const ExampleProductionRiskSystem = () => {
             <p className="text-muted-foreground text-base sm:text-lg mb-8 max-w-2xl mx-auto">
               Click below to book your free diagnostic. In our brief 1:1,
               we’ll co-create your roadmap and design the foundations of your
-              project. No obligation, of course. If you'd rather design the
-              engine for your own business in 90 minutes, book a Discovery Sprint.
+              project. No obligation, of course. If you'd rather start scoping
+              an engine for your own business — 90 min session, blueprint
+              within days — book a Discovery Sprint.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg">

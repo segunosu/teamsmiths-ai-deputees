@@ -107,7 +107,7 @@ const DiscoverySprintCheckout = () => {
         <title>Book your Discovery Sprint — £495 | Teamsmiths</title>
         <meta
           name="description"
-          content="Book your 90-minute Discovery Sprint with Segun Osu. £495, fully credited to your first build within 60 days. Designed engine + AI Diagnostic Report + 90-day plan."
+          content="Book your 90-minute Discovery Sprint with Segun Osu. £495, fully credited to your first build within 60 days. Blueprint within days — engine design, AI Diagnostic Report, 90-day plan."
         />
       </Helmet>
       <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
