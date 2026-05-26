@@ -19,7 +19,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 const navigationItems = [
   { label: 'Solutions', path: '/solutions', tooltip: 'Engines with fixed pricing' },
   { label: 'Results', path: '/results', tooltip: 'Track record and case studies' },
-  { label: 'Discovery Sprint', path: '/discovery-sprint', tooltip: '90 min session. Blueprint in days. £495 credited to build.' },
+  { label: 'Discovery Sprint', path: '/discovery-sprint', tooltip: '90 min session. Blueprint in days. £500 credited to build.' },
 ];
 
 export const Navigation = () => {
@@ -94,7 +94,7 @@ export const Navigation = () => {
             {/* Primary CTA - always visible */}
             <Button asChild size="sm" className="text-sm font-medium">
               <Link to="/discovery-sprint">
-                Book a Discovery Sprint (£495)
+                Book a Discovery Sprint (£500)
               </Link>
             </Button>
 
@@ -216,7 +216,7 @@ export const Navigation = () => {
                   <div className="space-y-1">
                     <Button asChild className="w-full justify-start">
                       <Link to="/discovery-sprint" onClick={() => setIsMenuOpen(false)}>
-                        Book a Discovery Sprint (£495)
+                        Book a Discovery Sprint (£500)
                       </Link>
                     </Button>
                     <Button asChild variant="outline" className="w-full justify-start">

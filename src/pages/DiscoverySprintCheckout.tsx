@@ -12,7 +12,7 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 
 /**
  * Discovery Sprint checkout: clean, single-product page.
- * £495 paid intake. Captures fit info, then hands off to the Stripe checkout
+ * £500 paid intake. Captures fit info, then hands off to the Stripe checkout
  * Edge Function (existing /api/create-proof-sprint-checkout endpoint).
  *
  * If the backend endpoint is not available, the form falls back to a polite
@@ -89,7 +89,7 @@ const DiscoverySprintCheckout = () => {
             </h1>
             <p className="text-muted-foreground mb-8 leading-relaxed">
               Segun will email you to confirm your Discovery Sprint and arrange
-              payment of £495. The full £495 is credited to your first build if
+              payment of £500. The full £500 is credited to your first build if
               you proceed within 60 days.
             </p>
             <Button asChild>
@@ -104,10 +104,10 @@ const DiscoverySprintCheckout = () => {
   return (
     <>
       <Helmet>
-        <title>Book your Discovery Sprint (£495) | Teamsmiths</title>
+        <title>Book your Discovery Sprint (£500) | Teamsmiths</title>
         <meta
           name="description"
-          content="Book your 90-minute Discovery Sprint with Segun Osu. £495, fully credited to your first build within 60 days. Blueprint within days: engine design, AI Diagnostic Report, 90-day plan."
+          content="Book your 90-minute Discovery Sprint with Segun Osu. £500, fully credited to your first build within 60 days. Blueprint within days: engine design, AI Diagnostic Report, 90-day plan."
         />
       </Helmet>
       <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
@@ -131,7 +131,7 @@ const DiscoverySprintCheckout = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-primary mb-6">£495</div>
+                <div className="text-3xl font-bold text-primary mb-6">£500</div>
                 <p className="text-sm text-muted-foreground mb-6">
                   Fully credited to your first build if you proceed within 60 days.
                 </p>
@@ -254,13 +254,13 @@ const DiscoverySprintCheckout = () => {
                       <Link to="/privacy" className="text-primary hover:underline">
                         Privacy Policy
                       </Link>
-                      , and understand £495 is fully credited to my first build within 60 days. *
+                      , and understand £500 is fully credited to my first build within 60 days. *
                     </Label>
                   </div>
 
                   <div className="border-t pt-5">
                     <Button type="submit" className="w-full" size="lg" disabled={loading}>
-                      {loading ? 'Processing…' : 'Continue to payment (£495)'}
+                      {loading ? 'Processing…' : 'Continue to payment (£500)'}
                       <Lock className="ml-2 h-4 w-4" />
                     </Button>
                     <p className="text-xs text-muted-foreground/80 mt-3 text-center">

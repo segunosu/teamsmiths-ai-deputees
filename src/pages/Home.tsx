@@ -55,13 +55,47 @@ const Home = () => {
     setSelectedCaseSlug(caseStudies[selectedCaseIndex + 1].slug);
   };
 
+  // Founder's prior delivery work — mirror /results compressed wall
+  const trackRecordOutcomes = [
+    {
+      client: "Haleon PLC",
+      headline: "98%+ delivery predictability",
+      context: "10 teams · +45% velocity · 15% cost reduction · powered by AI",
+    },
+    {
+      client: "BusinessBuyGuide",
+      headline: "$1M ARR in 12 months",
+      context: "Cofounded · multi-category B2B procurement engine · 800+ suppliers",
+    },
+    {
+      client: "GSK PLC",
+      headline: "80% → 94%+ predictability in 3 months",
+      context: "5 teams · +40% velocity · 8% cost reduction · pre-demerger",
+    },
+    {
+      client: "Ogier Group",
+      headline: "50% time-to-milestone reduction",
+      context: "Corporate governance overhaul · 7 teams · top 5 risks managed",
+    },
+    {
+      client: "Gartner Inc.",
+      headline: "$3M → $10M",
+      context: "EMEA portfolio growth · 5 years · halved delivery, improved retention",
+    },
+    {
+      client: "Philips Italy",
+      headline: "£22M revenue safeguarded annually",
+      context: "Bespoke project management application · built hands-on",
+    },
+  ];
+
   return (
     <>
       <Helmet>
         <title>Teamsmiths · Bring the problem. We build the engine that solves it.</title>
         <meta
           name="description"
-          content="Bring the problem. We build the AI + human engine that solves it. Days, not months. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty on selected projects. Founder-led from London & Woking, Surrey, UK."
+          content="Bring the problem. We build the AI + human engine that solves it. Days, not months. Discovery Sprint £500. Kickstart £2,950. Outcome-bounty on selected projects. Founder-led from London & Woking, Surrey, UK."
         />
         <meta
           name="keywords"
@@ -87,11 +121,11 @@ const Home = () => {
                 Reduce friction. Increase output. No extra headcount.
               </p>
 
-              {/* Proof points: named FTSE outcomes (mirror /results) */}
+              {/* Proof points: named FTSE outcomes (mirror /results, honestly attributed) */}
               <p className="text-sm sm:text-base uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
-                Proven at FTSE scale
+                Behind the engines
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center items-center mb-16 sm:mb-20 text-sm sm:text-base">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center items-center mb-3 text-sm sm:text-base">
                 <div className="flex items-center gap-2 text-foreground font-medium">
                   <Target className="h-3.5 w-3.5 text-primary" />
                   <span><span className="font-bold">98%+ predictability</span> <span className="text-muted-foreground">@ Haleon</span></span>
@@ -105,6 +139,9 @@ const Home = () => {
                   <span><span className="font-bold">£22M annually</span> <span className="text-muted-foreground">@ Philips</span></span>
                 </div>
               </div>
+              <p className="text-xs sm:text-sm text-muted-foreground/80 italic mb-16 sm:mb-20 max-w-2xl mx-auto">
+                The founder's prior delivery work, now codified into the engines we build.
+              </p>
 
               {/* CTAs: primary paid Discovery Sprint, secondary free chat */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-md sm:max-w-none mx-auto mb-3">
@@ -114,7 +151,7 @@ const Home = () => {
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                 >
                   <Link to="/discovery-sprint">
-                    Book a Discovery Sprint (£495)
+                    Book a Discovery Sprint (£500)
                     <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                   </Link>
                 </Button>
@@ -220,7 +257,7 @@ const Home = () => {
               90 minutes 1:1 with the founder, an ex-FTSE turnaround lead (Haleon, GSK, Gartner). A branded AI Diagnostic Report delivered within days.
             </p>
             <p className="text-base sm:text-lg font-medium text-foreground max-w-3xl mx-auto mb-8">
-              £495 fully credited to your first build if you proceed within 60 days.
+              £500 fully credited to your first build if you proceed within 60 days.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
               <div className="flex items-center gap-2 text-sm font-medium">
@@ -239,7 +276,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button size="lg" asChild>
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint (£495)
+                  Book a Discovery Sprint (£500)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -252,40 +289,79 @@ const Home = () => {
           </div>
         </section>
 
-        {/* RESULTS / PROOF SECTION */}
+        {/* RESULTS / PROOF SECTION — two layers: founder track record + SMB engines */}
         <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10 sm:mb-16 lg:mb-20">
+            <div className="text-center mb-10 sm:mb-12">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">Results</h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-                The kind of outcomes we build toward.
-              </p>
-              <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto mt-3">
-                See <Link to="/results" className="text-primary underline-offset-2 hover:underline">named track record</Link> for the founder's prior delivery work at Philips, Haleon, GSK and Gartner.
+                The track record behind the engines.
               </p>
             </div>
 
-            {caseStudiesLoading ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Card key={i} className="p-4 sm:p-6 animate-pulse">
-                    <div className="h-5 sm:h-6 bg-muted rounded mb-3 sm:mb-4"></div>
-                    <div className="h-3 sm:h-4 bg-muted rounded mb-2"></div>
-                    <div className="h-16 sm:h-20 bg-muted rounded"></div>
+            {/* Layer 1: Founder's FTSE track record (compressed credentials wall) */}
+            <div className="mb-16 sm:mb-20">
+              <div className="text-center mb-8">
+                <p className="text-xs sm:text-sm uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">
+                  Behind the engines
+                </p>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">
+                  Patterns moved at FTSE scale, now codified into engines.
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                {trackRecordOutcomes.map((o, idx) => (
+                  <Card key={idx} className="p-5 sm:p-6 border-l-4 border-l-primary bg-card">
+                    <div className="text-xs uppercase tracking-[0.15em] font-bold text-primary mb-3">
+                      {o.client}
+                    </div>
+                    <div className="text-2xl sm:text-[1.65rem] font-bold text-foreground leading-tight mb-3">
+                      {o.headline}
+                    </div>
+                    <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      {o.context}
+                    </div>
                   </Card>
                 ))}
               </div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                {caseStudies?.map((caseStudy) => (
-                  <CaseStudyCard
-                    key={caseStudy.id}
-                    caseStudy={caseStudy}
-                    onOpenModal={() => handleOpenModal(caseStudy.slug)}
-                  />
-                ))}
+              <p className="text-center text-xs sm:text-sm text-muted-foreground/80 italic mt-6 max-w-2xl mx-auto">
+                The founder's prior delivery work. <Link to="/results" className="text-primary underline-offset-2 hover:underline not-italic">See full track record and testimonials →</Link>
+              </p>
+            </div>
+
+            {/* Layer 2: SMB engines in action (case studies) */}
+            <div>
+              <div className="text-center mb-8">
+                <p className="text-xs sm:text-sm uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">
+                  Engines we've built
+                </p>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">
+                  Across manufacturing, construction, procurement, sport, hospitality and public-sector services.
+                </h3>
               </div>
-            )}
+
+              {caseStudiesLoading ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <Card key={i} className="p-4 sm:p-6 animate-pulse">
+                      <div className="h-5 sm:h-6 bg-muted rounded mb-3 sm:mb-4"></div>
+                      <div className="h-3 sm:h-4 bg-muted rounded mb-2"></div>
+                      <div className="h-16 sm:h-20 bg-muted rounded"></div>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  {caseStudies?.map((caseStudy) => (
+                    <CaseStudyCard
+                      key={caseStudy.id}
+                      caseStudy={caseStudy}
+                      onOpenModal={() => handleOpenModal(caseStudy.slug)}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
 
             <div className="text-center mt-12">
               <p className="text-sm text-muted-foreground mb-6">Every engine we deploy, we measure. You should expect the same.</p>
@@ -317,13 +393,13 @@ const Home = () => {
               One paid sprint. Three opportunities ranked by £-impact. A 90-day plan you can act on Monday.
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              90 minutes 1:1 with the founder. £495 fully credited to your first build within 60 days.
+              90 minutes 1:1 with the founder. £500 fully credited to your first build within 60 days.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">
               <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint (£495)
+                  Book a Discovery Sprint (£500)
                   <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                 </Link>
               </Button>

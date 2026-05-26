@@ -87,7 +87,7 @@ const About = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint (£495)
+                  Book a Discovery Sprint (£500)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -312,7 +312,7 @@ const About = () => {
                 </a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="/discovery-sprint">Discovery Sprint (£495)</Link>
+                <Link to="/discovery-sprint">Discovery Sprint (£500)</Link>
               </Button>
             </div>
           </div>

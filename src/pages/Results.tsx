@@ -411,12 +411,12 @@ const Results = () => {
               Want results like these in your own numbers?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a Discovery Sprint. 90 minutes 1:1 with the founder to scope your engine. We deliver the blueprint within days. £495, credited to your build if you proceed with us.
+              Book a Discovery Sprint. 90 minutes 1:1 with the founder to scope your engine. We deliver the blueprint within days. £500, credited to your build if you proceed with us.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint (£495)
+                  Book a Discovery Sprint (£500)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>

@@ -27,10 +27,10 @@ const OutcomeSprints = () => {
   return (
     <>
       <Helmet>
-        <title>Discovery Sprint (£495): Scope Your Custom Engine | Teamsmiths</title>
+        <title>Discovery Sprint (£500): Scope Your Custom Engine | Teamsmiths</title>
         <meta
           name="description"
-          content="90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Blueprint delivered within days: AI Diagnostic Report, working engine design, and 90-day plan. £495, credited to your first build if you proceed."
+          content="90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Blueprint delivered within days: AI Diagnostic Report, working engine design, and 90-day plan. £500, credited to your first build if you proceed."
         />
         <meta name="keywords" content="ai discovery, custom engine design, ai diagnostic, paid scoping" />
       </Helmet>
@@ -46,7 +46,7 @@ const OutcomeSprints = () => {
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4 leading-relaxed">
               90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner) to start designing the engine for your problem. Within days we deliver the blueprint: AI Diagnostic Report, a working design for the engine we'd build first, and a 90-day plan you can act on.
             </p>
-            <p className="text-3xl font-bold text-primary mb-1">£495</p>
+            <p className="text-3xl font-bold text-primary mb-1">£500</p>
             <p className="text-base text-muted-foreground font-medium mb-2">
               Fully credited to your first build if you proceed within 60 days.
             </p>
@@ -56,7 +56,7 @@ const OutcomeSprints = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <Link to="/discovery-sprint/checkout">
-                  Book your Discovery Sprint (£495)
+                  Book your Discovery Sprint (£500)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -158,7 +158,7 @@ const OutcomeSprints = () => {
                   <CheckCircle className="h-10 w-10 text-primary mx-auto mb-4" />
                   <h3 className="font-semibold text-lg mb-2">Credit toward your first build</h3>
                   <p className="text-sm text-muted-foreground">
-                    The full £495 is credited toward your first build if you proceed within 60 days.
+                    The full £500 is credited toward your first build if you proceed within 60 days.
                   </p>
                 </CardContent>
               </Card>
@@ -184,7 +184,7 @@ const OutcomeSprints = () => {
                   Discovery Sprint
                 </Badge>
                 <div className="flex items-baseline justify-center gap-2">
-                  <span className="text-5xl font-bold text-primary">£495</span>
+                  <span className="text-5xl font-bold text-primary">£500</span>
                 </div>
                 <CardDescription className="text-base mt-3">
                   90 min 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner) · Blueprint within days · AI Diagnostic Report · engine design · 30-day async Q&amp;A · credited to your first build
@@ -214,12 +214,12 @@ const OutcomeSprints = () => {
                   </li>
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                    <span>Full £495 credit toward your first build within 60 days</span>
+                    <span>Full £500 credit toward your first build within 60 days</span>
                   </li>
                 </ul>
                 <Button className="w-full" size="lg" asChild>
                   <Link to="/discovery-sprint/checkout">
-                    Book your Discovery Sprint (£495)
+                    Book your Discovery Sprint (£500)
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -248,7 +248,7 @@ const OutcomeSprints = () => {
                   <Badge className="mb-3">Most common</Badge>
                   <h3 className="font-semibold text-lg mb-2">Upgrade to Kickstart</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    We build, integrate, and put your first workflow into your team's hands. Your £495 comes off the price.
+                    We build, integrate, and put your first workflow into your team's hands. Your £500 comes off the price.
                   </p>
                   <Button size="sm" variant="outline" asChild>
                     <Link to="/solutions">View Kickstart →</Link>
@@ -279,7 +279,7 @@ const OutcomeSprints = () => {
             </p>
             <Button asChild size="lg">
               <Link to="/discovery-sprint/checkout">
-                Book your Discovery Sprint (£495)
+                Book your Discovery Sprint (£500)
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>

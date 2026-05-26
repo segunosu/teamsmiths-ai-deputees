@@ -214,7 +214,7 @@ const AISolutions = () => {
     {
       question: 'Where should I start?',
       answer:
-        'Almost everyone starts with the Discovery Sprint. £495, 90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner) to scope your top opportunities and start designing the first engine. We then deliver the full blueprint within days: an AI Diagnostic Report, your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £495 is credited to your first build if you proceed within 60 days.',
+        'Almost everyone starts with the Discovery Sprint. £500, 90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner) to scope your top opportunities and start designing the first engine. We then deliver the full blueprint within days: an AI Diagnostic Report, your top 3 opportunities ranked by £ impact, a working design for the first engine we\'d build, and a 90-day plan. The full £500 is credited to your first build if you proceed within 60 days.',
     },
     {
       question: 'How do you build engines so fast?',
@@ -254,7 +254,7 @@ const AISolutions = () => {
         <title>Solutions & Pricing | Teamsmiths · Bring the problem. We'll build the engine.</title>
         <meta
           name="description"
-          content="Custom engines for your business problem. Live in days. Priced on the outcome they unlock. Discovery Sprint £495. Kickstart £2,950. Foundation £7,950. Transformation £19,500."
+          content="Custom engines for your business problem. Live in days. Priced on the outcome they unlock. Discovery Sprint £500. Kickstart £2,950. Foundation £7,950. Transformation £19,500."
         />
         <meta
           name="keywords"
@@ -281,7 +281,7 @@ const AISolutions = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <Link to="/discovery-sprint">
-                  Start with a Discovery Sprint (£495)
+                  Start with a Discovery Sprint (£500)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -440,7 +440,7 @@ const AISolutions = () => {
               </p>
               <Button size="lg" asChild>
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint (£495)
+                  Book a Discovery Sprint (£500)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -794,12 +794,12 @@ const AISolutions = () => {
               What would you build?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Start with a Discovery Sprint. 90 minutes 1:1 with the founder to scope your engine. We deliver the blueprint within days. £495, credited to your build if you proceed with us.
+              Start with a Discovery Sprint. 90 minutes 1:1 with the founder to scope your engine. We deliver the blueprint within days. £500, credited to your build if you proceed with us.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint (£495)
+                  Book a Discovery Sprint (£500)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>

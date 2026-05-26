@@ -173,12 +173,12 @@ const BlogPost = () => {
             Bring your problem. We'll start designing the engine.
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            90 minutes 1:1 with the founder, an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Blueprint delivered within days. £495 fully credited to your first build if you proceed within 60 days.
+            90 minutes 1:1 with the founder, an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Blueprint delivered within days. £500 fully credited to your first build if you proceed within 60 days.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
               <Link to="/discovery-sprint">
-                Book a Discovery Sprint (£495)
+                Book a Discovery Sprint (£500)
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
