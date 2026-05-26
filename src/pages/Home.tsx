@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   CheckCircle,
   ArrowRight,
@@ -13,6 +14,11 @@ import {
   Zap,
   Lightbulb,
   BarChart3,
+  Factory,
+  HardHat,
+  ShoppingCart,
+  Shield,
+  ExternalLink,
 } from "lucide-react";
 import { StickyMobileBar } from "@/components/ui/sticky-mobile-bar";
 import { useAnalytics } from "@/hooks/useAnalytics";
@@ -54,6 +60,40 @@ const Home = () => {
     if (!caseStudies || selectedCaseIndex >= caseStudies.length - 1) return;
     setSelectedCaseSlug(caseStudies[selectedCaseIndex + 1].slug);
   };
+
+  // Live products — mirror /results live engines section
+  const liveEngines = [
+    {
+      icon: Factory,
+      sector: "Manufacturing",
+      title: "Order Risk Engine",
+      problem: "Spots order-delivery exposure before it costs you. Reads machine signals and turns them into role-specific decision cards.",
+      demoUrl: "https://order-risk-engine.deputee.ai/intro",
+      href: "/examples/order-risk-engine",
+    },
+    {
+      icon: HardHat,
+      sector: "Construction",
+      title: "Revenue Risk Engine",
+      problem: "Flags programme drift and the £ liquidated-damages exposure before it locks in. Role-based decision cards escalate if ignored.",
+      demoUrl: "https://revenue-risk-engine.deputee.ai/",
+      href: "/examples/revenue-risk-engine",
+    },
+    {
+      icon: ShoppingCart,
+      sector: "Procurement",
+      title: "Procurement Engine",
+      problem: "AI procurement deputy for mid-market £25k–£500k decisions. Structured brief → 3–5 pre-qualified vendors → buyer-supervised counter-offer.",
+      demoUrl: "https://procurement.deputee.ai/",
+    },
+    {
+      icon: Shield,
+      sector: "Governance",
+      title: "AI Governance Engine",
+      problem: "The 4Ps framework: Primed, Principled, Practised, Protected. Free 20-question self-assessment, then a one-P-per-week 30-day rollout.",
+      demoUrl: "https://governance.deputee.ai/",
+    },
+  ];
 
   // Founder's prior delivery work — mirror /results compressed wall
   const trackRecordOutcomes = [
@@ -289,51 +329,68 @@ const Home = () => {
           </div>
         </section>
 
-        {/* RESULTS / PROOF SECTION — two layers: founder track record + SMB engines */}
+        {/* RESULTS / PROOF SECTION — three layers: live products + case studies + founder track record */}
         <section id="results" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-12">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6">Results</h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
-                The track record behind the engines.
+                The engines we've built, and the track record behind them.
               </p>
             </div>
 
-            {/* Layer 1: Founder's FTSE track record (compressed credentials wall) */}
+            {/* Layer 1: Live products — strongest proof, leads */}
             <div className="mb-16 sm:mb-20">
               <div className="text-center mb-8">
                 <p className="text-xs sm:text-sm uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">
-                  Behind the engines
+                  Live products
                 </p>
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">
-                  Patterns moved at FTSE scale, now codified into engines.
+                  Live engines you can try right now.
                 </h3>
+                <p className="text-sm sm:text-base text-muted-foreground mt-2 max-w-2xl mx-auto">
+                  Four working products. Click through to see them running.
+                </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                {trackRecordOutcomes.map((o, idx) => (
-                  <Card key={idx} className="p-5 sm:p-6 border-l-4 border-l-primary bg-card">
-                    <div className="text-xs uppercase tracking-[0.15em] font-bold text-primary mb-3">
-                      {o.client}
+              <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+                {liveEngines.map((sys) => (
+                  <Card key={sys.title} className="flex flex-col p-6 sm:p-8 bg-card">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="h-11 w-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                        <sys.icon className="h-6 w-6" />
+                      </div>
+                      <Badge variant="secondary">{sys.sector}</Badge>
                     </div>
-                    <div className="text-2xl sm:text-[1.65rem] font-bold text-foreground leading-tight mb-3">
-                      {o.headline}
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                      {o.context}
+                    <h4 className="text-lg sm:text-xl font-bold text-foreground mb-3">
+                      {sys.title}
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-6 flex-1">{sys.problem}</p>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button asChild variant="default" size="sm" className="w-full sm:w-auto">
+                        <a href={sys.demoUrl} target="_blank" rel="noopener noreferrer">
+                          Try the live demo
+                          <ExternalLink className="ml-2 h-3.5 w-3.5" />
+                        </a>
+                      </Button>
+                      {sys.href && (
+                        <Button asChild variant="outline" size="sm" className="w-full sm:w-auto">
+                          <Link to={sys.href}>
+                            See how it works
+                            <ArrowRight className="ml-2 h-3.5 w-3.5" />
+                          </Link>
+                        </Button>
+                      )}
                     </div>
                   </Card>
                 ))}
               </div>
-              <p className="text-center text-xs sm:text-sm text-muted-foreground/80 italic mt-6 max-w-2xl mx-auto">
-                The founder's prior delivery work. <Link to="/results" className="text-primary underline-offset-2 hover:underline not-italic">See full track record and testimonials →</Link>
-              </p>
             </div>
 
-            {/* Layer 2: SMB engines in action (case studies) */}
-            <div>
+            {/* Layer 2: Built for clients (SMB case studies) */}
+            <div className="mb-16 sm:mb-20">
               <div className="text-center mb-8">
                 <p className="text-xs sm:text-sm uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">
-                  Engines we've built
+                  Built for clients
                 </p>
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">
                   Across manufacturing, construction, procurement, sport, hospitality and public-sector services.
@@ -363,11 +420,41 @@ const Home = () => {
               )}
             </div>
 
+            {/* Layer 3: Behind the engines — founder track record (supporting proof) */}
+            <div>
+              <div className="text-center mb-8">
+                <p className="text-xs sm:text-sm uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">
+                  Behind the engines
+                </p>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">
+                  Patterns moved at FTSE scale, now codified into engines.
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                {trackRecordOutcomes.map((o, idx) => (
+                  <Card key={idx} className="p-5 sm:p-6 border-l-4 border-l-primary bg-card">
+                    <div className="text-xs uppercase tracking-[0.15em] font-bold text-primary mb-3">
+                      {o.client}
+                    </div>
+                    <div className="text-2xl sm:text-[1.65rem] font-bold text-foreground leading-tight mb-3">
+                      {o.headline}
+                    </div>
+                    <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      {o.context}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+              <p className="text-center text-xs sm:text-sm text-muted-foreground/80 italic mt-6 max-w-2xl mx-auto">
+                The founder's prior delivery work. <Link to="/results" className="text-primary underline-offset-2 hover:underline not-italic">See full track record and testimonials →</Link>
+              </p>
+            </div>
+
             <div className="text-center mt-12">
               <p className="text-sm text-muted-foreground mb-6">Every engine we deploy, we measure. You should expect the same.</p>
               <Button variant="outline" asChild>
                 <Link to="/results">
-                  See all case studies
+                  See all case studies and testimonials
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

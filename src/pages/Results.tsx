@@ -150,80 +150,13 @@ const Results = () => {
           </div>
         </section>
 
-        {/* Track record: compressed credentials wall */}
-        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-8 sm:mb-10">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3">
-                Patterns that have moved numbers at FTSE scale.
-              </h2>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                Numbers our founder has moved at FTSE scale, now codified into the engines we build for SMBs.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-              {trackRecordOutcomes.map((o, idx) => (
-                <Card key={idx} className="p-5 sm:p-6 border-l-4 border-l-primary">
-                  <div className="text-xs uppercase tracking-[0.15em] font-bold text-primary mb-3">
-                    {o.client}
-                  </div>
-                  <div className="text-2xl sm:text-[1.65rem] font-bold text-foreground leading-tight mb-3">
-                    {o.headline}
-                  </div>
-                  <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    {o.context}
-                  </div>
-                </Card>
-              ))}
-            </div>
-            <p className="text-center text-sm text-muted-foreground mt-8">
-              Also delivered for: <span className="text-foreground/80 font-medium">Reuters</span>
-            </p>
-            <p className="text-center text-xs text-muted-foreground/70 mt-2 max-w-2xl mx-auto">
-              Credentials: Oxford AI Governance · Wharton AI Strategy &amp; Governance
-            </p>
-          </div>
-        </section>
-
-        {/* Named Client Comments */}
-        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                Named client comments
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Direct quotes from senior leaders at the companies above.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-              {namedTestimonials.map((t, idx) => (
-                <Card key={idx} className="bg-card/80 border-l-4 border-l-primary">
-                  <CardContent className="p-5 sm:p-6">
-                    <Quote className="h-6 w-6 text-primary/40 mb-3" />
-                    <blockquote className="text-sm sm:text-base text-foreground italic leading-relaxed mb-4">
-                      "{t.quote}"
-                    </blockquote>
-                    <div className="border-t pt-3">
-                      <div className="font-semibold text-foreground text-sm">{t.name}</div>
-                      <div className="text-xs text-muted-foreground">{t.title}</div>
-                      <div className="text-xs text-muted-foreground/80 italic mt-1.5">{t.context}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Live Engines: try the demo */}
+        {/* Live products: try the demo */}
         <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-14">
-              <Badge className="mb-4">Live engines</Badge>
+              <Badge className="mb-4">Live products</Badge>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                Real engines you can try right now
+                Live engines you can try right now
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Four live engines, in the wild. Each one solves a specific problem for a specific buyer. Click through to see them running.
@@ -305,9 +238,9 @@ const Results = () => {
             {/* Beyond the SMB lane: small footer strip */}
             <div className="mt-16 pt-10 border-t border-border/60">
               <div className="text-center mb-6">
-                <Badge variant="secondary" className="mb-2">Beyond the SMB lane</Badge>
+                <Badge variant="secondary" className="mb-2">Also built</Badge>
                 <h3 className="text-lg sm:text-xl font-bold text-foreground">
-                  Engines we've also built in other domains
+                  Engines we've shipped in other domains
                 </h3>
                 <p className="text-sm text-muted-foreground mt-2 max-w-2xl mx-auto">
                   Proof we can shape an engine for any problem.
@@ -360,7 +293,7 @@ const Results = () => {
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16">
-              <Badge className="mb-4">Engines in action</Badge>
+              <Badge className="mb-4">Built for clients</Badge>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
                 Engines built across every kind of problem we've met.
               </h2>
@@ -403,6 +336,76 @@ const Results = () => {
           canNavigatePrev={selectedCaseIndex > 0}
           canNavigateNext={selectedCaseIndex >= 0 && selectedCaseIndex < (caseStudies?.length ?? 0) - 1}
         />
+
+        {/* Behind the engines: founder track record (supporting proof) */}
+        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-8 sm:mb-10">
+              <p className="text-xs sm:text-sm uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">
+                Behind the engines
+              </p>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3">
+                Patterns that have moved numbers at FTSE scale.
+              </h2>
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+                The founder's prior delivery work, now codified into the engines we build for SMBs.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+              {trackRecordOutcomes.map((o, idx) => (
+                <Card key={idx} className="p-5 sm:p-6 border-l-4 border-l-primary">
+                  <div className="text-xs uppercase tracking-[0.15em] font-bold text-primary mb-3">
+                    {o.client}
+                  </div>
+                  <div className="text-2xl sm:text-[1.65rem] font-bold text-foreground leading-tight mb-3">
+                    {o.headline}
+                  </div>
+                  <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    {o.context}
+                  </div>
+                </Card>
+              ))}
+            </div>
+            <p className="text-center text-sm text-muted-foreground mt-8">
+              Also delivered for: <span className="text-foreground/80 font-medium">Reuters</span>
+            </p>
+            <p className="text-center text-xs text-muted-foreground/70 mt-2 max-w-2xl mx-auto">
+              Credentials: Oxford AI Governance · Wharton AI Strategy &amp; Governance
+            </p>
+          </div>
+        </section>
+
+        {/* In their words: testimonials */}
+        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
+                In their words
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Direct quotes from senior leaders at the companies above.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+              {namedTestimonials.map((t, idx) => (
+                <Card key={idx} className="bg-card/80 border-l-4 border-l-primary">
+                  <CardContent className="p-5 sm:p-6">
+                    <Quote className="h-6 w-6 text-primary/40 mb-3" />
+                    <blockquote className="text-sm sm:text-base text-foreground italic leading-relaxed mb-4">
+                      "{t.quote}"
+                    </blockquote>
+                    <div className="border-t pt-3">
+                      <div className="font-semibold text-foreground text-sm">{t.name}</div>
+                      <div className="text-xs text-muted-foreground">{t.title}</div>
+                      <div className="text-xs text-muted-foreground/80 italic mt-1.5">{t.context}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* CTA Section */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
