@@ -11,7 +11,7 @@ import { ArrowLeft, CheckCircle, Lock } from 'lucide-react';
 import { useAnalytics } from '@/hooks/useAnalytics';
 
 /**
- * Discovery Sprint checkout — clean, single-product page.
+ * Discovery Sprint checkout: clean, single-product page.
  * £495 paid intake. Captures fit info, then hands off to the Stripe checkout
  * Edge Function (existing /api/create-proof-sprint-checkout endpoint).
  *
@@ -122,7 +122,7 @@ const DiscoverySprintCheckout = () => {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* Left — what you get */}
+            {/* Left: what you get */}
             <Card className="bg-primary/5 border-primary/20">
               <CardHeader>
                 <CardTitle className="text-2xl">Discovery Sprint</CardTitle>
@@ -164,7 +164,7 @@ const DiscoverySprintCheckout = () => {
               </CardContent>
             </Card>
 
-            {/* Right — fit form */}
+            {/* Right: fit form */}
             <Card>
               <CardHeader>
                 <CardTitle>Tell us a bit about your business</CardTitle>
