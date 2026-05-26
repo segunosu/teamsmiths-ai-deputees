@@ -196,8 +196,8 @@ const Results = () => {
                   tag: "Governance",
                   title: "AI Governance Engine",
                   problem:
-                    "Most AI governance is theatre, written for regulators with no decision rights and audit trails that don't hold under challenge. The 4Ps engine (Primed, Principled, Practised, Protected) gives operators a one-P-per-week 30-day rollout. Free 20-question self-assessment to start.",
-                  demoUrl: "https://governance.deputee.ai/",
+                    "Responsible AI that compounds business value. The operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Validated at Haleon, GSK and Ogier. Run the free 4Ps assessment.",
+                  demoUrl: "https://governance.teamsmiths.ai/",
                 },
               ].map((sys) => (
                 <Card key={sys.title} className="flex flex-col p-6 sm:p-8">

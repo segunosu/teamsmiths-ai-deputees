@@ -90,8 +90,8 @@ const Home = () => {
       icon: Shield,
       sector: "Governance",
       title: "AI Governance Engine",
-      problem: "The 4Ps framework: Primed, Principled, Practised, Protected. Free 20-question self-assessment, then a one-P-per-week 30-day rollout.",
-      demoUrl: "https://governance.deputee.ai/",
+      problem: "Responsible AI that compounds business value. The operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Run the free 4Ps assessment.",
+      demoUrl: "https://governance.teamsmiths.ai/",
     },
   ];
 
