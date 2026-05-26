@@ -26,7 +26,7 @@ const AISolutions = () => {
     trackEvent('solutions_view' as any, {} as any);
   }, [trackEvent]);
 
-  // Live engines — buyer can try the actual product right now
+  // Live engines: buyer can try the actual product right now
   const liveEngines = [
     {
       name: 'Manufacturing Order Risk Engine',
@@ -79,7 +79,7 @@ const AISolutions = () => {
     },
   ];
 
-  // Designs ready to deploy on demand — shown as compact list, not full cards
+  // Designs ready to deploy on demand: shown as compact list, not full cards
   const pipelineDesigns = [
     'Mental Fitness Engine for Sports Clubs',
     'Quote Booster (dynamic pricing)',
@@ -90,7 +90,7 @@ const AISolutions = () => {
     'Meeting-to-Minutes',
   ];
 
-  // Engines built beyond the SMB lane — proof of capability across domains
+  // Engines built beyond the SMB lane: proof of capability across domains
   const beyondSMBEngines = [
     {
       name: 'Coach Deputee',
@@ -294,7 +294,7 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* How this works — three-line equation */}
+        {/* How this works: three-line equation */}
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-8">
@@ -327,7 +327,7 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Engines — live, deployed, in the pipeline, and beyond-SMB */}
+        {/* Engines: live, deployed, in the pipeline, and beyond-SMB */}
         <section id="engines" className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
@@ -338,7 +338,7 @@ const AISolutions = () => {
               </p>
             </div>
 
-            {/* Live engines — try the demo */}
+            {/* Live engines: try the demo */}
             <div className="mb-14">
               <div className="text-center mb-6">
                 <Badge className="mb-2">Live · try the demo</Badge>
@@ -411,7 +411,7 @@ const AISolutions = () => {
               </div>
             </div>
 
-            {/* Pipeline designs — compact strip */}
+            {/* Pipeline designs: compact strip */}
             <div className="mb-14">
               <div className="text-center mb-4">
                 <h4 className="text-xs font-semibold tracking-[0.18em] uppercase text-muted-foreground">
@@ -491,7 +491,7 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Tier ladder — depth, not domain */}
+        {/* Tier ladder: depth, not domain */}
         <section id="tiers" className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
@@ -577,7 +577,7 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* Strategic tier — by application */}
+        {/* Strategic tier: by application */}
         <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             <Card className="border-dashed border-primary/40">
@@ -602,7 +602,7 @@ const AISolutions = () => {
           </div>
         </section>
 
-        {/* How we get paid — outcome bounty centerpiece */}
+        {/* How we get paid: outcome bounty centerpiece */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">

@@ -87,7 +87,7 @@ const Home = () => {
                 Reduce friction. Increase output. No extra headcount.
               </p>
 
-              {/* Proof points — named FTSE outcomes (mirror /results) */}
+              {/* Proof points: named FTSE outcomes (mirror /results) */}
               <p className="text-sm sm:text-base uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
                 Proven at FTSE scale
               </p>
@@ -106,7 +106,7 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* CTAs — primary paid Discovery Sprint, secondary free chat */}
+              {/* CTAs: primary paid Discovery Sprint, secondary free chat */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-md sm:max-w-none mx-auto mb-3">
                 <Button
                   asChild

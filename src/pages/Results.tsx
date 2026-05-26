@@ -60,7 +60,7 @@ const Results = () => {
     setSelectedCaseSlug(caseStudies[selectedCaseIndex + 1].slug);
   };
 
-  // Outcomes the engines now codify — patterns that have already moved numbers at scale
+  // Outcomes the engines now codify: patterns that have already moved numbers at scale
   // Compressed format: client name + big bold metric + one-line context
   const trackRecordOutcomes = [
     {
@@ -150,7 +150,7 @@ const Results = () => {
           </div>
         </section>
 
-        {/* Track record — compressed credentials wall */}
+        {/* Track record: compressed credentials wall */}
         <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-8 sm:mb-10">
@@ -217,7 +217,7 @@ const Results = () => {
           </div>
         </section>
 
-        {/* Live Engines — try the demo */}
+        {/* Live Engines: try the demo */}
         <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-14">
@@ -302,7 +302,7 @@ const Results = () => {
               ))}
             </div>
 
-            {/* Beyond the SMB lane — small footer strip */}
+            {/* Beyond the SMB lane: small footer strip */}
             <div className="mt-16 pt-10 border-t border-border/60">
               <div className="text-center mb-6">
                 <Badge variant="secondary" className="mb-2">Beyond the SMB lane</Badge>
@@ -356,7 +356,7 @@ const Results = () => {
           </div>
         </section>
 
-        {/* Engines in action — case studies showing the breadth of problems we solve */}
+        {/* Engines in action: case studies showing the breadth of problems we solve */}
         <section className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16">

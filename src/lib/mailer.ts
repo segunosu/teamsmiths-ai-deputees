@@ -59,7 +59,7 @@ export function renderEmailTemplate(templateCode: string, variables: Record<stri
 function getEmailTemplates(): Record<string, { subject: string; body: string }> {
   return {
     expert_invite_to_propose: {
-      subject: "You're a strong fit for {{brief_title}} — want to propose?",
+      subject: "You're a strong fit for {{brief_title}}. Want to propose?",
       body: `Hi {{expert_name}},
 
 You've been invited to propose for **{{brief_title}}** at **{{client_org}}**.
@@ -73,7 +73,7 @@ Why you? {{why_this_expert}}
     },
     
     expert_proposal_submitted: {
-      subject: "Proposal received — {{brief_title}}",
+      subject: "Proposal received: {{brief_title}}",
       body: `Hi {{expert_name}},
 
 Thanks for submitting your proposal for **{{brief_title}}**.
@@ -90,7 +90,7 @@ You've received **{{proposal_count}}** proposal(s) for **{{brief_title}}**.
     },
     
     expert_proposal_won: {
-      subject: "🎉 Your proposal was accepted — {{brief_title}}",
+      subject: "🎉 Your proposal was accepted: {{brief_title}}",
       body: `Hi {{expert_name}},
 
 Your proposal for **{{brief_title}}** was **accepted**.
@@ -117,7 +117,7 @@ To kick off **{{project_title}}**, please pay **Milestone 1** ({{m1_amount}}).
     },
     
     payment_received_milestone: {
-      subject: "Payment received — {{milestone_title}}",
+      subject: "Payment received: {{milestone_title}}",
       body: `Payment for **{{milestone_title}}** ({{amount}}) was received for **{{project_title}}**.
 Expert: {{expert_name}} can begin work.
 
@@ -125,13 +125,13 @@ Expert: {{expert_name}} can begin work.
     },
     
     qa_passed_milestone: {
-      subject: "QA passed — {{milestone_title}} released",
+      subject: "QA passed: {{milestone_title}} released",
       body: `QA has **passed** for **{{milestone_title}}** on **{{project_title}}**.
 Funds are now **released** to {{expert_name}}.`
     },
     
     qa_failed_milestone: {
-      subject: "QA flagged — action needed on {{milestone_title}}",
+      subject: "QA flagged: action needed on {{milestone_title}}",
       body: `QA flagged **{{milestone_title}}** on **{{project_title}}**.
 Issues: {{qa_notes}}
 
@@ -139,7 +139,7 @@ Issues: {{qa_notes}}
     },
     
     retainer_offer_post_project: {
-      subject: "Keep your outcome alive — add Assurance",
+      subject: "Keep your outcome alive. Add Assurance",
       body: `Your project **{{project_title}}** is complete.
 To keep performance improving (and your **Outcome Assurance™** active), consider a monthly plan:
 - **Bronze:** Monitor & patch
@@ -150,7 +150,7 @@ To keep performance improving (and your **Outcome Assurance™** active), consid
     },
     
     retainer_activated: {
-      subject: "Assurance plan activated — {{assurance_plan}}",
+      subject: "Assurance plan activated: {{assurance_plan}}",
       body: `Your **{{assurance_plan}}** plan is **active** for **{{project_title}}**.
 We'll monitor, improve, and evolve your solution.
 
@@ -158,7 +158,7 @@ We'll monitor, improve, and evolve your solution.
     },
     
     retainer_cancelled: {
-      subject: "Assurance paused — performance coverage ended",
+      subject: "Assurance paused: performance coverage ended",
       body: `Your Assurance plan for **{{project_title}}** is paused.
 You can reactivate anytime to restore ongoing coverage and improvement.
 
@@ -166,7 +166,7 @@ You can reactivate anytime to restore ongoing coverage and improvement.
     },
     
     meeting_scheduled: {
-      subject: "Meeting confirmed — {{meeting_title}}",
+      subject: "Meeting confirmed: {{meeting_title}}",
       body: `Your meeting **{{meeting_title}}** is booked for **{{starts_at_human}} ({{timezone}})**.
 **Join link:** {{meet_url}}
 
