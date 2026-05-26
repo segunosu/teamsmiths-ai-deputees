@@ -38,7 +38,7 @@ const About = () => {
     },
     {
       org: 'Strategy work supporting',
-      detail: 'ICI · Orange · Volkswagen · Motorola · HP — contributing to $3.2bn in new revenue',
+      detail: 'ICI · Orange · Volkswagen · Motorola · HP. Contributing to $3.2bn in new revenue',
     },
   ];
 
@@ -66,10 +66,10 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>About Teamsmiths — Decades of finding what's leaking, now codified into engines</title>
+        <title>About Teamsmiths · Decades of finding what's leaking, now codified into engines</title>
         <meta
           name="description"
-          content="Teamsmiths is led by Segun Osu. Decades of work helping FTSE companies and multinationals find the productivity and performance they were leaving on the table — now codified into engines that ship in days."
+          content="Teamsmiths is led by Segun Osu. Decades of work helping FTSE companies and multinationals find the productivity and performance they were leaving on the table, now codified into engines that ship in days."
         />
       </Helmet>
 
@@ -82,12 +82,12 @@ const About = () => {
               Segun Osu has spent 25 years finding the margin leaking out of FTSE businesses. Now he builds engines that do the same for yours.
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-              Most executives don't miss their targets because their people are bad — they miss them because critical issues like delays, claim exposure, and performance gaps surface too late to act on. Earlier visibility, the right people, the right tools — that's the pattern, now codified into engines.
+              Most executives don't miss their targets because their people are bad. They miss them because critical issues like delays, claim exposure, and performance gaps surface too late to act on. Earlier visibility, the right people, the right tools: that's the pattern, now codified into engines.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint — £495
+                  Book a Discovery Sprint (£495)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -120,7 +120,7 @@ const About = () => {
                     Earlier visibility · the right people working with the right tools · focused on the right commercial outcome.
                   </p>
                   <p>
-                    Teamsmiths is built on that pattern — turning decades of experience into <span className="text-foreground font-medium">Engines</span> ready to work in your business. Each Teamsmiths Engine plugs into your existing data, finds the leakage, and delivers commercial outcomes in weeks. No new systems. No data entry.
+                    Teamsmiths is built on that pattern, turning decades of experience into <span className="text-foreground font-medium">Engines</span> ready to work in your business. Each Teamsmiths Engine plugs into your existing data, finds the leakage, and delivers commercial outcomes in weeks. No new systems. No data entry.
                   </p>
                 </div>
               </CardContent>
@@ -134,7 +134,7 @@ const About = () => {
             <div className="text-center mb-10">
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Selected track record</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Decades of finding productivity and performance gains at every level — projects, business units, and companies.
+                Decades of finding productivity and performance gains at every level: projects, business units, and companies.
               </p>
             </div>
 
@@ -252,11 +252,11 @@ const About = () => {
                     <ul className="space-y-3">
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Plugs into your existing data — no new systems, no data entry</span>
+                        <span className="text-muted-foreground">Plugs into your existing data, no new systems, no data entry</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner) on every engagement</span>
+                        <span className="text-muted-foreground">Segun Osu (ex-FTSE turnaround lead at Haleon, GSK, Gartner) on every engagement</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
@@ -273,7 +273,7 @@ const About = () => {
                     <ul className="space-y-3">
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
-                        <span className="text-muted-foreground">Fixed prices — no hourly billing surprises</span>
+                        <span className="text-muted-foreground">Fixed prices. No hourly billing surprises</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
@@ -312,7 +312,7 @@ const About = () => {
                 </a>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link to="/discovery-sprint">Discovery Sprint — £495</Link>
+                <Link to="/discovery-sprint">Discovery Sprint (£495)</Link>
               </Button>
             </div>
           </div>

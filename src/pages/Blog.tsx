@@ -20,10 +20,10 @@ const Blog = () => {
   return (
     <div className="min-h-screen">
       <Helmet>
-        <title>Case Studies & Insights | Teamsmiths — Engines we've built and what they delivered</title>
+        <title>Case Studies & Insights | Teamsmiths · Engines we've built and what they delivered</title>
         <meta
           name="description"
-          content="Long-form case studies of every engine we've built or designed — Manufacturing Order Risk, Construction Revenue Risk, The Player's Mind, Songita, Calarossa Pool Pass, Council Tax Deputee, Meeting Intelligence."
+          content="Long-form case studies of every engine we've built or designed: Manufacturing Order Risk, Construction Revenue Risk, The Player's Mind, Songita, Calarossa Pool Pass, Council Tax Deputee, Meeting Intelligence."
         />
       </Helmet>
 
@@ -146,7 +146,7 @@ const Blog = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
               <Link to="/discovery-sprint">
-                Book a Discovery Sprint — £495
+                Book a Discovery Sprint (£495)
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>

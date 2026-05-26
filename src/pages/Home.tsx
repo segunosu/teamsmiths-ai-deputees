@@ -58,7 +58,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Teamsmiths — Bring the problem. We build the engine that solves it.</title>
+        <title>Teamsmiths · Bring the problem. We build the engine that solves it.</title>
         <meta
           name="description"
           content="Bring the problem. We build the AI + human engine that solves it. Days, not months. Discovery Sprint £495. Kickstart £2,950. Outcome-bounty on selected projects. Founder-led from London & Woking, Surrey, UK."
@@ -114,7 +114,7 @@ const Home = () => {
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                 >
                   <Link to="/discovery-sprint">
-                    Book a Discovery Sprint — £495
+                    Book a Discovery Sprint (£495)
                     <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                   </Link>
                 </Button>
@@ -174,7 +174,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-relaxed">
-                    Deploy your custom engine — plugged into your existing tools, moving one KPI. Live in days, not months.
+                    Deploy your custom engine, plugged into your existing tools, moving one KPI. Live in days, not months.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -217,10 +217,10 @@ const Home = () => {
               Start with a Discovery Sprint
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
-              90 minutes 1:1 with the founder — an ex-FTSE turnaround lead (Haleon, GSK, Gartner). A branded AI Diagnostic Report delivered within days.
+              90 minutes 1:1 with the founder, an ex-FTSE turnaround lead (Haleon, GSK, Gartner). A branded AI Diagnostic Report delivered within days.
             </p>
             <p className="text-base sm:text-lg font-medium text-foreground max-w-3xl mx-auto mb-8">
-              £495 — fully credited to your first build if you proceed within 60 days.
+              £495 fully credited to your first build if you proceed within 60 days.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
               <div className="flex items-center gap-2 text-sm font-medium">
@@ -239,7 +239,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button size="lg" asChild>
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint — £495
+                  Book a Discovery Sprint (£495)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -261,7 +261,7 @@ const Home = () => {
                 The kind of outcomes we build toward.
               </p>
               <p className="text-sm text-muted-foreground/80 max-w-2xl mx-auto mt-3">
-                See <Link to="/results" className="text-primary underline-offset-2 hover:underline">named track record</Link> for the founder's prior delivery work — Philips, Haleon, GSK, Gartner.
+                See <Link to="/results" className="text-primary underline-offset-2 hover:underline">named track record</Link> for the founder's prior delivery work at Philips, Haleon, GSK and Gartner.
               </p>
             </div>
 
@@ -317,13 +317,13 @@ const Home = () => {
               One paid sprint. Three opportunities ranked by £-impact. A 90-day plan you can act on Monday.
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              90 minutes 1:1 with the founder. £495 — fully credited to your first build within 60 days.
+              90 minutes 1:1 with the founder. £495 fully credited to your first build within 60 days.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center max-w-2xl mx-auto mb-4">
               <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto">
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint — £495
+                  Book a Discovery Sprint (£495)
                   <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                 </Link>
               </Button>

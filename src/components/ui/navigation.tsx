@@ -94,7 +94,7 @@ export const Navigation = () => {
             {/* Primary CTA - always visible */}
             <Button asChild size="sm" className="text-sm font-medium">
               <Link to="/discovery-sprint">
-                Book a Discovery Sprint — £495
+                Book a Discovery Sprint (£495)
               </Link>
             </Button>
 
@@ -216,7 +216,7 @@ export const Navigation = () => {
                   <div className="space-y-1">
                     <Button asChild className="w-full justify-start">
                       <Link to="/discovery-sprint" onClick={() => setIsMenuOpen(false)}>
-                        Book a Discovery Sprint — £495
+                        Book a Discovery Sprint (£495)
                       </Link>
                     </Button>
                     <Button asChild variant="outline" className="w-full justify-start">

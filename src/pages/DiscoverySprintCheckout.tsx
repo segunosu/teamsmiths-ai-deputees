@@ -79,13 +79,13 @@ const DiscoverySprintCheckout = () => {
     return (
       <>
         <Helmet>
-          <title>Discovery Sprint — Application received | Teamsmiths</title>
+          <title>Discovery Sprint: Application received | Teamsmiths</title>
         </Helmet>
         <div className="min-h-screen py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
             <CheckCircle className="h-12 w-12 text-success mx-auto mb-6" />
             <h1 className="text-3xl font-bold text-foreground mb-4">
-              Got it — we'll be in touch within one working day.
+              Got it. We'll be in touch within one working day.
             </h1>
             <p className="text-muted-foreground mb-8 leading-relaxed">
               Segun will email you to confirm your Discovery Sprint and arrange
@@ -104,10 +104,10 @@ const DiscoverySprintCheckout = () => {
   return (
     <>
       <Helmet>
-        <title>Book your Discovery Sprint — £495 | Teamsmiths</title>
+        <title>Book your Discovery Sprint (£495) | Teamsmiths</title>
         <meta
           name="description"
-          content="Book your 90-minute Discovery Sprint with Segun Osu. £495, fully credited to your first build within 60 days. Blueprint within days — engine design, AI Diagnostic Report, 90-day plan."
+          content="Book your 90-minute Discovery Sprint with Segun Osu. £495, fully credited to your first build within 60 days. Blueprint within days: engine design, AI Diagnostic Report, 90-day plan."
         />
       </Helmet>
       <div className="min-h-screen py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
@@ -127,7 +127,7 @@ const DiscoverySprintCheckout = () => {
               <CardHeader>
                 <CardTitle className="text-2xl">Discovery Sprint</CardTitle>
                 <CardDescription className="text-lg">
-                  90 minutes 1:1 with Segun Osu (ex-FTSE turnaround lead — Haleon, GSK, Gartner).
+                  90 minutes 1:1 with Segun Osu (ex-FTSE turnaround lead at Haleon, GSK, Gartner).
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -260,7 +260,7 @@ const DiscoverySprintCheckout = () => {
 
                   <div className="border-t pt-5">
                     <Button type="submit" className="w-full" size="lg" disabled={loading}>
-                      {loading ? 'Processing…' : 'Continue to payment — £495'}
+                      {loading ? 'Processing…' : 'Continue to payment (£495)'}
                       <Lock className="ml-2 h-4 w-4" />
                     </Button>
                     <p className="text-xs text-muted-foreground/80 mt-3 text-center">

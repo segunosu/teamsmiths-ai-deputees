@@ -19,7 +19,7 @@ export const Footer = () => {
             <h3 className="font-semibold mb-4 text-primary-foreground">Resources</h3>
             <ul className="space-y-3">
               <li><Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Case studies</Link></li>
-              <li><Link to="/discovery-sprint" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Discovery Sprint — £495</Link></li>
+              <li><Link to="/discovery-sprint" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Discovery Sprint (£495)</Link></li>
               <li><Link to="/ai-impact-maturity" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Free AI Readiness Check</Link></li>
             </ul>
           </div>

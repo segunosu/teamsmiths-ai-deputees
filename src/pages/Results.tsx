@@ -112,20 +112,20 @@ const Results = () => {
       quote: "Thank you for your stewardship and counseling to our MotU and WREF sprint teams throughout this year. To achieve a Level 3 in such a short space of time is a testament to your leadership and knowledge of the Agile Framework.",
       name: "Jo Taylor",
       title: "Senior Director, GSK PLC",
-      context: "On the pre-demerger transformation — 5 teams to Level 3 in 3 months.",
+      context: "On the pre-demerger transformation: 5 teams to Level 3 in 3 months.",
     },
     {
       quote: "The team is great and the project manager provided an essential bridge, keeping work organised and on track. So far we've had an excellent experience.",
       name: "Marco Piscitelli",
       title: "Director, Thriize / Vertis Media",
-      context: "On the AI-enabled advertising portal — delivered in less than half the time of a traditional code-driven build.",
+      context: "On the AI-enabled advertising portal, delivered in less than half the time of a traditional code-driven build.",
     },
   ];
 
   return (
     <>
       <Helmet>
-        <title>Results & Case Studies | Teamsmiths — Track Record Behind the Engines</title>
+        <title>Results & Case Studies | Teamsmiths · Track Record Behind the Engines</title>
         <meta
           name="description"
           content="Founder track record across Philips, Haleon, GSK, Gartner. Plus illustrative scenarios and named client comments from prior delivery work."
@@ -145,7 +145,7 @@ const Results = () => {
               The track record behind the Engines
             </h1>
             <p className="text-base sm:text-xl lg:text-2xl text-muted-foreground font-medium mb-8 sm:mb-10 max-w-4xl mx-auto leading-relaxed px-2">
-              Decades of finding productivity and performance gains across FTSE pharma, professional services, and infrastructure delivery — now codified into engines that ship in days.
+              Decades of finding productivity and performance gains across FTSE pharma, professional services, and infrastructure delivery, now codified into engines that ship in days.
             </p>
           </div>
         </section>
@@ -158,7 +158,7 @@ const Results = () => {
                 Patterns that have moved numbers at FTSE scale.
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                Numbers our founder has moved at FTSE scale — now codified into the engines we build for SMBs.
+                Numbers our founder has moved at FTSE scale, now codified into the engines we build for SMBs.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -263,7 +263,7 @@ const Results = () => {
                   tag: "Governance",
                   title: "AI Governance Engine",
                   problem:
-                    "Most AI governance is theatre — written for regulators with no decision rights and audit trails that don't hold under challenge. The 4Ps engine (Primed, Principled, Practised, Protected) gives operators a one-P-per-week 30-day rollout. Free 20-question self-assessment to start.",
+                    "Most AI governance is theatre, written for regulators with no decision rights and audit trails that don't hold under challenge. The 4Ps engine (Primed, Principled, Practised, Protected) gives operators a one-P-per-week 30-day rollout. Free 20-question self-assessment to start.",
                   demoUrl: "https://governance.deputee.ai/",
                 },
               ].map((sys) => (
@@ -328,7 +328,7 @@ const Results = () => {
                     demoUrl: "https://positivechanges.deputee.ai/",
                   },
                   {
-                    name: "TPM — The Player's Mind",
+                    name: "TPM (The Player's Mind)",
                     tag: "Youth football",
                     desc: "Mental-fitness toolkit for grassroots clubs and academies.",
                     demoUrl: "https://tpm.deputee.ai/",
@@ -365,7 +365,7 @@ const Results = () => {
                 Engines built across every kind of problem we've met.
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                Each card shows the challenge, the engine that solves it, and the measurable result. Pick the closest match — or bring a problem we haven't met yet.
+                Each card shows the challenge, the engine that solves it, and the measurable result. Pick the closest match, or bring a problem we haven't met yet.
               </p>
             </div>
 
@@ -411,12 +411,12 @@ const Results = () => {
               Want results like these in your own numbers?
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Book a Discovery Sprint. 90 minutes 1:1 with the founder to scope your engine. We deliver the blueprint within days. £495 — credited to your build if you proceed with us.
+              Book a Discovery Sprint. 90 minutes 1:1 with the founder to scope your engine. We deliver the blueprint within days. £495, credited to your build if you proceed with us.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
                 <Link to="/discovery-sprint">
-                  Book a Discovery Sprint — £495
+                  Book a Discovery Sprint (£495)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>

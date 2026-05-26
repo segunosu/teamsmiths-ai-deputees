@@ -99,7 +99,7 @@ const ExampleProductionRiskSystem = () => {
             <p className="text-muted-foreground text-base sm:text-lg max-w-3xl mb-8">
               The Order Risk Engine monitors production signals, detects early risk
               indicators, calculates the impact on live orders, and triggers
-              clear next actions — without adding headcount.
+              clear next actions, without adding headcount.
             </p>
 
             <Card>
@@ -156,8 +156,8 @@ const ExampleProductionRiskSystem = () => {
               Click below to book your free diagnostic. In our brief 1:1,
               we’ll co-create your roadmap and design the foundations of your
               project. No obligation, of course. If you'd rather start scoping
-              an engine for your own business — 90 min session, blueprint
-              within days — book a Discovery Sprint.
+              an engine for your own business (90 min session, blueprint
+              within days), book a Discovery Sprint.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg">
@@ -171,7 +171,7 @@ const ExampleProductionRiskSystem = () => {
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/discovery-sprint">Book a Discovery Sprint — £495</Link>
+                <Link to="/discovery-sprint">Book a Discovery Sprint (£495)</Link>
               </Button>
               <Button asChild variant="ghost" size="lg">
                 <Link to="/solutions">Explore packages</Link>

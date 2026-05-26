@@ -27,10 +27,10 @@ const OutcomeSprints = () => {
   return (
     <>
       <Helmet>
-        <title>Discovery Sprint £495 — Scope Your Custom Engine | Teamsmiths</title>
+        <title>Discovery Sprint (£495): Scope Your Custom Engine | Teamsmiths</title>
         <meta
           name="description"
-          content="90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Blueprint delivered within days: AI Diagnostic Report, working engine design, and 90-day plan. £495 — credited to your first build if you proceed."
+          content="90 minutes 1:1 with an ex-FTSE turnaround lead (Haleon, GSK, Gartner). Blueprint delivered within days: AI Diagnostic Report, working engine design, and 90-day plan. £495, credited to your first build if you proceed."
         />
         <meta name="keywords" content="ai discovery, custom engine design, ai diagnostic, paid scoping" />
       </Helmet>
@@ -56,7 +56,7 @@ const OutcomeSprints = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
                 <Link to="/discovery-sprint/checkout">
-                  Book your Discovery Sprint — £495
+                  Book your Discovery Sprint (£495)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -131,7 +131,7 @@ const OutcomeSprints = () => {
                   <Target className="h-10 w-10 text-primary mx-auto mb-4" />
                   <h3 className="font-semibold text-lg mb-2">Engine blueprint</h3>
                   <p className="text-sm text-muted-foreground">
-                    A working blueprint for the engine we'd build first — tailored to your specific problem, not pulled from a menu. Delivered within days.
+                    A working blueprint for the engine we'd build first, tailored to your specific problem, not pulled from a menu. Delivered within days.
                   </p>
                 </CardContent>
               </Card>
@@ -167,7 +167,7 @@ const OutcomeSprints = () => {
                   <Zap className="h-10 w-10 text-primary mx-auto mb-4" />
                   <h3 className="font-semibold text-lg mb-2">A clear next step</h3>
                   <p className="text-sm text-muted-foreground">
-                    Either DIY from the report, upgrade to Kickstart, or walk away — your call.
+                    Either DIY from the report, upgrade to Kickstart, or walk away. Your call.
                   </p>
                 </CardContent>
               </Card>
@@ -194,7 +194,7 @@ const OutcomeSprints = () => {
                 <ul className="space-y-2 mb-6 max-w-md mx-auto">
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                    <span>1:1 working session — no groups, no breakouts</span>
+                    <span>1:1 working session, no groups, no breakouts</span>
                   </li>
                   <li className="flex items-start gap-2 text-sm">
                     <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
@@ -219,7 +219,7 @@ const OutcomeSprints = () => {
                 </ul>
                 <Button className="w-full" size="lg" asChild>
                   <Link to="/discovery-sprint/checkout">
-                    Book your Discovery Sprint — £495
+                    Book your Discovery Sprint (£495)
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -232,7 +232,7 @@ const OutcomeSprints = () => {
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-4">After your sprint</h2>
-            <p className="text-center text-muted-foreground mb-12">Three paths forward — you choose.</p>
+            <p className="text-center text-muted-foreground mb-12">Three paths forward. You choose.</p>
             <div className="grid md:grid-cols-3 gap-6">
               <Card className="text-center border-2">
                 <CardContent className="pt-6">
@@ -272,14 +272,14 @@ const OutcomeSprints = () => {
         <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              Get clarity on what to do — and what it's worth.
+              Get clarity on what to do, and what it's worth.
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
               The Discovery Sprint is the lowest-risk way to find out exactly where AI delivers in your business.
             </p>
             <Button asChild size="lg">
               <Link to="/discovery-sprint/checkout">
-                Book your Discovery Sprint — £495
+                Book your Discovery Sprint (£495)
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
