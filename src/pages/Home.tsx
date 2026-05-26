@@ -87,22 +87,22 @@ const Home = () => {
                 Reduce friction. Increase output. No extra headcount.
               </p>
 
-              {/* Proof points */}
+              {/* Proof points — named FTSE outcomes (mirror /results) */}
               <p className="text-sm sm:text-base uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
-                Typical outcomes
+                Proven at FTSE scale
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 sm:gap-16 justify-center items-center mb-16 sm:mb-20 text-sm sm:text-base">
-                <div className="flex items-center gap-2 text-muted-foreground font-normal">
-                  <Clock className="h-3.5 w-3.5 text-primary/80" />
-                  <span>Save 5–10 hours per week</span>
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center items-center mb-16 sm:mb-20 text-sm sm:text-base">
+                <div className="flex items-center gap-2 text-foreground font-medium">
+                  <Target className="h-3.5 w-3.5 text-primary" />
+                  <span><span className="font-bold">98%+ predictability</span> <span className="text-muted-foreground">@ Haleon</span></span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground font-normal">
-                  <Target className="h-3.5 w-3.5 text-primary/80" />
-                  <span>Increase win rates by 20%</span>
+                <div className="flex items-center gap-2 text-foreground font-medium">
+                  <TrendingUp className="h-3.5 w-3.5 text-primary" />
+                  <span><span className="font-bold">$3M → $10M</span> <span className="text-muted-foreground">@ Gartner</span></span>
                 </div>
-                <div className="flex items-center gap-2 text-muted-foreground font-normal">
-                  <Zap className="h-3.5 w-3.5 text-primary/80" />
-                  <span>Reduce costs by 45%</span>
+                <div className="flex items-center gap-2 text-foreground font-medium">
+                  <BarChart3 className="h-3.5 w-3.5 text-primary" />
+                  <span><span className="font-bold">£22M annually</span> <span className="text-muted-foreground">@ Philips</span></span>
                 </div>
               </div>
 
