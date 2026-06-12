@@ -64,6 +64,14 @@ const Home = () => {
   // Live products — mirror /results live engines section
   const liveEngines = [
     {
+      icon: Shield,
+      sector: "Governance",
+      title: "AI Governance Engine",
+      problem: "Responsible AI that compounds business value. The operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Run the free 4Ps assessment.",
+      demoUrl: "https://governance.teamsmiths.ai/",
+      href: "/governance",
+    },
+    {
       icon: Factory,
       sector: "Manufacturing",
       title: "Order Risk Engine",
@@ -85,13 +93,6 @@ const Home = () => {
       title: "Procurement Engine",
       problem: "AI procurement deputy for mid-market £25k–£500k decisions. Structured brief → 3–5 pre-qualified vendors → buyer-supervised counter-offer.",
       demoUrl: "https://procurement.deputee.ai/",
-    },
-    {
-      icon: Shield,
-      sector: "Governance",
-      title: "AI Governance Engine",
-      problem: "Responsible AI that compounds business value. The operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Run the free 4Ps assessment.",
-      demoUrl: "https://governance.teamsmiths.ai/",
     },
   ];
 
@@ -132,14 +133,14 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Teamsmiths · Bring the problem. We build the engine that solves it.</title>
+        <title>Teamsmiths · Responsible AI that compounds business value</title>
         <meta
           name="description"
-          content="Bring the problem. We build the AI + human engine that solves it. Days, not months. Discovery Sprint £500. Kickstart £2,950. Outcome-bounty on selected projects. Founder-led from London & Woking, Surrey, UK."
+          content="AI governance is our flagship practice. The 4Ps framework — Primed, Principled, Practised, Protected — delivered at Haleon, GSK and Ogier Group. Plus the AI + human engines that put it to work. Founder-led from London & Woking, Surrey, UK."
         />
         <meta
           name="keywords"
-          content="business engines, custom AI consulting, fixed price AI, business automation, outcome pricing, AI for SMB"
+          content="AI governance, responsible AI, 4Ps framework, ISO 42001, EU AI Act, business engines, custom AI consulting, AI for SMB"
         />
       </Helmet>
 
@@ -152,13 +153,13 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 sm:mb-8 leading-[1.15]">
-                Bring the problem.<br /> We build the solution engine.
+                Responsible AI that<br /> compounds business value.
               </h1>
               <h2 className="text-xl sm:text-3xl lg:text-[2.75rem] font-semibold text-foreground/[0.87] mb-3 sm:mb-4 leading-[1.2]">
-                Expert strategy. AI speed. Measurable outcomes.
+                AI governance is our flagship practice.
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-normal mb-10 sm:mb-14 max-w-3xl mx-auto leading-relaxed px-2">
-                Reduce friction. Increase output. No extra headcount.
+                The 4Ps framework — Primed, Principled, Practised, Protected. A harness for AI, not a cage.
               </p>
 
               {/* Proof points: named FTSE outcomes (mirror /results, honestly attributed) */}
@@ -183,15 +184,15 @@ const Home = () => {
                 The founder's prior delivery work, now codified into the engines we build.
               </p>
 
-              {/* CTAs: primary paid Discovery Sprint, secondary free chat */}
+              {/* CTAs: primary governance flagship, secondary free 4Ps assessment */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-md sm:max-w-none mx-auto mb-3">
                 <Button
                   asChild
                   size="lg"
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                 >
-                  <Link to="/discovery-sprint">
-                    Book a Discovery Sprint (£500)
+                  <Link to="/governance">
+                    Explore the 4Ps Governance Framework
                     <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
                   </Link>
                 </Button>
@@ -201,13 +202,13 @@ const Home = () => {
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                   asChild
                 >
-                  <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer">
-                    Not ready? 15-min fit call →
+                  <a href="https://governance.teamsmiths.ai/cockpit" target="_blank" rel="noopener noreferrer">
+                    Run the free 4Ps assessment →
                   </a>
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground/70 mt-1">
-                90 mins 1:1 with the founder. Fully credited to your first build within 60 days.
+                Built and delivered at Haleon, GSK and Ogier Group. Free assessment, instant readout.
               </p>
             </div>
           </div>

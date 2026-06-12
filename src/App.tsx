@@ -71,6 +71,7 @@ import ExampleProductionRiskSystem from "./pages/ExampleProductionRiskSystem";
 import ExampleProjectRiskSystem from "./pages/ExampleProjectRiskSystem";
 
 // Lazy load components
+const Governance = React.lazy(() => import('./pages/Governance'));
 const Plans = React.lazy(() => import('./pages/Plans'));
 const ProofSprintCheckout = React.lazy(() => import('./pages/ProofSprintCheckout'));
 const ProofSprintSuccess = React.lazy(() => import('./pages/ProofSprintSuccess'));
@@ -93,6 +94,13 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/start" element={<Start />} />
+                  <Route path="/governance" element={
+                    <React.Suspense fallback={<div>Loading...</div>}>
+                      <ErrorBoundary>
+                        <Governance />
+                      </ErrorBoundary>
+                    </React.Suspense>
+                  } />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/plans" element={
                     <React.Suspense fallback={<div>Loading...</div>}>

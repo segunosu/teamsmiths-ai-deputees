@@ -4,7 +4,16 @@ export const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
+          {/* Governance */}
+          <div>
+            <h3 className="font-semibold mb-4 text-primary-foreground">Governance</h3>
+            <ul className="space-y-3">
+              <li><Link to="/governance" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">The 4Ps Framework</Link></li>
+              <li><a href="https://governance.teamsmiths.ai/cockpit" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Free Governance Assessment</a></li>
+            </ul>
+          </div>
+
           {/* About */}
           <div>
             <h3 className="font-semibold mb-4 text-primary-foreground">Company</h3>
@@ -36,8 +45,14 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Empty for spacing */}
-          <div></div>
+          {/* For talent — intentionally last */}
+          <div>
+            <h3 className="font-semibold mb-4 text-primary-foreground">For Talent</h3>
+            <ul className="space-y-3">
+              <li><Link to="/for-freelancers" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">For Freelancers</Link></li>
+              <li><Link to="/work-with-us" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Work With Us</Link></li>
+            </ul>
+          </div>
         </div>
 
         {/* Logo Section */}

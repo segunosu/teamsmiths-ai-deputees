@@ -64,6 +64,16 @@ const Results = () => {
   // Compressed format: client name + big bold metric + one-line context
   const trackRecordOutcomes = [
     {
+      client: "Ogier Group",
+      headline: "50% time-to-milestone reduction",
+      context: "Corporate governance overhaul · 7 teams · top 5 risks managed",
+    },
+    {
+      client: "GSK PLC",
+      headline: "80% → 94%+ predictability in 3 months",
+      context: "5 teams · +40% velocity · 8% cost reduction · pre-demerger",
+    },
+    {
       client: "Haleon PLC",
       headline: "98%+ delivery predictability",
       context: "10 teams · +45% velocity · 15% cost reduction · powered by AI",
@@ -72,16 +82,6 @@ const Results = () => {
       client: "BusinessBuyGuide",
       headline: "$1M ARR in 12 months",
       context: "Cofounded · multi-category B2B procurement engine · 800+ suppliers",
-    },
-    {
-      client: "GSK PLC",
-      headline: "80% → 94%+ predictability in 3 months",
-      context: "5 teams · +40% velocity · 8% cost reduction · pre-demerger",
-    },
-    {
-      client: "Ogier Group",
-      headline: "50% time-to-milestone reduction",
-      context: "Corporate governance overhaul · 7 teams · top 5 risks managed",
     },
     {
       client: "Gartner Inc.",
@@ -97,12 +97,6 @@ const Results = () => {
 
   const namedTestimonials = [
     {
-      quote: "He hired and led a first-class team that excelled in growing both revenue, and critically margins, well ahead of target. Most noticeable for me however was the strong client renewal rates the team was able to achieve through a clear goal of meeting or beating the expectation of every client.",
-      name: "Simon Levin",
-      title: "Group Vice President, Gartner (now Managing Director, The Skills Connection)",
-      context: "On the Gartner EMEA Digital Media & eCommerce portfolio.",
-    },
-    {
       quote: "Segun has played a pivotal role in our agile transformation journey in GSK and now in Haleon. His dedication, expertise, and unwavering commitment to driving agility and continuous improvement have been nothing short of remarkable.",
       name: "Amy Houston",
       title: "Director of Product Transformation, Haleon PLC",
@@ -113,6 +107,12 @@ const Results = () => {
       name: "Jo Taylor",
       title: "Senior Director, GSK PLC",
       context: "On the pre-demerger transformation: 5 teams to Level 3 in 3 months.",
+    },
+    {
+      quote: "He hired and led a first-class team that excelled in growing both revenue, and critically margins, well ahead of target. Most noticeable for me however was the strong client renewal rates the team was able to achieve through a clear goal of meeting or beating the expectation of every client.",
+      name: "Simon Levin",
+      title: "Group Vice President, Gartner (now Managing Director, The Skills Connection)",
+      context: "On the Gartner EMEA Digital Media & eCommerce portfolio.",
     },
     {
       quote: "The team is great and the project manager provided an essential bridge, keeping work organised and on track. So far we've had an excellent experience.",

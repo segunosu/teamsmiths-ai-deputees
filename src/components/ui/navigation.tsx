@@ -17,6 +17,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const navigationItems = [
+  { label: 'Governance', path: '/governance', tooltip: 'The 4Ps AI Governance Framework' },
   { label: 'Solutions', path: '/solutions', tooltip: 'Engines with fixed pricing' },
   { label: 'Results', path: '/results', tooltip: 'Track record and case studies' },
   { label: 'Discovery Sprint', path: '/discovery-sprint', tooltip: '90 min session. Blueprint in days. £500 credited to build.' },
@@ -93,9 +94,9 @@ export const Navigation = () => {
           <div className="hidden lg:flex items-center">
             {/* Primary CTA - always visible */}
             <Button asChild size="sm" className="text-sm font-medium">
-              <Link to="/discovery-sprint">
-                Book a Discovery Sprint (£500)
-              </Link>
+              <a href="https://governance.teamsmiths.ai/cockpit" target="_blank" rel="noopener noreferrer">
+                Free Governance Assessment
+              </a>
             </Button>
 
             {/* Secondary icons - logged in only, with spacing */}
@@ -215,9 +216,9 @@ export const Navigation = () => {
                 ) : (
                   <div className="space-y-1">
                     <Button asChild className="w-full justify-start">
-                      <Link to="/discovery-sprint" onClick={() => setIsMenuOpen(false)}>
-                        Book a Discovery Sprint (£500)
-                      </Link>
+                      <a href="https://governance.teamsmiths.ai/cockpit" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>
+                        Free Governance Assessment
+                      </a>
                     </Button>
                     <Button asChild variant="outline" className="w-full justify-start">
                       <a href="https://calendly.com/osu/brief-chat" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>
