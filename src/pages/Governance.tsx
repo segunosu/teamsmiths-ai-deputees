@@ -49,9 +49,9 @@ const Governance = () => {
     {
       icon: Lock,
       name: "Protected",
-      summary: "Risk, compliance, audit.",
+      summary: "Risk, compliance, audit, continuity.",
       detail:
-        "ISO 42001 and EU AI Act alignment, model cards, risk registers and audit trails. Evidence you can hand to a regulator or a buyer.",
+        "ISO 42001 and EU AI Act alignment, model cards, risk registers and audit trails — plus model & vendor continuity, so when a provider is restricted, recalled or withdrawn (as two frontier models were in June 2026), your product keeps running on a tested fallback. Evidence you can hand to a regulator or a buyer.",
     },
   ];
 
