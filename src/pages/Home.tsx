@@ -67,7 +67,7 @@ const Home = () => {
       icon: Shield,
       sector: "Governance",
       title: "AI Governance Engine",
-      problem: "Responsible AI that compounds business value. The operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Run the free 4Ps assessment.",
+      problem: "Compound business value with the operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Run the free 4Ps assessment.",
       demoUrl: "https://governance.teamsmiths.ai/",
       href: "/governance",
     },
@@ -133,7 +133,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Teamsmiths · Responsible AI that compounds business value</title>
+        <title>Teamsmiths · Compound business value with AI</title>
         <meta
           name="description"
           content="AI governance is our flagship practice. The 4Ps framework — Primed, Principled, Practised, Protected — informed by team-performance and governance delivery at Haleon, GSK and Ogier Group. Plus the AI + human engines that put it to work. Founder-led from London & Woking, Surrey, UK."
@@ -153,7 +153,7 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 sm:mb-8 leading-[1.15]">
-                Responsible AI that<br /> compounds business value.
+                Compound business value<br /> with AI.
               </h1>
               <h2 className="text-xl sm:text-3xl lg:text-[2.75rem] font-semibold text-foreground/[0.87] mb-3 sm:mb-4 leading-[1.2]">
                 We build AI that works — and govern it so it lasts.

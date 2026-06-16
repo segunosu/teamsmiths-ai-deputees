@@ -81,7 +81,7 @@ const Governance = () => {
   return (
     <>
       <Helmet>
-        <title>The 4Ps AI Governance Framework | Teamsmiths · Responsible AI that compounds business value</title>
+        <title>The 4Ps AI Governance Framework | Teamsmiths · Compound business value with operator-first AI governance</title>
         <meta
           name="description"
           content="The 4Ps AI Governance Framework — Primed, Principled, Practised, Protected. Operator-first AI governance informed by team-performance and governance delivery at Haleon, GSK and Ogier Group. Run the free 4Ps assessment."
@@ -108,7 +108,7 @@ const Governance = () => {
                 Primed. Principled. Practised. Protected.
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-normal mb-8 max-w-3xl mx-auto leading-relaxed px-2">
-                Responsible AI that compounds business value.
+                Compound business value with operator-first AI governance.
               </p>
               <p className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto mb-10 sm:mb-14">
                 By <span className="text-foreground font-medium">Segun Osu</span> · Oxford AI Governance (100%) · Wharton AI Strategy &amp; Governance (100%) · Delivery at Haleon, GSK and Ogier Group.
