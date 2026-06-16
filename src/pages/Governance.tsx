@@ -84,7 +84,7 @@ const Governance = () => {
         <title>The 4Ps AI Governance Framework | Teamsmiths · Responsible AI that compounds business value</title>
         <meta
           name="description"
-          content="The 4Ps AI Governance Framework — Primed, Principled, Practised, Protected. Operator-first AI governance delivered at Haleon, GSK and Ogier Group. Run the free 4Ps assessment."
+          content="The 4Ps AI Governance Framework — Primed, Principled, Practised, Protected. Operator-first AI governance informed by team-performance and governance delivery at Haleon, GSK and Ogier Group. Run the free 4Ps assessment."
         />
         <meta
           name="keywords"

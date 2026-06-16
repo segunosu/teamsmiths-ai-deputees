@@ -54,7 +54,7 @@ const AISolutions = () => {
     {
       name: 'AI Governance Engine',
       sector: 'Governance',
-      desc: 'Responsible AI that compounds business value. The operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Validated at Haleon, GSK and Ogier.',
+      desc: 'Responsible AI that compounds business value. The operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Informed by team-performance and governance delivery at Haleon, GSK and Ogier.',
       status: 'Live · run the free 4Ps assessment',
       demoUrl: 'https://governance.teamsmiths.ai/',
     },

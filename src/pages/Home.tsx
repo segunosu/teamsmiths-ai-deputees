@@ -136,7 +136,7 @@ const Home = () => {
         <title>Teamsmiths · Responsible AI that compounds business value</title>
         <meta
           name="description"
-          content="AI governance is our flagship practice. The 4Ps framework — Primed, Principled, Practised, Protected — delivered at Haleon, GSK and Ogier Group. Plus the AI + human engines that put it to work. Founder-led from London & Woking, Surrey, UK."
+          content="AI governance is our flagship practice. The 4Ps framework — Primed, Principled, Practised, Protected — informed by team-performance and governance delivery at Haleon, GSK and Ogier Group. Plus the AI + human engines that put it to work. Founder-led from London & Woking, Surrey, UK."
         />
         <meta
           name="keywords"
@@ -208,7 +208,7 @@ const Home = () => {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground/70 mt-1">
-                Built and delivered at Haleon, GSK and Ogier Group. Free assessment, instant readout.
+                Informed by team-performance and governance delivery at Haleon, GSK and Ogier Group. Free assessment, instant readout.
               </p>
             </div>
           </div>
