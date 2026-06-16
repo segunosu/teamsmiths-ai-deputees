@@ -156,10 +156,10 @@ const Home = () => {
                 Responsible AI that<br /> compounds business value.
               </h1>
               <h2 className="text-xl sm:text-3xl lg:text-[2.75rem] font-semibold text-foreground/[0.87] mb-3 sm:mb-4 leading-[1.2]">
-                AI governance is our flagship practice.
+                We build AI that works — and govern it so it lasts.
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-normal mb-10 sm:mb-14 max-w-3xl mx-auto leading-relaxed px-2">
-                The 4Ps framework — Primed, Principled, Practised, Protected. A harness for AI, not a cage.
+                Two practices, one team. AI + human engines that deliver business outcomes in days — and the 4Ps, our flagship governance framework that keeps AI safe, auditable and trusted.
               </p>
 
               {/* Proof points: named FTSE outcomes (mirror /results, honestly attributed) */}
@@ -202,8 +202,8 @@ const Home = () => {
                   className="text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 h-auto w-full sm:w-auto"
                   asChild
                 >
-                  <a href="https://governance.teamsmiths.ai/cockpit" target="_blank" rel="noopener noreferrer">
-                    Run the free 4Ps assessment →
+                  <a href="#how-it-works">
+                    See how we build →
                   </a>
                 </Button>
               </div>
@@ -214,15 +214,65 @@ const Home = () => {
           </div>
         </section>
 
+        {/* TWO PRACTICES — build + govern */}
+        <section id="two-practices" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-10 sm:mb-14">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4">
+                Two practices, one team
+              </h2>
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+                We build the AI systems that move your numbers — and we govern AI so it earns trust and survives scrutiny.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+              <Card className="border-2 bg-card flex flex-col">
+                <CardHeader>
+                  <span className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Flagship practice</span>
+                  <CardTitle className="text-2xl font-bold">AI Governance — the 4Ps</CardTitle>
+                  <CardDescription className="text-base leading-relaxed mt-2">
+                    Responsible AI that earns trust and survives scrutiny. The operator-first 4Ps framework — Primed, Principled, Practised, Protected — for teams deploying AI and vendors facing enterprise security reviews.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="mt-auto flex flex-col sm:flex-row gap-3">
+                  <Button asChild className="w-full sm:w-auto">
+                    <Link to="/governance">Explore the framework <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full sm:w-auto">
+                    <a href="https://governance.teamsmiths.ai/cockpit" target="_blank" rel="noopener noreferrer">Run the free assessment →</a>
+                  </Button>
+                </CardContent>
+              </Card>
+              <Card className="border-2 bg-card flex flex-col">
+                <CardHeader>
+                  <span className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Delivery practice</span>
+                  <CardTitle className="text-2xl font-bold">AI Engines — we build them</CardTitle>
+                  <CardDescription className="text-base leading-relaxed mt-2">
+                    AI + human systems that solve one real business problem, fast. We find the highest-impact opportunity, build the engine in days, and stay to scale it.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="mt-auto flex flex-col sm:flex-row gap-3">
+                  <Button asChild className="w-full sm:w-auto">
+                    <a href="#how-it-works">See how we build <ArrowRight className="ml-2 h-4 w-4" /></a>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full sm:w-auto">
+                    <Link to="/discovery-sprint">Start with a Discovery Sprint →</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         {/* HOW WE WORK - 3 Steps */}
         <section id="how-it-works" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6">
-                How We Work
+                How we build your engine
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-                Three steps from finding high-impact opportunities to scaling results
+                The delivery practice — three steps from finding a high-impact opportunity to scaling the result.
               </p>
             </div>
 
