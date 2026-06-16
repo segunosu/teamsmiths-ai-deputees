@@ -164,7 +164,7 @@ const Home = () => {
 
               {/* Proof points: named FTSE outcomes (mirror /results, honestly attributed) */}
               <p className="text-sm sm:text-base uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-4">
-                Behind the engines
+                Behind the framework
               </p>
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center items-center mb-3 text-sm sm:text-base">
                 <div className="flex items-center gap-2 text-foreground font-medium">
@@ -181,7 +181,7 @@ const Home = () => {
                 </div>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground/80 italic mb-16 sm:mb-20 max-w-2xl mx-auto">
-                The founder's prior delivery work, now codified into the engines we build.
+                The founder's prior delivery work, now codified into the 4Ps framework.
               </p>
 
               {/* CTAs: primary governance flagship, secondary free 4Ps assessment */}
@@ -425,7 +425,7 @@ const Home = () => {
             <div>
               <div className="text-center mb-8">
                 <p className="text-xs sm:text-sm uppercase tracking-[0.18em] text-muted-foreground font-semibold mb-2">
-                  Behind the engines
+                  Behind the framework
                 </p>
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">
                   Patterns moved at FTSE scale, now codified into engines.
