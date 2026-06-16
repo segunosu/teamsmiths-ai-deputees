@@ -120,7 +120,7 @@ const BusinessOutcomes = () => {
         <title>Business Outcomes - Packaged Solutions | Teamsmiths</title>
         <meta 
           name="description" 
-          content="Packaged, rapid solutions delivered in weeks — focused on revenue, speed, and cost. Fixed-price packs with guaranteed outcomes." 
+          content="Packaged, rapid solutions delivered in weeks — focused on revenue, speed, and cost. Fixed-price packs, with outcome-based pricing on selected projects." 
         />
         <meta name="keywords" content="business outcomes, packaged solutions, fixed price, rapid delivery, revenue growth" />
       </Helmet>

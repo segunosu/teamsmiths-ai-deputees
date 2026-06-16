@@ -98,7 +98,7 @@ const AINavigator = () => {
               How <AIDeputee /> Works
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Intelligent automation with human oversight for guaranteed results.
+              Intelligent automation with human oversight for measurable results.
             </p>
           </div>
 
