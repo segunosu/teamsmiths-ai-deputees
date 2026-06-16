@@ -67,7 +67,7 @@ const Home = () => {
       icon: Shield,
       sector: "Governance",
       title: "AI Governance Engine",
-      problem: "Compound business value with the operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Run the free 4Ps assessment.",
+      problem: "Compound business value with the practical 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Run the free 4Ps assessment.",
       demoUrl: "https://governance.teamsmiths.ai/",
       href: "/governance",
     },
@@ -231,7 +231,7 @@ const Home = () => {
                   <span className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Flagship practice</span>
                   <CardTitle className="text-2xl font-bold">AI Governance — the 4Ps</CardTitle>
                   <CardDescription className="text-base leading-relaxed mt-2">
-                    Responsible AI that earns trust and survives scrutiny. The operator-first 4Ps framework — Primed, Principled, Practised, Protected — for teams deploying AI and vendors facing enterprise security reviews.
+                    Responsible AI that earns trust and survives scrutiny. The practical 4Ps framework — Primed, Principled, Practised, Protected — for teams deploying AI and vendors facing enterprise security reviews.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="mt-auto flex flex-col sm:flex-row gap-3">

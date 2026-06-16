@@ -196,7 +196,7 @@ const Results = () => {
                   tag: "Governance",
                   title: "AI Governance Engine",
                   problem:
-                    "Compound business value with the operator-first 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Informed by team-performance and governance delivery at Haleon, GSK and Ogier. Run the free 4Ps assessment.",
+                    "Compound business value with the practical 4Ps framework (Primed, Principled, Practised, Protected) that harnesses AI instead of caging it. Informed by team-performance and governance delivery at Haleon, GSK and Ogier. Run the free 4Ps assessment.",
                   demoUrl: "https://governance.teamsmiths.ai/",
                 },
               ].map((sys) => (
