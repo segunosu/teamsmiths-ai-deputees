@@ -251,7 +251,7 @@ const OutcomeSprints = () => {
                     We build, integrate, and put your first workflow into your team's hands. Your £500 comes off the price.
                   </p>
                   <Button size="sm" variant="outline" asChild>
-                    <Link to="/solutions">View Kickstart →</Link>
+                    <Link to="/solutions#tiers">View Kickstart →</Link>
                   </Button>
                 </CardContent>
               </Card>

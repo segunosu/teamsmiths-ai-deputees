@@ -22,7 +22,7 @@ const AISolutions = () => {
   const { trackEvent } = useAnalytics();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (!window.location.hash) window.scrollTo(0, 0);
     trackEvent('solutions_view' as any, {} as any);
   }, [trackEvent]);
 
@@ -492,7 +492,7 @@ const AISolutions = () => {
         </section>
 
         {/* Tier ladder: depth, not domain */}
-        <section id="tiers" className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <section id="tiers" className="scroll-mt-24 py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
               <Badge className="mb-3">Pick the depth</Badge>
