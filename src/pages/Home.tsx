@@ -231,7 +231,7 @@ const Home = () => {
                   <span className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Flagship practice</span>
                   <CardTitle className="text-2xl font-bold">AI Governance — the 4Ps</CardTitle>
                   <CardDescription className="text-base leading-relaxed mt-2">
-                    Responsible AI that earns trust and survives scrutiny. The practical 4Ps framework — Primed, Principled, Practised, Protected — for teams deploying AI and vendors facing enterprise security reviews.
+                    Get your AI past the security or board review, fast. The practical 4Ps framework (Primed, Principled, Practised, Protected) for teams deploying AI and for vendors whose deal is stuck on a governance review.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="mt-auto flex flex-col sm:flex-row gap-3">
