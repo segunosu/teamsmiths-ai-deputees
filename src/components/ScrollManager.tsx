@@ -11,15 +11,20 @@ export const ScrollManager = () => {
       const hash = location.hash.replace('#', '');
       
       if (hash) {
-        // Wait for DOM to update, then scroll to anchor
-        setTimeout(() => {
+        // Poll for the anchor until it renders (heavy pages can mount after the
+        // first tick), then scroll to it. Retries every 50ms for up to ~2s.
+        let tries = 0;
+        const tryScroll = () => {
           const element = document.getElementById(hash);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
             // Track the scroll target hit
             trackEvent('scroll_target_hit', { id: hash, route: location.pathname });
+          } else if (tries++ < 40) {
+            setTimeout(tryScroll, 50);
           }
-        }, 100);
+        };
+        setTimeout(tryScroll, 50);
       } else {
         // No hash, scroll to top
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
