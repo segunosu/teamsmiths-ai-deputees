@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Teamsmiths · AMPLIFY — AI Governance &amp; Performance Command Centre</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ============================================================
+   TEAMSMITHS AMPLIFY — Command Centre
+   Self-contained single-file app. Design system below.
+   ============================================================ */
+:root{
+  --navy:#0b1f3a; --navy-2:#13294b; --indigo:#1f3d6e; --slate:#334155;
+  --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --line-2:#cbd5e1;
+  --bg:#f4f6fb; --panel:#ffffff; --panel-2:#f8fafc;
+  --accent:#0ea5a4; --accent-2:#14b8a6; --brand:#2563eb; --brand-2:#1d4ed8;
+  --green:#16a34a; --green-bg:#dcfce7; --amber:#d97706; --amber-bg:#fef3c7;
+  --red:#dc2626; --red-bg:#fee2e2; --purple:#7c3aed; --purple-bg:#ede9fe;
+  --radius:12px; --radius-sm:8px; --shadow:0 1px 3px rgba(15,23,42,.08),0 1px 2px rgba(15,23,42,.06);
+  --shadow-lg:0 10px 30px rgba(15,23,42,.12);
+  --sans:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--brand);text-decoration:none}
+button{font-family:inherit}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px}
+
+/* ---------- Password gate ---------- */
+#gate{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,var(--navy),var(--indigo));display:flex;align-items:center;justify-content:center}
+#gate .card{background:var(--panel);border-radius:16px;box-shadow:var(--shadow-lg);padding:40px;width:380px;max-width:92vw;text-align:center}
+#gate .logo{font-weight:800;font-size:22px;letter-spacing:.5px;color:var(--navy)}
+#gate .logo span{color:var(--accent)}
+#gate .sub{color:var(--muted);font-size:12.5px;margin:6px 0 24px}
+#gate input{width:100%;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;font-size:15px;text-align:center;letter-spacing:2px}
+#gate input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+#gate button{margin-top:14px;width:100%;padding:12px;border:none;border-radius:10px;background:var(--brand);color:#fff;font-weight:600;font-size:15px;cursor:pointer}
+#gate button:hover{background:var(--brand-2)}
+#gate .err{color:var(--red);font-size:12.5px;height:16px;margin-top:10px}
+#gate .hint{color:var(--muted);font-size:11px;margin-top:18px}
+
+/* ---------- App layout ---------- */
+#app{display:none;min-height:100vh}
+.layout{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.sidebar{background:var(--navy);color:#cdd9ee;padding:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{padding:20px 20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand .mark{font-weight:800;font-size:18px;color:#fff;letter-spacing:.5px}
+.brand .mark span{color:var(--accent-2)}
+.brand .tag{font-size:10px;color:#7e93b8;letter-spacing:1.5px;text-transform:uppercase}
+.nav-group{padding:12px 12px 4px}
+.nav-group .label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#5f76a0;padding:8px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;color:#c3d0e8;font-size:13.5px;margin-bottom:2px}
+.nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav-item.active{background:var(--brand);color:#fff;font-weight:600}
+.nav-item .ico{width:18px;text-align:center;font-size:14px;opacity:.9}
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar .crumb{font-size:12.5px;color:var(--muted)}
+.topbar h1{font-size:18px;margin:2px 0 0}
+.topbar .actions{display:flex;gap:10px;align-items:center}
+.content{padding:24px 28px 60px;max-width:1280px;width:100%}
+
+/* ---------- Reusable UI ---------- */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;border:1px solid var(--line-2);background:var(--panel);color:var(--ink);font-size:13px;font-weight:600;cursor:pointer}
+.btn:hover{border-color:var(--brand);color:var(--brand)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-2);color:#fff}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--brand);background:var(--panel-2)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn.danger:hover{border-color:var(--red);color:var(--red)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.card .hd{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.card .hd h3{margin:0;font-size:15px}
+.card .hd .desc{font-size:12px;color:var(--muted);margin-top:2px}
+.card .bd{padding:18px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.g2,.g3,.g4{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.sidebar{position:static;height:auto}}
+
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+.kpi .k-label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.kpi .k-val{font-size:26px;font-weight:800;margin-top:6px;color:var(--ink)}
+.kpi .k-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.kpi .k-val.sm{font-size:20px}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);font-weight:600;background:var(--panel-2)}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr.clickable{cursor:pointer}
+tr.clickable:hover{background:var(--panel-2)}
+
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.b-green{background:var(--green-bg);color:var(--green)} .b-amber{background:var(--amber-bg);color:var(--amber)}
+.b-red{background:var(--red-bg);color:var(--red)} .b-grey{background:#eef2f7;color:var(--slate)}
+.b-blue{background:#dbeafe;color:var(--brand-2)} .b-purple{background:var(--purple-bg);color:var(--purple)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.dot.g{background:var(--green)}.dot.a{background:var(--amber)}.dot.r{background:var(--red)}
+
+.pill-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.pill-tabs .pt{padding:7px 14px;border-radius:20px;border:1px solid var(--line-2);background:var(--panel);font-size:12.5px;font-weight:600;cursor:pointer;color:var(--slate)}
+.pill-tabs .pt.active{background:var(--navy);border-color:var(--navy);color:#fff}
+
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar > i{display:block;height:100%;border-radius:6px}
+.score-ring{--p:0;width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--c,var(--brand)) calc(var(--p)*1%),var(--line) 0);display:flex;align-items:center;justify-content:center}
+.score-ring .inner{width:62px;height:62px;border-radius:50%;background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-ring .inner b{font-size:18px} .score-ring .inner small{font-size:9px;color:var(--muted)}
+
+label.fld{display:block;margin-bottom:14px}
+label.fld .lt{display:block;font-size:12px;font-weight:600;color:var(--slate);margin-bottom:5px}
+input.in,select.in,textarea.in{width:100%;padding:9px 11px;border:1px solid var(--line-2);border-radius:8px;font-size:13.5px;font-family:inherit;background:var(--panel)}
+input.in:focus,select.in:focus,textarea.in:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+textarea.in{min-height:74px;resize:vertical}
+
+.modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.modal{background:var(--panel);border-radius:14px;box-shadow:var(--shadow-lg);width:640px;max-width:96vw;animation:pop .15s ease}
+@keyframes pop{from{transform:translateY(8px);opacity:.6}to{transform:none;opacity:1}}
+.modal .m-hd{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.modal .m-hd h3{margin:0;font-size:16px}
+.modal .m-bd{padding:22px;max-height:64vh;overflow-y:auto}
+.modal .m-ft{padding:14px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px}
+.x{cursor:pointer;color:var(--muted);font-size:20px;line-height:1;border:none;background:none}
+
+.review-flag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px}
+.rf-ai{background:var(--purple-bg);color:var(--purple)} .rf-draft{background:#e2e8f0;color:var(--slate)}
+.rf-review{background:var(--amber-bg);color:var(--amber)} .rf-approved{background:var(--green-bg);color:var(--green)}
+
+.empty{text-align:center;padding:46px;color:var(--muted)}
+.empty .ico{font-size:32px;opacity:.4}
+.note{background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--slate)}
+.note.warn{border-left-color:var(--amber)}
+.hl{background:#fff8e1;padding:0 3px;border-radius:3px}
+.muted{color:var(--muted)} .right{text-align:right} .center{text-align:center}
+.flex{display:flex;align-items:center;gap:10px} .between{justify-content:space-between} .wrap{flex-wrap:wrap}
+.mt{margin-top:16px}.mt8{margin-top:8px}.mb{margin-bottom:16px} .nowrap{white-space:nowrap}
+.tiny{font-size:11px} .b{font-weight:700} .sb{font-weight:600}
+.sec-title{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:24px 0 12px;font-weight:700}
+.stepper{display:flex;gap:0;margin-bottom:24px}
+.stepper .st{flex:1;text-align:center;font-size:11.5px;color:var(--muted);padding-bottom:10px;border-bottom:3px solid var(--line);font-weight:600}
+.stepper .st.active{color:var(--brand);border-bottom-color:var(--brand)}
+.stepper .st.done{color:var(--green);border-bottom-color:var(--green)}
+.chip{display:inline-block;padding:4px 10px;border-radius:7px;background:var(--panel-2);border:1px solid var(--line);font-size:12px;margin:0 6px 6px 0}
+.report-doc{background:#fff;border:1px solid var(--line);border-radius:10px;padding:38px 44px;max-width:860px;margin:0 auto;line-height:1.6}
+.report-doc h1{font-size:24px;margin:0 0 4px} .report-doc h2{font-size:16px;margin:26px 0 8px;color:var(--navy);border-bottom:2px solid var(--line);padding-bottom:5px}
+.report-doc h3{font-size:13.5px;margin:16px 0 6px}
+.report-doc .meta{color:var(--muted);font-size:12px;margin-bottom:20px}
+@media print{.sidebar,.topbar,.no-print{display:none!important}.content{padding:0}.report-doc{border:none}}
+</style>
+</head>
+<body>
+
+<!-- ============ PASSWORD GATE ============ -->
+<div id="gate">
+  <div class="card">
+    <div class="logo">TEAM<span>SMITHS</span></div>
+    <div class="sub">AMPLIFY · AI Governance &amp; Performance Command Centre</div>
+    <div id="gateInner"></div>
+    <div class="err" id="gateErr"></div>
+    <div class="hint" id="gateHint">Private internal tool · authorised access only</div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div>
+          <div class="mark">TEAM<span>SMITHS</span></div>
+          <div class="tag">Amplify Command Centre</div>
+        </div>
+      </div>
+      <nav id="nav"></nav>
+    </aside>
+    <div class="main">
+      <div class="topbar">
+        <div>
+          <div class="crumb" id="crumb">Command Centre</div>
+          <h1 id="pageTitle">Consultant Command Dashboard</h1>
+        </div>
+        <div class="actions" id="topActions"></div>
+      </div>
+      <div class="content" id="view"></div>
+    </div>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+/* ============================================================
+   0. CONFIG
+   ============================================================ */
+// ---- Supabase backend (teamsmiths.ai project) ----
+// Data lives in amplify_* tables, locked by RLS to allow-listed emails.
+const SUPABASE_URL = "https://iyqsbjawaampgcavsgcz.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5cXNiamF3YWFtcGdjYXZzZ2N6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1OTI2MTgsImV4cCI6MjA2NjE2ODYxOH0.yOhYxzUyFYbxdu1neuagXqa2xXuhIAoWBYr3w0acNb0";
+// Auto-on when the library + config are present. Set to false to force offline/demo mode.
+const USE_SUPABASE = !!(typeof window!=='undefined' && window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY);
+let sb = USE_SUPABASE ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let CURRENT_EMAIL = null;
+
+// >>> Offline/demo access code — only used when USE_SUPABASE is false (no backend).
+const ACCESS_CODE = "TeamSmiths-Amplify-26";
+const STORE_KEY = "ts_amplify_v1";
+
+function renderGate(){
+  const inner=document.getElementById('gateInner');const hint=document.getElementById('gateHint');
+  if(USE_SUPABASE){
+    inner.innerHTML='<input id="gateEmail" type="email" placeholder="you@teamsmiths.com" autocomplete="email" /><button onclick="sendMagicLink()">Email me a secure sign-in link</button>';
+    hint.textContent="Authorised emails only · you'll receive a one-time sign-in link";
+    const e=document.getElementById('gateEmail');e.addEventListener('keydown',ev=>{if(ev.key==='Enter')sendMagicLink();});e.focus();
+  } else {
+    inner.innerHTML='<input id="gatePw" type="password" placeholder="Access code" autocomplete="off" /><button onclick="tryGate()">Enter</button>';
+    hint.textContent="Offline mode · enter the access code";
+    document.getElementById('gatePw').addEventListener('keydown',ev=>{if(ev.key==='Enter')tryGate();});
+  }
+}
+async function sendMagicLink(){
+  const email=(document.getElementById('gateEmail').value||'').trim();const err=document.getElementById('gateErr');
+  if(!email){err.style.color='var(--red)';err.textContent='Enter your email.';return;}
+  err.style.color='var(--muted)';err.textContent='Sending…';
+  try{
+    const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href.split('#')[0]}});
+    if(error){err.style.color='var(--red)';err.textContent=error.message;}
+    else{document.getElementById('gateInner').innerHTML='<div style="font-size:14px;color:var(--green);font-weight:700">✓ Check your inbox</div><div class="tiny muted" style="margin-top:6px">Open the link on this device to sign in.</div>';err.textContent='';}
+  }catch(e){err.style.color='var(--red)';err.textContent='Could not reach the backend.';}
+}
+function tryGate(){
+  const v=document.getElementById('gatePw').value.trim();
+  if(v===ACCESS_CODE){sessionStorage.setItem('ts_amplify_auth','1');showApp();}
+  else{document.getElementById('gateErr').style.color='var(--red)';document.getElementById('gateErr').textContent='Incorrect access code.';document.getElementById('gatePw').select();}
+}
+function showApp(){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').style.display='block';
+  initApp();
+}
+
+/* ============================================================
+   1. SEED DATA — frameworks, requirements, mappings + 3 clients
+   ============================================================ */
+// Deterministic RNG so first-run seed is stable
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+let _rng=mulberry32(20260618);
+const rnd=(a,b)=>Math.floor(_rng()*(b-a+1))+a;
+const pick=arr=>arr[Math.floor(_rng()*arr.length)];
+const uid=p=>p+"_"+Math.random().toString(36).slice(2,8);
+
+const FRAMEWORKS=[
+  {framework_id:"fw_euaiact",framework_name:"EU AI Act",version:"Reg. (EU) 2024/1689",jurisdiction:"EU",framework_type:"Regulation",active_flag:true},
+  {framework_id:"fw_iso42001",framework_name:"ISO/IEC 42001",version:"2023",jurisdiction:"International",framework_type:"Management System",active_flag:true},
+  {framework_id:"fw_nist",framework_name:"NIST AI RMF",version:"1.0",jurisdiction:"US / International",framework_type:"Framework",active_flag:true},
+  {framework_id:"fw_iso27001",framework_name:"ISO/IEC 27001",version:"2022",jurisdiction:"International",framework_type:"Management System",active_flag:true},
+  {framework_id:"fw_gdpr",framework_name:"GDPR",version:"Reg. (EU) 2016/679",jurisdiction:"EU/UK",framework_type:"Regulation",active_flag:true},
+  {framework_id:"fw_soc2",framework_name:"SOC 2 (readiness)",version:"TSC 2017",jurisdiction:"US",framework_type:"Attestation",active_flag:true}
+];
+
+// Curated requirement library (reference + summary + domain + what evidence/control is needed)
+const REQUIREMENTS=[
+  // EU AI Act
+  {requirement_id:"euai_1",framework_id:"fw_euaiact",requirement_reference:"Art. 9",requirement_title:"Risk management system",requirement_summary:"Establish, document and maintain a risk management system across the AI lifecycle for high-risk systems.",risk_domain:"operational",evidence_needed:"AI risk register, lifecycle risk procedure",control_needed:"AI risk management process",priority:"High"},
+  {requirement_id:"euai_2",framework_id:"fw_euaiact",requirement_reference:"Art. 10",requirement_title:"Data & data governance",requirement_summary:"Training, validation and testing data sets meet quality criteria; governance of data and bias examination.",risk_domain:"data quality",evidence_needed:"Data governance policy, dataset documentation",control_needed:"Data quality & bias controls",priority:"High"},
+  {requirement_id:"euai_3",framework_id:"fw_euaiact",requirement_reference:"Art. 11/12",requirement_title:"Technical documentation & logging",requirement_summary:"Maintain technical documentation and automatic event logging enabling traceability.",risk_domain:"transparency",evidence_needed:"Technical file, logging configuration",control_needed:"Record-keeping & logging",priority:"Medium"},
+  {requirement_id:"euai_4",framework_id:"fw_euaiact",requirement_reference:"Art. 13",requirement_title:"Transparency to users",requirement_summary:"Provide clear instructions and information enabling deployers to interpret and use output appropriately.",risk_domain:"transparency",evidence_needed:"User instructions, transparency notice",control_needed:"Transparency control",priority:"Medium"},
+  {requirement_id:"euai_5",framework_id:"fw_euaiact",requirement_reference:"Art. 14",requirement_title:"Human oversight",requirement_summary:"Design and implement effective human oversight measures appropriate to the risk.",risk_domain:"human oversight",evidence_needed:"Human oversight procedure",control_needed:"Human-in-the-loop control",priority:"High"},
+  {requirement_id:"euai_6",framework_id:"fw_euaiact",requirement_reference:"Art. 15",requirement_title:"Accuracy, robustness & cybersecurity",requirement_summary:"Achieve appropriate levels of accuracy, robustness and cybersecurity over the lifecycle.",risk_domain:"security",evidence_needed:"Accuracy metrics, security testing",control_needed:"Robustness & security testing",priority:"High"},
+  {requirement_id:"euai_7",framework_id:"fw_euaiact",requirement_reference:"Art. 26",requirement_title:"Deployer obligations",requirement_summary:"Use systems per instructions, assign human oversight, monitor operation and keep logs.",risk_domain:"legal",evidence_needed:"Deployer responsibility matrix",control_needed:"Deployer operating procedure",priority:"Medium"},
+  // ISO 42001
+  {requirement_id:"iso42_1",framework_id:"fw_iso42001",requirement_reference:"Cl. 4",requirement_title:"Context of the organisation",requirement_summary:"Determine internal/external issues and interested parties relevant to the AI management system.",risk_domain:"operational",evidence_needed:"Context analysis, stakeholder map",control_needed:"AIMS scoping",priority:"Medium"},
+  {requirement_id:"iso42_2",framework_id:"fw_iso42001",requirement_reference:"Cl. 5",requirement_title:"Leadership & AI policy",requirement_summary:"Top management commitment and an approved AI policy aligned to objectives.",risk_domain:"operational",evidence_needed:"AI policy, leadership minutes",control_needed:"AI governance policy",priority:"High"},
+  {requirement_id:"iso42_3",framework_id:"fw_iso42001",requirement_reference:"Cl. 6.1",requirement_title:"Actions to address risks & opportunities",requirement_summary:"AI risk assessment and AI risk treatment process established.",risk_domain:"operational",evidence_needed:"AI risk assessment method",control_needed:"AI risk management process",priority:"High"},
+  {requirement_id:"iso42_4",framework_id:"fw_iso42001",requirement_reference:"Cl. 6.1.4",requirement_title:"AI system impact assessment",requirement_summary:"Assess impacts of AI systems on individuals and society.",risk_domain:"bias",evidence_needed:"AI impact assessment (AIA)",control_needed:"Impact assessment control",priority:"High"},
+  {requirement_id:"iso42_5",framework_id:"fw_iso42001",requirement_reference:"Cl. 7",requirement_title:"Resources, competence & awareness",requirement_summary:"Ensure competence, awareness and documented information for the AIMS.",risk_domain:"operational",evidence_needed:"Training records, competence matrix",control_needed:"Competence & training control",priority:"Medium"},
+  {requirement_id:"iso42_6",framework_id:"fw_iso42001",requirement_reference:"Cl. 8",requirement_title:"Operational planning & control",requirement_summary:"Plan, implement and control AI lifecycle processes, including suppliers.",risk_domain:"supplier",evidence_needed:"Lifecycle procedure, supplier register",control_needed:"AI supplier management",priority:"Medium"},
+  {requirement_id:"iso42_7",framework_id:"fw_iso42001",requirement_reference:"Cl. 9",requirement_title:"Performance evaluation",requirement_summary:"Monitor, measure, internally audit and conduct management review of the AIMS.",risk_domain:"model performance",evidence_needed:"Monitoring metrics, audit & review records",control_needed:"Monitoring & management review",priority:"Medium"},
+  {requirement_id:"iso42_8",framework_id:"fw_iso42001",requirement_reference:"Cl. 10",requirement_title:"Improvement & incident handling",requirement_summary:"Continual improvement and handling of nonconformities / AI incidents.",risk_domain:"operational",evidence_needed:"Incident log, corrective actions",control_needed:"AI incident management",priority:"Medium"},
+  // NIST AI RMF
+  {requirement_id:"nist_g",framework_id:"fw_nist",requirement_reference:"GOVERN",requirement_title:"Govern",requirement_summary:"Cultivate a culture of risk management; policies, accountability and oversight structures.",risk_domain:"operational",evidence_needed:"AI governance policy, RACI",control_needed:"Governance structure",priority:"High"},
+  {requirement_id:"nist_m1",framework_id:"fw_nist",requirement_reference:"MAP",requirement_title:"Map",requirement_summary:"Establish context and identify risks related to the AI system and its use.",risk_domain:"operational",evidence_needed:"Context & use mapping, inventory",control_needed:"Risk mapping process",priority:"High"},
+  {requirement_id:"nist_m2",framework_id:"fw_nist",requirement_reference:"MEASURE",requirement_title:"Measure",requirement_summary:"Analyse, assess and track AI risks and impacts using metrics.",risk_domain:"model performance",evidence_needed:"Risk metrics, test results",control_needed:"Measurement & testing",priority:"Medium"},
+  {requirement_id:"nist_m3",framework_id:"fw_nist",requirement_reference:"MANAGE",requirement_title:"Manage",requirement_summary:"Prioritise and act on risks; allocate resources and respond to incidents.",risk_domain:"operational",evidence_needed:"Risk treatment plan, response runbook",control_needed:"Risk treatment & response",priority:"Medium"},
+  // ISO 27001 (adjacent)
+  {requirement_id:"iso27_1",framework_id:"fw_iso27001",requirement_reference:"A.5",requirement_title:"Information security policies",requirement_summary:"Defined, approved and communicated security policies.",risk_domain:"security",evidence_needed:"InfoSec policy set",control_needed:"Policy management",priority:"Medium"},
+  {requirement_id:"iso27_2",framework_id:"fw_iso27001",requirement_reference:"A.5.15",requirement_title:"Access control",requirement_summary:"Control logical and physical access to information and AI assets.",risk_domain:"security",evidence_needed:"Access control policy, access reviews",control_needed:"Access control",priority:"High"},
+  {requirement_id:"iso27_3",framework_id:"fw_iso27001",requirement_reference:"A.5.19",requirement_title:"Supplier relationships",requirement_summary:"Manage information security in supplier and AI vendor relationships.",risk_domain:"supplier",evidence_needed:"Supplier security assessments",control_needed:"Supplier risk control",priority:"High"},
+  {requirement_id:"iso27_4",framework_id:"fw_iso27001",requirement_reference:"A.5.24",requirement_title:"Incident management",requirement_summary:"Plan and prepare for managing information security incidents.",risk_domain:"security",evidence_needed:"Incident response plan",control_needed:"Incident management",priority:"Medium"},
+  {requirement_id:"iso27_5",framework_id:"fw_iso27001",requirement_reference:"A.5.9",requirement_title:"Asset inventory",requirement_summary:"Inventory of information and associated assets, including AI systems.",risk_domain:"security",evidence_needed:"Asset / AI inventory",control_needed:"Asset management",priority:"Medium"},
+  // GDPR
+  {requirement_id:"gdpr_1",framework_id:"fw_gdpr",requirement_reference:"Art. 5",requirement_title:"Principles of processing",requirement_summary:"Lawfulness, fairness, transparency, minimisation, accuracy, storage limitation.",risk_domain:"privacy",evidence_needed:"ROPA, privacy policy",control_needed:"Data protection control",priority:"High"},
+  {requirement_id:"gdpr_2",framework_id:"fw_gdpr",requirement_reference:"Art. 22",requirement_title:"Automated decision-making",requirement_summary:"Safeguards for solely automated decisions with legal/significant effects.",risk_domain:"privacy",evidence_needed:"ADM assessment, opt-out mechanism",control_needed:"ADM safeguards",priority:"High"},
+  {requirement_id:"gdpr_3",framework_id:"fw_gdpr",requirement_reference:"Art. 35",requirement_title:"Data protection impact assessment",requirement_summary:"DPIA for processing likely to result in high risk to individuals.",risk_domain:"privacy",evidence_needed:"DPIA records",control_needed:"DPIA process",priority:"High"},
+  {requirement_id:"gdpr_4",framework_id:"fw_gdpr",requirement_reference:"Art. 32",requirement_title:"Security of processing",requirement_summary:"Appropriate technical and organisational security measures.",risk_domain:"security",evidence_needed:"Security measures register",control_needed:"Security control",priority:"Medium"},
+  // SOC 2
+  {requirement_id:"soc2_1",framework_id:"fw_soc2",requirement_reference:"CC1",requirement_title:"Control environment",requirement_summary:"Commitment to integrity and governance over the service.",risk_domain:"operational",evidence_needed:"Org chart, policies",control_needed:"Governance",priority:"Low"},
+  {requirement_id:"soc2_2",framework_id:"fw_soc2",requirement_reference:"CC6",requirement_title:"Logical & physical access",requirement_summary:"Restrict access to system resources.",risk_domain:"security",evidence_needed:"Access reviews",control_needed:"Access control",priority:"Medium"}
+];
+
+// Cross-framework reuse mappings (one control/evidence serves many)
+const MAPPINGS=[
+  ["euai_1","iso42_3","Strong"],["euai_1","nist_m3","Strong"],["euai_1","iso42_1","Partial"],
+  ["iso42_3","nist_m1","Strong"],["iso42_3","euai_1","Strong"],
+  ["euai_5","iso42_2","Partial"],["euai_5","nist_g","Strong"],
+  ["euai_2","gdpr_1","Strong"],["euai_2","iso42_4","Partial"],
+  ["euai_6","iso27_2","Partial"],["euai_6","gdpr_4","Strong"],
+  ["iso42_6","iso27_3","Strong"],["iso42_6","soc2_2","Partial"],
+  ["gdpr_3","iso42_4","Strong"],["gdpr_2","euai_5","Strong"],
+  ["nist_g","iso42_2","Strong"],["iso27_4","iso42_8","Strong"],["iso27_5","iso42_1","Partial"],
+  ["iso27_1","iso42_2","Partial"],["soc2_1","nist_g","Partial"]
+].map(m=>({mapping_id:uid("map"),source_framework_requirement_id:m[0],target_framework_requirement_id:m[1],mapping_strength:m[2],notes:"Reusable evidence/control across frameworks."}));
+
+const _today=new Date("2026-06-18");
+function dOffset(days){const d=new Date(_today);d.setDate(d.getDate()+days);return d.toISOString().slice(0,10);}
+
+// ---- value pools for realistic generation ----
+const POOL={
+  vendors:["OpenAI","Microsoft Copilot","Google Gemini","Anthropic Claude","Salesforce Einstein","HubSpot AI","Notion AI","Glean","Harvey","Jasper","UiPath","DataRobot","internal model","Hugging Face","Perplexity","Intercom Fin"],
+  depts:["Operations","Sales","Marketing","Finance","HR","Customer Service","Engineering","Legal","Procurement","Production"],
+  riskDomains:["privacy","security","bias","transparency","explainability","human oversight","safety","legal","financial","operational","reputational","supplier","data quality","model performance"],
+  valueTypes:["revenue increase","cost reduction","time saving","quality improvement","risk reduction","customer experience improvement"],
+  effort:["Low","Medium","High"],conf:["Low","Medium","High"],
+  evTypes:["policy","procedure","register","screenshot","meeting note","approval record","training record","supplier assessment","system log","incident record","management review","board report"]
+};
+
+function genClient(profile){
+  const c=Object.assign({client_id:uid("cl"),created_at:dOffset(-rnd(40,90)),updated_at:dOffset(-rnd(0,10))},profile);
+  const eng={engagement_id:uid("eng"),client_id:c.client_id,engagement_name:c.engagement_type+" — "+c.company_name,engagement_type:c.engagement_type,start_date:dOffset(-rnd(15,45)),target_end_date:dOffset(rnd(20,70)),status:pick(["Discovery","In delivery","In delivery","Review"]),consultant_owner:"Segun Osu",commercial_value:c._acv,notes:"Primary engagement."};
+  const engagements=[eng];
+  if(profile._secondEngagement) engagements.push({engagement_id:uid("eng"),client_id:c.client_id,engagement_name:profile._secondEngagement+" — "+c.company_name,engagement_type:profile._secondEngagement,start_date:dOffset(-rnd(5,20)),target_end_date:dOffset(rnd(60,120)),status:"Scoping",consultant_owner:"Segun Osu",commercial_value:rnd(18,40)*1000,notes:"Follow-on opportunity."});
+
+  // AI systems
+  const sysNames=profile._systems;
+  const ai_systems=sysNames.map((s,i)=>{
+    const personal=s.personal!==undefined?s.personal:_rng()>.4;
+    const autonomy=s.autonomy||pick(["Assistive","Recommends","Acts with approval","Autonomous"]);
+    const decision=s.decision||pick(["Low","Medium","High"]);
+    return {ai_system_id:uid("sys"),client_id:c.client_id,system_name:s.name,vendor:s.vendor,owner:pick(["Dept Head","IT Lead","Ops Manager","Founder"]),department:s.dept,purpose:s.purpose,users_count:rnd(3,c.size_num),data_types_processed:s.data||"Operational data",personal_data_flag:personal,special_category_data_flag:s.special||false,customer_data_flag:s.customer||false,employee_data_flag:s.employee||false,decision_impact_level:decision,autonomy_level:autonomy,human_oversight_level:pick(["Full","Partial","Minimal"]),external_user_impact_flag:s.external||false,high_risk_candidate_flag:(decision==="High"&&(s.external||s.special)),status:"Confirmed",evidence_links:[]};
+  });
+
+  // Use cases (>=8)
+  const use_cases=profile._useCases.map(u=>{
+    const hours=u.hours||rnd(20,160);const rate=c._rate;
+    const fin=u.fin!==undefined?u.fin:Math.round(hours*rate/10)*10;
+    return {use_case_id:uid("uc"),client_id:c.client_id,department:u.dept,process_name:u.name,current_pain_point:u.pain,ai_usage_description:u.use,value_type:u.vt,estimated_hours_saved_monthly:hours,estimated_financial_value_monthly:fin,confidence_level:u.conf||pick(POOL.conf),implementation_effort:u.eff||pick(POOL.effort),governance_risk_level:u.gov||pick(["Low","Medium","High"]),recommended_next_action:u.next||"Scope a 2-week pilot with success metrics."};
+  });
+
+  // Risks (>=10)
+  const risks=profile._risks.map(r=>{
+    const like=r.l||rnd(2,5),imp=r.i||rnd(2,5);
+    return {risk_id:uid("rk"),client_id:c.client_id,ai_system_id:(ai_systems[r.sysIdx||0]||{}).ai_system_id,risk_title:r.t,risk_description:r.d,risk_domain:r.dom,likelihood:like,impact:imp,risk_score:like*imp,framework_links:r.fw||[],owner:pick(["CISO","DPO","Ops Manager","Founder","IT Lead"]),mitigation:r.m,due_date:dOffset(rnd(7,60)),status:pick(["Open","Open","In treatment","Mitigated"]),residual_risk:pick(["Low","Medium","High"])};
+  });
+
+  // Controls (>=10)
+  const controls=profile._controls.map(ct=>({control_id:uid("ctl"),client_id:c.client_id,control_name:ct.n,control_description:ct.d,control_type:ct.ty||pick(["Preventive","Detective","Corrective","Administrative"]),owner:pick(["CISO","DPO","Ops Manager","IT Lead"]),related_risks:[],related_framework_requirements:ct.fw||[],implementation_status:ct.s||pick(["Not started","In progress","Implemented","Implemented"]),evidence_required:true,evidence_available:_rng()>.4,review_frequency:pick(["Monthly","Quarterly","Annual"])}));
+
+  // Evidence (>=10)
+  const evidence=profile._evidence.map(ev=>({evidence_id:uid("ev"),client_id:c.client_id,engagement_id:eng.engagement_id,evidence_name:ev.n,evidence_type:ev.ty,linked_requirement_ids:ev.fw||[],linked_control_ids:[],source:pick(["Client upload","Consultant draft","System export","Interview"]),file_url:"#",status:ev.st||pick(["Requested","Received","Generated","Approved"]),human_review_status:ev.hr||pick(["Pending","Reviewed","Approved"]),created_at:dOffset(-rnd(1,30))}));
+
+  // Actions (>=10)
+  const actions=profile._actions.map(a=>({action_id:uid("act"),client_id:c.client_id,engagement_id:eng.engagement_id,action_title:a.t,action_description:a.d,owner:a.o||pick(["Client","Consultant","Shared"]),priority:a.p||pick(["High","Medium","Low"]),due_date:dOffset(a.due!==undefined?a.due:rnd(-8,40)),related_risk_id:null,related_opportunity_id:null,related_requirement_id:a.fw||null,status:a.s||pick(["Not started","In progress","Blocked","Done"]),next_best_action_text:a.nba||""}));
+
+  // Reports (>=3)
+  const reports=profile._reports.map(rp=>({report_id:uid("rep"),client_id:c.client_id,engagement_id:eng.engagement_id,report_type:rp.ty,generated_summary:rp.s,report_file_url:"#",created_at:dOffset(-rnd(1,20)),status:rp.st||"Draft"}));
+
+  // Assessment with responses
+  const assessFw=profile._assessFw||["fw_iso42001","fw_euaiact","fw_nist","fw_gdpr","fw_iso27001"];
+  const reqs=REQUIREMENTS.filter(r=>assessFw.includes(r.framework_id));
+  const responses=reqs.map(rq=>{
+    const ans=pick(["Yes","Partial","Partial","No","No"]);
+    const gap=ans!=="Yes";
+    return {response_id:uid("resp"),requirement_id:rq.requirement_id,question:"Is the requirement '"+rq.requirement_title+"' met?",answer:ans,evidence_provided:ans==="Yes",ai_confidence:pick(POOL.conf),human_review_status:pick(["Pending","Reviewed"]),gap_flag:gap,risk_level:gap?pick(["Medium","High"]):"Low"};
+  });
+  const covered=responses.filter(r=>r.answer==="Yes").length;
+  const partial=responses.filter(r=>r.answer==="Partial").length;
+  const readiness=Math.round((covered+partial*0.5)/responses.length*100);
+  const assessment={assessment_id:uid("as"),client_id:c.client_id,engagement_id:eng.engagement_id,assessment_type:"Multi-framework readiness",framework_scope:assessFw,status:"In progress",readiness_score:readiness,created_at:dOffset(-rnd(5,20)),completed_at:null,responses};
+
+  return {client:c,engagements,ai_systems,use_cases,risks,controls,evidence,actions,reports,assessments:[assessment]};
+}
+
+function buildSeed(){
+  _rng=mulberry32(20260618);
+  const clients=[
+    genClient({company_name:"Northwind Precision Manufacturing",sector:"Manufacturing",size_band:"50-99",size_num:62,country:"United Kingdom",regulated_sector_flag:false,contact_name:"Helen Marsh",contact_email:"h.marsh@northwind-mfg.co.uk",engagement_type:"AI Operating Review",_acv:28000,_rate:55,_secondEngagement:"ISO 42001 Readiness",
+      _systems:[
+        {name:"Predictive maintenance model",vendor:"DataRobot",dept:"Production",purpose:"Predict machine failure from sensor data",data:"Machine telemetry",decision:"Medium",autonomy:"Recommends"},
+        {name:"Copilot for Microsoft 365",vendor:"Microsoft Copilot",dept:"Operations",purpose:"Drafting, summarisation, spreadsheets",data:"Internal documents",personal:true,employee:true,decision:"Low",autonomy:"Assistive"},
+        {name:"Demand forecasting engine",vendor:"internal model",dept:"Operations",purpose:"Forecast order demand for planning",data:"Sales & inventory data",customer:true,decision:"Medium",autonomy:"Recommends"},
+        {name:"Quality vision inspection",vendor:"internal model",dept:"Production",purpose:"Detect surface defects on the line",data:"Product images",decision:"High",autonomy:"Acts with approval",external:false},
+        {name:"HR CV screening assistant",vendor:"internal model",dept:"HR",purpose:"Rank inbound applications",data:"Candidate CVs",personal:true,special:true,decision:"High",autonomy:"Recommends",external:true},
+        {name:"Supplier risk scoring",vendor:"internal model",dept:"Procurement",purpose:"Score supplier reliability",data:"Supplier data",decision:"Medium",autonomy:"Recommends"}
+      ],
+      _useCases:[
+        {dept:"Production",name:"Maintenance scheduling",pain:"Unplanned downtime costs ~£18k/incident",use:"Predictive maintenance flags at-risk machines",vt:"cost reduction",hours:90,fin:14000,conf:"High",eff:"Medium",gov:"Medium",next:"Expand pilot to all CNC lines"},
+        {dept:"Operations",name:"Production planning",pain:"Manual planning takes 2 days/week",use:"AI demand forecast feeds the plan",vt:"time saving",hours:64,fin:9000,conf:"Medium",eff:"Medium"},
+        {dept:"Operations",name:"Document drafting",pain:"Slow RFQ & SOP writing",use:"Copilot drafts and summarises",vt:"time saving",hours:48,fin:6000,conf:"High",eff:"Low"},
+        {dept:"Production",name:"Defect detection",pain:"Manual QA misses ~3% defects",use:"Vision model inspects every unit",vt:"quality improvement",hours:40,fin:11000,conf:"High",eff:"High",gov:"High"},
+        {dept:"Procurement",name:"Supplier selection",pain:"Reactive supplier issues",use:"Risk scoring ranks suppliers",vt:"risk reduction",hours:24,fin:4000,conf:"Medium",eff:"Medium"},
+        {dept:"Sales",name:"Quote generation",pain:"Quotes take 3-4 days",use:"Assistant drafts quotes from specs",vt:"revenue increase",hours:36,fin:12000,conf:"Medium",eff:"Medium"},
+        {dept:"Finance",name:"Invoice matching",pain:"Manual 3-way matching",use:"AI matches POs, GRNs, invoices",vt:"cost reduction",hours:30,fin:3500,conf:"High",eff:"Low"},
+        {dept:"Customer Service",name:"Order status replies",pain:"Repetitive status emails",use:"AI drafts status responses",vt:"customer experience improvement",hours:28,fin:3000,conf:"Medium",eff:"Low"},
+        {dept:"HR",name:"Applicant screening",pain:"High volume of CVs",use:"Screening assistant shortlists",vt:"time saving",hours:20,fin:2200,conf:"Low",eff:"Low",gov:"High",next:"Hold — bias & GDPR review required before scale"}
+      ],
+      _risks:[
+        {t:"CV screening bias",d:"Screening model may disadvantage protected groups.",dom:"bias",sysIdx:4,l:4,i:5,fw:["euai_2","gdpr_2","iso42_4"],m:"Bias testing + human review of all shortlists"},
+        {t:"No human oversight on vision QA",d:"High-impact accept/reject without sign-off.",dom:"human oversight",sysIdx:3,l:3,i:4,fw:["euai_5"],m:"Add approval gate for rejects"},
+        {t:"Special-category data in HR tool",d:"CVs contain special-category data without DPIA.",dom:"privacy",sysIdx:4,l:4,i:5,fw:["gdpr_3","gdpr_1"],m:"Complete DPIA; minimise data"},
+        {t:"Shadow AI usage",d:"Staff use unapproved GenAI tools.",dom:"security",sysIdx:1,l:4,i:3,fw:["iso42_2"],m:"Acceptable use policy + training"},
+        {t:"Forecast model drift",d:"Demand model degrades without monitoring.",dom:"model performance",sysIdx:2,l:3,i:3,fw:["iso42_7","nist_m2"],m:"Monthly accuracy monitoring"},
+        {t:"Supplier data leakage",d:"Supplier data shared with external model.",dom:"supplier",sysIdx:5,l:2,i:4,fw:["iso27_3"],m:"Vendor DPA + data minimisation"},
+        {t:"No AI policy",d:"No approved AI governance policy exists.",dom:"operational",l:5,i:3,fw:["iso42_2","nist_g"],m:"Adopt AI governance policy"},
+        {t:"Logging gaps",d:"High-risk systems lack event logging.",dom:"transparency",sysIdx:3,l:3,i:3,fw:["euai_3"],m:"Enable automatic logging"},
+        {t:"Maintenance false negatives",d:"Missed failure prediction causes downtime.",dom:"operational",sysIdx:0,l:3,i:4,fw:["euai_6"],m:"Set recall thresholds + alerts"},
+        {t:"Vendor concentration",d:"Heavy reliance on a single AI vendor.",dom:"operational",sysIdx:1,l:2,i:3,m:"Document exit & portability plan"},
+        {t:"Inaccurate quotes",d:"AI quote errors affect margin.",dom:"financial",sysIdx:2,l:3,i:3,m:"Human sign-off on quotes over £10k"},
+        {t:"Untrained staff",d:"Staff unaware of AI limitations.",dom:"operational",l:4,i:2,fw:["iso42_5"],m:"Roll out AI awareness training"}
+      ],
+      _controls:[
+        {n:"AI Governance Policy",d:"Board-approved policy defining roles and acceptable use.",ty:"Administrative",fw:["iso42_2","nist_g"],s:"In progress"},
+        {n:"AI Risk Management Procedure",d:"Lifecycle risk assessment and treatment.",fw:["euai_1","iso42_3"],s:"In progress"},
+        {n:"Human Oversight Procedure",d:"Defines human-in-the-loop checkpoints.",fw:["euai_5"],s:"Not started"},
+        {n:"DPIA Process",d:"Trigger and template for high-risk processing.",fw:["gdpr_3"],s:"Not started"},
+        {n:"Bias Testing Standard",d:"Pre-deployment bias evaluation for people-impacting models.",fw:["euai_2","iso42_4"],s:"Not started"},
+        {n:"AI Acceptable Use Policy",d:"Rules for staff use of GenAI tools.",fw:["iso42_2"],s:"In progress"},
+        {n:"Model Monitoring Standard",d:"Drift and accuracy monitoring cadence.",fw:["iso42_7","nist_m2"],s:"Not started"},
+        {n:"Event Logging Control",d:"Automatic logging for high-risk systems.",fw:["euai_3"],s:"Not started"},
+        {n:"Supplier AI Assessment",d:"Security & data assessment for AI vendors.",fw:["iso27_3","iso42_6"],s:"Implemented"},
+        {n:"Access Control Policy",d:"Role-based access to AI systems & data.",fw:["iso27_2"],s:"Implemented"},
+        {n:"AI Awareness Training",d:"Mandatory training on AI risks & limits.",fw:["iso42_5"],s:"Not started"}
+      ],
+      _evidence:[
+        {n:"AI Systems Inventory",ty:"register",fw:["iso27_5","nist_m1"],st:"Generated",hr:"Reviewed"},
+        {n:"AI Risk Register",ty:"register",fw:["euai_1","iso42_3"],st:"Generated",hr:"Pending"},
+        {n:"AI Control Register",ty:"register",fw:["iso42_6"],st:"Generated",hr:"Pending"},
+        {n:"Draft AI Governance Policy",ty:"policy",fw:["iso42_2"],st:"Generated",hr:"Pending"},
+        {n:"Draft Acceptable Use Policy",ty:"policy",fw:["iso42_2"],st:"Generated",hr:"Pending"},
+        {n:"Supplier security assessment — DataRobot",ty:"supplier assessment",fw:["iso27_3"],st:"Received",hr:"Reviewed"},
+        {n:"Access review export",ty:"system log",fw:["iso27_2"],st:"Received",hr:"Pending"},
+        {n:"Maintenance model accuracy report",ty:"register",fw:["euai_6"],st:"Requested",hr:"Pending"},
+        {n:"HR screening DPIA",ty:"approval record",fw:["gdpr_3"],st:"Requested",hr:"Pending"},
+        {n:"Leadership AI commitment minutes",ty:"meeting note",fw:["iso42_2"],st:"Requested",hr:"Pending"},
+        {n:"AI awareness training record",ty:"training record",fw:["iso42_5"],st:"Requested",hr:"Pending"},
+        {n:"Management review template",ty:"management review",fw:["iso42_7"],st:"Generated",hr:"Pending"}
+      ],
+      _actions:[
+        {t:"Pause HR screening tool at scale",d:"Halt expansion until bias test + DPIA complete.",o:"Client",p:"High",s:"In progress",due:-2,fw:"gdpr_3",nba:"Confirm pause in writing with HR lead."},
+        {t:"Approve AI Governance Policy",d:"Board to review and approve draft policy.",o:"Client",p:"High",s:"Not started",due:14},
+        {t:"Complete DPIA for HR screening",d:"Run DPIA with DPO.",o:"Shared",p:"High",s:"Not started",due:21,fw:"gdpr_3"},
+        {t:"Add approval gate to vision QA rejects",d:"Require operator sign-off on rejects.",o:"Client",p:"Medium",s:"Not started",due:18,fw:"euai_5"},
+        {t:"Roll out acceptable use policy",d:"Publish and communicate AUP.",o:"Client",p:"Medium",s:"In progress",due:10},
+        {t:"Stand up model monitoring",d:"Monthly accuracy/drift checks.",o:"Shared",p:"Medium",s:"Not started",due:30,fw:"iso42_7"},
+        {t:"Enable logging on high-risk systems",d:"Turn on event logging.",o:"Client",p:"Medium",s:"Not started",due:25,fw:"euai_3"},
+        {t:"Run AI awareness training",d:"Train all staff on AI risks.",o:"Client",p:"Low",s:"Not started",due:40,fw:"iso42_5"},
+        {t:"Collect supplier DPAs",d:"Obtain DPAs from AI vendors.",o:"Consultant",p:"Medium",s:"In progress",due:12,fw:"iso27_3"},
+        {t:"Define human oversight checkpoints",d:"Document HITL points per system.",o:"Consultant",p:"Medium",s:"Not started",due:20,fw:"euai_5"},
+        {t:"Finalise AI risk register",d:"Consultant to complete and client to confirm owners.",o:"Shared",p:"High",s:"In progress",due:7},
+        {t:"Schedule management review",d:"Set quarterly AIMS review.",o:"Client",p:"Low",s:"Not started",due:35,fw:"iso42_7"}
+      ],
+      _reports:[
+        {ty:"AI Operating Review",s:"Baseline of 6 AI systems and 9 use cases; £64k/yr identified value; 3 high-risk items requiring action.",st:"Draft"},
+        {ty:"AI Opportunity Report",s:"Ranked opportunities led by predictive maintenance and quote generation; ~£780k annual value potential.",st:"Draft"},
+        {ty:"ISO 42001 Readiness Report",s:"Provisional readiness 41%; key gaps in policy, oversight and impact assessment.",st:"Draft"},
+        {ty:"Board Report",s:"Executive summary of AI risk posture, value pipeline and 30/60/90 roadmap.",st:"Draft"}
+      ]
+    }),
+
+    genClient({company_name:"Meridian Advisory Partners",sector:"Professional Services",size_band:"100-249",size_num:118,country:"United Kingdom",regulated_sector_flag:true,contact_name:"David Okafor",contact_email:"d.okafor@meridian-advisory.com",engagement_type:"AI Governance Review",_acv:42000,_rate:85,_secondEngagement:"EU AI Act Readiness",
+      _systems:[
+        {name:"Contract review assistant",vendor:"Harvey",dept:"Legal",purpose:"Review and summarise client contracts",data:"Client legal documents",customer:true,personal:true,decision:"Medium",autonomy:"Assistive"},
+        {name:"Client chatbot (Fin)",vendor:"Intercom Fin",dept:"Customer Service",purpose:"Answer client queries 24/7",data:"Client queries",customer:true,personal:true,external:true,decision:"Medium",autonomy:"Acts with approval"},
+        {name:"Knowledge search (Glean)",vendor:"Glean",dept:"Operations",purpose:"Enterprise search across docs",data:"Internal knowledge",employee:true,decision:"Low",autonomy:"Assistive"},
+        {name:"Proposal generator",vendor:"Anthropic Claude",dept:"Sales",purpose:"Draft proposals from briefs",data:"Client briefs",customer:true,decision:"Low",autonomy:"Assistive"},
+        {name:"Engagement risk scoring",vendor:"internal model",dept:"Finance",purpose:"Score engagement profitability risk",data:"Financial data",decision:"Medium",autonomy:"Recommends"},
+        {name:"Timesheet anomaly detection",vendor:"internal model",dept:"Finance",purpose:"Flag unusual time entries",data:"Employee time data",employee:true,personal:true,decision:"Medium",autonomy:"Recommends"}
+      ],
+      _useCases:[
+        {dept:"Legal",name:"Contract review",pain:"Reviews take senior time",use:"Assistant extracts clauses & risks",vt:"time saving",hours:120,fin:24000,conf:"High",eff:"Medium",gov:"Medium"},
+        {dept:"Sales",name:"Proposal drafting",pain:"Proposals take 1-2 days",use:"AI drafts from brief + templates",vt:"revenue increase",hours:80,fin:30000,conf:"High",eff:"Low"},
+        {dept:"Customer Service",name:"Client support",pain:"Slow first response",use:"Chatbot resolves tier-1 queries",vt:"customer experience improvement",hours:90,fin:14000,conf:"Medium",eff:"Medium",gov:"High"},
+        {dept:"Operations",name:"Knowledge retrieval",pain:"Staff waste time searching",use:"Enterprise AI search",vt:"time saving",hours:140,fin:20000,conf:"High",eff:"Low"},
+        {dept:"Finance",name:"Engagement triage",pain:"Late detection of loss-making work",use:"Risk scoring flags engagements",vt:"risk reduction",hours:40,fin:12000,conf:"Medium",eff:"Medium"},
+        {dept:"Finance",name:"Time entry QA",pain:"Billing leakage",use:"Anomaly detection on timesheets",vt:"cost reduction",hours:30,fin:8000,conf:"Medium",eff:"Low",gov:"Medium"},
+        {dept:"Marketing",name:"Content production",pain:"Slow thought-leadership output",use:"AI drafts articles & posts",vt:"revenue increase",hours:50,fin:9000,conf:"Medium",eff:"Low"},
+        {dept:"HR",name:"Onboarding Q&A",pain:"Repetitive new-joiner questions",use:"AI answers from HR knowledge base",vt:"time saving",hours:24,fin:3500,conf:"High",eff:"Low"},
+        {dept:"Operations",name:"Meeting summaries",pain:"Action items lost",use:"AI meeting notes & actions",vt:"quality improvement",hours:60,fin:11000,conf:"High",eff:"Low"}
+      ],
+      _risks:[
+        {t:"Client confidentiality exposure",d:"Confidential client data sent to external models.",dom:"privacy",sysIdx:0,l:4,i:5,fw:["gdpr_1","iso27_3","euai_2"],m:"DPA + data residency + redaction"},
+        {t:"Chatbot gives wrong advice",d:"Client-facing bot may give inaccurate guidance.",dom:"transparency",sysIdx:1,l:4,i:4,fw:["euai_4","euai_5"],m:"Guardrails + disclaimers + escalation"},
+        {t:"No EU AI Act classification",d:"Systems not classified for obligations.",dom:"legal",sysIdx:1,l:5,i:4,fw:["euai_7"],m:"Run classification assistant"},
+        {t:"Hallucinated contract clauses",d:"Review assistant misstates clauses.",dom:"model performance",sysIdx:0,l:3,i:5,fw:["euai_6"],m:"Mandatory lawyer verification"},
+        {t:"Timesheet model fairness",d:"Anomaly flags may unfairly target staff.",dom:"bias",sysIdx:5,l:3,i:3,fw:["iso42_4"],m:"Human review of flags"},
+        {t:"Regulated-sector breach",d:"Failure to meet sector AI rules.",dom:"legal",l:3,i:5,fw:["nist_g"],m:"Map sector obligations"},
+        {t:"Vendor sub-processing",d:"AI vendors sub-process client data.",dom:"supplier",sysIdx:2,l:3,i:4,fw:["iso27_3"],m:"Sub-processor register"},
+        {t:"Proposal IP leakage",d:"Client briefs exposed via prompts.",dom:"privacy",sysIdx:3,l:3,i:3,fw:["gdpr_1"],m:"No-training contractual terms"},
+        {t:"No audit logging",d:"Insufficient logs for high-risk systems.",dom:"transparency",sysIdx:1,l:3,i:3,fw:["euai_3"],m:"Enable logging & retention"},
+        {t:"Over-reliance on AI",d:"Juniors skip critical thinking.",dom:"operational",l:4,i:3,fw:["iso42_5"],m:"Training + review standards"},
+        {t:"Access sprawl",d:"Broad access to AI tools & data.",dom:"security",sysIdx:2,l:3,i:3,fw:["iso27_2"],m:"RBAC + access reviews"},
+        {t:"DPIA missing",d:"High-risk processing without DPIA.",dom:"privacy",sysIdx:1,l:4,i:4,fw:["gdpr_3"],m:"Complete DPIA"}
+      ],
+      _controls:[
+        {n:"AI Governance Policy",d:"Approved governance policy and RACI.",fw:["iso42_2","nist_g"],s:"Implemented"},
+        {n:"Client Data Handling Standard",d:"Rules for client data in AI tools.",fw:["gdpr_1","iso27_3"],s:"In progress"},
+        {n:"EU AI Act Classification Procedure",d:"Classify each system & assign obligations.",fw:["euai_7"],s:"In progress"},
+        {n:"Chatbot Guardrail Control",d:"Disclaimers, escalation and answer scope.",fw:["euai_4"],s:"In progress"},
+        {n:"Human Verification Standard",d:"Lawyer/consultant verifies AI output.",fw:["euai_5","euai_6"],s:"Implemented"},
+        {n:"DPIA Process",d:"DPIA for high-risk processing.",fw:["gdpr_3"],s:"In progress"},
+        {n:"Sub-processor Register",d:"Track AI vendor sub-processors.",fw:["iso27_3"],s:"Implemented"},
+        {n:"Event Logging Control",d:"Logging & retention for AI systems.",fw:["euai_3"],s:"Not started"},
+        {n:"Access Control & Reviews",d:"RBAC and quarterly access reviews.",fw:["iso27_2"],s:"Implemented"},
+        {n:"AI Competence Standard",d:"Training and review for AI users.",fw:["iso42_5"],s:"In progress"},
+        {n:"Model Monitoring Standard",d:"Quality monitoring for client-facing AI.",fw:["iso42_7","nist_m2"],s:"Not started"}
+      ],
+      _evidence:[
+        {n:"AI Systems Inventory",ty:"register",fw:["nist_m1","iso27_5"],st:"Generated",hr:"Reviewed"},
+        {n:"AI Risk Register",ty:"register",fw:["euai_1","iso42_3"],st:"Generated",hr:"Pending"},
+        {n:"EU AI Act Classification Report",ty:"approval record",fw:["euai_7"],st:"Generated",hr:"Pending"},
+        {n:"AI Governance Policy (approved)",ty:"policy",fw:["iso42_2"],st:"Approved",hr:"Approved"},
+        {n:"Client Data Handling Standard",ty:"procedure",fw:["gdpr_1"],st:"Received",hr:"Reviewed"},
+        {n:"Sub-processor register",ty:"register",fw:["iso27_3"],st:"Received",hr:"Reviewed"},
+        {n:"Chatbot guardrail config",ty:"system log",fw:["euai_4"],st:"Received",hr:"Pending"},
+        {n:"DPIA — client chatbot",ty:"approval record",fw:["gdpr_3"],st:"Requested",hr:"Pending"},
+        {n:"Access review Q2",ty:"system log",fw:["iso27_2"],st:"Received",hr:"Reviewed"},
+        {n:"AI training records",ty:"training record",fw:["iso42_5"],st:"Received",hr:"Pending"},
+        {n:"Management review minutes",ty:"management review",fw:["iso42_7"],st:"Requested",hr:"Pending"},
+        {n:"Vendor DPAs (Harvey, Glean, Intercom)",ty:"supplier assessment",fw:["iso27_3"],st:"Received",hr:"Reviewed"}
+      ],
+      _actions:[
+        {t:"Classify all systems (EU AI Act)",d:"Run classification assistant for 6 systems.",o:"Consultant",p:"High",s:"In progress",due:5,fw:"euai_7"},
+        {t:"Complete chatbot DPIA",d:"DPIA for external client chatbot.",o:"Shared",p:"High",s:"Not started",due:14,fw:"gdpr_3"},
+        {t:"Deploy chatbot guardrails",d:"Disclaimers + escalation + scope limits.",o:"Client",p:"High",s:"In progress",due:10,fw:"euai_4"},
+        {t:"Enforce lawyer verification",d:"Mandatory human check on contract output.",o:"Client",p:"High",s:"In progress",due:7,fw:"euai_6"},
+        {t:"Enable AI event logging",d:"Logging & retention for high-risk systems.",o:"Client",p:"Medium",s:"Not started",due:21,fw:"euai_3"},
+        {t:"Finalise client data standard",d:"Approve and communicate standard.",o:"Client",p:"Medium",s:"In progress",due:12},
+        {t:"Stand up model monitoring",d:"Quality monitoring for client-facing AI.",o:"Shared",p:"Medium",s:"Not started",due:30,fw:"iso42_7"},
+        {t:"Sector obligation mapping",d:"Map regulated-sector AI requirements.",o:"Consultant",p:"Medium",s:"Not started",due:18},
+        {t:"Quarterly access review",d:"Run access review across AI tools.",o:"Client",p:"Low",s:"Done",due:-5,fw:"iso27_2"},
+        {t:"AI competence training",d:"Training for AI users + review standards.",o:"Client",p:"Medium",s:"In progress",due:25,fw:"iso42_5"},
+        {t:"Board governance update",d:"Present AI governance posture to board.",o:"Consultant",p:"Medium",s:"Not started",due:20},
+        {t:"Confirm risk owners",d:"Client to confirm owners on risk register.",o:"Client",p:"High",s:"Not started",due:8}
+      ],
+      _reports:[
+        {ty:"AI Governance Review",s:"Governance maturity moderate; strong policy base, gaps in classification, logging and DPIA.",st:"Draft"},
+        {ty:"EU AI Act Classification Report",s:"Client chatbot = limited/transparency risk; contract assistant = limited risk; no prohibited uses identified (subject to legal review).",st:"In review"},
+        {ty:"AI Opportunity Report",s:"~£1.55m annual value potential led by knowledge retrieval and proposal drafting.",st:"Draft"},
+        {ty:"Board Report",s:"AI posture, value pipeline and prioritised 30/60/90 actions for the partnership.",st:"Draft"}
+      ]
+    }),
+
+    genClient({company_name:"Cortex Labs",sector:"Software / SaaS",size_band:"10-49",size_num:31,country:"United Kingdom",regulated_sector_flag:false,contact_name:"Priya Nair",contact_email:"priya@cortexlabs.ai",engagement_type:"AI Business Outcomes Accelerator",_acv:24000,_rate:75,
+      _systems:[
+        {name:"In-product recommendation model",vendor:"internal model",dept:"Engineering",purpose:"Recommend features to users",data:"Usage data",customer:true,external:true,decision:"Medium",autonomy:"Autonomous"},
+        {name:"Support copilot",vendor:"Anthropic Claude",dept:"Customer Service",purpose:"Draft support replies",data:"Support tickets",customer:true,personal:true,decision:"Low",autonomy:"Assistive"},
+        {name:"Code assistant (Copilot)",vendor:"Microsoft Copilot",dept:"Engineering",purpose:"Code completion",data:"Source code",decision:"Low",autonomy:"Assistive"},
+        {name:"Churn prediction",vendor:"internal model",dept:"Sales",purpose:"Predict customer churn",data:"Account & usage data",customer:true,decision:"Medium",autonomy:"Recommends"},
+        {name:"Marketing copy generator",vendor:"Jasper",dept:"Marketing",purpose:"Generate marketing copy",data:"Marketing content",decision:"Low",autonomy:"Assistive"}
+      ],
+      _useCases:[
+        {dept:"Engineering",name:"Feature recommendations",pain:"Low feature adoption",use:"In-product recs lift activation",vt:"revenue increase",hours:40,fin:18000,conf:"Medium",eff:"Medium",gov:"Medium"},
+        {dept:"Customer Service",name:"Support deflection",pain:"Rising ticket volume",use:"Copilot drafts + deflects tier-1",vt:"cost reduction",hours:80,fin:10000,conf:"High",eff:"Low"},
+        {dept:"Engineering",name:"Developer productivity",pain:"Slow delivery",use:"Code assistant speeds coding",vt:"time saving",hours:120,fin:22000,conf:"High",eff:"Low"},
+        {dept:"Sales",name:"Churn save",pain:"Surprise churn",use:"Churn model triggers saves",vt:"revenue increase",hours:30,fin:16000,conf:"Medium",eff:"Medium"},
+        {dept:"Marketing",name:"Content velocity",pain:"Small marketing team",use:"AI generates campaign copy",vt:"revenue increase",hours:36,fin:7000,conf:"Medium",eff:"Low"},
+        {dept:"Customer Service",name:"Onboarding guidance",pain:"Drop-off in onboarding",use:"AI in-app guidance",vt:"customer experience improvement",hours:28,fin:6000,conf:"Medium",eff:"Medium"},
+        {dept:"Engineering",name:"Bug triage",pain:"Slow triage",use:"AI clusters & prioritises bugs",vt:"quality improvement",hours:24,fin:4500,conf:"Medium",eff:"Low"},
+        {dept:"Finance",name:"Usage-based billing checks",pain:"Billing disputes",use:"AI validates usage billing",vt:"cost reduction",hours:18,fin:3000,conf:"Medium",eff:"Low"},
+        {dept:"Sales",name:"Lead scoring",pain:"Unfocused outbound",use:"AI scores inbound leads",vt:"revenue increase",hours:20,fin:9000,conf:"Medium",eff:"Low"}
+      ],
+      _risks:[
+        {t:"Autonomous recs without oversight",d:"Recommendation model acts autonomously on users.",dom:"human oversight",sysIdx:0,l:4,i:4,fw:["euai_5","euai_4"],m:"Add guardrails + monitoring + opt-out"},
+        {t:"Customer data in prompts",d:"Support copilot exposes customer PII.",dom:"privacy",sysIdx:1,l:4,i:4,fw:["gdpr_1","euai_2"],m:"PII redaction + no-train terms"},
+        {t:"Source code leakage",d:"Code assistant may leak proprietary code.",dom:"security",sysIdx:2,l:3,i:4,fw:["iso27_2"],m:"Enterprise tenancy + policy"},
+        {t:"Churn model bias",d:"Churn save offers may be unfair.",dom:"bias",sysIdx:3,l:3,i:3,fw:["iso42_4"],m:"Fairness review"},
+        {t:"No AI governance",d:"Fast-moving startup lacks AI policy.",dom:"operational",l:5,i:3,fw:["iso42_2","nist_g"],m:"Lightweight AI policy"},
+        {t:"Model monitoring absent",d:"Production models unmonitored.",dom:"model performance",sysIdx:0,l:4,i:3,fw:["iso42_7","nist_m2"],m:"Monitoring + alerting"},
+        {t:"Marketing claims risk",d:"AI copy makes unsubstantiated claims.",dom:"reputational",sysIdx:4,l:3,i:2,m:"Review workflow for claims"},
+        {t:"Transparency to users",d:"Users not told AI is used.",dom:"transparency",sysIdx:0,l:3,i:3,fw:["euai_4"],m:"Add AI transparency notice"},
+        {t:"Vendor lock-in",d:"Reliance on single LLM vendor.",dom:"operational",sysIdx:1,l:2,i:3,m:"Abstraction layer + fallback"},
+        {t:"Incident readiness",d:"No AI incident response plan.",dom:"operational",l:3,i:3,fw:["iso27_4","iso42_8"],m:"AI incident runbook"},
+        {t:"Data retention",d:"Unclear retention for AI logs.",dom:"privacy",sysIdx:1,l:3,i:2,fw:["gdpr_1"],m:"Define retention schedule"}
+      ],
+      _controls:[
+        {n:"Lightweight AI Policy",d:"Right-sized AI governance for a startup.",fw:["iso42_2","nist_g"],s:"In progress"},
+        {n:"PII Redaction Control",d:"Redact PII before sending to models.",fw:["gdpr_1","euai_2"],s:"In progress"},
+        {n:"Enterprise Tenancy Control",d:"No-train, enterprise tenancy for vendors.",fw:["iso27_3"],s:"Implemented"},
+        {n:"Recommendation Guardrails",d:"Guardrails & opt-out for autonomous recs.",fw:["euai_5"],s:"Not started"},
+        {n:"Model Monitoring",d:"Production model monitoring & alerts.",fw:["iso42_7","nist_m2"],s:"Not started"},
+        {n:"AI Transparency Notice",d:"Tell users where AI is used.",fw:["euai_4"],s:"Not started"},
+        {n:"Fairness Review Standard",d:"Bias review for people-impacting models.",fw:["iso42_4"],s:"Not started"},
+        {n:"AI Incident Runbook",d:"Response plan for AI incidents.",fw:["iso27_4","iso42_8"],s:"Not started"},
+        {n:"Access Control",d:"RBAC for AI systems and data.",fw:["iso27_2"],s:"Implemented"},
+        {n:"Marketing Claims Review",d:"Review AI-generated claims.",fw:[],s:"In progress"},
+        {n:"Data Retention Schedule",d:"Retention for AI logs & data.",fw:["gdpr_1"],s:"Not started"}
+      ],
+      _evidence:[
+        {n:"AI Systems Inventory",ty:"register",fw:["nist_m1"],st:"Generated",hr:"Reviewed"},
+        {n:"AI Risk Register",ty:"register",fw:["euai_1","iso42_3"],st:"Generated",hr:"Pending"},
+        {n:"Draft Lightweight AI Policy",ty:"policy",fw:["iso42_2"],st:"Generated",hr:"Pending"},
+        {n:"Opportunity model & assumptions",ty:"register",fw:[],st:"Generated",hr:"Reviewed"},
+        {n:"PII redaction config",ty:"system log",fw:["gdpr_1"],st:"Received",hr:"Pending"},
+        {n:"Enterprise tenancy confirmation",ty:"supplier assessment",fw:["iso27_3"],st:"Received",hr:"Reviewed"},
+        {n:"Access control export",ty:"system log",fw:["iso27_2"],st:"Received",hr:"Pending"},
+        {n:"Model monitoring plan",ty:"procedure",fw:["iso42_7"],st:"Requested",hr:"Pending"},
+        {n:"AI transparency notice draft",ty:"policy",fw:["euai_4"],st:"Generated",hr:"Pending"},
+        {n:"Incident runbook draft",ty:"procedure",fw:["iso27_4"],st:"Generated",hr:"Pending"},
+        {n:"Fairness review notes",ty:"meeting note",fw:["iso42_4"],st:"Requested",hr:"Pending"},
+        {n:"Retention schedule draft",ty:"procedure",fw:["gdpr_1"],st:"Requested",hr:"Pending"}
+      ],
+      _actions:[
+        {t:"Adopt lightweight AI policy",d:"Approve right-sized AI policy.",o:"Client",p:"High",s:"In progress",due:9,fw:"iso42_2"},
+        {t:"Ship PII redaction",d:"Redact PII before model calls.",o:"Client",p:"High",s:"In progress",due:7,fw:"gdpr_1"},
+        {t:"Add recommendation guardrails",d:"Guardrails + opt-out for autonomous recs.",o:"Client",p:"High",s:"Not started",due:16,fw:"euai_5"},
+        {t:"Publish AI transparency notice",d:"Tell users where AI is used.",o:"Client",p:"Medium",s:"Not started",due:14,fw:"euai_4"},
+        {t:"Stand up model monitoring",d:"Monitoring & alerting for prod models.",o:"Shared",p:"High",s:"Not started",due:21,fw:"iso42_7"},
+        {t:"Run fairness review on churn model",d:"Bias review of churn save logic.",o:"Consultant",p:"Medium",s:"Not started",due:25,fw:"iso42_4"},
+        {t:"Create AI incident runbook",d:"Document incident response.",o:"Consultant",p:"Medium",s:"In progress",due:18,fw:"iso27_4"},
+        {t:"Set data retention schedule",d:"Define retention for AI logs.",o:"Client",p:"Low",s:"Not started",due:30,fw:"gdpr_1"},
+        {t:"Validate opportunity model",d:"Confirm value assumptions with finance.",o:"Shared",p:"High",s:"In progress",due:6},
+        {t:"Marketing claims workflow",d:"Add review step for AI copy.",o:"Client",p:"Low",s:"In progress",due:20},
+        {t:"Prioritise top 3 opportunities",d:"Lock pilots for dev productivity, support, churn.",o:"Shared",p:"High",s:"Not started",due:10},
+        {t:"Access review",d:"Review access to AI systems.",o:"Client",p:"Medium",s:"Not started",due:28,fw:"iso27_2"}
+      ],
+      _reports:[
+        {ty:"AI Operating Review",s:"5 systems, 9 use cases; ~£1.02m annual value potential; main risks autonomy & customer-data handling.",st:"Draft"},
+        {ty:"AI Opportunity Report",s:"Top opportunities: developer productivity, support deflection, churn save.",st:"In review"},
+        {ty:"AI Governance Review",s:"Early-stage governance; recommend lightweight policy, redaction, monitoring and guardrails.",st:"Draft"},
+        {ty:"Board Report",s:"Outcome-focused summary linking AI value to ARR with a pragmatic governance baseline.",st:"Draft"}
+      ]
+    })
+  ];
+  // flatten
+  const db={frameworks:FRAMEWORKS,requirements:REQUIREMENTS,mappings:MAPPINGS,clients:[],engagements:[],ai_systems:[],use_cases:[],risks:[],controls:[],evidence:[],actions:[],reports:[],assessments:[],prompts:PROMPTS,proposals:[],seeded_at:new Date().toISOString()};
+  clients.forEach(b=>{
+    db.clients.push(b.client);
+    ["engagements","ai_systems","use_cases","risks","controls","evidence","actions","reports","assessments"].forEach(k=>{b[k].forEach(x=>db[k].push(x));});
+  });
+  return db;
+}
+
+const PROMPTS=[
+  {id:"p_intake",name:"Intake summarisation",version:"1.2",model:"claude-opus-4",purpose:"Summarise intake into client profile, maturity & risk signals."},
+  {id:"p_risk",name:"AI risk assessment",version:"1.1",model:"claude-opus-4",purpose:"Identify and score AI risks across 14 domains."},
+  {id:"p_opp",name:"Opportunity assessment",version:"1.3",model:"claude-opus-4",purpose:"Estimate value, effort and confidence for AI use cases."},
+  {id:"p_gap",name:"Framework gap analysis",version:"1.4",model:"claude-opus-4",purpose:"Map evidence/controls to requirements and find gaps."},
+  {id:"p_euai",name:"EU AI Act classification support",version:"1.1",model:"claude-opus-4",purpose:"Provisional risk classification (never final legal advice)."},
+  {id:"p_iso",name:"ISO 42001 readiness analysis",version:"1.0",model:"claude-opus-4",purpose:"Assess AIMS maturity by clause."},
+  {id:"p_nist",name:"NIST AI RMF alignment",version:"1.0",model:"claude-opus-4",purpose:"Score Govern/Map/Measure/Manage maturity."},
+  {id:"p_policy",name:"Policy drafting",version:"1.2",model:"claude-opus-4",purpose:"Draft AI policies from templates + client context."},
+  {id:"p_report",name:"Report drafting",version:"1.3",model:"claude-opus-4",purpose:"Assemble board-ready reports."},
+  {id:"p_proposal",name:"Proposal drafting",version:"1.1",model:"claude-opus-4",purpose:"Generate commercial proposals with scope & price."},
+  {id:"p_action",name:"Action planning",version:"1.0",model:"claude-opus-4",purpose:"Generate next-best-actions and 30/60/90 plans."}
+];
+
+/* ============================================================
+   2. STORE
+   ============================================================ */
+let DB=null;
+// dynamic (per-client) tables synced to Supabase. Reference tables (frameworks,
+// requirements, mappings, prompts) come from the in-file constants.
+const SYNC_TABLES=[['clients','client_id'],['engagements','engagement_id'],['ai_systems','ai_system_id'],['use_cases','use_case_id'],['risks','risk_id'],['controls','control_id'],['evidence','evidence_id'],['actions','action_id'],['reports','report_id'],['assessments','assessment_id']];
+const NUMERIC_FIELDS=['size_num','commercial_value','users_count','estimated_hours_saved_monthly','estimated_financial_value_monthly','likelihood','impact','risk_score','readiness_score'];
+function coerce(rows){rows.forEach(r=>NUMERIC_FIELDS.forEach(f=>{if(r[f]!==null&&r[f]!==undefined&&r[f]!=='')r[f]=Number(r[f]);}));return rows;}
+
+async function loadDB(){
+  if(USE_SUPABASE && sb){
+    try{
+      DB={frameworks:FRAMEWORKS,requirements:REQUIREMENTS,mappings:MAPPINGS,prompts:PROMPTS,proposals:[]};
+      let empty=true;
+      for(const [key,pk] of SYNC_TABLES){
+        const {data,error}=await sb.from('amplify_'+key).select('*');
+        if(error)throw error;
+        DB[key]=coerce(data||[]);
+        if(key==='clients'&&DB[key].length)empty=false;
+      }
+      if(empty)await seedSupabase();
+      return;
+    }catch(e){console.error('Supabase load failed; using local data.',e);toast('Backend unavailable — using local data');}
+  }
+  try{const raw=localStorage.getItem(STORE_KEY);if(raw){DB=JSON.parse(raw);return;}}catch(e){}
+  DB=buildSeed();saveLocal();
+}
+async function seedSupabase(){
+  const seed=buildSeed();
+  DB={frameworks:FRAMEWORKS,requirements:REQUIREMENTS,mappings:MAPPINGS,prompts:PROMPTS,proposals:[]};
+  for(const [key,pk] of SYNC_TABLES){
+    DB[key]=seed[key]||[];
+    if(DB[key].length){const {error}=await sb.from('amplify_'+key).upsert(DB[key],{onConflict:pk});if(error)console.error('seed '+key,error);}
+  }
+  toast('Loaded demo data into your backend');
+}
+function saveLocal(){try{localStorage.setItem(STORE_KEY,JSON.stringify(DB));}catch(e){}}
+let _saveTimer=null,_dirty=new Set();
+function saveDB(tableKey){
+  if(tableKey)_dirty.add(tableKey);
+  if(USE_SUPABASE&&sb){clearTimeout(_saveTimer);_saveTimer=setTimeout(flushSupabase,400);}
+  else saveLocal();
+}
+async function flushSupabase(){
+  const keys=_dirty.size?[..._dirty]:SYNC_TABLES.map(t=>t[0]);_dirty.clear();
+  for(const key of keys){
+    const pk=(SYNC_TABLES.find(t=>t[0]===key)||[])[1];if(!pk)continue;
+    const rows=DB[key]||[];
+    if(rows.length){const {error}=await sb.from('amplify_'+key).upsert(rows,{onConflict:pk});if(error)console.error('save '+key,error);}
+  }
+}
+async function syncDelete(key,pk,id){if(USE_SUPABASE&&sb){const {error}=await sb.from('amplify_'+key).delete().eq(pk,id);if(error)console.error('delete '+key,error);}}
+function resetDB(){
+  if(!confirm("Reset all data back to the seeded demo state? This rewrites the Amplify tables."))return;
+  (async()=>{
+    if(USE_SUPABASE&&sb){for(const [key,pk] of SYNC_TABLES){await sb.from('amplify_'+key).delete().neq(pk,'__never__');}await seedSupabase();}
+    else{localStorage.removeItem(STORE_KEY);DB=buildSeed();saveLocal();}
+    toast('Data reset to demo state');navigate('dashboard');
+  })();
+}
+
+// getters
+const byId=(arr,id,key)=>DB[arr].find(x=>x[key]===id);
+const where=(arr,fn)=>DB[arr].filter(fn);
+const clientName=id=>(byId('clients',id,'client_id')||{}).company_name||"—";
+const reqById=id=>DB.requirements.find(r=>r.requirement_id===id);
+const fwById=id=>DB.frameworks.find(f=>f.framework_id===id);
+const fwNameOfReq=id=>{const r=reqById(id);return r?fwById(r.framework_id).framework_name:"";};
+
+/* ============================================================
+   3. HELPERS
+   ============================================================ */
+function h(strings,...vals){return strings.map((s,i)=>s+(vals[i]!==undefined?vals[i]:'')).join('');}
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money=n=>'£'+Math.round(n).toLocaleString('en-GB');
+const moneyK=n=>n>=1000?'£'+(n/1000).toFixed(n>=100000?0:1)+'k':'£'+n;
+const fmtDate=d=>{if(!d)return'—';const x=new Date(d);return x.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});};
+const daysTo=d=>Math.round((new Date(d)-_today)/86400000);
+function scoreColor(p){return p>=70?'var(--green)':p>=40?'var(--amber)':'var(--red)';}
+function rag(p){return p>=70?'g':p>=40?'a':'r';}
+function ragBadge(p,labelG,labelA,labelR){const r=rag(p);const m={g:['b-green',labelG||'On track'],a:['b-amber',labelA||'Needs work'],r:['b-red',labelR||'At risk']}[r];return `<span class="badge ${m[0]}">${m[1]}</span>`;}
+function riskBadge(score){const c=score>=15?'b-red':score>=8?'b-amber':'b-grey';const l=score>=15?'High':score>=8?'Medium':'Low';return `<span class="badge ${c}">${l} · ${score}</span>`;}
+function statusBadge(s){const m={'Done':'b-green','Implemented':'b-green','Approved':'b-green','Mitigated':'b-green','Received':'b-blue','Generated':'b-purple','In progress':'b-amber','In treatment':'b-amber','In review':'b-amber','In delivery':'b-blue','Requested':'b-grey','Not started':'b-grey','Blocked':'b-red','Open':'b-amber','Scoping':'b-grey','Discovery':'b-grey','Review':'b-blue','Draft':'b-grey'};return `<span class="badge ${m[s]||'b-grey'}">${esc(s)}</span>`;}
+function reviewFlag(s){const m={'Pending':['rf-review','Needs review'],'Reviewed':['rf-approved','Reviewed'],'Approved':['rf-approved','Approved'],'AI-generated':['rf-ai','AI-generated']};const x=m[s]||['rf-draft',s];return `<span class="review-flag ${x[0]}">${esc(x[1])}</span>`;}
+function ring(p,label){return `<div class="score-ring" style="--p:${p};--c:${scoreColor(p)}"><div class="inner"><b>${p}%</b><small>${label||''}</small></div></div>`;}
+function bar(p){return `<div class="bar"><i style="width:${Math.min(100,p)}%;background:${scoreColor(p)}"></i></div>`;}
+
+function toast(msg){let t=document.createElement('div');t.textContent=msg;t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:500;box-shadow:var(--shadow-lg)';document.body.appendChild(t);setTimeout(()=>t.remove(),2200);}
+function openModal(title,bodyHtml,footHtml){document.getElementById('modalRoot').innerHTML=`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="m-hd"><h3>${title}</h3><button class="x" onclick="closeModal()">&times;</button></div><div class="m-bd">${bodyHtml}</div>${footHtml?`<div class="m-ft">${footHtml}</div>`:''}</div></div>`;}
+function closeModal(){document.getElementById('modalRoot').innerHTML='';}
+
+/* aggregate helpers */
+function clientStats(cid){
+  const sys=where('ai_systems',x=>x.client_id===cid);
+  const ucs=where('use_cases',x=>x.client_id===cid);
+  const risks=where('risks',x=>x.client_id===cid);
+  const ev=where('evidence',x=>x.client_id===cid);
+  const acts=where('actions',x=>x.client_id===cid);
+  const ctl=where('controls',x=>x.client_id===cid);
+  const asm=where('assessments',x=>x.client_id===cid)[0];
+  const annualValue=ucs.reduce((s,u)=>s+u.estimated_financial_value_monthly*12,0);
+  const highRisks=risks.filter(r=>r.risk_score>=15).length;
+  const openActions=acts.filter(a=>a.status!=='Done').length;
+  const overdue=acts.filter(a=>a.status!=='Done'&&daysTo(a.due_date)<0).length;
+  const evGaps=ev.filter(e=>e.status==='Requested').length;
+  const reviewQ=ev.filter(e=>e.human_review_status==='Pending').length;
+  const maturity=asm?asm.readiness_score:0;
+  const riskScore=Math.min(100,Math.round(risks.reduce((s,r)=>s+r.risk_score,0)/Math.max(1,risks.length)/25*100));
+  return {sys,ucs,risks,ev,acts,ctl,asm,annualValue,highRisks,openActions,overdue,evGaps,reviewQ,maturity,riskScore};
+}
+
+/* ============================================================
+   4. NAVIGATION + ROUTER
+   ============================================================ */
+const NAV=[
+  {group:"Command",items:[
+    {id:'dashboard',ico:'◎',label:'Command Dashboard'},
+    {id:'clients',ico:'◫',label:'Clients'},
+    {id:'engagements',ico:'❖',label:'Engagements'},
+    {id:'client-view',ico:'◑',label:'Client Dashboard'}
+  ]},
+  {group:"Discovery & Value",items:[
+    {id:'intake',ico:'➤',label:'Client Intake Wizard'},
+    {id:'inventory',ico:'▤',label:'AI Inventory'},
+    {id:'opportunities',ico:'↑',label:'Opportunity Engine'},
+    {id:'assessment',ico:'✓',label:'Assessment Engine'}
+  ]},
+  {group:"Compliance Engines",items:[
+    {id:'mapping',ico:'⇄',label:'Framework Mapping'},
+    {id:'euaiact',ico:'§',label:'EU AI Act Assistant'},
+    {id:'iso42001',ico:'◆',label:'ISO 42001 Readiness'},
+    {id:'nist',ico:'◈',label:'NIST AI RMF'},
+    {id:'iso27001',ico:'⛉',label:'ISO 27001 Adjacent'}
+  ]},
+  {group:"Outputs",items:[
+    {id:'evidence',ico:'▦',label:'Evidence Factory'},
+    {id:'reports',ico:'▣',label:'Report Generator'},
+    {id:'proposals',ico:'£',label:'Proposals'},
+    {id:'prompts',ico:'⌘',label:'AI Prompt Layer'}
+  ]}
+];
+const ROUTE_TITLES={dashboard:['Command Centre','Consultant Command Dashboard'],clients:['Clients','Clients'],engagements:['Engagements','Engagements'],'client-view':['Client View','Client Dashboard'],intake:['Discovery','Client Intake Wizard'],inventory:['Discovery','AI Inventory Builder'],opportunities:['Value','AI Opportunity Engine'],assessment:['Discovery','Assessment Engine'],mapping:['Compliance','Multi-Framework Mapping'],euaiact:['Compliance','EU AI Act Classification Assistant'],iso42001:['Compliance','ISO 42001 Readiness Engine'],nist:['Compliance','NIST AI RMF Alignment'],iso27001:['Compliance','ISO 27001 Adjacent Mapping'],evidence:['Outputs','Evidence Factory'],reports:['Outputs','Report Generator'],proposals:['Outputs','Commercial Proposals'],prompts:['Outputs','AI Prompting Layer'],'client-detail':['Clients','Client Detail']};
+
+let STATE={route:'dashboard',clientId:null,params:{}};
+
+function renderNav(){
+  let html='';
+  NAV.forEach(g=>{
+    html+=`<div class="nav-group"><div class="label">${g.group}</div>`;
+    g.items.forEach(it=>{html+=`<div class="nav-item ${STATE.route===it.id?'active':''}" onclick="navigate('${it.id}')"><span class="ico">${it.ico}</span>${it.label}</div>`;});
+    html+='</div>';
+  });
+  document.getElementById('nav').innerHTML=html;
+}
+function navigate(route,params){
+  STATE.route=route;STATE.params=params||{};
+  if(params&&params.clientId)STATE.clientId=params.clientId;
+  if(!STATE.clientId)STATE.clientId=DB.clients[0].client_id;
+  const t=ROUTE_TITLES[route]||['',''];
+  document.getElementById('crumb').textContent=t[0];
+  document.getElementById('pageTitle').textContent=t[1];
+  document.getElementById('topActions').innerHTML=topActionsFor(route);
+  renderNav();
+  const fn=window['view_'+route.replace(/-/g,'_')];
+  document.getElementById('view').innerHTML=fn?fn():'<div class="empty">Not found</div>';
+  window.scrollTo(0,0);
+}
+function clientSelector(){
+  return `<select class="in" style="width:auto;min-width:230px" onchange="STATE.clientId=this.value;navigate(STATE.route)">`+
+    DB.clients.map(c=>`<option value="${c.client_id}" ${c.client_id===STATE.clientId?'selected':''}>${esc(c.company_name)}</option>`).join('')+`</select>`;
+}
+function topActionsFor(route){
+  const needsClient=['client-view','intake','inventory','opportunities','assessment','mapping','euaiact','iso42001','nist','iso27001','evidence','reports','proposals','client-detail'];
+  let a='';
+  if(needsClient.includes(route))a+=clientSelector();
+  a+=`<button class="btn ghost sm" onclick="resetDB()" title="Reset demo data">↺ Reset</button>`;
+  a+=`<button class="btn ghost sm" onclick="logout()" title="Lock">⤓ Lock</button>`;
+  return a;
+}
+function logout(){sessionStorage.removeItem('ts_amplify_auth');if(USE_SUPABASE&&sb){sb.auth.signOut().finally(()=>location.reload());}else{location.reload();}}
+
+/* ============================================================
+   5. VIEW: CONSULTANT COMMAND DASHBOARD (Module K)
+   ============================================================ */
+function view_dashboard(){
+  const clients=DB.clients;
+  let totalValue=0,totalHigh=0,totalOverdue=0,totalReview=0,mrr=0;
+  const rows=clients.map(c=>{const s=clientStats(c.client_id);totalValue+=s.annualValue;totalHigh+=s.highRisks;totalOverdue+=s.overdue;totalReview+=s.reviewQ;
+    const eng=where('engagements',e=>e.client_id===c.client_id);mrr+=(c.engagement_type==='Continuous Improvement'?2500:0);
+    return {c,s,eng};});
+  const allActions=where('actions',a=>a.status!=='Done').sort((a,b)=>daysTo(a.due_date)-daysTo(b.due_date));
+  const topRisks=[...DB.risks].sort((a,b)=>b.risk_score-a.risk_score).slice(0,6);
+  const topOpps=[...DB.use_cases].sort((a,b)=>b.estimated_financial_value_monthly-a.estimated_financial_value_monthly).slice(0,6);
+  const pipeline=DB.engagements.reduce((s,e)=>s+(e.commercial_value||0),0);
+
+  return h`
+  <div class="grid g4 mb">
+    <div class="kpi"><div class="k-label">Active clients</div><div class="k-val">${clients.length}</div><div class="k-sub">${DB.engagements.length} engagements</div></div>
+    <div class="kpi"><div class="k-label">Identified annual value</div><div class="k-val">${moneyK(totalValue)}</div><div class="k-sub">across ${DB.use_cases.length} use cases</div></div>
+    <div class="kpi"><div class="k-label">High risks open</div><div class="k-val" style="color:var(--red)">${totalHigh}</div><div class="k-sub">${totalOverdue} actions overdue</div></div>
+    <div class="kpi"><div class="k-label">Engagement pipeline</div><div class="k-val">${moneyK(pipeline)}</div><div class="k-sub">${totalReview} items awaiting review</div></div>
+  </div>
+
+  <div class="card mb">
+    <div class="hd"><div><h3>Client portfolio</h3><div class="desc">Where to focus — readiness, risk and value at a glance</div></div><button class="btn primary sm" onclick="navigate('intake')">+ New client intake</button></div>
+    <div class="bd" style="padding:0">
+      <table>
+        <thead><tr><th>Client</th><th>Engagement</th><th>Readiness</th><th>Annual value</th><th>High risks</th><th>Overdue</th><th>Review queue</th><th></th></tr></thead>
+        <tbody>
+        ${rows.map(({c,s})=>h`<tr class="clickable" onclick="navigate('client-detail',{clientId:'${c.client_id}'})">
+          <td><div class="sb">${esc(c.company_name)}</div><div class="tiny muted">${esc(c.sector)} · ${esc(c.size_band)}</div></td>
+          <td><span class="badge b-blue">${esc(c.engagement_type)}</span></td>
+          <td style="min-width:120px">${bar(s.maturity)}<div class="tiny muted mt8">${s.maturity}% ready</div></td>
+          <td class="sb">${moneyK(s.annualValue)}</td>
+          <td>${s.highRisks?`<span class="badge b-red">${s.highRisks}</span>`:'<span class="muted">0</span>'}</td>
+          <td>${s.overdue?`<span class="badge b-amber">${s.overdue}</span>`:'<span class="muted">0</span>'}</td>
+          <td>${s.reviewQ?`<span class="badge b-purple">${s.reviewQ}</span>`:'<span class="muted">0</span>'}</td>
+          <td class="right muted">›</td>
+        </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="hd"><div><h3>Priority actions</h3><div class="desc">Soonest due across all clients</div></div></div>
+      <div class="bd" style="padding:0">
+        <table><tbody>
+        ${allActions.slice(0,8).map(a=>{const d=daysTo(a.due_date);const overdue=d<0;return h`<tr>
+          <td><div class="sb">${esc(a.action_title)}</div><div class="tiny muted">${esc(clientName(a.client_id))} · ${esc(a.owner)}</div></td>
+          <td class="right nowrap">${a.priority==='High'?'<span class="badge b-red">High</span> ':''}<span class="tiny ${overdue?'':'muted'}" style="${overdue?'color:var(--red);font-weight:700':''}">${overdue?Math.abs(d)+'d overdue':'in '+d+'d'}</span></td>
+        </tr>`;}).join('')}
+        </tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd"><div><h3>Highest risks</h3><div class="desc">Across the portfolio</div></div></div>
+      <div class="bd" style="padding:0">
+        <table><tbody>
+        ${topRisks.map(r=>h`<tr>
+          <td><div class="sb">${esc(r.risk_title)}</div><div class="tiny muted">${esc(clientName(r.client_id))} · ${esc(r.risk_domain)}</div></td>
+          <td class="right">${riskBadge(r.risk_score)}</td>
+        </tr>`).join('')}
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt">
+    <div class="hd"><div><h3>Top opportunities</h3><div class="desc">Highest-value AI use cases identified across clients</div></div><button class="btn sm" onclick="navigate('opportunities')">Open engine →</button></div>
+    <div class="bd" style="padding:0">
+      <table><thead><tr><th>Opportunity</th><th>Client</th><th>Type</th><th>Annual value</th><th>Effort</th><th>Confidence</th></tr></thead><tbody>
+      ${topOpps.map(o=>h`<tr><td class="sb">${esc(o.process_name)}</td><td class="tiny">${esc(clientName(o.client_id))}</td><td><span class="badge b-grey">${esc(o.value_type)}</span></td><td class="sb">${moneyK(o.estimated_financial_value_monthly*12)}</td><td>${esc(o.implementation_effort)}</td><td>${esc(o.confidence_level)}</td></tr>`).join('')}
+      </tbody></table>
+    </div>
+  </div>
+  <div class="note mt">Outputs marked <span class="review-flag rf-ai">AI-generated</span> require human review before client delivery. Review gates apply to all legal, classification, readiness, financial and board-level conclusions.</div>
+  `;
+}
+
+/* ============================================================
+   6. VIEW: CLIENTS LIST + DETAIL
+   ============================================================ */
+function view_clients(){
+  return h`
+  <div class="card">
+    <div class="hd"><div><h3>Clients</h3><div class="desc">${DB.clients.length} clients</div></div><button class="btn primary sm" onclick="navigate('intake')">+ New client intake</button></div>
+    <div class="bd" style="padding:0"><table>
+      <thead><tr><th>Company</th><th>Sector</th><th>Size</th><th>Engagement</th><th>Contact</th><th>Readiness</th><th>Annual value</th></tr></thead>
+      <tbody>${DB.clients.map(c=>{const s=clientStats(c.client_id);return h`<tr class="clickable" onclick="navigate('client-detail',{clientId:'${c.client_id}'})">
+        <td><div class="sb">${esc(c.company_name)}</div><div class="tiny muted">${esc(c.country)}${c.regulated_sector_flag?' · <span style="color:var(--amber)">regulated</span>':''}</div></td>
+        <td>${esc(c.sector)}</td><td>${esc(c.size_band)}</td>
+        <td><span class="badge b-blue">${esc(c.engagement_type)}</span></td>
+        <td class="tiny">${esc(c.contact_name)}</td>
+        <td style="min-width:110px">${bar(s.maturity)}</td>
+        <td class="sb">${moneyK(s.annualValue)}</td></tr>`;}).join('')}</tbody>
+    </table></div>
+  </div>`;
+}
+
+function view_client_detail(){
+  const c=byId('clients',STATE.clientId,'client_id')||DB.clients[0];
+  const cid=c.client_id;const s=clientStats(cid);
+  const engs=where('engagements',e=>e.client_id===cid);
+  return h`
+  <div class="flex between mb"><div class="flex" style="gap:14px">
+    ${ring(s.maturity,'ready')}
+    <div><div class="b" style="font-size:18px">${esc(c.company_name)}</div>
+    <div class="muted tiny">${esc(c.sector)} · ${esc(c.size_band)} employees · ${esc(c.country)}${c.regulated_sector_flag?' · <span style="color:var(--amber);font-weight:700">regulated sector</span>':''}</div>
+    <div class="tiny mt8">${esc(c.contact_name)} · <a href="mailto:${esc(c.contact_email)}">${esc(c.contact_email)}</a></div></div>
+  </div>
+  <div class="flex"><button class="btn sm" onclick="STATE.clientId='${cid}';navigate('client-view')">Client dashboard</button><button class="btn sm" onclick="STATE.clientId='${cid}';navigate('reports')">Reports</button><button class="btn primary sm" onclick="STATE.clientId='${cid}';navigate('proposals')">Proposal</button></div></div>
+
+  <div class="grid g4 mb">
+    <div class="kpi"><div class="k-label">Annual value</div><div class="k-val sm">${moneyK(s.annualValue)}</div></div>
+    <div class="kpi"><div class="k-label">AI systems</div><div class="k-val sm">${s.sys.length}</div><div class="k-sub">${s.sys.filter(x=>x.high_risk_candidate_flag).length} high-risk candidates</div></div>
+    <div class="kpi"><div class="k-label">Open risks</div><div class="k-val sm" style="color:var(--red)">${s.risks.filter(r=>r.status!=='Mitigated').length}</div><div class="k-sub">${s.highRisks} high severity</div></div>
+    <div class="kpi"><div class="k-label">Open actions</div><div class="k-val sm">${s.openActions}</div><div class="k-sub">${s.overdue} overdue</div></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card"><div class="hd"><h3>Engagements</h3></div><div class="bd" style="padding:0"><table><tbody>
+      ${engs.map(e=>h`<tr><td><div class="sb">${esc(e.engagement_type)}</div><div class="tiny muted">${fmtDate(e.start_date)} → ${fmtDate(e.target_end_date)} · ${esc(e.consultant_owner)}</div></td><td class="right">${statusBadge(e.status)}<div class="tiny muted mt8">${moneyK(e.commercial_value||0)}</div></td></tr>`).join('')}
+    </tbody></table></div></div>
+    <div class="card"><div class="hd"><h3>Top risks</h3></div><div class="bd" style="padding:0"><table><tbody>
+      ${[...s.risks].sort((a,b)=>b.risk_score-a.risk_score).slice(0,5).map(r=>h`<tr><td><div class="sb">${esc(r.risk_title)}</div><div class="tiny muted">${esc(r.risk_domain)}</div></td><td class="right">${riskBadge(r.risk_score)}</td></tr>`).join('')}
+    </tbody></table></div></div>
+  </div>
+
+  <div class="card mt"><div class="hd"><div><h3>AI systems</h3><div class="desc">Inventory for this client</div></div><button class="btn sm" onclick="STATE.clientId='${cid}';navigate('inventory')">Open inventory →</button></div>
+  <div class="bd" style="padding:0"><table><thead><tr><th>System</th><th>Dept</th><th>Vendor</th><th>Decision impact</th><th>Autonomy</th><th>Data</th><th>Flag</th></tr></thead><tbody>
+    ${s.sys.map(sy=>h`<tr><td class="sb">${esc(sy.system_name)}</td><td>${esc(sy.department)}</td><td class="tiny">${esc(sy.vendor)}</td><td>${esc(sy.decision_impact_level)}</td><td class="tiny">${esc(sy.autonomy_level)}</td><td class="tiny">${sy.personal_data_flag?'<span class="badge b-amber">Personal</span> ':''}${sy.special_category_data_flag?'<span class="badge b-red">Special</span>':''}${!sy.personal_data_flag&&!sy.special_category_data_flag?'<span class="muted">—</span>':''}</td><td>${sy.high_risk_candidate_flag?'<span class="badge b-red">High-risk</span>':'<span class="muted">—</span>'}</td></tr>`).join('')}
+  </tbody></table></div></div>
+  `;
+}
+
+/* ============================================================
+   7. VIEW: ENGAGEMENTS
+   ============================================================ */
+function view_engagements(){
+  const engs=[...DB.engagements].sort((a,b)=>new Date(a.target_end_date)-new Date(b.target_end_date));
+  const total=engs.reduce((s,e)=>s+(e.commercial_value||0),0);
+  return h`
+  <div class="grid g3 mb">
+    <div class="kpi"><div class="k-label">Active engagements</div><div class="k-val">${engs.length}</div></div>
+    <div class="kpi"><div class="k-label">Total commercial value</div><div class="k-val">${moneyK(total)}</div></div>
+    <div class="kpi"><div class="k-label">In delivery</div><div class="k-val">${engs.filter(e=>e.status==='In delivery').length}</div></div>
+  </div>
+  <div class="card"><div class="hd"><h3>All engagements</h3></div><div class="bd" style="padding:0"><table>
+    <thead><tr><th>Engagement</th><th>Client</th><th>Type</th><th>Timeline</th><th>Value</th><th>Status</th></tr></thead><tbody>
+    ${engs.map(e=>h`<tr class="clickable" onclick="navigate('client-detail',{clientId:'${e.client_id}'})"><td class="sb">${esc(e.engagement_name)}</td><td class="tiny">${esc(clientName(e.client_id))}</td><td><span class="badge b-blue">${esc(e.engagement_type)}</span></td><td class="tiny muted">${fmtDate(e.start_date)} → ${fmtDate(e.target_end_date)}</td><td class="sb">${moneyK(e.commercial_value||0)}</td><td>${statusBadge(e.status)}</td></tr>`).join('')}
+  </tbody></table></div></div>`;
+}
+
+/* ============================================================
+   8. VIEW: CLIENT DASHBOARD (Module L — simple RAG)
+   ============================================================ */
+function view_client_view(){
+  const c=byId('clients',STATE.clientId,'client_id')||DB.clients[0];const cid=c.client_id;const s=clientStats(cid);
+  const valueP=Math.min(100,Math.round(s.annualValue/20000));
+  const clientActions=s.acts.filter(a=>a.owner!=='Consultant'&&a.status!=='Done').sort((a,b)=>daysTo(a.due_date)-daysTo(b.due_date));
+  const reportsAvail=where('reports',r=>r.client_id===cid&&(r.status==='Approved'||r.status==='Draft'));
+  const ragTile=(label,p,gl,al,rl,val)=>h`<div class="card"><div class="bd center"><div class="k-label">${label}</div><div style="margin:10px 0">${ring(p)}</div>${ragBadge(p,gl,al,rl)}${val?`<div class="tiny muted mt8">${val}</div>`:''}</div></div>`;
+  return h`
+  <div class="note mb">This is the simplified <b>client-facing</b> view for ${esc(c.company_name)} — green / amber / red, no technical clutter.</div>
+  <div class="grid g4 mb">
+    ${ragTile('AI Maturity',s.maturity,'Mature','Developing','Early')}
+    ${ragTile('Governance readiness',s.maturity,'Ready','In progress','Significant gaps')}
+    ${ragTile('Risk posture',100-s.riskScore,'Low risk','Moderate','Elevated')}
+    ${ragTile('AI value captured',valueP,'Strong','Building','Untapped',moneyK(s.annualValue)+'/yr')}
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="hd"><h3>Top opportunities</h3></div><div class="bd" style="padding:0"><table><tbody>
+      ${[...s.ucs].sort((a,b)=>b.estimated_financial_value_monthly-a.estimated_financial_value_monthly).slice(0,5).map(u=>h`<tr><td><div class="sb">${esc(u.process_name)}</div><div class="tiny muted">${esc(u.department)}</div></td><td class="right sb">${moneyK(u.estimated_financial_value_monthly*12)}/yr</td></tr>`).join('')}
+    </tbody></table></div></div>
+    <div class="card"><div class="hd"><h3>Actions needing you</h3></div><div class="bd" style="padding:0"><table><tbody>
+      ${clientActions.slice(0,6).map(a=>{const d=daysTo(a.due_date);return h`<tr><td><div class="sb">${esc(a.action_title)}</div><div class="tiny muted">${esc(a.owner)}</div></td><td class="right"><span class="dot ${a.priority==='High'?'r':a.priority==='Medium'?'a':'g'}"></span> <span class="tiny ${d<0?'':'muted'}" style="${d<0?'color:var(--red);font-weight:700':''}">${d<0?Math.abs(d)+'d overdue':'in '+d+'d'}</span></td></tr>`;}).join('')||'<tr><td class="muted">No actions awaiting client.</td></tr>'}
+    </tbody></table></div></div>
+  </div>
+  <div class="card mt"><div class="hd"><h3>Reports available</h3></div><div class="bd"><div class="flex wrap">
+    ${reportsAvail.map(r=>`<span class="chip">▣ ${esc(r.report_type)} · ${esc(r.status)}</span>`).join('')||'<span class="muted">No reports yet.</span>'}
+  </div></div></div>`;
+}
+
+/* ============================================================
+   9. VIEW: AI INVENTORY BUILDER (Module B)
+   ============================================================ */
+function sysScore(sy){
+  const map={Low:1,Medium:2,High:3,Full:1,Partial:2,Minimal:3,Assistive:1,Recommends:2,'Acts with approval':3,Autonomous:4};
+  const dataSens=(sy.special_category_data_flag?3:0)+(sy.personal_data_flag?2:0)+(sy.customer_data_flag?1:0);
+  return {
+    value:rnd(2,3),
+    dataSens:Math.min(5,dataSens+1),
+    autonomy:map[sy.autonomy_level]||2,
+    humanImpact:(map[sy.decision_impact_level]||2)+(sy.external_user_impact_flag?1:0),
+    regRelevance:sy.high_risk_candidate_flag?5:(map[sy.decision_impact_level]||2),
+    govMaturity:rnd(1,3),monMaturity:rnd(1,3)
+  };
+}
+function view_inventory(){
+  const cid=STATE.clientId;const sys=where('ai_systems',x=>x.client_id===cid);
+  return h`
+  <div class="flex between mb"><div class="note" style="flex:1;margin-right:12px">Manually add systems or import. Each system is scored for value, data sensitivity, autonomy, human impact, regulatory relevance and governance maturity. <span class="muted">(Auto-discovery from M365/Workspace/SSO is deliberately out of MVP scope.)</span></div>
+  <div class="flex"><button class="btn sm" onclick="importCsv()">⇪ Import CSV</button><button class="btn primary sm" onclick="addSystem()">+ Add AI system</button></div></div>
+  <div class="card"><div class="bd" style="padding:0"><table>
+    <thead><tr><th>System</th><th>Dept / Owner</th><th>Purpose</th><th>Data</th><th>Decision</th><th>Autonomy</th><th>Oversight</th><th>Score</th><th></th></tr></thead>
+    <tbody>${sys.map(sy=>{const sc=sysScore(sy);const tot=Math.round((sc.dataSens+sc.autonomy+sc.humanImpact+sc.regRelevance)/4/5*100);return h`<tr>
+      <td><div class="sb">${esc(sy.system_name)}</div><div class="tiny muted">${esc(sy.vendor)}</div>${sy.high_risk_candidate_flag?'<span class="badge b-red tiny">High-risk candidate</span>':''}</td>
+      <td class="tiny">${esc(sy.department)}<div class="muted">${esc(sy.owner)}</div></td>
+      <td class="tiny">${esc(sy.purpose)}</td>
+      <td class="tiny">${sy.special_category_data_flag?'<span class="badge b-red">Special</span> ':''}${sy.personal_data_flag?'<span class="badge b-amber">Personal</span> ':''}${sy.customer_data_flag?'<span class="badge b-grey">Customer</span> ':''}${sy.employee_data_flag?'<span class="badge b-grey">Employee</span>':''}</td>
+      <td>${esc(sy.decision_impact_level)}</td><td class="tiny">${esc(sy.autonomy_level)}</td><td class="tiny">${esc(sy.human_oversight_level)}</td>
+      <td style="min-width:90px">${bar(tot)}<div class="tiny muted mt8">risk-weight ${tot}%</div></td>
+      <td class="right"><button class="btn ghost sm" onclick="editSystem('${sy.ai_system_id}')">Edit</button></td>
+    </tr>`;}).join('')}</tbody>
+  </table></div></div>`;
+}
+function sysFormHtml(sy){sy=sy||{};return h`
+  <label class="fld"><span class="lt">System name</span><input class="in" id="f_name" value="${esc(sy.system_name||'')}"></label>
+  <div class="grid g2"><label class="fld"><span class="lt">Vendor</span><input class="in" id="f_vendor" value="${esc(sy.vendor||'')}"></label>
+  <label class="fld"><span class="lt">Department</span><input class="in" id="f_dept" value="${esc(sy.department||'')}"></label></div>
+  <label class="fld"><span class="lt">Purpose</span><input class="in" id="f_purpose" value="${esc(sy.purpose||'')}"></label>
+  <div class="grid g3">
+    <label class="fld"><span class="lt">Decision impact</span><select class="in" id="f_decision">${['Low','Medium','High'].map(o=>`<option ${sy.decision_impact_level===o?'selected':''}>${o}</option>`).join('')}</select></label>
+    <label class="fld"><span class="lt">Autonomy</span><select class="in" id="f_auto">${['Assistive','Recommends','Acts with approval','Autonomous'].map(o=>`<option ${sy.autonomy_level===o?'selected':''}>${o}</option>`).join('')}</select></label>
+    <label class="fld"><span class="lt">Human oversight</span><select class="in" id="f_over">${['Full','Partial','Minimal'].map(o=>`<option ${sy.human_oversight_level===o?'selected':''}>${o}</option>`).join('')}</select></label>
+  </div>
+  <div class="flex wrap" style="gap:18px">
+    <label class="tiny"><input type="checkbox" id="f_personal" ${sy.personal_data_flag?'checked':''}> Personal data</label>
+    <label class="tiny"><input type="checkbox" id="f_special" ${sy.special_category_data_flag?'checked':''}> Special-category data</label>
+    <label class="tiny"><input type="checkbox" id="f_customer" ${sy.customer_data_flag?'checked':''}> Customer data</label>
+    <label class="tiny"><input type="checkbox" id="f_employee" ${sy.employee_data_flag?'checked':''}> Employee data</label>
+    <label class="tiny"><input type="checkbox" id="f_external" ${sy.external_user_impact_flag?'checked':''}> External user impact</label>
+  </div>`;
+}
+function readSysForm(){const g=id=>document.getElementById(id);const dec=g('f_decision').value;const ext=g('f_external').checked;const spec=g('f_special').checked;
+  return {system_name:g('f_name').value||'Untitled system',vendor:g('f_vendor').value,department:g('f_dept').value,purpose:g('f_purpose').value,decision_impact_level:dec,autonomy_level:g('f_auto').value,human_oversight_level:g('f_over').value,personal_data_flag:g('f_personal').checked,special_category_data_flag:spec,customer_data_flag:g('f_customer').checked,employee_data_flag:g('f_employee').checked,external_user_impact_flag:ext,high_risk_candidate_flag:(dec==='High'&&(ext||spec))};}
+function addSystem(){openModal('Add AI system',sysFormHtml({}),`<button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="saveNewSystem()">Add system</button>`);}
+function saveNewSystem(){const d=readSysForm();d.ai_system_id=uid('sys');d.client_id=STATE.clientId;d.owner='—';d.users_count=0;d.data_types_processed='';d.status='Confirmed';d.evidence_links=[];DB.ai_systems.push(d);saveDB();closeModal();toast('AI system added');navigate('inventory');}
+function editSystem(id){const sy=byId('ai_systems',id,'ai_system_id');openModal('Edit AI system',sysFormHtml(sy),`<button class="btn danger" onclick="delSystem('${id}')">Delete</button><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="saveEditSystem('${id}')">Save</button>`);}
+function saveEditSystem(id){const sy=byId('ai_systems',id,'ai_system_id');Object.assign(sy,readSysForm());saveDB();closeModal();toast('System updated');navigate('inventory');}
+function delSystem(id){DB.ai_systems=DB.ai_systems.filter(x=>x.ai_system_id!==id);syncDelete('ai_systems','ai_system_id',id);saveDB('ai_systems');closeModal();toast('System removed');navigate('inventory');}
+function importCsv(){openModal('Import AI systems (CSV)',`<div class="note mb">Paste CSV with header: <code>system_name,vendor,department,purpose,decision_impact_level,autonomy_level</code></div><textarea class="in" id="csvData" style="min-height:140px" placeholder="Recommendation engine,internal model,Product,Personalise feed,High,Autonomous"></textarea>`,`<button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="doImportCsv()">Import</button>`);}
+function doImportCsv(){const t=document.getElementById('csvData').value.trim();if(!t){closeModal();return;}let n=0;t.split(/\n/).forEach(line=>{const p=line.split(',');if(p[0]&&p[0].toLowerCase()!=='system_name'){DB.ai_systems.push({ai_system_id:uid('sys'),client_id:STATE.clientId,system_name:p[0].trim(),vendor:(p[1]||'').trim(),department:(p[2]||'').trim(),owner:'—',purpose:(p[3]||'').trim(),users_count:0,data_types_processed:'',personal_data_flag:false,special_category_data_flag:false,customer_data_flag:false,employee_data_flag:false,decision_impact_level:(p[4]||'Medium').trim(),autonomy_level:(p[5]||'Assistive').trim(),human_oversight_level:'Partial',external_user_impact_flag:false,high_risk_candidate_flag:false,status:'Confirmed',evidence_links:[]});n++;}});saveDB();closeModal();toast(n+' systems imported');navigate('inventory');}
+
+/* ============================================================
+   10. VIEW: CLIENT INTAKE WIZARD (Module A)
+   ============================================================ */
+let INTAKE={step:0,data:{}};
+const INTAKE_STEPS=['Company','AI landscape','Data & risk','Objectives','Result'];
+function view_intake(){
+  if(INTAKE.step>=4)return intakeResult();
+  return h`
+  <div class="stepper">${INTAKE_STEPS.map((s,i)=>`<div class="st ${i===INTAKE.step?'active':i<INTAKE.step?'done':''}">${i<INTAKE.step?'✓ ':''}${s}</div>`).join('')}</div>
+  <div class="card" style="max-width:760px"><div class="bd">${[intakeStep0,intakeStep1,intakeStep2,intakeStep3][INTAKE.step]()}</div>
+  <div class="m-ft" style="border-top:1px solid var(--line);padding:14px 18px;display:flex;justify-content:space-between">
+    <button class="btn ghost" onclick="intakeBack()" ${INTAKE.step===0?'style="visibility:hidden"':''}>← Back</button>
+    <button class="btn primary" onclick="intakeNext()">${INTAKE.step===3?'Generate profile →':'Continue →'}</button>
+  </div></div>`;
+}
+const d=INTAKE.data;
+function iv(id,def){return INTAKE.data[id]!==undefined?INTAKE.data[id]:(def||'');}
+function intakeStep0(){return h`<h3 style="margin-top:0">Company profile</h3>
+  <div class="grid g2"><label class="fld"><span class="lt">Company name</span><input class="in" id="i_name" value="${esc(iv('name'))}"></label>
+  <label class="fld"><span class="lt">Sector</span><input class="in" id="i_sector" value="${esc(iv('sector'))}" placeholder="e.g. Manufacturing"></label></div>
+  <div class="grid g3"><label class="fld"><span class="lt">Size band</span><select class="in" id="i_size">${['1-9','10-49','50-99','100-249','250-999','1000+'].map(o=>`<option ${iv('size')===o?'selected':''}>${o}</option>`).join('')}</select></label>
+  <label class="fld"><span class="lt">Country</span><input class="in" id="i_country" value="${esc(iv('country','United Kingdom'))}"></label>
+  <label class="fld"><span class="lt">Regulated sector?</span><select class="in" id="i_reg"><option value="no" ${iv('reg')==='no'?'selected':''}>No</option><option value="yes" ${iv('reg')==='yes'?'selected':''}>Yes</option></select></label></div>
+  <div class="grid g2"><label class="fld"><span class="lt">Main contact</span><input class="in" id="i_contact" value="${esc(iv('contact'))}"></label>
+  <label class="fld"><span class="lt">Contact email</span><input class="in" id="i_email" value="${esc(iv('email'))}"></label></div>`;}
+function intakeStep1(){return h`<h3 style="margin-top:0">AI landscape</h3>
+  <label class="fld"><span class="lt">Which AI tools are in use today? (comma separated)</span><input class="in" id="i_tools" value="${esc(iv('tools'))}" placeholder="Copilot, internal forecasting model, chatbot…"></label>
+  <label class="fld"><span class="lt">Where could AI help most? (key use cases / processes)</span><textarea class="in" id="i_uses">${esc(iv('uses'))}</textarea></label>
+  <label class="fld"><span class="lt">Roughly how many AI systems are live?</span><select class="in" id="i_count">${['1-3','4-8','9-15','15+'].map(o=>`<option ${iv('count')===o?'selected':''}>${o}</option>`).join('')}</select></label>`;}
+function intakeStep2(){return h`<h3 style="margin-top:0">Data sensitivity & risk signals</h3>
+  <div class="flex wrap" style="gap:16px" id="i_dataflags">
+    ${[['personal','Processes personal data'],['special','Special-category data (health, biometric…)'],['customer','Customer data'],['children','Affects children / vulnerable groups'],['automated','Makes automated decisions about people'],['external','External / public users affected']].map(f=>`<label class="tiny"><input type="checkbox" data-flag="${f[0]}" ${iv('flags',[]).includes&&(iv('flags',[]).includes(f[0]))?'checked':''}> ${f[1]}</label>`).join('')}
+  </div>
+  <label class="fld mt"><span class="lt">Biggest concerns or pressures right now</span><textarea class="in" id="i_pain" placeholder="e.g. EU AI Act exposure, client data, board scrutiny…">${esc(iv('pain'))}</textarea></label>
+  <label class="fld"><span class="lt">Existing governance maturity</span><select class="in" id="i_mat">${['None','Ad-hoc','Some policies','Formal programme'].map(o=>`<option ${iv('mat')===o?'selected':''}>${o}</option>`).join('')}</select></label>`;}
+function intakeStep3(){return h`<h3 style="margin-top:0">Objectives</h3>
+  <label class="fld"><span class="lt">What does success look like in 6 months?</span><textarea class="in" id="i_obj">${esc(iv('obj'))}</textarea></label>
+  <label class="fld"><span class="lt">Preferred engagement type (we'll recommend one too)</span><select class="in" id="i_eng"><option value="">— let Amplify recommend —</option>${['AI Operating Review','AI Governance Review','ISO 42001 Readiness','EU AI Act Readiness','AI Business Outcomes Accelerator','Continuous Improvement'].map(o=>`<option ${iv('eng')===o?'selected':''}>${o}</option>`).join('')}</select></label>`;}
+function captureIntake(){const g=id=>{const e=document.getElementById(id);return e?e.value:undefined;};const D=INTAKE.data;
+  if(INTAKE.step===0){D.name=g('i_name');D.sector=g('i_sector');D.size=g('i_size');D.country=g('i_country');D.reg=g('i_reg');D.contact=g('i_contact');D.email=g('i_email');}
+  if(INTAKE.step===1){D.tools=g('i_tools');D.uses=g('i_uses');D.count=g('i_count');}
+  if(INTAKE.step===2){D.flags=[...document.querySelectorAll('#i_dataflags input:checked')].map(x=>x.dataset.flag);D.pain=g('i_pain');D.mat=g('i_mat');}
+  if(INTAKE.step===3){D.obj=g('i_obj');D.eng=g('i_eng');}
+}
+function intakeNext(){captureIntake();if(INTAKE.step===0&&!INTAKE.data.name){toast('Enter a company name');return;}INTAKE.step++;navigate('intake');}
+function intakeBack(){captureIntake();INTAKE.step--;navigate('intake');}
+function computeIntake(){const D=INTAKE.data;const flags=D.flags||[];
+  // maturity score
+  const matMap={'None':10,'Ad-hoc':30,'Some policies':55,'Formal programme':80};
+  const maturity=matMap[D.mat]||20;
+  // risk score (higher = riskier)
+  let risk=20;if(flags.includes('personal'))risk+=10;if(flags.includes('special'))risk+=18;if(flags.includes('children'))risk+=15;if(flags.includes('automated'))risk+=15;if(flags.includes('external'))risk+=10;if(D.reg==='yes')risk+=12;if((D.count||'').match(/15|9-15/))risk+=8;risk=Math.min(98,risk);
+  // recommended engagement
+  let rec=D.eng;
+  if(!rec){
+    if(flags.includes('automated')&&(flags.includes('external')||flags.includes('special')))rec='EU AI Act Readiness';
+    else if(D.reg==='yes')rec='AI Governance Review';
+    else if(maturity<35&&risk>50)rec='AI Governance Review';
+    else if(maturity>=55)rec='ISO 42001 Readiness';
+    else rec='AI Operating Review';
+  }
+  const missing=[];if(!D.tools)missing.push('AI tool list');if(!D.uses)missing.push('priority use cases');if(!(D.flags||[]).length)missing.push('data sensitivity confirmation');if(!D.obj)missing.push('success objectives');
+  return {maturity,risk,rec,missing,flags};
+}
+function intakeResult(){const D=INTAKE.data;const r=computeIntake();
+  return h`
+  <div class="stepper">${INTAKE_STEPS.map((s,i)=>`<div class="st done">✓ ${s}</div>`).join('')}</div>
+  <div class="note mb"><span class="review-flag rf-ai">AI-generated</span> &nbsp;Provisional profile from intake — review before relying on it. Prompt: <code>p_intake v1.2</code>.</div>
+  <div class="grid g3 mb">
+    <div class="card"><div class="bd center"><div class="k-label">Provisional AI maturity</div><div style="margin:10px 0">${ring(r.maturity)}</div>${ragBadge(r.maturity,'Mature','Developing','Early-stage')}</div></div>
+    <div class="card"><div class="bd center"><div class="k-label">Provisional risk exposure</div><div style="margin:10px 0">${ring(r.risk)}</div><span class="badge ${r.risk>=60?'b-red':r.risk>=40?'b-amber':'b-green'}">${r.risk>=60?'High':r.risk>=40?'Moderate':'Lower'} exposure</span></div></div>
+    <div class="card"><div class="bd"><div class="k-label">Recommended engagement</div><div class="b mt8" style="font-size:16px;color:var(--brand)">${esc(r.rec)}</div><div class="tiny muted mt8">Based on maturity, data sensitivity, automated decisions and regulatory exposure.</div></div></div>
+  </div>
+  <div class="card mb"><div class="hd"><h3>Client profile summary</h3></div><div class="bd">
+    <div class="grid g2">
+      <div><div class="tiny muted">Company</div><div class="sb mb">${esc(D.name||'—')}</div>
+      <div class="tiny muted">Sector / size</div><div class="sb mb">${esc(D.sector||'—')} · ${esc(D.size||'—')}</div>
+      <div class="tiny muted">Regulated</div><div class="sb">${D.reg==='yes'?'Yes':'No'}</div></div>
+      <div><div class="tiny muted">AI tools noted</div><div class="sb mb">${esc(D.tools||'—')}</div>
+      <div class="tiny muted">Data signals</div><div class="mb">${(r.flags||[]).map(f=>`<span class="chip tiny">${f}</span>`).join('')||'—'}</div></div>
+    </div>
+    ${r.missing.length?`<div class="note warn mt">Missing information to follow up: ${r.missing.map(m=>`<b>${m}</b>`).join(', ')}.</div>`:''}
+  </div></div>
+  <div class="flex"><button class="btn" onclick="INTAKE={step:0,data:{}};navigate('intake')">↺ Start over</button>
+  <button class="btn primary" onclick="commitIntake()">✓ Create client &amp; engagement</button></div>`;
+}
+function commitIntake(){const D=INTAKE.data;const r=computeIntake();const cid=uid('cl');
+  DB.clients.push({client_id:cid,company_name:D.name||'New client',sector:D.sector||'—',size_band:D.size||'10-49',size_num:30,country:D.country||'United Kingdom',regulated_sector_flag:D.reg==='yes',contact_name:D.contact||'',contact_email:D.email||'',engagement_type:r.rec,created_at:dOffset(0),updated_at:dOffset(0)});
+  DB.engagements.push({engagement_id:uid('eng'),client_id:cid,engagement_name:r.rec+' — '+(D.name||'New client'),engagement_type:r.rec,start_date:dOffset(0),target_end_date:dOffset(60),status:'Discovery',consultant_owner:'Segun Osu',commercial_value:r.rec==='AI Governance Review'?38000:r.rec==='EU AI Act Readiness'?45000:28000,notes:'Created from intake wizard.'});
+  DB.assessments.push({assessment_id:uid('as'),client_id:cid,engagement_id:'',assessment_type:'Multi-framework readiness',framework_scope:['fw_iso42001','fw_euaiact','fw_nist','fw_gdpr','fw_iso27001'],status:'Not started',readiness_score:r.maturity,created_at:dOffset(0),completed_at:null,responses:[]});
+  saveDB();INTAKE={step:0,data:{}};STATE.clientId=cid;toast('Client created');navigate('client-detail',{clientId:cid});
+}
+
+/* ============================================================
+   11. VIEW: OPPORTUNITY ENGINE (Module H)
+   ============================================================ */
+let OPP_SORT='value';
+function view_opportunities(){
+  const cid=STATE.clientId;let ucs=where('use_cases',u=>u.client_id===cid);
+  const annual=u=>u.estimated_financial_value_monthly*12;
+  const effortRank={Low:1,Medium:2,High:3};const confRank={High:3,Medium:2,Low:1};
+  // priority score = value-weighted by confidence, penalised by effort & governance risk
+  const score=u=>Math.round((annual(u)/1000)*confRank[u.confidence_level]/effortRank[u.implementation_effort]);
+  ucs=ucs.map(u=>({u,annual:annual(u),score:score(u)}));
+  if(OPP_SORT==='value')ucs.sort((a,b)=>b.annual-a.annual);else if(OPP_SORT==='score')ucs.sort((a,b)=>b.score-a.score);else ucs.sort((a,b)=>effortRank[a.u.implementation_effort]-effortRank[b.u.implementation_effort]);
+  const totalAnnual=ucs.reduce((s,x)=>s+x.annual,0);
+  const totalHours=ucs.reduce((s,x)=>s+x.u.estimated_hours_saved_monthly,0)*12;
+  const quickWins=ucs.filter(x=>x.u.implementation_effort==='Low'&&x.u.confidence_level!=='Low');
+  return h`
+  <div class="note mb">Prevents Amplify from being a generic compliance tool. Value, effort and confidence per use case → ranked opportunities and next-best-actions. <span class="review-flag rf-ai">AI-generated</span> estimates — confirm financial assumptions with the client (review gate).</div>
+  <div class="grid g3 mb">
+    <div class="kpi"><div class="k-label">Annual value potential</div><div class="k-val">${moneyK(totalAnnual)}</div></div>
+    <div class="kpi"><div class="k-label">Hours saved / year</div><div class="k-val">${totalHours.toLocaleString()}</div></div>
+    <div class="kpi"><div class="k-label">Quick wins (low effort)</div><div class="k-val">${quickWins.length}</div><div class="k-sub">${moneyK(quickWins.reduce((s,x)=>s+x.annual,0))}/yr</div></div>
+  </div>
+  <div class="card"><div class="hd"><div><h3>Ranked opportunities</h3><div class="desc">${clientName(cid)}</div></div>
+  <div class="flex"><span class="tiny muted">Sort:</span><select class="in" style="width:auto" onchange="OPP_SORT=this.value;navigate('opportunities')"><option value="value" ${OPP_SORT==='value'?'selected':''}>Annual value</option><option value="score" ${OPP_SORT==='score'?'selected':''}>Priority score</option><option value="effort" ${OPP_SORT==='effort'?'selected':''}>Lowest effort</option></select>
+  <button class="btn primary sm" onclick="addOpp()">+ Add use case</button></div></div>
+  <div class="bd" style="padding:0"><table>
+    <thead><tr><th>#</th><th>Opportunity</th><th>Dept</th><th>Value type</th><th>Monthly</th><th>Annual</th><th>Effort</th><th>Conf.</th><th>Gov. risk</th><th>Priority</th></tr></thead>
+    <tbody>${ucs.map((x,i)=>h`<tr class="clickable" onclick="oppDetail('${x.u.use_case_id}')"><td class="muted">${i+1}</td><td class="sb">${esc(x.u.process_name)}</td><td class="tiny">${esc(x.u.department)}</td><td><span class="badge b-grey">${esc(x.u.value_type)}</span></td><td>${moneyK(x.u.estimated_financial_value_monthly)}</td><td class="sb">${moneyK(x.annual)}</td><td>${esc(x.u.implementation_effort)}</td><td>${esc(x.u.confidence_level)}</td><td>${x.u.governance_risk_level==='High'?'<span class="badge b-red">High</span>':x.u.governance_risk_level==='Medium'?'<span class="badge b-amber">Med</span>':'<span class="badge b-green">Low</span>'}</td><td><div class="flex" style="gap:6px"><div class="bar" style="width:54px"><i style="width:${Math.min(100,x.score)}%;background:var(--brand)"></i></div><span class="tiny muted">${x.score}</span></div></td></tr>`).join('')}</tbody>
+  </table></div></div>`;
+}
+function oppDetail(id){const u=byId('use_cases',id,'use_case_id');openModal(esc(u.process_name),h`
+  <div class="grid g2 mb"><div><div class="tiny muted">Department</div><div class="sb">${esc(u.department)}</div></div><div><div class="tiny muted">Value type</div><div class="sb">${esc(u.value_type)}</div></div></div>
+  <div class="tiny muted">Current pain point</div><div class="mb">${esc(u.current_pain_point)}</div>
+  <div class="tiny muted">AI usage</div><div class="mb">${esc(u.ai_usage_description)}</div>
+  <div class="grid g3 mb">
+    <div class="kpi"><div class="k-label">Monthly value</div><div class="k-val sm">${money(u.estimated_financial_value_monthly)}</div></div>
+    <div class="kpi"><div class="k-label">Hours saved/mo</div><div class="k-val sm">${u.estimated_hours_saved_monthly}</div></div>
+    <div class="kpi"><div class="k-label">Annual value</div><div class="k-val sm">${moneyK(u.estimated_financial_value_monthly*12)}</div></div>
+  </div>
+  <div class="note"><b>Recommended next best action:</b> ${esc(u.recommended_next_action)}</div>
+`,`<button class="btn" onclick="closeModal()">Close</button>`);}
+function addOpp(){openModal('Add AI use case',h`
+  <label class="fld"><span class="lt">Process / opportunity name</span><input class="in" id="o_name"></label>
+  <div class="grid g2"><label class="fld"><span class="lt">Department</span><input class="in" id="o_dept"></label>
+  <label class="fld"><span class="lt">Value type</span><select class="in" id="o_vt">${POOL.valueTypes.map(v=>`<option>${v}</option>`).join('')}</select></label></div>
+  <label class="fld"><span class="lt">Current pain point</span><input class="in" id="o_pain"></label>
+  <label class="fld"><span class="lt">How AI helps</span><input class="in" id="o_use"></label>
+  <div class="grid g4"><label class="fld"><span class="lt">Hours/mo</span><input class="in" id="o_hours" type="number" value="40"></label>
+  <label class="fld"><span class="lt">£/mo value</span><input class="in" id="o_fin" type="number" value="5000"></label>
+  <label class="fld"><span class="lt">Effort</span><select class="in" id="o_eff">${POOL.effort.map(v=>`<option>${v}</option>`).join('')}</select></label>
+  <label class="fld"><span class="lt">Confidence</span><select class="in" id="o_conf">${POOL.conf.map(v=>`<option>${v}</option>`).join('')}</select></label></div>
+`,`<button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="saveOpp()">Add</button>`);}
+function saveOpp(){const g=id=>document.getElementById(id).value;DB.use_cases.push({use_case_id:uid('uc'),client_id:STATE.clientId,department:g('o_dept'),process_name:g('o_name')||'New use case',current_pain_point:g('o_pain'),ai_usage_description:g('o_use'),value_type:g('o_vt'),estimated_hours_saved_monthly:+g('o_hours')||0,estimated_financial_value_monthly:+g('o_fin')||0,confidence_level:g('o_conf'),implementation_effort:g('o_eff'),governance_risk_level:'Medium',recommended_next_action:'Scope a short pilot with success metrics.'});saveDB();closeModal();toast('Use case added');navigate('opportunities');}
+
+/* ============================================================
+   12. VIEW: ASSESSMENT ENGINE
+   ============================================================ */
+function view_assessment(){
+  const cid=STATE.clientId;const asm=where('assessments',a=>a.client_id===cid)[0];
+  if(!asm)return '<div class="empty">No assessment for this client.</div>';
+  if(!asm.responses.length){
+    return h`<div class="card" style="max-width:640px"><div class="bd center"><div class="empty"><div class="ico">✓</div><div class="sb">No assessment run yet</div><div class="tiny muted mb">Generate a multi-framework readiness assessment across ISO 42001, EU AI Act, NIST AI RMF, GDPR and ISO 27001.</div><button class="btn primary" onclick="runAssessment('${asm.assessment_id}')">Run assessment</button></div></div></div>`;
+  }
+  const resp=asm.responses;const total=resp.length;const yes=resp.filter(r=>r.answer==='Yes').length;const part=resp.filter(r=>r.answer==='Partial').length;const gaps=resp.filter(r=>r.gap_flag);
+  // by framework
+  const byFw={};resp.forEach(r=>{const f=fwNameOfReq(r.requirement_id);(byFw[f]=byFw[f]||[]).push(r);});
+  return h`
+  <div class="flex between mb"><div class="note" style="flex:1;margin-right:12px"><span class="review-flag rf-ai">AI-generated</span> Draft readiness. Each answer carries an AI confidence and a human-review status. Conclusions require sign-off (review gate). Prompt <code>p_gap v1.4</code>.</div>
+  <button class="btn sm" onclick="runAssessment('${asm.assessment_id}')">↻ Re-run</button></div>
+  <div class="grid g4 mb">
+    <div class="card"><div class="bd center"><div class="k-label">Overall readiness</div><div style="margin:10px 0">${ring(asm.readiness_score)}</div></div></div>
+    <div class="kpi"><div class="k-label">Requirements assessed</div><div class="k-val">${total}</div></div>
+    <div class="kpi"><div class="k-label">Met / partial</div><div class="k-val sm">${yes} / ${part}</div></div>
+    <div class="kpi"><div class="k-label">Gaps</div><div class="k-val" style="color:var(--red)">${gaps.length}</div><div class="k-sub">${gaps.filter(g=>g.risk_level==='High').length} high risk</div></div>
+  </div>
+  <div class="card mb"><div class="hd"><h3>Readiness by framework</h3></div><div class="bd"><div class="grid g2">
+    ${Object.keys(byFw).map(f=>{const rs=byFw[f];const sc=Math.round((rs.filter(r=>r.answer==='Yes').length+rs.filter(r=>r.answer==='Partial').length*.5)/rs.length*100);return h`<div class="mb"><div class="flex between"><span class="sb tiny">${esc(f)}</span><span class="tiny muted">${sc}%</span></div>${bar(sc)}</div>`;}).join('')}
+  </div></div></div>
+  <div class="card"><div class="hd"><div><h3>Responses &amp; gaps</h3><div class="desc">Toggle human review on each item</div></div></div><div class="bd" style="padding:0"><table>
+    <thead><tr><th>Requirement</th><th>Framework</th><th>Answer</th><th>AI conf.</th><th>Risk</th><th>Review</th></tr></thead>
+    <tbody>${resp.map(r=>{const rq=reqById(r.requirement_id);return h`<tr><td><div class="sb">${esc(rq?rq.requirement_title:r.requirement_id)}</div><div class="tiny muted">${rq?esc(rq.requirement_reference):''}</div></td><td class="tiny">${esc(fwNameOfReq(r.requirement_id))}</td><td>${r.answer==='Yes'?'<span class="badge b-green">Met</span>':r.answer==='Partial'?'<span class="badge b-amber">Partial</span>':'<span class="badge b-red">Gap</span>'}</td><td class="tiny">${esc(r.ai_confidence)}</td><td>${r.gap_flag?(r.risk_level==='High'?'<span class="badge b-red">High</span>':'<span class="badge b-amber">'+esc(r.risk_level)+'</span>'):'<span class="muted">—</span>'}</td><td><span class="review-flag ${r.human_review_status==='Reviewed'?'rf-approved':'rf-review'}" style="cursor:pointer" onclick="toggleReview('${asm.assessment_id}','${r.response_id}')">${r.human_review_status==='Reviewed'?'✓ Reviewed':'Mark reviewed'}</span></td></tr>`;}).join('')}</tbody>
+  </table></div></div>`;
+}
+function runAssessment(aid){const asm=byId('assessments',aid,'assessment_id');const reqs=REQUIREMENTS.filter(r=>asm.framework_scope.includes(r.framework_id));
+  asm.responses=reqs.map(rq=>{const ans=pick(['Yes','Partial','Partial','No','No']);const gap=ans!=='Yes';return {response_id:uid('resp'),requirement_id:rq.requirement_id,question:"Is '"+rq.requirement_title+"' met?",answer:ans,evidence_provided:ans==='Yes',ai_confidence:pick(POOL.conf),human_review_status:'Pending',gap_flag:gap,risk_level:gap?pick(['Medium','High']):'Low'};});
+  const yes=asm.responses.filter(r=>r.answer==='Yes').length;const part=asm.responses.filter(r=>r.answer==='Partial').length;
+  asm.readiness_score=Math.round((yes+part*.5)/asm.responses.length*100);asm.status='In progress';saveDB();toast('Assessment generated');navigate('assessment');}
+function toggleReview(aid,rid){const asm=byId('assessments',aid,'assessment_id');const r=asm.responses.find(x=>x.response_id===rid);r.human_review_status=r.human_review_status==='Reviewed'?'Pending':'Reviewed';saveDB();navigate('assessment');}
+
+/* ============================================================
+   13. VIEW: MULTI-FRAMEWORK MAPPING ENGINE (Module C)
+   ============================================================ */
+// derive coverage from the client's assessment responses + evidence/controls linkage
+function reqCoverage(cid){
+  const asm=where('assessments',a=>a.client_id===cid)[0];
+  const ev=where('evidence',e=>e.client_id===cid);
+  const ctl=where('controls',c=>c.client_id===cid);
+  const cov={};
+  REQUIREMENTS.forEach(rq=>{
+    const resp=asm&&asm.responses.find(r=>r.requirement_id===rq.requirement_id);
+    const hasEv=ev.some(e=>(e.linked_requirement_ids||[]).includes(rq.requirement_id)&&(e.status==='Approved'||e.status==='Generated'||e.status==='Received'));
+    const hasCtl=ctl.some(c=>(c.related_framework_requirements||[]).includes(rq.requirement_id)&&c.implementation_status==='Implemented');
+    let state='missing';
+    if(resp){if(resp.answer==='Yes'||(hasEv&&hasCtl))state='covered';else if(resp.answer==='Partial'||hasEv||hasCtl)state='partial';}
+    else if(hasEv&&hasCtl)state='covered';else if(hasEv||hasCtl)state='partial';
+    cov[rq.requirement_id]={state,hasEv,hasCtl};
+  });
+  return cov;
+}
+function view_mapping(){
+  const cid=STATE.clientId;const cov=reqCoverage(cid);
+  const fwStats=DB.frameworks.map(f=>{const reqs=REQUIREMENTS.filter(r=>r.framework_id===f.framework_id);const cot=reqs.filter(r=>cov[r.requirement_id].state==='covered').length;const par=reqs.filter(r=>cov[r.requirement_id].state==='partial').length;const mis=reqs.length-cot-par;const score=Math.round((cot+par*.5)/reqs.length*100);return {f,reqs,cot,par,mis,score};});
+  const allMissing=REQUIREMENTS.filter(r=>cov[r.requirement_id].state==='missing');
+  return h`
+  <div class="note mb">One control or evidence item is reusable across frameworks. Coverage is derived from the client's assessment, controls and evidence. <span class="tiny muted">Reuse mappings defined: ${MAPPINGS.length}.</span></div>
+  <div class="grid g3 mb">${fwStats.map(s=>h`<div class="card"><div class="bd"><div class="flex between"><span class="sb">${esc(s.f.framework_name)}</span><span class="badge ${s.score>=70?'b-green':s.score>=40?'b-amber':'b-red'}">${s.score}%</span></div><div class="tiny muted mb">${esc(s.f.version)}</div>${bar(s.score)}<div class="tiny mt8"><span style="color:var(--green)">●</span> ${s.cot} covered &nbsp; <span style="color:var(--amber)">●</span> ${s.par} partial &nbsp; <span style="color:var(--red)">●</span> ${s.mis} missing</div></div></div>`).join('')}</div>
+
+  <div class="card mb"><div class="hd"><div><h3>Requirement coverage matrix</h3><div class="desc">${clientName(cid)} — evidence &amp; control reuse shown per requirement</div></div></div>
+  <div class="bd" style="padding:0"><table>
+    <thead><tr><th>Framework</th><th>Ref</th><th>Requirement</th><th>Status</th><th>Evidence</th><th>Control</th><th>Reused by</th></tr></thead>
+    <tbody>${REQUIREMENTS.map(rq=>{const c=cov[rq.requirement_id];const reuse=MAPPINGS.filter(m=>m.source_framework_requirement_id===rq.requirement_id||m.target_framework_requirement_id===rq.requirement_id).map(m=>{const other=m.source_framework_requirement_id===rq.requirement_id?m.target_framework_requirement_id:m.source_framework_requirement_id;return fwNameOfReq(other);});const uniq=[...new Set(reuse)];return h`<tr>
+      <td class="tiny sb">${esc(fwById(rq.framework_id).framework_name)}</td><td class="tiny muted">${esc(rq.requirement_reference)}</td>
+      <td>${esc(rq.requirement_title)}<div class="tiny muted">${esc(rq.risk_domain)}</div></td>
+      <td>${c.state==='covered'?'<span class="badge b-green">Covered</span>':c.state==='partial'?'<span class="badge b-amber">Partial</span>':'<span class="badge b-red">Missing</span>'}</td>
+      <td class="center">${c.hasEv?'✓':'<span class="muted">—</span>'}</td><td class="center">${c.hasCtl?'✓':'<span class="muted">—</span>'}</td>
+      <td class="tiny muted">${uniq.length?uniq.join(', '):'—'}</td></tr>`;}).join('')}</tbody>
+  </table></div></div>
+  ${allMissing.length?h`<div class="card"><div class="hd"><div><h3>Recommended remediation</h3><div class="desc">${allMissing.length} missing requirements — generated next actions</div></div><button class="btn sm" onclick="createGapActions()">+ Create actions from gaps</button></div><div class="bd" style="padding:0"><table><tbody>
+    ${allMissing.slice(0,12).map(rq=>h`<tr><td><div class="sb">${esc(rq.requirement_title)} <span class="tiny muted">(${esc(fwById(rq.framework_id).framework_name)} ${esc(rq.requirement_reference)})</span></div><div class="tiny muted">Needs: ${esc(rq.evidence_needed)} · Control: ${esc(rq.control_needed)}</div></td><td class="right"><span class="badge ${rq.priority==='High'?'b-red':'b-amber'}">${esc(rq.priority)}</span></td></tr>`).join('')}
+  </tbody></table></div></div>`:''}`;
+}
+function createGapActions(){const cid=STATE.clientId;const cov=reqCoverage(cid);const eng=where('engagements',e=>e.client_id===cid)[0]||{};let n=0;
+  REQUIREMENTS.filter(r=>cov[r.requirement_id].state==='missing').forEach(rq=>{DB.actions.push({action_id:uid('act'),client_id:cid,engagement_id:eng.engagement_id||'',action_title:'Close gap: '+rq.requirement_title,action_description:'Provide '+rq.evidence_needed+' and implement '+rq.control_needed+'.',owner:'Shared',priority:rq.priority,due_date:dOffset(rnd(14,45)),related_risk_id:null,related_opportunity_id:null,related_requirement_id:rq.requirement_id,status:'Not started',next_best_action_text:'Generate draft '+rq.control_needed+' in Evidence Factory.'});n++;});
+  saveDB();toast(n+' remediation actions created');navigate('mapping');}
+
+/* ============================================================
+   14. VIEW: EU AI ACT CLASSIFICATION ASSISTANT (Module D)
+   ============================================================ */
+let EUAI={sysId:null,ans:{}};
+const EUAI_Q=[
+  {id:'prohibited',q:'Does the system use any prohibited practice (social scoring, manipulative techniques, untargeted facial scraping, real-time remote biometric ID in public)?',weight:'prohibited'},
+  {id:'biometric',q:'Does it perform biometric identification, categorisation, or emotion recognition?',weight:'high'},
+  {id:'criticalUse',q:'Is it used in a high-risk area (employment/HR, education, essential services, law enforcement, critical infrastructure, credit)?',weight:'high'},
+  {id:'safety',q:'Is it a safety component of a regulated product?',weight:'high'},
+  {id:'autonomy',q:'Does it make or strongly drive decisions about people with limited human oversight?',weight:'high'},
+  {id:'interacts',q:'Does it interact directly with people or generate content shown to them (chatbot, generated media)?',weight:'limited'},
+  {id:'gpai',q:'Is it (or built on) a general-purpose / foundation model?',weight:'gpai'},
+  {id:'role',q:'Is your client the PROVIDER (builds/places on market) rather than only the DEPLOYER (uses it)?',weight:'role'}
+];
+function view_euaiact(){
+  const cid=STATE.clientId;const sys=where('ai_systems',x=>x.client_id===cid);
+  if(!EUAI.sysId||!sys.find(s=>s.ai_system_id===EUAI.sysId))EUAI={sysId:sys[0]&&sys[0].ai_system_id,ans:{}};
+  const cur=byId('ai_systems',EUAI.sysId,'ai_system_id');
+  const result=cur?classifyEUAI():null;
+  return h`
+  <div class="note warn mb"><b>Not legal advice.</b> This assistant produces a <b>provisional</b> classification to structure a conversation and flag what needs qualified legal review. Final EU AI Act conclusions must be signed off by a human (review gate). Prompt <code>p_euai v1.1</code>.</div>
+  <div class="grid g2">
+    <div class="card"><div class="hd"><h3>1 · Select system &amp; answer</h3></div><div class="bd">
+      <label class="fld"><span class="lt">AI system</span><select class="in" onchange="EUAI={sysId:this.value,ans:{}};navigate('euaiact')">${sys.map(s=>`<option value="${s.ai_system_id}" ${s.ai_system_id===EUAI.sysId?'selected':''}>${esc(s.system_name)}</option>`).join('')}</select></label>
+      ${EUAI_Q.map(q=>h`<div class="mb"><div class="tiny sb mb" style="margin-bottom:6px">${esc(q.q)}</div><div class="flex"><label class="tiny"><input type="radio" name="q_${q.id}" ${EUAI.ans[q.id]==='yes'?'checked':''} onclick="EUAI.ans['${q.id}']='yes';navigate('euaiact')"> Yes</label> <label class="tiny"><input type="radio" name="q_${q.id}" ${EUAI.ans[q.id]==='no'?'checked':''} onclick="EUAI.ans['${q.id}']='no';navigate('euaiact')"> No</label> <label class="tiny"><input type="radio" name="q_${q.id}" ${EUAI.ans[q.id]===undefined||EUAI.ans[q.id]==='unsure'?'checked':''} onclick="EUAI.ans['${q.id}']='unsure';navigate('euaiact')"> Unsure</label></div></div>`).join('')}
+    </div></div>
+    <div class="card"><div class="hd"><h3>2 · Provisional classification</h3></div><div class="bd">
+      ${result?h`
+      <div class="center mb"><span class="badge ${result.badge}" style="font-size:14px;padding:7px 16px">${esc(result.tier)}</span></div>
+      <div class="tiny muted">Reasoning</div><ul class="tiny" style="padding-left:18px">${result.reasons.map(r=>`<li>${esc(r)}</li>`).join('')}</ul>
+      <div class="tiny muted mt">Obligations likely triggered (${esc(result.roleLabel)})</div><div class="mb">${result.obligations.map(o=>`<span class="chip tiny">${esc(o)}</span>`).join('')||'<span class="muted tiny">Minimal</span>'}</div>
+      ${result.legal.length?`<div class="note warn"><b>Needs legal review:</b><ul class="tiny" style="padding-left:18px;margin:6px 0 0">${result.legal.map(l=>`<li>${esc(l)}</li>`).join('')}</ul></div>`:''}
+      <div class="note mt"><b>Recommended next actions:</b><ul class="tiny" style="padding-left:18px;margin:6px 0 0">${result.actions.map(a=>`<li>${esc(a)}</li>`).join('')}</ul></div>
+      <div class="flex mt"><span class="review-flag rf-ai">AI-generated</span><span class="review-flag rf-review">Provisional — needs human review</span></div>
+      `:'<div class="empty">Select a system to begin.</div>'}
+    </div></div>
+  </div>`;
+}
+function classifyEUAI(){const a=EUAI.ans;const yes=k=>a[k]==='yes';const unsure=k=>a[k]==='unsure'||a[k]===undefined;
+  let tier='Minimal risk',badge='b-green';const reasons=[],obligations=[],legal=[],actions=[];
+  const provider=yes('role');const roleLabel=provider?'Provider':'Deployer';
+  if(yes('prohibited')){tier='Prohibited risk';badge='b-red';reasons.push('A prohibited practice was indicated — these uses are banned under the Act.');legal.push('Confirm whether the practice falls within Article 5 prohibitions.');actions.push('Stop / redesign the use case before any deployment.');}
+  else if(yes('biometric')||yes('criticalUse')||yes('safety')||yes('autonomy')){tier='High-risk candidate';badge='b-red';
+    if(yes('biometric'))reasons.push('Biometric identification / categorisation / emotion recognition indicated.');
+    if(yes('criticalUse'))reasons.push('Used in an Annex III high-risk area (e.g. HR, essential services).');
+    if(yes('safety'))reasons.push('Acts as a safety component of a regulated product.');
+    if(yes('autonomy'))reasons.push('Drives consequential decisions about people with limited oversight.');
+    obligations.push('Risk management system (Art. 9)','Data governance (Art. 10)','Technical documentation (Art. 11)','Logging (Art. 12)','Human oversight (Art. 14)','Accuracy & robustness (Art. 15)');
+    if(provider)obligations.push('Conformity assessment','CE marking / registration');else obligations.push('Deployer duties (Art. 26)','Assign human oversight');
+    legal.push('Confirm Annex III categorisation and any exemptions.','Confirm provider vs deployer obligations.');
+    actions.push('Run ISO 42001 readiness to build the management system.','Stand up human oversight and logging controls.','Complete a fundamental-rights / impact assessment.');}
+  else if(yes('interacts')||unsure('interacts')){tier='Limited / transparency risk';badge='b-amber';reasons.push('Interacts with people or generates content — transparency duties apply.');obligations.push('Inform users they are interacting with AI (Art. 50)','Label AI-generated content');actions.push('Add AI transparency notices and disclosure.');}
+  else {reasons.push('No high-risk or transparency triggers indicated.');obligations.push('Voluntary codes of conduct');actions.push('Maintain inventory; re-assess if use changes.');}
+  if(yes('gpai')){reasons.push('Built on / is a general-purpose AI model — GPAI obligations may also apply.');obligations.push('GPAI transparency & documentation');legal.push('Assess GPAI provider obligations and systemic-risk thresholds.');}
+  Object.keys(a).filter(k=>a[k]==='unsure').length&&legal.push('Several answers are "unsure" — resolve these before finalising.');
+  return {tier,badge,reasons,obligations,legal,actions,roleLabel};
+}
+
+/* ============================================================
+   15. VIEW: ISO 42001 READINESS ENGINE (Module E)
+   ============================================================ */
+const ISO42_DOMAINS=['Organisational context','AI governance','Leadership & accountability','AI policy','Risk management','Impact assessment','Data governance','Lifecycle management','Supplier management','Monitoring & measurement','Incident management','Internal audit readiness','Management review readiness','Continual improvement'];
+function iso42Scores(cid){_rng=mulberry32(hashStr(cid+'iso42'));return ISO42_DOMAINS.map(dn=>({domain:dn,score:rnd(20,90)}));}
+function hashStr(s){let h2=0;for(let i=0;i<s.length;i++){h2=(h2<<5)-h2+s.charCodeAt(i);h2|=0;}return Math.abs(h2);}
+function view_iso42001(){
+  const cid=STATE.clientId;const ds=iso42Scores(cid);const overall=Math.round(ds.reduce((s,x)=>s+x.score,0)/ds.length);
+  const gaps=[...ds].sort((a,b)=>a.score-b.score).slice(0,5);
+  return h`
+  <div class="note mb"><span class="review-flag rf-ai">AI-generated</span> ISO/IEC 42001 AI management system readiness across 14 domains. Conclusions require human review. Prompt <code>p_iso v1.0</code>.</div>
+  <div class="grid g4 mb">
+    <div class="card"><div class="bd center"><div class="k-label">AIMS readiness</div><div style="margin:10px 0">${ring(overall)}</div>${ragBadge(overall,'Audit-ready','Developing','Early')}</div></div>
+    <div class="kpi"><div class="k-label">Domains assessed</div><div class="k-val">${ds.length}</div></div>
+    <div class="kpi"><div class="k-label">Strong domains</div><div class="k-val" style="color:var(--green)">${ds.filter(x=>x.score>=70).length}</div></div>
+    <div class="kpi"><div class="k-label">Priority gaps</div><div class="k-val" style="color:var(--red)">${ds.filter(x=>x.score<40).length}</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><div class="hd"><h3>Readiness by domain</h3></div><div class="bd">${ds.map(x=>h`<div class="mb"><div class="flex between tiny"><span class="sb">${esc(x.domain)}</span><span class="muted">${x.score}%</span></div>${bar(x.score)}</div>`).join('')}</div></div>
+    <div class="card"><div class="hd"><h3>Top gaps &amp; outputs</h3></div><div class="bd">
+      <div class="tiny muted mb">Highest-priority gaps</div>${gaps.map(g=>`<div class="flex between mb"><span class="tiny sb">${esc(g.domain)}</span><span class="badge ${g.score<40?'b-red':'b-amber'}">${g.score}%</span></div>`).join('')}
+      <div class="sec-title">Generates on request</div>
+      <div class="flex wrap"><span class="chip">Evidence pack checklist</span><span class="chip">Control register</span><span class="chip">Policy pack</span><span class="chip">Remediation roadmap</span></div>
+      <button class="btn primary mt" onclick="navigate('evidence')">Open Evidence Factory →</button>
+    </div></div>
+  </div>`;
+}
+
+/* ============================================================
+   16. VIEW: NIST AI RMF ALIGNMENT (Module F)
+   ============================================================ */
+const NIST_FUNCS=[{k:'Govern',d:'Culture, policy, accountability and oversight.'},{k:'Map',d:'Context and risk identification.'},{k:'Measure',d:'Analyse, assess and track risks.'},{k:'Manage',d:'Prioritise, act and respond.'}];
+function nistScores(cid){_rng=mulberry32(hashStr(cid+'nist'));return NIST_FUNCS.map(f=>({...f,score:rnd(25,85),evidence:rnd(1,6),gaps:rnd(0,4)}));}
+function view_nist(){
+  const cid=STATE.clientId;const fs=nistScores(cid);const overall=Math.round(fs.reduce((s,x)=>s+x.score,0)/fs.length);
+  return h`
+  <div class="note mb"><span class="review-flag rf-ai">AI-generated</span> NIST AI RMF maturity across the four functions. Prompt <code>p_nist v1.0</code>.</div>
+  <div class="grid g4 mb">
+    <div class="card"><div class="bd center"><div class="k-label">Overall alignment</div><div style="margin:10px 0">${ring(overall)}</div></div></div>
+    ${fs.map(f=>h`<div class="card"><div class="bd"><div class="flex between"><span class="sb">${esc(f.k)}</span><span class="badge ${f.score>=70?'b-green':f.score>=40?'b-amber':'b-red'}">${f.score}%</span></div><div class="tiny muted mb">${esc(f.d)}</div>${bar(f.score)}<div class="tiny muted mt8">${f.evidence} evidence · ${f.gaps} gaps</div></div></div>`).join('')}
+  </div>
+  <div class="card"><div class="hd"><h3>Function-level action plan</h3></div><div class="bd" style="padding:0"><table><thead><tr><th>Function</th><th>Maturity</th><th>Gaps</th><th>Recommended action</th></tr></thead><tbody>
+    ${fs.map(f=>h`<tr><td class="sb">${esc(f.k)}</td><td style="min-width:120px">${bar(f.score)}</td><td>${f.gaps}</td><td class="tiny">${esc({Govern:'Formalise AI policy, roles and oversight cadence.',Map:'Complete system context mapping and inventory.',Measure:'Define risk metrics and testing for production models.',Manage:'Stand up treatment plans and incident response.'}[f.k])}</td></tr>`).join('')}
+  </tbody></table></div></div>`;
+}
+
+/* ============================================================
+   17. VIEW: ISO 27001 ADJACENT MAPPING (Module G)
+   ============================================================ */
+function view_iso27001(){
+  const cid=STATE.clientId;const cov=reqCoverage(cid);
+  const reqs=REQUIREMENTS.filter(r=>r.framework_id==='fw_iso27001');
+  const risks=where('risks',r=>r.client_id===cid&&['security','supplier','privacy'].includes(r.risk_domain));
+  return h`
+  <div class="note mb">Amplify does <b>not</b> replace a full ISO 27001 ISMS tool. It surfaces where AI governance overlaps information security so InfoSec can pick it up. <span class="review-flag rf-review">Controls flagged need InfoSec review</span></div>
+  <div class="grid g2 mb">
+    <div class="card"><div class="hd"><h3>Adjacent evidence map</h3></div><div class="bd" style="padding:0"><table><thead><tr><th>Control area</th><th>Ref</th><th>Status</th><th>Reused from AI work</th></tr></thead><tbody>
+      ${reqs.map(rq=>{const c=cov[rq.requirement_id];const reuse=MAPPINGS.filter(m=>m.target_framework_requirement_id===rq.requirement_id||m.source_framework_requirement_id===rq.requirement_id).map(m=>{const o=m.target_framework_requirement_id===rq.requirement_id?m.source_framework_requirement_id:m.target_framework_requirement_id;return fwNameOfReq(o)+' '+(reqById(o)||{}).requirement_reference;});return h`<tr><td class="sb tiny">${esc(rq.requirement_title)}</td><td class="tiny muted">${esc(rq.requirement_reference)}</td><td>${c.state==='covered'?'<span class="badge b-green">Covered</span>':c.state==='partial'?'<span class="badge b-amber">Partial</span>':'<span class="badge b-red">Gap</span>'}</td><td class="tiny muted">${[...new Set(reuse)].join(', ')||'—'}</td></tr>`;}).join('')}
+    </tbody></table></div></div>
+    <div class="card"><div class="hd"><h3>Security-related AI risks</h3></div><div class="bd" style="padding:0"><table><tbody>
+      ${risks.map(r=>h`<tr><td><div class="sb tiny">${esc(r.risk_title)}</div><div class="tiny muted">${esc(r.risk_domain)}</div></td><td class="right">${riskBadge(r.risk_score)}</td></tr>`).join('')||'<tr><td class="muted">No security-related AI risks.</td></tr>'}
+    </tbody></table></div></div>
+  </div>
+  <div class="note warn">Controls requiring InfoSec review: access control, supplier risk, incident management, asset inventory. These are <b>handed off</b> — not certified here.</div>`;
+}
+
+/* ============================================================
+   18. VIEW: EVIDENCE FACTORY (Module I)
+   ============================================================ */
+const EV_ARTEFACTS=['AI inventory','AI risk register','AI control register','AI acceptable use policy','AI governance policy','AI supplier assessment','AI incident log','AI training record','Management review template','Board report','Audit pack index'];
+function view_evidence(){
+  const cid=STATE.clientId;const ev=where('evidence',e=>e.client_id===cid);
+  const counts={Requested:ev.filter(e=>e.status==='Requested').length,Received:ev.filter(e=>e.status==='Received').length,Generated:ev.filter(e=>e.status==='Generated').length,Approved:ev.filter(e=>e.status==='Approved').length};
+  const reviewQ=ev.filter(e=>e.human_review_status==='Pending').length;
+  return h`
+  <div class="flex between mb"><div class="note" style="flex:1;margin-right:12px">Generate draft evidence artefacts and track them through <b>draft → AI-generated → requires review → approved → exported</b>. Nothing is client-ready until approved.</div>
+  <button class="btn primary sm" onclick="genArtefact()">✨ Generate artefact</button></div>
+  <div class="grid g4 mb">
+    <div class="kpi"><div class="k-label">Total evidence</div><div class="k-val">${ev.length}</div></div>
+    <div class="kpi"><div class="k-label">Generated</div><div class="k-val" style="color:var(--purple)">${counts.Generated}</div></div>
+    <div class="kpi"><div class="k-label">Approved</div><div class="k-val" style="color:var(--green)">${counts.Approved}</div></div>
+    <div class="kpi"><div class="k-label">Awaiting review</div><div class="k-val" style="color:var(--amber)">${reviewQ}</div></div>
+  </div>
+  <div class="card"><div class="bd" style="padding:0"><table>
+    <thead><tr><th>Evidence item</th><th>Type</th><th>Maps to</th><th>Source</th><th>Status</th><th>Review</th><th></th></tr></thead>
+    <tbody>${ev.map(e=>h`<tr>
+      <td class="sb">${esc(e.evidence_name)}</td><td class="tiny"><span class="badge b-grey">${esc(e.evidence_type)}</span></td>
+      <td class="tiny muted">${(e.linked_requirement_ids||[]).map(id=>esc((reqById(id)||{}).requirement_reference||'')).filter(Boolean).join(', ')||'—'}</td>
+      <td class="tiny">${esc(e.source)}</td><td>${statusBadge(e.status)}</td>
+      <td>${reviewFlag(e.human_review_status)}</td>
+      <td class="right nowrap">${e.human_review_status!=='Approved'?`<button class="btn ghost sm" onclick="approveEv('${e.evidence_id}')">Approve</button>`:'<span class="tiny muted">✓</span>'}</td>
+    </tr>`).join('')}</tbody>
+  </table></div></div>`;
+}
+function approveEv(id){const e=byId('evidence',id,'evidence_id');e.human_review_status='Approved';if(e.status==='Generated'||e.status==='Received')e.status='Approved';saveDB();toast('Evidence approved');navigate('evidence');}
+function genArtefact(){const cid=STATE.clientId;openModal('Generate evidence artefact',h`
+  <div class="note mb"><span class="review-flag rf-ai">AI-generated</span> Draft will be created with status <b>Generated · Needs review</b>. Prompt <code>p_policy v1.2</code>.</div>
+  <label class="fld"><span class="lt">Artefact</span><select class="in" id="ev_pick">${EV_ARTEFACTS.map(a=>`<option>${a}</option>`).join('')}</select></label>
+`,`<button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="doGenArtefact()">Generate draft</button>`);}
+function doGenArtefact(){const cid=STATE.clientId;const name=document.getElementById('ev_pick').value;const tyMap={'AI inventory':'register','AI risk register':'register','AI control register':'register','AI acceptable use policy':'policy','AI governance policy':'policy','AI supplier assessment':'supplier assessment','AI incident log':'register','AI training record':'training record','Management review template':'management review','Board report':'board report','Audit pack index':'register'};
+  const eng=where('engagements',e=>e.client_id===cid)[0]||{};
+  DB.evidence.push({evidence_id:uid('ev'),client_id:cid,engagement_id:eng.engagement_id||'',evidence_name:'Draft '+name,evidence_type:tyMap[name]||'register',linked_requirement_ids:[],linked_control_ids:[],source:'Consultant draft',file_url:'#',status:'Generated',human_review_status:'Pending',created_at:dOffset(0)});saveDB();closeModal();toast('Draft generated — needs review');navigate('evidence');}
+
+/* ============================================================
+   19. VIEW: REPORT GENERATOR (Module J)
+   ============================================================ */
+const REPORT_TYPES=['AI Operating Review','AI Governance Review','ISO 42001 Readiness Report','EU AI Act Classification Report','NIST AI RMF Alignment Report','AI Opportunity Report','Board Report','Monthly Monitoring Report','Audit Evidence Pack'];
+function view_reports(){
+  const cid=STATE.clientId;const reps=where('reports',r=>r.client_id===cid);
+  return h`
+  <div class="flex between mb"><div class="note" style="flex:1;margin-right:12px">Board-ready, executive-friendly reports assembled from the client's data. Export to print/PDF or Markdown. <span class="review-flag rf-review">Final reports require human approval</span></div>
+  <div class="flex"><select class="in" style="width:auto" id="rep_type">${REPORT_TYPES.map(t=>`<option>${t}</option>`).join('')}</select><button class="btn primary sm" onclick="genReport()">✨ Generate</button></div></div>
+  <div class="card mb"><div class="bd" style="padding:0"><table>
+    <thead><tr><th>Report</th><th>Summary</th><th>Created</th><th>Status</th><th></th></tr></thead>
+    <tbody>${reps.map(r=>h`<tr><td class="sb">${esc(r.report_type)}</td><td class="tiny muted">${esc(r.generated_summary)}</td><td class="tiny">${fmtDate(r.created_at)}</td><td>${statusBadge(r.status)}</td><td class="right"><button class="btn ghost sm" onclick="openReport('${r.report_id}')">View</button></td></tr>`).join('')}</tbody>
+  </table></div></div>`;
+}
+function genReport(){const cid=STATE.clientId;const ty=document.getElementById('rep_type').value;const eng=where('engagements',e=>e.client_id===cid)[0]||{};const s=clientStats(cid);
+  DB.reports.push({report_id:uid('rep'),client_id:cid,engagement_id:eng.engagement_id||'',report_type:ty,generated_summary:'Auto-generated '+ty+' — '+moneyK(s.annualValue)+'/yr value, '+s.highRisks+' high risks, '+s.maturity+'% readiness.',report_file_url:'#',created_at:dOffset(0),status:'Draft'});saveDB();toast(ty+' generated');navigate('reports');}
+function openReport(id){const r=byId('reports',id,'report_id');const cid=r.client_id;const c=byId('clients',cid,'client_id');const s=clientStats(cid);
+  const topRisks=[...s.risks].sort((a,b)=>b.risk_score-a.risk_score).slice(0,5);
+  const topOpps=[...s.ucs].sort((a,b)=>b.estimated_financial_value_monthly-a.estimated_financial_value_monthly).slice(0,5);
+  const topActions=[...s.acts].filter(a=>a.status!=='Done').sort((a,b)=>({High:0,Medium:1,Low:2}[a.priority]-{High:0,Medium:1,Low:2}[b.priority])).slice(0,5);
+  const html=h`<div class="report-doc" id="reportDoc">
+    <div class="flex between"><div><h1>${esc(r.report_type)}</h1><div class="meta">${esc(c.company_name)} · Prepared by Teamsmiths · ${fmtDate(r.created_at)}</div></div><div style="text-align:right"><div class="b" style="color:var(--navy);font-size:18px">TEAM<span style="color:var(--accent)">SMITHS</span></div><div class="tiny muted">Amplify</div></div></div>
+    <div class="note warn"><b>Draft — AI-assisted.</b> Requires consultant review and approval before release to the client.</div>
+    <h2>Executive summary</h2>
+    <p>${esc(c.company_name)} is a ${esc(c.size_band)}-person ${esc(c.sector).toLowerCase()} organisation${c.regulated_sector_flag?' operating in a regulated sector':''}. Across ${s.sys.length} AI systems and ${s.ucs.length} use cases, Amplify identifies <b>${moneyK(s.annualValue)} of annual value potential</b> against an AI governance readiness of <b>${s.maturity}%</b>. ${s.highRisks} high-severity risks require attention, with ${s.overdue} overdue actions.</p>
+    <h2>Current state</h2>
+    <p>AI maturity is ${s.maturity>=70?'strong':s.maturity>=40?'developing':'early-stage'}. ${s.sys.filter(x=>x.high_risk_candidate_flag).length} systems are potential high-risk candidates under the EU AI Act. Evidence coverage and controls are partially in place, with ${s.evGaps} evidence items still requested.</p>
+    <h2>Key risks</h2>
+    <table><thead><tr><th>Risk</th><th>Domain</th><th>Score</th></tr></thead><tbody>${topRisks.map(r2=>`<tr><td>${esc(r2.risk_title)}</td><td>${esc(r2.risk_domain)}</td><td>${r2.risk_score}</td></tr>`).join('')}</tbody></table>
+    <h2>Key opportunities</h2>
+    <table><thead><tr><th>Opportunity</th><th>Type</th><th>Annual value</th></tr></thead><tbody>${topOpps.map(o=>`<tr><td>${esc(o.process_name)}</td><td>${esc(o.value_type)}</td><td>${moneyK(o.estimated_financial_value_monthly*12)}</td></tr>`).join('')}</tbody></table>
+    <h2>Framework readiness</h2>
+    <p>${DB.frameworks.slice(0,5).map(f=>{const cov=reqCoverage(cid);const reqs=REQUIREMENTS.filter(x=>x.framework_id===f.framework_id);const sc=Math.round((reqs.filter(x=>cov[x.requirement_id].state==='covered').length+reqs.filter(x=>cov[x.requirement_id].state==='partial').length*.5)/reqs.length*100);return esc(f.framework_name)+': <b>'+sc+'%</b>';}).join(' &nbsp;·&nbsp; ')}</p>
+    <h2>Top 5 actions</h2>
+    <ol>${topActions.map(a=>`<li><b>${esc(a.action_title)}</b> — ${esc(a.action_description)} <span style="color:#64748b">(${esc(a.owner)}, due ${fmtDate(a.due_date)})</span></li>`).join('')}</ol>
+    <h2>Estimated financial value</h2>
+    <p>Identified annual value: <b>${money(s.annualValue)}</b> across ${s.ucs.length} use cases, of which quick wins (low effort) represent ${moneyK(s.ucs.filter(u=>u.implementation_effort==='Low').reduce((x,u)=>x+u.estimated_financial_value_monthly*12,0))}/yr.</p>
+    <h2>Next 30 / 60 / 90 days</h2>
+    <p><b>30 days:</b> close highest-severity risks, approve AI policy, complete outstanding DPIAs.<br><b>60 days:</b> stand up monitoring, human-oversight checkpoints and evidence pack.<br><b>90 days:</b> board review, framework gap closure and a continuous-improvement cadence.</p>
+    <h2>Recommendations</h2>
+    <p>Prioritise the high-severity risks and quick-win opportunities in parallel: govern the riskiest systems while capturing low-effort value to fund the programme. ${c.regulated_sector_flag?'Given the regulated-sector exposure, treat EU AI Act classification and DPIAs as gating items.':''}</p>
+    <div class="meta" style="margin-top:30px;border-top:1px solid #e2e8f0;padding-top:10px">Generated by Teamsmiths Amplify · prompt p_report v1.3 · evidence gaps: ${s.evGaps} · not for external release until approved.</div>
+  </div>`;
+  openModal(esc(r.report_type),html,`<button class="btn" onclick="closeModal()">Close</button><button class="btn" onclick="exportReportMd('${id}')">⬇ Markdown</button><button class="btn primary" onclick="printReport()">⎙ Print / PDF</button>${r.status!=='Approved'?`<button class="btn" onclick="approveReport('${id}')">✓ Approve</button>`:''}`);
+}
+function printReport(){const doc=document.getElementById('reportDoc');const w=window.open('','_blank');w.document.write('<html><head><title>Teamsmiths Amplify Report</title><style>body{font-family:Segoe UI,Arial,sans-serif;line-height:1.6;color:#0f172a;max-width:800px;margin:30px auto;padding:0 20px}h1{font-size:24px}h2{font-size:16px;color:#0b1f3a;border-bottom:2px solid #e2e8f0;padding-bottom:5px;margin-top:24px}table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}th,td{border:1px solid #e2e8f0;padding:6px 9px;text-align:left}.meta{color:#64748b;font-size:12px}.note{background:#fef3c7;padding:10px;border-radius:6px;font-size:13px}</style></head><body>'+doc.innerHTML+'</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),300);}
+function exportReportMd(id){const r=byId('reports',id,'report_id');const cid=r.client_id;const c=byId('clients',cid,'client_id');const s=clientStats(cid);
+  const topRisks=[...s.risks].sort((a,b)=>b.risk_score-a.risk_score).slice(0,5);const topOpps=[...s.ucs].sort((a,b)=>b.estimated_financial_value_monthly-a.estimated_financial_value_monthly).slice(0,5);
+  let md='# '+r.report_type+'\n\n**'+c.company_name+'** · Teamsmiths Amplify · '+fmtDate(r.created_at)+'\n\n> Draft — AI-assisted. Requires consultant approval before release.\n\n';
+  md+='## Executive summary\n\n'+c.company_name+' — '+moneyK(s.annualValue)+'/yr value across '+s.sys.length+' systems and '+s.ucs.length+' use cases; readiness '+s.maturity+'%; '+s.highRisks+' high risks.\n\n';
+  md+='## Key risks\n\n'+topRisks.map(x=>'- '+x.risk_title+' ('+x.risk_domain+') — score '+x.risk_score).join('\n')+'\n\n';
+  md+='## Key opportunities\n\n'+topOpps.map(o=>'- '+o.process_name+' — '+moneyK(o.estimated_financial_value_monthly*12)+'/yr').join('\n')+'\n\n';
+  md+='## Next 30/60/90 days\n\n- 30: close high risks, approve policy, complete DPIAs\n- 60: monitoring, oversight, evidence pack\n- 90: board review, gap closure, continuous improvement\n';
+  const blob=new Blob([md],{type:'text/markdown'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(c.company_name+'_'+r.report_type).replace(/\s+/g,'_')+'.md';a.click();toast('Markdown exported');}
+function approveReport(id){const r=byId('reports',id,'report_id');r.status='Approved';saveDB();closeModal();toast('Report approved');navigate('reports');}
+
+/* ============================================================
+   20. VIEW: PROPOSALS (Commercial outputs)
+   ============================================================ */
+const PROPOSAL_CATALOG={
+  'AI Operating Review':{price:28000,weeks:4,deliv:['AI system & use-case inventory','Risk & opportunity baseline','Executive operating review report','30/60/90 roadmap']},
+  'AI Governance Review':{price:38000,weeks:6,deliv:['Governance maturity assessment','Multi-framework gap analysis','Policy pack (draft)','Board-ready governance report']},
+  'ISO 42001 Readiness':{price:45000,weeks:8,deliv:['14-domain readiness assessment','Control & evidence register','Policy pack','Remediation roadmap to certification']},
+  'EU AI Act Readiness':{price:42000,weeks:7,deliv:['System classification','Obligations mapping','High-risk control plan','Conformity readiness pack']},
+  'AI Business Outcomes Accelerator':{price:30000,weeks:6,deliv:['Opportunity engine + value model','Prioritised pilot plan','Lightweight governance baseline','Outcome tracking']},
+  'Continuous Improvement (subscription)':{price:2500,weeks:0,deliv:['Monthly monitoring report','Risk & action tracking','Quarterly board update','Ongoing advisory']}
+};
+function view_proposals(){
+  const cid=STATE.clientId;const c=byId('clients',cid,'client_id');const s=clientStats(cid);
+  return h`
+  <div class="note mb"><span class="review-flag rf-ai">AI-generated</span> Proposals assemble client problem, risk, opportunity, scope, deliverables, timeline and price. Pricing requires human sign-off. Prompt <code>p_proposal v1.1</code>.</div>
+  <div class="card mb"><div class="hd"><div><h3>Generate proposal for ${esc(c.company_name)}</h3><div class="desc">Pre-filled from this client's data</div></div>
+  <div class="flex"><select class="in" style="width:auto" id="prop_type">${Object.keys(PROPOSAL_CATALOG).map(t=>`<option>${t}</option>`).join('')}</select><button class="btn primary sm" onclick="genProposal()">✨ Generate</button></div></div>
+  <div class="bd"><div class="grid g3">
+    <div class="kpi"><div class="k-label">Annual value at stake</div><div class="k-val sm">${moneyK(s.annualValue)}</div></div>
+    <div class="kpi"><div class="k-label">High risks</div><div class="k-val sm" style="color:var(--red)">${s.highRisks}</div></div>
+    <div class="kpi"><div class="k-label">Readiness</div><div class="k-val sm">${s.maturity}%</div></div>
+  </div></div></div>
+  <div id="propOut"></div>`;
+}
+function genProposal(){const cid=STATE.clientId;const c=byId('clients',cid,'client_id');const s=clientStats(cid);const ty=document.getElementById('prop_type').value;const cat=PROPOSAL_CATALOG[ty];
+  const topRisk=[...s.risks].sort((a,b)=>b.risk_score-a.risk_score)[0];
+  const topOpp=[...s.ucs].sort((a,b)=>b.estimated_financial_value_monthly-a.estimated_financial_value_monthly)[0];
+  const html=h`<div class="report-doc">
+    <div class="flex between"><h1>${esc(ty)}</h1><div class="b" style="color:var(--navy)">TEAM<span style="color:var(--accent)">SMITHS</span></div></div>
+    <div class="meta">Proposal for ${esc(c.company_name)} · ${fmtDate(dOffset(0))}</div>
+    <h2>The problem</h2><p>${esc(c.company_name)} is scaling AI across ${s.sys.length} systems without a fully embedded governance and value framework${c.regulated_sector_flag?', against regulated-sector obligations':''}. ${topRisk?'The most pressing risk is "'+esc(topRisk.risk_title)+'" ('+esc(topRisk.risk_domain)+').':''}</p>
+    <h2>Current risk &amp; opportunity</h2><p>Readiness sits at <b>${s.maturity}%</b> with <b>${s.highRisks} high-severity risks</b>. At the same time, ${topOpp?'"'+esc(topOpp.process_name)+'" alone represents '+moneyK(topOpp.estimated_financial_value_monthly*12)+'/yr, within ':''}a total <b>${moneyK(s.annualValue)}/yr</b> identified value pool.</p>
+    <h2>Proposed scope</h2><p>${esc(ty)} delivered over ${cat.weeks?cat.weeks+' weeks':'an ongoing monthly subscription'} by Teamsmiths, using the Amplify command centre to compress delivery effort.</p>
+    <h2>Deliverables</h2><ul>${cat.deliv.map(d=>'<li>'+esc(d)+'</li>').join('')}</ul>
+    <h2>Timeline</h2><p>${cat.weeks?'Weeks 1-2 discovery & inventory · weeks 3-4 assessment & risk · remaining weeks remediation, reporting & board readout.':'Monthly cadence with quarterly board updates.'}</p>
+    <h2>Investment</h2><p style="font-size:18px"><b>${cat.weeks?money(cat.price):money(cat.price)+' / month'}</b> ${cat.weeks?'(fixed fee)':''}. <span class="meta">Pricing indicative — requires consultant approval.</span></p>
+    <h2>Next step</h2><p>Confirm scope and start date; Teamsmiths issues an engagement letter and begins discovery within 5 working days.</p>
+  </div>
+  <div class="flex mt no-print"><button class="btn" onclick="document.getElementById('propOut').innerHTML=''">Discard</button><button class="btn primary" onclick="toast('Proposal saved to engagement')">Save to engagement</button></div>`;
+  document.getElementById('propOut').innerHTML=html;toast(ty+' proposal generated');
+}
+
+/* ============================================================
+   21. VIEW: AI PROMPTING LAYER (Module 8)
+   ============================================================ */
+function view_prompts(){
+  return h`
+  <div class="note mb">Reusable, <b>version-controlled</b> AI prompts power every generated output. Each AI output is stored with prompt version, model, inputs, output and human-review status.</div>
+  <div class="card"><div class="bd" style="padding:0"><table>
+    <thead><tr><th>Prompt</th><th>Version</th><th>Model</th><th>Purpose</th><th>Output review</th></tr></thead>
+    <tbody>${DB.prompts.map(p=>h`<tr><td class="sb">${esc(p.name)}</td><td><span class="badge b-blue">v${esc(p.version)}</span></td><td class="tiny">${esc(p.model)}</td><td class="tiny muted">${esc(p.purpose)}</td><td>${reviewFlag('Pending')}</td></tr>`).join('')}</tbody>
+  </table></div></div>
+  <div class="note warn mt"><b>Human review gates (always required before client delivery):</b> legal/regulatory conclusions · EU AI Act classification · ISO readiness conclusions · client-facing risk scores · final policies · board reports · audit packs · financial ROI estimates · high-risk remediation · any certification-related claim.</div>`;
+}
+
+/* ============================================================
+   22. INIT
+   ============================================================ */
+async function initApp(){await loadDB();navigate('dashboard');}
+// Boot: render the right gate, then resume any existing session.
+window.addEventListener('DOMContentLoaded',async()=>{
+  renderGate();
+  if(USE_SUPABASE&&sb){
+    try{
+      const {data:{session}}=await sb.auth.getSession();
+      if(session){CURRENT_EMAIL=session.user.email;showApp();}
+      sb.auth.onAuthStateChange((_e,s)=>{if(s&&s.user&&document.getElementById('app').style.display!=='block'){CURRENT_EMAIL=s.user.email;showApp();}});
+    }catch(e){console.error(e);}
+  } else if(sessionStorage.getItem('ts_amplify_auth')==='1'){showApp();}
+});
+</script>
+</body>
+</html>
