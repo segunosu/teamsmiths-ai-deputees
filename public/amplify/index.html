@@ -213,13 +213,13 @@ const STORE_KEY = "ts_amplify_v1";
 
 function renderGate(){
   const inner=document.getElementById('gateInner');const hint=document.getElementById('gateHint');
-  if(USE_SUPABASE){
+  if(false){ // gate is always the access code (shared Supabase session must NOT auto-admit)
     inner.innerHTML='<input id="gateEmail" type="email" placeholder="you@teamsmiths.com" autocomplete="email" /><button onclick="sendMagicLink()">Email me a secure sign-in link</button>';
     hint.textContent="Authorised emails only · you'll receive a one-time sign-in link";
     const e=document.getElementById('gateEmail');e.addEventListener('keydown',ev=>{if(ev.key==='Enter')sendMagicLink();});e.focus();
   } else {
     inner.innerHTML='<input id="gatePw" type="password" placeholder="Access code" autocomplete="off" /><button onclick="tryGate()">Enter</button>';
-    hint.textContent="Offline mode · enter the access code";
+    hint.textContent="Private internal tool · enter the access code";
     document.getElementById('gatePw').addEventListener('keydown',ev=>{if(ev.key==='Enter')tryGate();});
   }
 }
@@ -1592,13 +1592,8 @@ async function initApp(){await loadDB();navigate('dashboard');}
 // Boot: render the right gate, then resume any existing session.
 window.addEventListener('DOMContentLoaded',async()=>{
   renderGate();
-  if(USE_SUPABASE&&sb){
-    try{
-      const {data:{session}}=await sb.auth.getSession();
-      if(session){CURRENT_EMAIL=session.user.email;showApp();}
-      sb.auth.onAuthStateChange((_e,s)=>{if(s&&s.user&&document.getElementById('app').style.display!=='block'){CURRENT_EMAIL=s.user.email;showApp();}});
-    }catch(e){console.error(e);}
-  } else if(sessionStorage.getItem('ts_amplify_auth')==='1'){showApp();}
+  // Gate is always the access code. A shared Supabase/platform session must NOT grant entry.
+  if(sessionStorage.getItem('ts_amplify_auth')==='1'){showApp();}
 });
 </script>
 </body>
