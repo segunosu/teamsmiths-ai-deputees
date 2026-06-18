@@ -211,32 +211,48 @@ let CURRENT_EMAIL = null;
 const ACCESS_CODE = "TeamSmiths-Amplify-26";
 const STORE_KEY = "ts_amplify_v1";
 
+const GATE_TOKEN_KEY='ts_amplify_token';
+let GATE_EMAIL='';
+function gateMsg(t,c){const e=document.getElementById('gateErr');e.style.color=c||'var(--muted)';e.textContent=t||'';}
 function renderGate(){
   const inner=document.getElementById('gateInner');const hint=document.getElementById('gateHint');
-  if(false){ // gate is always the access code (shared Supabase session must NOT auto-admit)
-    inner.innerHTML='<input id="gateEmail" type="email" placeholder="you@teamsmiths.com" autocomplete="email" /><button onclick="sendMagicLink()">Email me a secure sign-in link</button>';
-    hint.textContent="Authorised emails only · you'll receive a one-time sign-in link";
-    const e=document.getElementById('gateEmail');e.addEventListener('keydown',ev=>{if(ev.key==='Enter')sendMagicLink();});e.focus();
+  if(USE_SUPABASE&&sb){
+    inner.innerHTML='<input id="gateEmail" type="email" placeholder="you@teamsmiths.com" autocomplete="email" /><button onclick="gateRequestCode()">Email me a one-time code</button>';
+    hint.textContent="Authorised emails only \u00b7 we'll email you a one-time code";
+    const e=document.getElementById('gateEmail');e.addEventListener('keydown',ev=>{if(ev.key==='Enter')gateRequestCode();});e.focus();
   } else {
     inner.innerHTML='<input id="gatePw" type="password" placeholder="Access code" autocomplete="off" /><button onclick="tryGate()">Enter</button>';
-    hint.textContent="Private internal tool · enter the access code";
-    document.getElementById('gatePw').addEventListener('keydown',ev=>{if(ev.key==='Enter')tryGate();});
+    hint.textContent="Offline mode \u00b7 enter the access code";
+    const p=document.getElementById('gatePw');p.addEventListener('keydown',ev=>{if(ev.key==='Enter')tryGate();});
   }
 }
-async function sendMagicLink(){
-  const email=(document.getElementById('gateEmail').value||'').trim();const err=document.getElementById('gateErr');
-  if(!email){err.style.color='var(--red)';err.textContent='Enter your email.';return;}
-  err.style.color='var(--muted)';err.textContent='Sending…';
+function renderCodeStep(){
+  const inner=document.getElementById('gateInner');const hint=document.getElementById('gateHint');
+  inner.innerHTML='<input id="gateCode" inputmode="numeric" maxlength="6" placeholder="6-digit code" autocomplete="one-time-code" /><button onclick="gateVerifyCode()">Verify &amp; enter</button><div style="margin-top:8px"><a href="#" onclick="renderGate();return false" style="font-size:12px">Use a different email</a></div>';
+  hint.textContent='Enter the code we emailed to '+GATE_EMAIL;
+  const c=document.getElementById('gateCode');c.addEventListener('keydown',ev=>{if(ev.key==='Enter')gateVerifyCode();});c.focus();
+}
+async function gateRequestCode(){
+  const email=(document.getElementById('gateEmail').value||'').trim();
+  if(!email||!email.includes('@')){gateMsg('Enter your email.','var(--red)');return;}
+  GATE_EMAIL=email;gateMsg('Sending\u2026');
+  try{await sb.functions.invoke('amplify-gate',{body:{action:'request',email}});}catch(e){}
+  renderCodeStep();gateMsg('If that email is authorised, a code is on its way.');
+}
+async function gateVerifyCode(){
+  const code=(document.getElementById('gateCode').value||'').trim();
+  if(!/^[0-9]{6}$/.test(code)){gateMsg('Enter the 6-digit code.','var(--red)');return;}
+  gateMsg('Verifying\u2026');
   try{
-    const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:location.href.split('#')[0]}});
-    if(error){err.style.color='var(--red)';err.textContent=error.message;}
-    else{document.getElementById('gateInner').innerHTML='<div style="font-size:14px;color:var(--green);font-weight:700">✓ Check your inbox</div><div class="tiny muted" style="margin-top:6px">Open the link on this device to sign in.</div>';err.textContent='';}
-  }catch(e){err.style.color='var(--red)';err.textContent='Could not reach the backend.';}
+    const {data,error}=await sb.functions.invoke('amplify-gate',{body:{action:'verify',email:GATE_EMAIL,code}});
+    if(error||!data||!data.ok){gateMsg((data&&data.error)||'Invalid or expired code.','var(--red)');return;}
+    localStorage.setItem(GATE_TOKEN_KEY,data.token);CURRENT_EMAIL=data.email||GATE_EMAIL;showApp();
+  }catch(e){gateMsg('Could not reach the gate service.','var(--red)');}
 }
 function tryGate(){
   const v=document.getElementById('gatePw').value.trim();
   if(v===ACCESS_CODE){sessionStorage.setItem('ts_amplify_auth','1');showApp();}
-  else{document.getElementById('gateErr').style.color='var(--red)';document.getElementById('gateErr').textContent='Incorrect access code.';document.getElementById('gatePw').select();}
+  else{gateMsg('Incorrect access code.','var(--red)');document.getElementById('gatePw').select();}
 }
 function showApp(){
   document.getElementById('gate').style.display='none';
@@ -838,7 +854,7 @@ function topActionsFor(route){
   a+=`<button class="btn ghost sm" onclick="logout()" title="Lock">⤓ Lock</button>`;
   return a;
 }
-function logout(){sessionStorage.removeItem('ts_amplify_auth');if(USE_SUPABASE&&sb){sb.auth.signOut().finally(()=>location.reload());}else{location.reload();}}
+function logout(){localStorage.removeItem('ts_amplify_token');sessionStorage.removeItem('ts_amplify_auth');location.reload();}
 
 /* ============================================================
    5. VIEW: CONSULTANT COMMAND DASHBOARD (Module K)
@@ -1592,8 +1608,14 @@ async function initApp(){await loadDB();navigate('dashboard');}
 // Boot: render the right gate, then resume any existing session.
 window.addEventListener('DOMContentLoaded',async()=>{
   renderGate();
-  // Gate is always the access code. A shared Supabase/platform session must NOT grant entry.
-  if(sessionStorage.getItem('ts_amplify_auth')==='1'){showApp();}
+  if(USE_SUPABASE&&sb){
+    const tok=localStorage.getItem('ts_amplify_token');
+    if(tok){
+      try{const {data}=await sb.functions.invoke('amplify-gate',{body:{action:'check',token:tok}});
+        if(data&&data.ok){CURRENT_EMAIL=data.email;showApp();}else{localStorage.removeItem('ts_amplify_token');}
+      }catch(e){}
+    }
+  } else if(sessionStorage.getItem('ts_amplify_auth')==='1'){showApp();}
 });
 </script>
 </body>
