@@ -1,6 +1,10 @@
 // AI Alpha OS — generation service
 // Generates AI Alpha Opportunity Snapshots, outreach drafts, proposal routes
 // and (deterministic) onboarding packs. Admin-gated.
+//
+// AI provider: Lovable AI Gateway (LOVABLE_API_KEY) is primary. If it is not
+// provisioned, the function falls back to OpenAI (OPENAI_API_KEY) using the
+// GPT-5 family. gpt-4o-mini is intentionally NOT used (legacy).
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
@@ -36,6 +40,12 @@ const DEFAULT_ONBOARDING_TASKS = [
   "Prepare first sprint backlog",
 ];
 
+// Map a Lovable model to an equivalent OpenAI fallback model.
+const OPENAI_FALLBACK: Record<string, string> = {
+  "google/gemini-2.5-pro": "gpt-5-2025-08-07",
+  "google/gemini-2.5-flash": "gpt-5-mini-2025-08-07",
+};
+
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -43,26 +53,58 @@ function json(body: unknown, status = 200) {
   });
 }
 
-async function callOpenAI(apiKey: string, system: string, user: string, jsonMode: boolean) {
-  const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+// Calls Lovable AI Gateway first; falls back to OpenAI (GPT-5) if the Lovable
+// key is absent. Returns { content, provider, model }.
+async function callAI(system: string, user: string, model: string) {
+  const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+  const openaiKey = Deno.env.get("OPENAI_API_KEY");
+  const messages = [
+    { role: "system", content: system },
+    { role: "user", content: user },
+  ];
+
+  let url: string, key: string, useModel: string, provider: string;
+  if (lovableKey) {
+    url = "https://ai.gateway.lovable.dev/v1/chat/completions";
+    key = lovableKey;
+    useModel = model;
+    provider = "lovable";
+  } else if (openaiKey) {
+    url = "https://api.openai.com/v1/chat/completions";
+    key = openaiKey;
+    useModel = OPENAI_FALLBACK[model] || "gpt-5-mini-2025-08-07";
+    provider = "openai";
+  } else {
+    throw new Error("No AI key configured. Enable Lovable AI (LOVABLE_API_KEY) or set OPENAI_API_KEY.");
+  }
+
+  // Note: GPT-5 + Gemini gateway models use default temperature; do not send
+  // temperature or max_tokens to stay compatible across both.
+  const resp = await fetch(url, {
     method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      temperature: 0.5,
-      ...(jsonMode ? { response_format: { type: "json_object" } } : {}),
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: user },
-      ],
-    }),
+    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ model: useModel, messages }),
   });
+  if (resp.status === 429) throw new Error("AI rate limit reached. Please retry shortly.");
+  if (resp.status === 402) throw new Error("AI credits exhausted. Top up Lovable AI credits.");
   if (!resp.ok) {
     const txt = await resp.text();
-    throw new Error(`OpenAI error ${resp.status}: ${txt}`);
+    throw new Error(`AI error ${resp.status} (${provider}/${useModel}): ${txt}`);
   }
   const data = await resp.json();
-  return data.choices?.[0]?.message?.content ?? "";
+  const content = data.choices?.[0]?.message?.content ?? "";
+  return { content, provider, model: useModel };
+}
+
+// Robust JSON extraction that works whether or not the model wraps output in
+// markdown code fences.
+function extractJson(text: string): any {
+  let t = (text || "").trim();
+  t = t.replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+  const first = t.indexOf("{");
+  const last = t.lastIndexOf("}");
+  if (first >= 0 && last > first) t = t.slice(first, last + 1);
+  return JSON.parse(t);
 }
 
 function companyContext(company: any, signals: any[], score: any, fourps: any, agile: any) {
@@ -96,7 +138,6 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const openAIApiKey = Deno.env.get("OPENAI_API_KEY");
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
@@ -153,9 +194,7 @@ serve(async (req) => {
       return json({ ok: true, type, tasks: inserted });
     }
 
-    if (!openAIApiKey) return json({ error: "OPENAI_API_KEY is not configured" }, 500);
-
-    // ===================== SNAPSHOT =====================
+    // ===================== SNAPSHOT (Gemini 2.5 Pro) =====================
     if (type === "snapshot") {
       const system = `You are a senior AI value-creation consultant producing a preliminary external micro-diagnostic. Be specific and evidence-led, but honest about assumptions and never overstate certainty. Do NOT give legal, investment, or compliance advice or guarantee outcomes. Output GitHub-flavoured Markdown only.`;
       const user = `Using ONLY the data below, write an "AI Alpha Opportunity Snapshot" (2-4 pages) with these numbered sections:
@@ -175,10 +214,9 @@ serve(async (req) => {
 Begin the document with a blockquote line: "> ${COMPLIANCE_FOOTER}"
 
 ${ctx}`;
-      let content = await callOpenAI(openAIApiKey, system, user, false);
-      if (!content.includes(COMPLIANCE_FOOTER)) {
-        content = `> ${COMPLIANCE_FOOTER}\n\n` + content;
-      }
+      const { content: raw, provider, model } = await callAI(system, user, "google/gemini-2.5-pro");
+      let content = raw;
+      if (!content.includes(COMPLIANCE_FOOTER)) content = `> ${COMPLIANCE_FOOTER}\n\n` + content;
       const { data: inserted, error } = await supabase.from("aaos_snapshots").insert({
         company_id,
         title: `AI Alpha Opportunity Snapshot — ${company.company_name}`,
@@ -193,13 +231,13 @@ ${ctx}`;
         created_by: userData.user.id,
       }).select().single();
       if (error) throw error;
-      await logActivity("snapshot generated", `Snapshot generated for ${company.company_name}`, inserted.id, "snapshot");
-      return json({ ok: true, type, snapshot: inserted });
+      await logActivity("snapshot generated", `Snapshot generated for ${company.company_name} (${provider}/${model})`, inserted.id, "snapshot");
+      return json({ ok: true, type, snapshot: inserted, provider, model });
     }
 
-    // ===================== OUTREACH (all 5 types) =====================
+    // ===================== OUTREACH (Gemini 2.5 Flash, 5 types) =====================
     if (type === "outreach") {
-      const system = `You are a senior consultant writing evidence-led, specific B2B outreach. No hype, no false certainty, no exaggerated claims. Each message must reference: why this company, the specific signal noticed, one concrete opportunity, and a low-friction next step. Output strict JSON.`;
+      const system = `You are a senior consultant writing evidence-led, specific B2B outreach. No hype, no false certainty, no exaggerated claims. Each message must reference: why this company, the specific signal noticed, one concrete opportunity, and a low-friction next step. Return ONLY valid JSON, no markdown, no code fences.`;
       const user = `Produce outreach drafts as JSON with this exact shape:
 {
   "short_email": { "subject": "...", "body": "..." },
@@ -211,8 +249,8 @@ ${ctx}`;
 LinkedIn connection note body must be under 300 characters. Keep emails concise.
 
 ${ctx}`;
-      const raw = await callOpenAI(openAIApiKey, system, user, true);
-      const parsed = JSON.parse(raw);
+      const { content: raw, provider, model } = await callAI(system, user, "google/gemini-2.5-flash");
+      const parsed = extractJson(raw);
       const contactSource = company.source || "Manually entered";
       const lawful = "Lawful basis: legitimate interest (B2B). Source recorded. Suppression honoured; unsubscribe offered on first contact.";
       const mk = (outreach_type: string, subject: string | null, body: string) => ({
@@ -231,15 +269,15 @@ ${ctx}`;
       ];
       const { data: inserted, error } = await supabase.from("aaos_outreach_drafts").insert(rows).select();
       if (error) throw error;
-      await logActivity("outreach generated", `5 outreach drafts generated for ${company.company_name}`);
-      return json({ ok: true, type, drafts: inserted });
+      await logActivity("outreach generated", `5 outreach drafts generated for ${company.company_name} (${provider}/${model})`);
+      return json({ ok: true, type, drafts: inserted, provider, model });
     }
 
-    // ===================== PROPOSAL ROUTE =====================
+    // ===================== PROPOSAL ROUTE (Gemini 2.5 Flash) =====================
     if (type === "proposal") {
       const chosenRoute = route_type || company.accepted_offer_route || "AI Alpha Diagnostic";
       const priceHint = OFFER_ROUTES[chosenRoute] || "Human review required";
-      const system = `You are a senior consultant preparing an internal proposal route (not yet client-issued). Be specific and evidence-led. Never state final commercial terms as agreed. Output strict JSON.`;
+      const system = `You are a senior consultant preparing an internal proposal route (not yet client-issued). Be specific and evidence-led. Never state final commercial terms as agreed. Return ONLY valid JSON, no markdown, no code fences.`;
       const user = `Produce a proposal route as JSON with this exact shape (all values are strings):
 {
   "problem_statement": "...",
@@ -256,8 +294,8 @@ Route type is "${chosenRoute}". Indicative pricing placeholder is "${priceHint}"
 Anchor evidence_from_signals to the actual signals listed. governance_wrapper should reference the 4Ps (Primed, Principled, Practised, Protected).
 
 ${ctx}`;
-      const raw = await callOpenAI(openAIApiKey, system, user, true);
-      const p = JSON.parse(raw);
+      const { content: raw, provider, model } = await callAI(system, user, "google/gemini-2.5-flash");
+      const p = extractJson(raw);
       const { data: inserted, error } = await supabase.from("aaos_proposal_routes").insert({
         company_id,
         route_type: chosenRoute,
@@ -278,8 +316,8 @@ ${ctx}`;
         created_by: userData.user.id,
       }).select().single();
       if (error) throw error;
-      await logActivity("proposal generated", `Proposal route (${chosenRoute}) generated for ${company.company_name}`, inserted.id, "proposal");
-      return json({ ok: true, type, proposal: inserted });
+      await logActivity("proposal generated", `Proposal route (${chosenRoute}) generated for ${company.company_name} (${provider}/${model})`, inserted.id, "proposal");
+      return json({ ok: true, type, proposal: inserted, provider, model });
     }
 
     return json({ error: `Unknown type: ${type}` }, 400);

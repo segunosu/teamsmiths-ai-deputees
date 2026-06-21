@@ -73,7 +73,7 @@ export default function AlphaSettings() {
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-base">Backend &amp; access</CardTitle></CardHeader>
           <CardContent className="text-sm space-y-2 text-muted-foreground">
-            <p>Backend: Lovable Cloud Supabase (project iyqsbjawaampgcavsgcz). All <code>aaos_*</code> tables are protected by row-level security and restricted to admin/owner accounts. AI generation runs in the <code>aaos-generate</code> edge function (OpenAI); no keys are exposed to the browser.</p>
+            <p>Backend: Lovable Cloud Supabase (project iyqsbjawaampgcavsgcz). All <code>aaos_*</code> tables are protected by row-level security and restricted to admin/owner accounts. AI generation runs in the <code>aaos-generate</code> edge function via <strong>Lovable AI</strong> — snapshots use <code>google/gemini-2.5-pro</code>; outreach and proposals use <code>google/gemini-2.5-flash</code> — with an OpenAI GPT-5 fallback. No keys are exposed to the browser.</p>
           </CardContent>
         </Card>
       </div>
