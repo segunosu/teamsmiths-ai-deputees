@@ -182,5 +182,8 @@ verify_jwt = false
 [functions.scorecard-webhook]
 verify_jwt = false
 
+[functions.aaos-generate]
+verify_jwt = true
+
 [edge_runtime]
 enabled = true

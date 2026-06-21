@@ -69,6 +69,12 @@ import OutcomeSprints from "./pages/OutcomeSprints";
 import DiscoverySprintCheckout from "./pages/DiscoverySprintCheckout";
 import ExampleProductionRiskSystem from "./pages/ExampleProductionRiskSystem";
 import ExampleProjectRiskSystem from "./pages/ExampleProjectRiskSystem";
+// AI Alpha OS — Agile AI Alpha module
+import AlphaDashboard from "./agile-ai-alpha/pages/AlphaDashboard";
+import AlphaCompanies from "./agile-ai-alpha/pages/AlphaCompanies";
+import AlphaCompanyDetail from "./agile-ai-alpha/pages/AlphaCompanyDetail";
+import AlphaValueLedger from "./agile-ai-alpha/pages/AlphaValueLedger";
+import AlphaSettings from "./agile-ai-alpha/pages/AlphaSettings";
 
 // Lazy load components
 const Governance = React.lazy(() => import('./pages/Governance'));
@@ -215,7 +221,14 @@ const App = () => (
                   <Route path="/outcome-sprints" element={<Navigate to="/discovery-sprint" replace />} />
                   <Route path="/examples/order-risk-engine" element={<ExampleProductionRiskSystem />} />
                   <Route path="/examples/revenue-risk-engine" element={<ExampleProjectRiskSystem />} />
-                  
+
+                  {/* AI Alpha OS — Agile AI Alpha (owner/admin only) */}
+                  <Route path="/agile-ai-alpha" element={<AdminOnly><AlphaDashboard /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/companies" element={<AdminOnly><AlphaCompanies /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/companies/:id" element={<AdminOnly><AlphaCompanyDetail /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/value-ledger" element={<AdminOnly><AlphaValueLedger /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/settings" element={<AdminOnly><AlphaSettings /></AdminOnly>} />
+
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

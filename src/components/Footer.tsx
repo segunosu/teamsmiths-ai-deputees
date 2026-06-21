@@ -12,6 +12,7 @@ export const Footer = () => {
               <li><Link to="/governance" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">The 4Ps Framework</Link></li>
               <li><a href="https://governance.teamsmiths.ai/cockpit" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Free Governance Assessment</a></li>
               <li><a href="/amplify" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Amplify</a></li>
+              <li><Link to="/agile-ai-alpha" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">Agile AI Alpha</Link></li>
             </ul>
           </div>
 
