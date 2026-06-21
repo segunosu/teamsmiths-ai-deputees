@@ -58,6 +58,42 @@ export type Database = {
           },
         ]
       }
+      aaos_agent_roles: {
+        Row: {
+          active: boolean
+          created_at: string
+          human_review_required_for_outputs: boolean
+          id: string
+          permissions: string | null
+          responsibilities: string | null
+          role_description: string | null
+          role_name: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          human_review_required_for_outputs?: boolean
+          id?: string
+          permissions?: string | null
+          responsibilities?: string | null
+          role_description?: string | null
+          role_name: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          human_review_required_for_outputs?: boolean
+          id?: string
+          permissions?: string | null
+          responsibilities?: string | null
+          role_description?: string | null
+          role_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       aaos_agile_ai_scores: {
         Row: {
           agile_ai_maturity_band: string | null
@@ -119,6 +155,266 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_ai_opportunities: {
+        Row: {
+          acceptance_criteria: string | null
+          business_area: string | null
+          client_id: string | null
+          confidence_level: string | null
+          confidence_score: number | null
+          created_at: string
+          created_by: string | null
+          diagnostic_id: string | null
+          effort_score: number | null
+          engagement_id: string | null
+          estimated_annual_value_high: number | null
+          estimated_annual_value_low: number | null
+          estimated_monthly_value_high: number | null
+          estimated_monthly_value_low: number | null
+          governance_impact: string | null
+          id: string
+          implementation_effort: string | null
+          opportunity_description: string | null
+          opportunity_title: string
+          priority_score: number | null
+          recommended_next_action: string | null
+          required_data: string | null
+          required_people: string | null
+          risk_level: string | null
+          risk_score: number | null
+          status: string
+          strategic_fit_score: number | null
+          suggested_solution: string | null
+          time_to_impact: string | null
+          updated_at: string
+          urgency_score: number | null
+          value_potential_score: number | null
+          value_type: string | null
+        }
+        Insert: {
+          acceptance_criteria?: string | null
+          business_area?: string | null
+          client_id?: string | null
+          confidence_level?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          created_by?: string | null
+          diagnostic_id?: string | null
+          effort_score?: number | null
+          engagement_id?: string | null
+          estimated_annual_value_high?: number | null
+          estimated_annual_value_low?: number | null
+          estimated_monthly_value_high?: number | null
+          estimated_monthly_value_low?: number | null
+          governance_impact?: string | null
+          id?: string
+          implementation_effort?: string | null
+          opportunity_description?: string | null
+          opportunity_title: string
+          priority_score?: number | null
+          recommended_next_action?: string | null
+          required_data?: string | null
+          required_people?: string | null
+          risk_level?: string | null
+          risk_score?: number | null
+          status?: string
+          strategic_fit_score?: number | null
+          suggested_solution?: string | null
+          time_to_impact?: string | null
+          updated_at?: string
+          urgency_score?: number | null
+          value_potential_score?: number | null
+          value_type?: string | null
+        }
+        Update: {
+          acceptance_criteria?: string | null
+          business_area?: string | null
+          client_id?: string | null
+          confidence_level?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          created_by?: string | null
+          diagnostic_id?: string | null
+          effort_score?: number | null
+          engagement_id?: string | null
+          estimated_annual_value_high?: number | null
+          estimated_annual_value_low?: number | null
+          estimated_monthly_value_high?: number | null
+          estimated_monthly_value_low?: number | null
+          governance_impact?: string | null
+          id?: string
+          implementation_effort?: string | null
+          opportunity_description?: string | null
+          opportunity_title?: string
+          priority_score?: number | null
+          recommended_next_action?: string | null
+          required_data?: string | null
+          required_people?: string | null
+          risk_level?: string | null
+          risk_score?: number | null
+          status?: string
+          strategic_fit_score?: number | null
+          suggested_solution?: string | null
+          time_to_impact?: string | null
+          updated_at?: string
+          urgency_score?: number | null
+          value_potential_score?: number | null
+          value_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_ai_opportunities_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_ai_opportunities_diagnostic_id_fkey"
+            columns: ["diagnostic_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_diagnostics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_ai_opportunities_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_benchmarks: {
+        Row: {
+          benchmark_name: string
+          company_size_band: string | null
+          confidence_level: string | null
+          created_at: string
+          created_by: string | null
+          high_value: number | null
+          id: string
+          low_value: number | null
+          median_value: number | null
+          metric_name: string | null
+          notes: string | null
+          sample_size: number | null
+          sector: string | null
+          updated_at: string
+        }
+        Insert: {
+          benchmark_name: string
+          company_size_band?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          high_value?: number | null
+          id?: string
+          low_value?: number | null
+          median_value?: number | null
+          metric_name?: string | null
+          notes?: string | null
+          sample_size?: number | null
+          sector?: string | null
+          updated_at?: string
+        }
+        Update: {
+          benchmark_name?: string
+          company_size_band?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          high_value?: number | null
+          id?: string
+          low_value?: number | null
+          median_value?: number | null
+          metric_name?: string | null
+          notes?: string | null
+          sample_size?: number | null
+          sector?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      aaos_clients: {
+        Row: {
+          client_name: string
+          company_id: string | null
+          created_at: string
+          created_by: string | null
+          created_from_company_id: string | null
+          current_engagement_id: string | null
+          id: string
+          notes: string | null
+          onboarding_status: string | null
+          primary_contact_email: string | null
+          primary_contact_name: string | null
+          region: string | null
+          sector: string | null
+          source_company_status: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          client_name: string
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          created_from_company_id?: string | null
+          current_engagement_id?: string | null
+          id?: string
+          notes?: string | null
+          onboarding_status?: string | null
+          primary_contact_email?: string | null
+          primary_contact_name?: string | null
+          region?: string | null
+          sector?: string | null
+          source_company_status?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          client_name?: string
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          created_from_company_id?: string | null
+          current_engagement_id?: string | null
+          id?: string
+          notes?: string | null
+          onboarding_status?: string | null
+          primary_contact_email?: string | null
+          primary_contact_name?: string | null
+          region?: string | null
+          sector?: string | null
+          source_company_status?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_clients_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_clients_created_from_company_id_fkey"
+            columns: ["created_from_company_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_clients_current_engagement_fk"
+            columns: ["current_engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
             referencedColumns: ["id"]
           },
         ]
@@ -349,6 +645,364 @@ export type Database = {
           },
         ]
       }
+      aaos_controls: {
+        Row: {
+          client_id: string | null
+          control_description: string | null
+          control_name: string
+          control_type: string | null
+          created_at: string
+          created_by: string | null
+          engagement_id: string | null
+          evidence_item_id: string | null
+          evidence_required: boolean
+          id: string
+          implementation_status: string
+          owner: string | null
+          related_four_p_dimension: string | null
+          related_risk_id: string | null
+          review_frequency: string | null
+          updated_at: string
+        }
+        Insert: {
+          client_id?: string | null
+          control_description?: string | null
+          control_name: string
+          control_type?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          evidence_item_id?: string | null
+          evidence_required?: boolean
+          id?: string
+          implementation_status?: string
+          owner?: string | null
+          related_four_p_dimension?: string | null
+          related_risk_id?: string | null
+          review_frequency?: string | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string | null
+          control_description?: string | null
+          control_name?: string
+          control_type?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          evidence_item_id?: string | null
+          evidence_required?: boolean
+          id?: string
+          implementation_status?: string
+          owner?: string | null
+          related_four_p_dimension?: string | null
+          related_risk_id?: string | null
+          review_frequency?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_controls_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_controls_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_controls_evidence_item_id_fkey"
+            columns: ["evidence_item_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_evidence_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_controls_related_risk_id_fkey"
+            columns: ["related_risk_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_governance_risks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_diagnostic_inputs: {
+        Row: {
+          confidence_level: string | null
+          content: string | null
+          created_at: string
+          created_by: string | null
+          diagnostic_id: string
+          evidence_url: string | null
+          id: string
+          input_type: string | null
+          source: string | null
+          title: string | null
+        }
+        Insert: {
+          confidence_level?: string | null
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          diagnostic_id: string
+          evidence_url?: string | null
+          id?: string
+          input_type?: string | null
+          source?: string | null
+          title?: string | null
+        }
+        Update: {
+          confidence_level?: string | null
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          diagnostic_id?: string
+          evidence_url?: string | null
+          id?: string
+          input_type?: string | null
+          source?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_diagnostic_inputs_diagnostic_id_fkey"
+            columns: ["diagnostic_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_diagnostics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_diagnostics: {
+        Row: {
+          client_id: string
+          confidence_level: string | null
+          created_at: string
+          created_by: string | null
+          diagnostic_name: string
+          diagnostic_summary: string | null
+          engagement_id: string | null
+          human_review_required: boolean
+          id: string
+          key_findings: string | null
+          readiness_score: number | null
+          recommended_90_day_focus: string | null
+          review_status: string
+          status: string
+          top_opportunities_summary: string | null
+          top_risks_summary: string | null
+          updated_at: string
+          value_potential_high: number | null
+          value_potential_low: number | null
+        }
+        Insert: {
+          client_id: string
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          diagnostic_name?: string
+          diagnostic_summary?: string | null
+          engagement_id?: string | null
+          human_review_required?: boolean
+          id?: string
+          key_findings?: string | null
+          readiness_score?: number | null
+          recommended_90_day_focus?: string | null
+          review_status?: string
+          status?: string
+          top_opportunities_summary?: string | null
+          top_risks_summary?: string | null
+          updated_at?: string
+          value_potential_high?: number | null
+          value_potential_low?: number | null
+        }
+        Update: {
+          client_id?: string
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          diagnostic_name?: string
+          diagnostic_summary?: string | null
+          engagement_id?: string | null
+          human_review_required?: boolean
+          id?: string
+          key_findings?: string | null
+          readiness_score?: number | null
+          recommended_90_day_focus?: string | null
+          review_status?: string
+          status?: string
+          top_opportunities_summary?: string | null
+          top_risks_summary?: string | null
+          updated_at?: string
+          value_potential_high?: number | null
+          value_potential_low?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_diagnostics_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_diagnostics_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_engagements: {
+        Row: {
+          agreed_price: number | null
+          client_id: string
+          commercial_model: string | null
+          company_id: string | null
+          created_at: string
+          created_by: string | null
+          engagement_name: string
+          engagement_type: string | null
+          id: string
+          notes: string | null
+          owner: string | null
+          start_date: string | null
+          status: string
+          target_end_date: string | null
+          updated_at: string
+          upside_model: string | null
+        }
+        Insert: {
+          agreed_price?: number | null
+          client_id: string
+          commercial_model?: string | null
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_name: string
+          engagement_type?: string | null
+          id?: string
+          notes?: string | null
+          owner?: string | null
+          start_date?: string | null
+          status?: string
+          target_end_date?: string | null
+          updated_at?: string
+          upside_model?: string | null
+        }
+        Update: {
+          agreed_price?: number | null
+          client_id?: string
+          commercial_model?: string | null
+          company_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_name?: string
+          engagement_type?: string | null
+          id?: string
+          notes?: string | null
+          owner?: string | null
+          start_date?: string | null
+          status?: string
+          target_end_date?: string | null
+          updated_at?: string
+          upside_model?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_engagements_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_engagements_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_evidence_items: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          created_by: string | null
+          engagement_id: string | null
+          evidence_date: string | null
+          evidence_status: string
+          evidence_summary: string | null
+          evidence_title: string | null
+          evidence_type: string | null
+          evidence_url: string | null
+          four_p_dimension: string | null
+          id: string
+          review_status: string | null
+          reviewed_by: string | null
+          sub_dimension: string | null
+          updated_at: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          evidence_date?: string | null
+          evidence_status?: string
+          evidence_summary?: string | null
+          evidence_title?: string | null
+          evidence_type?: string | null
+          evidence_url?: string | null
+          four_p_dimension?: string | null
+          id?: string
+          review_status?: string | null
+          reviewed_by?: string | null
+          sub_dimension?: string | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          evidence_date?: string | null
+          evidence_status?: string
+          evidence_summary?: string | null
+          evidence_title?: string | null
+          evidence_type?: string | null
+          evidence_url?: string | null
+          four_p_dimension?: string | null
+          id?: string
+          review_status?: string | null
+          reviewed_by?: string | null
+          sub_dimension?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_evidence_items_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_evidence_items_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aaos_four_ps_scores: {
         Row: {
           audit_trail: number | null
@@ -486,47 +1140,236 @@ export type Database = {
           },
         ]
       }
+      aaos_framework_mappings: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          created_by: string | null
+          engagement_id: string | null
+          framework_name: string | null
+          human_review_required: boolean
+          id: string
+          notes: string | null
+          related_control_id: string | null
+          related_evidence_item_id: string | null
+          related_four_p_dimension: string | null
+          requirement_reference: string | null
+          requirement_summary: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          framework_name?: string | null
+          human_review_required?: boolean
+          id?: string
+          notes?: string | null
+          related_control_id?: string | null
+          related_evidence_item_id?: string | null
+          related_four_p_dimension?: string | null
+          requirement_reference?: string | null
+          requirement_summary?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          framework_name?: string | null
+          human_review_required?: boolean
+          id?: string
+          notes?: string | null
+          related_control_id?: string | null
+          related_evidence_item_id?: string | null
+          related_four_p_dimension?: string | null
+          requirement_reference?: string | null
+          requirement_summary?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_framework_mappings_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_framework_mappings_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_framework_mappings_related_control_id_fkey"
+            columns: ["related_control_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_controls"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_framework_mappings_related_evidence_item_id_fkey"
+            columns: ["related_evidence_item_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_evidence_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_governance_risks: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          created_by: string | null
+          due_date: string | null
+          engagement_id: string | null
+          four_p_dimension: string | null
+          human_review_required: boolean
+          id: string
+          impact: number | null
+          likelihood: number | null
+          mitigation: string | null
+          owner: string | null
+          related_opportunity_id: string | null
+          risk_description: string | null
+          risk_domain: string | null
+          risk_score: number | null
+          risk_title: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          due_date?: string | null
+          engagement_id?: string | null
+          four_p_dimension?: string | null
+          human_review_required?: boolean
+          id?: string
+          impact?: number | null
+          likelihood?: number | null
+          mitigation?: string | null
+          owner?: string | null
+          related_opportunity_id?: string | null
+          risk_description?: string | null
+          risk_domain?: string | null
+          risk_score?: number | null
+          risk_title: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          due_date?: string | null
+          engagement_id?: string | null
+          four_p_dimension?: string | null
+          human_review_required?: boolean
+          id?: string
+          impact?: number | null
+          likelihood?: number | null
+          mitigation?: string | null
+          owner?: string | null
+          related_opportunity_id?: string | null
+          risk_description?: string | null
+          risk_domain?: string | null
+          risk_score?: number | null
+          risk_title?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_governance_risks_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_governance_risks_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_governance_risks_related_opportunity_id_fkey"
+            columns: ["related_opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_ai_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aaos_kpis: {
         Row: {
+          actual_date: string | null
           actual_value: number | null
           baseline_date: string | null
           baseline_value: number | null
+          client_id: string | null
           company_id: string
+          confidence_level: string | null
           created_at: string
+          data_source: string | null
+          engagement_id: string | null
           id: string
           kpi_category: string | null
           kpi_name: string
           notes: string | null
+          opportunity_id: string | null
           target_date: string | null
           target_value: number | null
           unit: string | null
           updated_at: string
         }
         Insert: {
+          actual_date?: string | null
           actual_value?: number | null
           baseline_date?: string | null
           baseline_value?: number | null
+          client_id?: string | null
           company_id: string
+          confidence_level?: string | null
           created_at?: string
+          data_source?: string | null
+          engagement_id?: string | null
           id?: string
           kpi_category?: string | null
           kpi_name: string
           notes?: string | null
+          opportunity_id?: string | null
           target_date?: string | null
           target_value?: number | null
           unit?: string | null
           updated_at?: string
         }
         Update: {
+          actual_date?: string | null
           actual_value?: number | null
           baseline_date?: string | null
           baseline_value?: number | null
+          client_id?: string | null
           company_id?: string
+          confidence_level?: string | null
           created_at?: string
+          data_source?: string | null
+          engagement_id?: string | null
           id?: string
           kpi_category?: string | null
           kpi_name?: string
           notes?: string | null
+          opportunity_id?: string | null
           target_date?: string | null
           target_value?: number | null
           unit?: string | null
@@ -534,10 +1377,257 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "aaos_kpis_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "aaos_kpis_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_kpis_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_kpis_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_ai_opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_monetisation_records: {
+        Row: {
+          client_id: string | null
+          commercial_model: string | null
+          created_at: string
+          created_by: string | null
+          engagement_id: string | null
+          fee_amount: number | null
+          gain_share_amount_agreed: number | null
+          gain_share_amount_estimated: number | null
+          gain_share_percentage: number | null
+          human_review_required: boolean
+          id: string
+          invoice_status: string
+          subscription_amount: number | null
+          trigger_condition: string | null
+          trigger_status: string
+          updated_at: string
+          value_ledger_id: string | null
+          warrant_or_equity_notes: string | null
+        }
+        Insert: {
+          client_id?: string | null
+          commercial_model?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          fee_amount?: number | null
+          gain_share_amount_agreed?: number | null
+          gain_share_amount_estimated?: number | null
+          gain_share_percentage?: number | null
+          human_review_required?: boolean
+          id?: string
+          invoice_status?: string
+          subscription_amount?: number | null
+          trigger_condition?: string | null
+          trigger_status?: string
+          updated_at?: string
+          value_ledger_id?: string | null
+          warrant_or_equity_notes?: string | null
+        }
+        Update: {
+          client_id?: string | null
+          commercial_model?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          fee_amount?: number | null
+          gain_share_amount_agreed?: number | null
+          gain_share_amount_estimated?: number | null
+          gain_share_percentage?: number | null
+          human_review_required?: boolean
+          id?: string
+          invoice_status?: string
+          subscription_amount?: number | null
+          trigger_condition?: string | null
+          trigger_status?: string
+          updated_at?: string
+          value_ledger_id?: string | null
+          warrant_or_equity_notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_monetisation_records_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_monetisation_records_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_monetisation_records_value_ledger_id_fkey"
+            columns: ["value_ledger_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_value_ledger"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_narrative_notes: {
+        Row: {
+          ai_extraction_status: string
+          client_id: string | null
+          company_id: string | null
+          confidence_level: string | null
+          created_at: string
+          created_by: string | null
+          engagement_id: string | null
+          entity_id: string | null
+          entity_type: string | null
+          human_review_status: string
+          id: string
+          observation_text: string
+          observation_title: string | null
+          observation_type: string | null
+          source: string | null
+          updated_at: string
+        }
+        Insert: {
+          ai_extraction_status?: string
+          client_id?: string | null
+          company_id?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          human_review_status?: string
+          id?: string
+          observation_text: string
+          observation_title?: string | null
+          observation_type?: string | null
+          source?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ai_extraction_status?: string
+          client_id?: string | null
+          company_id?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          entity_id?: string | null
+          entity_type?: string | null
+          human_review_status?: string
+          id?: string
+          observation_text?: string
+          observation_title?: string | null
+          observation_type?: string | null
+          source?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_narrative_notes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_narrative_notes_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_narrative_notes_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_narrative_suggestions: {
+        Row: {
+          applied_entity_id: string | null
+          applied_entity_type: string | null
+          confidence_level: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          narrative_note_id: string
+          payload: Json | null
+          reasoning: string | null
+          related_four_p_dimension: string | null
+          related_kpi: string | null
+          review_status: string
+          suggested_item_type: string | null
+          suggested_title: string | null
+          updated_at: string
+        }
+        Insert: {
+          applied_entity_id?: string | null
+          applied_entity_type?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          narrative_note_id: string
+          payload?: Json | null
+          reasoning?: string | null
+          related_four_p_dimension?: string | null
+          related_kpi?: string | null
+          review_status?: string
+          suggested_item_type?: string | null
+          suggested_title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          applied_entity_id?: string | null
+          applied_entity_type?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          narrative_note_id?: string
+          payload?: Json | null
+          reasoning?: string | null
+          related_four_p_dimension?: string | null
+          related_kpi?: string | null
+          review_status?: string
+          suggested_item_type?: string | null
+          suggested_title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_narrative_suggestions_narrative_note_id_fkey"
+            columns: ["narrative_note_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_narrative_notes"
             referencedColumns: ["id"]
           },
         ]
@@ -648,6 +1738,71 @@ export type Database = {
           },
         ]
       }
+      aaos_portfolio_patterns: {
+        Row: {
+          anonymised: boolean
+          company_size_band: string | null
+          confidence_level: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          pattern_title: string
+          pattern_type: string | null
+          related_control_type: string | null
+          related_opportunity_type: string | null
+          related_risk_type: string | null
+          reusable_playbook: string | null
+          sector: string | null
+          source_client_id: string | null
+          summary: string | null
+          updated_at: string
+        }
+        Insert: {
+          anonymised?: boolean
+          company_size_band?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          pattern_title: string
+          pattern_type?: string | null
+          related_control_type?: string | null
+          related_opportunity_type?: string | null
+          related_risk_type?: string | null
+          reusable_playbook?: string | null
+          sector?: string | null
+          source_client_id?: string | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Update: {
+          anonymised?: boolean
+          company_size_band?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          pattern_title?: string
+          pattern_type?: string | null
+          related_control_type?: string | null
+          related_opportunity_type?: string | null
+          related_risk_type?: string | null
+          reusable_playbook?: string | null
+          sector?: string | null
+          source_client_id?: string | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_portfolio_patterns_source_client_id_fkey"
+            columns: ["source_client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aaos_proposal_routes: {
         Row: {
           baseline_data_needed: string | null
@@ -725,6 +1880,78 @@ export type Database = {
           },
         ]
       }
+      aaos_reports: {
+        Row: {
+          approved_for_client: boolean
+          assumptions: string | null
+          client_id: string | null
+          confidence_level: string | null
+          created_at: string
+          created_by: string | null
+          engagement_id: string | null
+          exported_at: string | null
+          generated_at: string | null
+          generated_content: string | null
+          id: string
+          input_data_used: Json | null
+          report_type: string | null
+          review_status: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          approved_for_client?: boolean
+          assumptions?: string | null
+          client_id?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          exported_at?: string | null
+          generated_at?: string | null
+          generated_content?: string | null
+          id?: string
+          input_data_used?: Json | null
+          report_type?: string | null
+          review_status?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approved_for_client?: boolean
+          assumptions?: string | null
+          client_id?: string | null
+          confidence_level?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          exported_at?: string | null
+          generated_at?: string | null
+          generated_content?: string | null
+          id?: string
+          input_data_used?: Json | null
+          report_type?: string | null
+          review_status?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_reports_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_reports_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aaos_snapshots: {
         Row: {
           approved_for_outreach: boolean
@@ -787,6 +2014,191 @@ export type Database = {
           },
         ]
       }
+      aaos_sprints: {
+        Row: {
+          ai_points_completed: number | null
+          blockers: string | null
+          client_id: string | null
+          created_at: string
+          created_by: string | null
+          end_date: string | null
+          engagement_id: string | null
+          human_points_completed: number | null
+          id: string
+          retrospective_notes: string | null
+          sprint_goal: string | null
+          sprint_name: string
+          sprint_review_notes: string | null
+          sprint_type: string | null
+          start_date: string | null
+          status: string
+          updated_at: string
+          velocity_points_completed: number | null
+          velocity_points_planned: number | null
+        }
+        Insert: {
+          ai_points_completed?: number | null
+          blockers?: string | null
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          engagement_id?: string | null
+          human_points_completed?: number | null
+          id?: string
+          retrospective_notes?: string | null
+          sprint_goal?: string | null
+          sprint_name: string
+          sprint_review_notes?: string | null
+          sprint_type?: string | null
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+          velocity_points_completed?: number | null
+          velocity_points_planned?: number | null
+        }
+        Update: {
+          ai_points_completed?: number | null
+          blockers?: string | null
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          engagement_id?: string | null
+          human_points_completed?: number | null
+          id?: string
+          retrospective_notes?: string | null
+          sprint_goal?: string | null
+          sprint_name?: string
+          sprint_review_notes?: string | null
+          sprint_type?: string | null
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+          velocity_points_completed?: number | null
+          velocity_points_planned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_sprints_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_sprints_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_stories: {
+        Row: {
+          acceptance_criteria: string | null
+          blocker_notes: string | null
+          client_id: string | null
+          created_at: string
+          created_by: string | null
+          definition_of_done: string | null
+          engagement_id: string | null
+          golden_test: string | null
+          human_review_required: boolean
+          id: string
+          opportunity_id: string | null
+          owner_name: string | null
+          owner_type: string | null
+          points: number | null
+          review_status: string
+          sprint_id: string | null
+          status: string
+          story_title: string
+          story_type: string | null
+          updated_at: string
+          user_story: string | null
+          value_points: number | null
+        }
+        Insert: {
+          acceptance_criteria?: string | null
+          blocker_notes?: string | null
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          definition_of_done?: string | null
+          engagement_id?: string | null
+          golden_test?: string | null
+          human_review_required?: boolean
+          id?: string
+          opportunity_id?: string | null
+          owner_name?: string | null
+          owner_type?: string | null
+          points?: number | null
+          review_status?: string
+          sprint_id?: string | null
+          status?: string
+          story_title: string
+          story_type?: string | null
+          updated_at?: string
+          user_story?: string | null
+          value_points?: number | null
+        }
+        Update: {
+          acceptance_criteria?: string | null
+          blocker_notes?: string | null
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          definition_of_done?: string | null
+          engagement_id?: string | null
+          golden_test?: string | null
+          human_review_required?: boolean
+          id?: string
+          opportunity_id?: string | null
+          owner_name?: string | null
+          owner_type?: string | null
+          points?: number | null
+          review_status?: string
+          sprint_id?: string | null
+          status?: string
+          story_title?: string
+          story_type?: string | null
+          updated_at?: string
+          user_story?: string | null
+          value_points?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_stories_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_stories_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_stories_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_ai_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_stories_sprint_id_fkey"
+            columns: ["sprint_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_sprints"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aaos_value_hypotheses: {
         Row: {
           assumptions: string | null
@@ -836,6 +2248,114 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aaos_value_ledger: {
+        Row: {
+          actual_value: number | null
+          attribution_confidence: string | null
+          attribution_notes: string | null
+          baseline_value: number | null
+          calculated_uplift: number | null
+          client_agreed: string | null
+          client_id: string | null
+          created_at: string
+          created_by: string | null
+          engagement_id: string | null
+          evidence_item_id: string | null
+          financial_value_high: number | null
+          financial_value_low: number | null
+          id: string
+          kpi_id: string | null
+          monetisation_record_id: string | null
+          monetisation_triggered: boolean
+          opportunity_id: string | null
+          updated_at: string
+          value_title: string
+          value_type: string | null
+        }
+        Insert: {
+          actual_value?: number | null
+          attribution_confidence?: string | null
+          attribution_notes?: string | null
+          baseline_value?: number | null
+          calculated_uplift?: number | null
+          client_agreed?: string | null
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          evidence_item_id?: string | null
+          financial_value_high?: number | null
+          financial_value_low?: number | null
+          id?: string
+          kpi_id?: string | null
+          monetisation_record_id?: string | null
+          monetisation_triggered?: boolean
+          opportunity_id?: string | null
+          updated_at?: string
+          value_title: string
+          value_type?: string | null
+        }
+        Update: {
+          actual_value?: number | null
+          attribution_confidence?: string | null
+          attribution_notes?: string | null
+          baseline_value?: number | null
+          calculated_uplift?: number | null
+          client_agreed?: string | null
+          client_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          engagement_id?: string | null
+          evidence_item_id?: string | null
+          financial_value_high?: number | null
+          financial_value_low?: number | null
+          id?: string
+          kpi_id?: string | null
+          monetisation_record_id?: string | null
+          monetisation_triggered?: boolean
+          opportunity_id?: string | null
+          updated_at?: string
+          value_title?: string
+          value_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_value_ledger_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_value_ledger_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_value_ledger_evidence_item_id_fkey"
+            columns: ["evidence_item_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_evidence_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_value_ledger_kpi_id_fkey"
+            columns: ["kpi_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_kpis"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_value_ledger_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_ai_opportunities"
             referencedColumns: ["id"]
           },
         ]
