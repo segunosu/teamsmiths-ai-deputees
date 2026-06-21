@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowLeft, Pencil, ExternalLink } from "lucide-react";
 import { AlphaLayout } from "../components/AlphaLayout";
 import { CompanyDialog } from "../components/CompanyDialog";
+import { ConvertClientBanner } from "../components/ConvertClientBanner";
 import type { Company } from "../types";
 
 import { OverviewTab } from "../components/tabs/OverviewTab";
@@ -84,6 +85,8 @@ export default function AlphaCompanyDetail() {
         </div>
         <Button variant="outline" size="sm" onClick={() => setEditOpen(true)}><Pencil className="h-4 w-4 mr-1" /> Edit</Button>
       </div>
+
+      <ConvertClientBanner company={company} />
 
       <Tabs value={tab} onValueChange={(v) => setSearchParams({ tab: v })}>
         <TabsList className="flex flex-wrap h-auto">

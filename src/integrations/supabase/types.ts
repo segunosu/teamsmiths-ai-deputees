@@ -17,9 +17,11 @@ export type Database = {
       aaos_activity_log: {
         Row: {
           action: string | null
+          client_id: string | null
           company_id: string | null
           created_at: string
           created_by: string | null
+          engagement_id: string | null
           entity_id: string | null
           entity_type: string | null
           id: string
@@ -28,9 +30,11 @@ export type Database = {
         }
         Insert: {
           action?: string | null
+          client_id?: string | null
           company_id?: string | null
           created_at?: string
           created_by?: string | null
+          engagement_id?: string | null
           entity_id?: string | null
           entity_type?: string | null
           id?: string
@@ -39,9 +43,11 @@ export type Database = {
         }
         Update: {
           action?: string | null
+          client_id?: string | null
           company_id?: string | null
           created_at?: string
           created_by?: string | null
+          engagement_id?: string | null
           entity_id?: string | null
           entity_type?: string | null
           id?: string
@@ -50,10 +56,24 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "aaos_activity_log_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "aaos_activity_log_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_activity_log_engagement_id_fkey"
+            columns: ["engagement_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_engagements"
             referencedColumns: ["id"]
           },
         ]

@@ -75,6 +75,11 @@ import AlphaCompanies from "./agile-ai-alpha/pages/AlphaCompanies";
 import AlphaCompanyDetail from "./agile-ai-alpha/pages/AlphaCompanyDetail";
 import AlphaValueLedger from "./agile-ai-alpha/pages/AlphaValueLedger";
 import AlphaSettings from "./agile-ai-alpha/pages/AlphaSettings";
+import AlphaCommandCentre from "./agile-ai-alpha/pages/AlphaCommandCentre";
+import AlphaClients from "./agile-ai-alpha/pages/AlphaClients";
+import AlphaClientWorkspace from "./agile-ai-alpha/pages/AlphaClientWorkspace";
+import AlphaEngagement from "./agile-ai-alpha/pages/AlphaEngagement";
+import AlphaPortfolio from "./agile-ai-alpha/pages/AlphaPortfolio";
 
 // Lazy load components
 const Governance = React.lazy(() => import('./pages/Governance'));
@@ -226,6 +231,11 @@ const App = () => (
                   <Route path="/agile-ai-alpha" element={<AdminOnly><AlphaDashboard /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/companies" element={<AdminOnly><AlphaCompanies /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/companies/:id" element={<AdminOnly><AlphaCompanyDetail /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/command-centre" element={<AdminOnly><AlphaCommandCentre /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/clients" element={<AdminOnly><AlphaClients /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/clients/:id" element={<AdminOnly><AlphaClientWorkspace /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/engagements/:id" element={<AdminOnly><AlphaEngagement /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/portfolio" element={<AdminOnly><AlphaPortfolio /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/value-ledger" element={<AdminOnly><AlphaValueLedger /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/settings" element={<AdminOnly><AlphaSettings /></AdminOnly>} />
 

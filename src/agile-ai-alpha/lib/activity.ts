@@ -5,6 +5,8 @@ export async function logActivity(params: {
   action: string;
   summary: string;
   company_id?: string | null;
+  client_id?: string | null;
+  engagement_id?: string | null;
   entity_type?: string | null;
   entity_id?: string | null;
   metadata_json?: Record<string, unknown> | null;
@@ -14,6 +16,8 @@ export async function logActivity(params: {
       action: params.action,
       summary: params.summary,
       company_id: params.company_id ?? null,
+      client_id: params.client_id ?? null,
+      engagement_id: params.engagement_id ?? null,
       entity_type: params.entity_type ?? null,
       entity_id: params.entity_id ?? null,
       metadata_json: (params.metadata_json ?? null) as never,
