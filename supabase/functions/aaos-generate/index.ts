@@ -270,6 +270,124 @@ async function handleGovRows(supabase: any, userId: string, body: any) {
   return json({ ok: true, target, rows: inserted, provider, model });
 }
 
+// ===================== SPINE generators (AI: diagnostic, opportunities, stories, KPIs) =====================
+const STORY_TYPES_SET = ["discovery", "analysis", "build", "automation", "governance", "reporting", "testing", "data", "client action", "internal action"];
+const OWNER_TYPES_SET = ["Human Consultant", "AI Product Owner", "AI Scrum Master", "AI Analyst", "AI Builder", "AI Governance Reviewer", "AI QA Reviewer", "Client Owner"];
+const CONF_SET = ["low", "medium", "high"];
+
+function parseArr(content: string): any[] {
+  try {
+    const t = (content || "").trim().replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+    const a = t.indexOf("["); const b = t.lastIndexOf("]");
+    const r = JSON.parse(a >= 0 && b > a ? t.slice(a, b + 1) : t);
+    return Array.isArray(r) ? r : [];
+  } catch { return []; }
+}
+
+async function handleSpine(supabase: any, userId: string, body: any) {
+  const target = body.target;
+  const client_id = body.client_id;
+  if (!client_id) return json({ error: "client_id is required for spine" }, 400);
+  const { data: client } = await supabase.from("aaos_clients").select("*").eq("id", client_id).maybeSingle();
+  if (!client) return json({ error: "Client not found" }, 404);
+  const engagement_id = body.engagement_id || client.current_engagement_id || null;
+  const company_id = client.company_id || null;
+  let company: any = null;
+  if (company_id) { const { data: c } = await supabase.from("aaos_companies").select("*").eq("id", company_id).maybeSingle(); company = c; }
+  const { data: signals } = company_id
+    ? await supabase.from("aaos_company_signals").select("signal_type,signal_summary,implication").eq("company_id", company_id)
+    : { data: [] };
+  const clientCtx = `CLIENT: ${client.client_name}${company ? ` — ${company.sector || ""}/${company.subsector || ""}. ${company.notes || ""}` : ""}\nSignals:\n${(signals || []).map((s: any) => `- ${s.signal_type}: ${s.signal_summary}${s.implication ? ` (=> ${s.implication})` : ""}`).join("\n") || "none recorded"}`;
+  const log = (action: string, summary: string, entity_type: string, entity_id?: string) =>
+    supabase.from("aaos_activity_log").insert({ entity_type, entity_id, company_id, client_id, action, summary, created_by: userId });
+
+  if (target === "diagnostic") {
+    let diagId = body.diagnostic_id;
+    if (!diagId) { const { data: d } = await supabase.from("aaos_diagnostics").select("id").eq("client_id", client_id).order("created_at", { ascending: false }).limit(1); diagId = d?.[0]?.id; }
+    const system = `You are a senior AI value-creation consultant writing a concise, evidence-led AI Alpha Diagnostic. Honest about assumptions; no guarantees; readiness language. Return ONLY a JSON object.`;
+    const user = `Return a JSON object: {"diagnostic_summary":"...","key_findings":"...","top_opportunities_summary":"...","top_risks_summary":"...","recommended_90_day_focus":"...","value_potential_low":number,"value_potential_high":number,"confidence_level":"low|medium|high"}.\n\n${clientCtx}`;
+    const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-pro");
+    let o: any = {}; try { o = extractJson(content); } catch { o = {}; }
+    const fields = {
+      diagnostic_summary: o.diagnostic_summary || null, key_findings: o.key_findings || null,
+      top_opportunities_summary: o.top_opportunities_summary || null, top_risks_summary: o.top_risks_summary || null,
+      recommended_90_day_focus: o.recommended_90_day_focus || null,
+      value_potential_low: Number(o.value_potential_low) || null, value_potential_high: Number(o.value_potential_high) || null,
+      confidence_level: pick(o.confidence_level, CONF_SET, "medium"), status: "In Progress", human_review_required: true,
+    };
+    let row;
+    if (diagId) { const { data } = await supabase.from("aaos_diagnostics").update(fields).eq("id", diagId).select().single(); row = data; }
+    else { const { data } = await supabase.from("aaos_diagnostics").insert({ client_id, engagement_id, diagnostic_name: "AI Alpha Diagnostic", ...fields }).select().single(); row = data; }
+    await log("diagnostic generated (AI)", `Diagnostic drafted for ${client.client_name} (${provider}/${model})`, "diagnostic", row?.id);
+    return json({ ok: true, target, diagnostic: row, provider, model });
+  }
+
+  if (target === "opportunities") {
+    const system = `You are a senior AI value-creation consultant. Propose tailored AI value opportunities for this client. Return ONLY a JSON array.`;
+    const user = `Return a JSON array (4-6 items): [{"opportunity_title":"...","opportunity_description":"...","business_area":"...","value_type":"cost reduction|time saving|revenue increase|conversion improvement|quality improvement|risk reduction","estimated_monthly_value_low":number,"estimated_monthly_value_high":number,"value_potential_score":1-5,"urgency_score":1-5,"confidence_score":1-5,"strategic_fit_score":1-5,"effort_score":1-5,"risk_score":1-5}].\n\n${clientCtx}`;
+    const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-flash");
+    const rows = parseArr(content).slice(0, 8).map((o: any) => {
+      const v = clamp15(o.value_potential_score), u = clamp15(o.urgency_score), c = clamp15(o.confidence_score), s = clamp15(o.strategic_fit_score), e = clamp15(o.effort_score), r = clamp15(o.risk_score);
+      const low = Number(o.estimated_monthly_value_low) || null, high = Number(o.estimated_monthly_value_high) || null;
+      return { client_id, engagement_id, diagnostic_id: body.diagnostic_id || null,
+        opportunity_title: String(o.opportunity_title || "Opportunity").slice(0, 200), opportunity_description: o.opportunity_description || null,
+        business_area: o.business_area || null, value_type: o.value_type || null,
+        estimated_monthly_value_low: low, estimated_monthly_value_high: high, estimated_annual_value_low: low ? low * 12 : null, estimated_annual_value_high: high ? high * 12 : null,
+        confidence_level: c >= 4 ? "high" : c <= 2 ? "low" : "medium",
+        value_potential_score: v, urgency_score: u, confidence_score: c, strategic_fit_score: s, effort_score: e, risk_score: r, priority_score: (v + u + c + s) - (e + r),
+        status: "New", created_by: userId };
+    });
+    if (!rows.length) return json({ error: "AI returned no items — try again." }, 502);
+    const { data: inserted, error } = await supabase.from("aaos_ai_opportunities").insert(rows).select();
+    if (error) throw error;
+    await log("opportunities generated (AI)", `${rows.length} opportunities for ${client.client_name} (${provider}/${model})`, "opportunity");
+    return json({ ok: true, target, rows: inserted, provider, model });
+  }
+
+  if (target === "sprint_stories") {
+    const sprint_id = body.sprint_id; const opportunity_id = body.opportunity_id || null;
+    if (!sprint_id) return json({ error: "sprint_id is required" }, 400);
+    let opp: any = null;
+    if (opportunity_id) { const { data } = await supabase.from("aaos_ai_opportunities").select("*").eq("id", opportunity_id).maybeSingle(); opp = data; }
+    const system = `You are an AI delivery lead breaking an opportunity into governed Scrum stories. Return ONLY a JSON array.`;
+    const user = `Return a JSON array (4-6 stories): [{"story_title":"...","user_story":"...","story_type":"discovery|analysis|build|automation|governance|reporting|testing|data|client action|internal action","acceptance_criteria":"...","definition_of_done":"...","golden_test":"... or empty","owner_type":"AI Analyst|AI Builder|AI Governance Reviewer|AI QA Reviewer|Human Consultant","points":number,"human_review_required":true or false}]. Governance/reporting/client-facing stories must set human_review_required true with a golden_test.\n\nOPPORTUNITY: ${opp ? opp.opportunity_title + " — " + (opp.opportunity_description || "") : "(general delivery)"}\n${clientCtx}`;
+    const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-flash");
+    const rows = parseArr(content).slice(0, 8).map((s: any) => ({
+      sprint_id, client_id, engagement_id, opportunity_id,
+      story_title: String(s.story_title || "Story").slice(0, 200), user_story: s.user_story || null,
+      story_type: pick(s.story_type, STORY_TYPES_SET, "build"), acceptance_criteria: s.acceptance_criteria || null,
+      definition_of_done: s.definition_of_done || null, golden_test: s.golden_test || null,
+      owner_type: pick(s.owner_type, OWNER_TYPES_SET, "AI Analyst"), points: Number(s.points) || null,
+      status: "Inbox", human_review_required: !!s.human_review_required,
+      review_status: s.human_review_required ? "Needs Human Review" : "Not Required", created_by: userId,
+    }));
+    if (!rows.length) return json({ error: "AI returned no items — try again." }, 502);
+    const { data: inserted, error } = await supabase.from("aaos_stories").insert(rows).select();
+    if (error) throw error;
+    if (opportunity_id) await supabase.from("aaos_ai_opportunities").update({ status: "Selected for Sprint" }).eq("id", opportunity_id);
+    await log("stories generated (AI)", `${rows.length} stories for ${client.client_name} (${provider}/${model})`, "story");
+    return json({ ok: true, target, rows: inserted, provider, model });
+  }
+
+  if (target === "kpis") {
+    const system = `You are a senior value analyst proposing measurable KPIs for this client's AI value work. Return ONLY a JSON array.`;
+    const user = `Return a JSON array (3-5 KPIs): [{"kpi_name":"...","kpi_category":"cycle time|conversion|cost|quality|revenue|time saved","unit":"hours|%|£|count","baseline_value":number or null,"target_value":number or null,"confidence_level":"low|medium|high"}].\n\n${clientCtx}`;
+    const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-flash");
+    const rows = parseArr(content).slice(0, 8).map((k: any) => ({
+      client_id, engagement_id, company_id, kpi_name: String(k.kpi_name || "KPI").slice(0, 200), kpi_category: k.kpi_category || null,
+      unit: k.unit || null, baseline_value: Number(k.baseline_value) || null, target_value: Number(k.target_value) || null,
+      confidence_level: pick(k.confidence_level, CONF_SET, "low"),
+    }));
+    if (!rows.length) return json({ error: "AI returned no items — try again." }, 502);
+    const { data: inserted, error } = await supabase.from("aaos_kpis").insert(rows).select();
+    if (error) throw error;
+    await log("KPIs generated (AI)", `${rows.length} KPIs for ${client.client_name} (${provider}/${model})`, "kpi");
+    return json({ ok: true, target, rows: inserted, provider, model });
+  }
+
+  return json({ error: `Unknown spine target: ${target}` }, 400);
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -294,6 +412,7 @@ serve(async (req) => {
 
     if (type === "governance") return await handleGovernance(supabase, userData.user.id, body);
     if (type === "gov_rows") return await handleGovRows(supabase, userData.user.id, body);
+    if (type === "spine") return await handleSpine(supabase, userData.user.id, body);
 
     if (!type || !company_id) return json({ error: "type and company_id are required" }, 400);
 
