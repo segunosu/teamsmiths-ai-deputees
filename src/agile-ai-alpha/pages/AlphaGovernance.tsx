@@ -14,6 +14,7 @@ import { GenerateButton } from "../components/spineUi";
 import { ReviewStatusBadge, HumanReviewBadge } from "../components/RagBadge";
 import { generateGovernance } from "../lib/generation";
 import { REVIEW_STATUSES } from "../constants";
+import { archetypeTags, ARCHETYPE_LABEL, ARCHETYPES } from "../lib/archetype";
 
 const ARTIFACTS = [
   { v: "gap_memo", label: "Stuck-Deal Review — gap memo" },
@@ -51,6 +52,27 @@ function Studio() {
       return data || [];
     },
     enabled: !!companyId,
+  });
+
+  // The archetype RULE made visible: classify the selected vendor and show the
+  // recommended base (archetype-matched library items surfaced first on generate).
+  const { data: profile } = useQuery({
+    queryKey: ["aaos_gov_profile", companyId],
+    enabled: !!companyId,
+    queryFn: async () => {
+      const [{ data: c }, { data: sigs }] = await Promise.all([
+        supabase.from("aaos_companies").select("sector,subsector,notes").eq("id", companyId).maybeSingle(),
+        supabase.from("aaos_company_signals").select("signal_summary").eq("company_id", companyId),
+      ]);
+      const text = `${c?.sector || ""} ${c?.subsector || ""} ${c?.notes || ""} ${(sigs || []).map((s: any) => s.signal_summary).join(" ")}`;
+      const tags = archetypeTags(text);
+      let base: any[] = [];
+      if (tags.length) {
+        const { data } = await supabase.from("aaos_library").select("kind,title,framework,question,body,tags").overlaps("tags", tags).order("kind");
+        base = data || [];
+      }
+      return { tags, base };
+    },
   });
 
   const updateReview = async (id: string, status: string) => {
@@ -96,6 +118,29 @@ function Studio() {
         </CardContent>
       </Card>
 
+      {!!companyId && profile && (
+        <Card className="border-primary/30 bg-primary/5">
+          <CardHeader className="pb-2"><CardTitle className="text-base">Recommended base for this vendor</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="text-muted-foreground">Detected archetype:</span>
+              {profile.tags.length === 0 && <span className="text-muted-foreground">general AI vendor (universal core only)</span>}
+              {profile.tags.map((t: string) => <span key={t} className="rounded-full border px-2 py-0.5 text-xs bg-background font-medium">{ARCHETYPE_LABEL[t] || t}</span>)}
+            </div>
+            {profile.base.length > 0 && (
+              <div className="text-sm">
+                <div className="text-xs text-muted-foreground mb-1">Surfaced first when you generate (on top of the universal core):</div>
+                <ul className="space-y-1">
+                  {profile.base.map((i: any, idx: number) => (
+                    <li key={idx} className="flex gap-2"><span className="text-[11px] rounded border px-1.5 py-0.5 bg-muted shrink-0">{i.framework || i.kind}</span><span>{i.question || i.title}</span></li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       {!!companyId && (
         <div className="space-y-3">
           {(artifacts || []).length === 0 && <p className="text-sm text-muted-foreground">No artefacts yet for this company. Generate one above.</p>}
@@ -131,6 +176,7 @@ function Studio() {
 
 function LibraryBrowser() {
   const [q, setQ] = useState("");
+  const [arch, setArch] = useState("");
   const { data: items } = useQuery({
     queryKey: ["aaos_library"],
     queryFn: async () => {
@@ -139,9 +185,11 @@ function LibraryBrowser() {
     },
   });
 
-  const filtered = (items || []).filter((i: any) =>
-    !q || `${i.title} ${i.question || ""} ${i.body || ""} ${i.framework || ""}`.toLowerCase().includes(q.toLowerCase()),
-  );
+  const filtered = (items || []).filter((i: any) => {
+    if (q && !`${i.title} ${i.question || ""} ${i.body || ""} ${i.framework || ""}`.toLowerCase().includes(q.toLowerCase())) return false;
+    if (arch && !(i.tags || []).includes(arch)) return false;
+    return true;
+  });
   const groups = filtered.reduce((acc: Record<string, any[]>, i: any) => {
     (acc[i.kind] = acc[i.kind] || []).push(i);
     return acc;
@@ -157,7 +205,13 @@ function LibraryBrowser() {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground">Reusable, framework-mapped building blocks. Generation tailors these per vendor so you assemble, not author.</p>
-        <Input className="max-w-xs" placeholder="Search the library…" value={q} onChange={(e) => setQ(e.target.value)} />
+        <div className="flex gap-2">
+          <select className="h-10 rounded-md border bg-background px-3 text-sm" value={arch} onChange={(e) => setArch(e.target.value)}>
+            <option value="">All archetypes</option>
+            {ARCHETYPES.map((a) => <option key={a.key} value={a.key}>{a.label}</option>)}
+          </select>
+          <Input className="max-w-xs" placeholder="Search the library…" value={q} onChange={(e) => setQ(e.target.value)} />
+        </div>
       </div>
       {Object.keys(groups).length === 0 && <p className="text-sm text-muted-foreground">No matching items.</p>}
       {Object.entries(groups).map(([kind, rows]) => (
