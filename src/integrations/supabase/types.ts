@@ -1495,6 +1495,7 @@ export type Database = {
       aaos_library: {
         Row: {
           body: string | null
+          category: string | null
           created_at: string
           created_by: string | null
           four_p_dimension: string | null
@@ -1503,12 +1504,14 @@ export type Database = {
           kind: string
           question: string | null
           source: string
+          source_client_id: string | null
           tags: string[] | null
           title: string
           updated_at: string
         }
         Insert: {
           body?: string | null
+          category?: string | null
           created_at?: string
           created_by?: string | null
           four_p_dimension?: string | null
@@ -1517,12 +1520,14 @@ export type Database = {
           kind: string
           question?: string | null
           source?: string
+          source_client_id?: string | null
           tags?: string[] | null
           title: string
           updated_at?: string
         }
         Update: {
           body?: string | null
+          category?: string | null
           created_at?: string
           created_by?: string | null
           four_p_dimension?: string | null
@@ -1531,11 +1536,20 @@ export type Database = {
           kind?: string
           question?: string | null
           source?: string
+          source_client_id?: string | null
           tags?: string[] | null
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "aaos_library_source_client_id_fkey"
+            columns: ["source_client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       aaos_monetisation_records: {
         Row: {

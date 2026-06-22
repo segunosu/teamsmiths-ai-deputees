@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Copy } from "lucide-react";
+import { Copy, BookmarkPlus } from "lucide-react";
 import { GenerateButton } from "../spineUi";
 import { ReviewStatusBadge, HumanReviewBadge } from "../RagBadge";
 import { generateGovernance } from "../../lib/generation";
 import { REVIEW_STATUSES } from "../../constants";
+import { LibraryDialog } from "../LibraryDialog";
 
 const ARTIFACTS = [
   { v: "gap_memo", label: "Stuck-Deal Review — gap memo" },
@@ -36,11 +37,27 @@ export function ArtefactsSection({ client }: SectionProps) {
     },
   });
 
+  const [libOpen, setLibOpen] = useState(false);
+  const [libItem, setLibItem] = useState<any>(null);
+
   const updateReview = async (id: string, status: string) => {
     await supabase.from("aaos_gov_artifacts").update({ review_status: status }).eq("id", id);
     refetch();
   };
   const copy = (t: string) => navigator.clipboard.writeText(t).then(() => toast.success("Copied"));
+
+  // Feedback loop: promote a validated artefact into the reusable Library.
+  const saveToLibrary = (a: any) => {
+    const isQA = a.artifact_type === "questionnaire_answers";
+    setLibItem({
+      kind: isQA ? "questionnaire_qa" : "playbook",
+      title: "",
+      body: a.content || "",
+      source: `client-derived (${client.client_name})`,
+      source_client_id: client.id,
+    });
+    setLibOpen(true);
+  };
 
   return (
     <div className="space-y-4">
@@ -74,6 +91,7 @@ export function ArtefactsSection({ client }: SectionProps) {
                 <ReviewStatusBadge status={a.review_status} />
                 {a.human_review_required && a.review_status !== "approved" && <HumanReviewBadge />}
                 <Button size="sm" variant="outline" onClick={() => copy(a.content || "")}><Copy className="h-3.5 w-3.5 mr-1" /> Copy</Button>
+                <Button size="sm" variant="outline" onClick={() => saveToLibrary(a)}><BookmarkPlus className="h-3.5 w-3.5 mr-1" /> Save to Library</Button>
               </div>
             </CardTitle>
           </CardHeader>
@@ -89,6 +107,7 @@ export function ArtefactsSection({ client }: SectionProps) {
           </CardContent>
         </Card>
       ))}
+      <LibraryDialog open={libOpen} onOpenChange={setLibOpen} item={libItem} />
     </div>
   );
 }

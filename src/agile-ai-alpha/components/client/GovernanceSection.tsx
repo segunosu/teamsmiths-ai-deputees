@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Trash2, AlertCircle } from "lucide-react";
+import { Trash2, AlertCircle, Pencil } from "lucide-react";
 import {
   RISK_DOMAINS,
   FOUR_P_KEYS,
@@ -301,33 +301,7 @@ export function GovernanceSection({ client, refresh }: SectionProps) {
           <div className="space-y-2">
             {(risks || []).length === 0 && <p className="text-sm text-muted-foreground">No risks recorded yet.</p>}
             {(risks || []).map((r: any) => (
-              <div key={r.id} className="rounded-md border p-3 space-y-1">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-medium text-sm">{r.risk_title}</span>
-                    {r.risk_domain && <span className="text-xs text-muted-foreground">{r.risk_domain}</span>}
-                    {r.four_p_dimension && <span className="text-xs text-muted-foreground">{FOUR_P_LABELS[r.four_p_dimension] || r.four_p_dimension}</span>}
-                    <RagBadge rag={riskRag(r.risk_score ?? 0)} label={`risk ${r.risk_score ?? 0}`} />
-                    {r.human_review_required && <HumanReviewBadge />}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <select
-                      className="h-8 rounded-md border bg-background px-2 text-xs"
-                      value={r.status || ""}
-                      onChange={(e) => updateRiskStatus(r.id, e.target.value, r.human_review_required)}
-                    >
-                      {["Open", "Mitigating", "Monitoring", "Closed"].map((s) => (
-                        <option key={s} value={s}>{s}</option>
-                      ))}
-                    </select>
-                    <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => deleteRisk(r.id)}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
-                </div>
-                {r.mitigation && <p className="text-xs text-muted-foreground">Mitigation: {r.mitigation}</p>}
-                {r.owner && <p className="text-xs text-muted-foreground">Owner: {r.owner}{r.due_date ? ` · Due: ${r.due_date}` : ""}</p>}
-              </div>
+              <RiskRow key={r.id} risk={r} onChanged={refetchRisks} />
             ))}
           </div>
         </CardContent>
@@ -390,33 +364,9 @@ export function GovernanceSection({ client, refresh }: SectionProps) {
           {/* List */}
           <div className="space-y-2">
             {(controls || []).length === 0 && <p className="text-sm text-muted-foreground">No controls recorded yet.</p>}
-            {(controls || []).map((c: any) => {
-              const linkedRisk = (risks || []).find((r: any) => r.id === c.related_risk_id);
-              return (
-                <div key={c.id} className="rounded-md border p-3">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-medium text-sm">{c.control_name}</span>
-                      <StatusPill status={c.implementation_status} />
-                      {linkedRisk && <span className="text-xs text-muted-foreground">→ {linkedRisk.risk_title}</span>}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <select
-                        className="h-8 rounded-md border bg-background px-2 text-xs"
-                        value={c.implementation_status || ""}
-                        onChange={(e) => updateControlStatus(c.id, e.target.value)}
-                      >
-                        {CONTROL_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                      <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => deleteControl(c.id)}>
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  </div>
-                  {c.control_description && <p className="text-xs text-muted-foreground mt-1">{c.control_description}</p>}
-                </div>
-              );
-            })}
+            {(controls || []).map((c: any) => (
+              <ControlRow key={c.id} control={c} risks={risks || []} onChanged={refetchControls} />
+            ))}
           </div>
         </CardContent>
       </Card>
@@ -497,6 +447,183 @@ export function GovernanceSection({ client, refresh }: SectionProps) {
           </div>
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+// ---- Editable risk row ----
+function RiskRow({ risk, onChanged }: { risk: any; onChanged: () => void }) {
+  const [editing, setEditing] = useState(false);
+  const [f, setF] = useState<any>({});
+  const startEdit = () => {
+    setF({
+      risk_title: risk.risk_title ?? "", risk_description: risk.risk_description ?? "",
+      risk_domain: risk.risk_domain ?? RISK_DOMAINS[0], four_p_dimension: risk.four_p_dimension ?? FOUR_P_KEYS[0],
+      likelihood: risk.likelihood ?? "", impact: risk.impact ?? "", mitigation: risk.mitigation ?? "",
+      owner: risk.owner ?? "", due_date: risk.due_date ?? "",
+    });
+    setEditing(true);
+  };
+  const save = async () => {
+    const l = f.likelihood !== "" ? Number(f.likelihood) : null;
+    const i = f.impact !== "" ? Number(f.impact) : null;
+    const { error } = await supabase.from("aaos_governance_risks").update({
+      risk_title: f.risk_title || "Untitled risk", risk_description: f.risk_description || null,
+      risk_domain: f.risk_domain || null, four_p_dimension: f.four_p_dimension || null,
+      likelihood: l, impact: i, risk_score: (l != null && i != null) ? computeRiskScore(l, i) : null,
+      mitigation: f.mitigation || null, owner: f.owner || null, due_date: f.due_date || null,
+    }).eq("id", risk.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Risk updated"); setEditing(false); onChanged();
+  };
+  const updateStatus = async (status: string) => {
+    if (status === "Closed" && risk.human_review_required && !window.confirm("Human review required before closing this risk. Confirm review has been completed?")) return;
+    const { error } = await supabase.from("aaos_governance_risks").update({ status }).eq("id", risk.id);
+    if (error) { toast.error(error.message); return; }
+    onChanged();
+  };
+  const del = async () => {
+    if (!window.confirm("Delete this risk?")) return;
+    const { error } = await supabase.from("aaos_governance_risks").delete().eq("id", risk.id);
+    if (error) { toast.error(error.message); return; }
+    onChanged();
+  };
+
+  if (editing) {
+    return (
+      <div className="rounded-md border p-3 space-y-2 bg-muted/20">
+        <Input value={f.risk_title} onChange={(e) => setF({ ...f, risk_title: e.target.value })} placeholder="Risk title" />
+        <Textarea rows={2} value={f.risk_description} onChange={(e) => setF({ ...f, risk_description: e.target.value })} placeholder="Description" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <select className="h-9 rounded-md border bg-background px-2 text-xs" value={f.risk_domain} onChange={(e) => setF({ ...f, risk_domain: e.target.value })}>
+            {RISK_DOMAINS.map((d) => <option key={d} value={d}>{d}</option>)}
+          </select>
+          <select className="h-9 rounded-md border bg-background px-2 text-xs" value={f.four_p_dimension} onChange={(e) => setF({ ...f, four_p_dimension: e.target.value })}>
+            {FOUR_P_KEYS.map((k) => <option key={k} value={k}>{FOUR_P_LABELS[k]}</option>)}
+          </select>
+          <Input type="number" min={1} max={5} value={f.likelihood} onChange={(e) => setF({ ...f, likelihood: e.target.value })} placeholder="Likelihood" />
+          <Input type="number" min={1} max={5} value={f.impact} onChange={(e) => setF({ ...f, impact: e.target.value })} placeholder="Impact" />
+        </div>
+        <Textarea rows={2} value={f.mitigation} onChange={(e) => setF({ ...f, mitigation: e.target.value })} placeholder="Mitigation" />
+        <div className="grid grid-cols-2 gap-2">
+          <Input value={f.owner} onChange={(e) => setF({ ...f, owner: e.target.value })} placeholder="Owner" />
+          <Input type="date" value={f.due_date} onChange={(e) => setF({ ...f, due_date: e.target.value })} />
+        </div>
+        <div className="flex gap-2">
+          <Button size="sm" onClick={save}>Save</Button>
+          <Button size="sm" variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-md border p-3 space-y-1">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-medium text-sm">{risk.risk_title}</span>
+          {risk.risk_domain && <span className="text-xs text-muted-foreground">{risk.risk_domain}</span>}
+          {risk.four_p_dimension && <span className="text-xs text-muted-foreground">{FOUR_P_LABELS[risk.four_p_dimension] || risk.four_p_dimension}</span>}
+          <RagBadge rag={riskRag(risk.risk_score ?? 0)} label={`risk ${risk.risk_score ?? 0}`} />
+          {risk.human_review_required && <HumanReviewBadge />}
+        </div>
+        <div className="flex items-center gap-2">
+          <select className="h-8 rounded-md border bg-background px-2 text-xs" value={risk.status || ""} onChange={(e) => updateStatus(e.target.value)}>
+            {["Open", "Mitigating", "Monitoring", "Closed"].map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={startEdit}><Pencil className="h-3.5 w-3.5" /></Button>
+          <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={del}><Trash2 className="h-3.5 w-3.5" /></Button>
+        </div>
+      </div>
+      {risk.mitigation && <p className="text-xs text-muted-foreground">Mitigation: {risk.mitigation}</p>}
+      {risk.owner && <p className="text-xs text-muted-foreground">Owner: {risk.owner}{risk.due_date ? ` · Due: ${risk.due_date}` : ""}</p>}
+    </div>
+  );
+}
+
+// ---- Editable control row ----
+function ControlRow({ control, risks, onChanged }: { control: any; risks: any[]; onChanged: () => void }) {
+  const [editing, setEditing] = useState(false);
+  const [f, setF] = useState<any>({});
+  const linkedRisk = (risks || []).find((r: any) => r.id === control.related_risk_id);
+  const startEdit = () => {
+    setF({
+      control_name: control.control_name ?? "", control_description: control.control_description ?? "",
+      control_type: control.control_type ?? "", related_risk_id: control.related_risk_id ?? "",
+      related_four_p_dimension: control.related_four_p_dimension ?? FOUR_P_KEYS[0],
+      owner: control.owner ?? "", implementation_status: control.implementation_status ?? CONTROL_STATUSES[0],
+      evidence_required: !!control.evidence_required,
+    });
+    setEditing(true);
+  };
+  const save = async () => {
+    const { error } = await supabase.from("aaos_controls").update({
+      control_name: f.control_name || "Untitled control", control_description: f.control_description || null,
+      control_type: f.control_type || null, related_risk_id: f.related_risk_id || null,
+      related_four_p_dimension: f.related_four_p_dimension || null, owner: f.owner || null,
+      implementation_status: f.implementation_status || null, evidence_required: !!f.evidence_required,
+    }).eq("id", control.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Control updated"); setEditing(false); onChanged();
+  };
+  const updateStatus = async (status: string) => {
+    const { error } = await supabase.from("aaos_controls").update({ implementation_status: status }).eq("id", control.id);
+    if (error) { toast.error(error.message); return; }
+    onChanged();
+  };
+  const del = async () => {
+    if (!window.confirm("Delete this control?")) return;
+    const { error } = await supabase.from("aaos_controls").delete().eq("id", control.id);
+    if (error) { toast.error(error.message); return; }
+    onChanged();
+  };
+
+  if (editing) {
+    return (
+      <div className="rounded-md border p-3 space-y-2 bg-muted/20">
+        <Input value={f.control_name} onChange={(e) => setF({ ...f, control_name: e.target.value })} placeholder="Control name" />
+        <Textarea rows={2} value={f.control_description} onChange={(e) => setF({ ...f, control_description: e.target.value })} placeholder="Description" />
+        <div className="grid grid-cols-2 gap-2">
+          <Input value={f.control_type} onChange={(e) => setF({ ...f, control_type: e.target.value })} placeholder="Type (process/technical/policy)" />
+          <Input value={f.owner} onChange={(e) => setF({ ...f, owner: e.target.value })} placeholder="Owner" />
+          <select className="h-9 rounded-md border bg-background px-2 text-xs" value={f.related_four_p_dimension} onChange={(e) => setF({ ...f, related_four_p_dimension: e.target.value })}>
+            {FOUR_P_KEYS.map((k) => <option key={k} value={k}>{FOUR_P_LABELS[k]}</option>)}
+          </select>
+          <select className="h-9 rounded-md border bg-background px-2 text-xs" value={f.implementation_status} onChange={(e) => setF({ ...f, implementation_status: e.target.value })}>
+            {CONTROL_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <select className="h-9 rounded-md border bg-background px-2 text-xs col-span-2" value={f.related_risk_id} onChange={(e) => setF({ ...f, related_risk_id: e.target.value })}>
+            <option value="">— no linked risk —</option>
+            {(risks || []).map((r: any) => <option key={r.id} value={r.id}>{r.risk_title}</option>)}
+          </select>
+        </div>
+        <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={f.evidence_required} onChange={(e) => setF({ ...f, evidence_required: e.target.checked })} className="h-4 w-4" /> Evidence required</label>
+        <div className="flex gap-2">
+          <Button size="sm" onClick={save}>Save</Button>
+          <Button size="sm" variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-md border p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-medium text-sm">{control.control_name}</span>
+          <StatusPill status={control.implementation_status} />
+          {control.owner && <span className="text-xs text-muted-foreground">{control.owner}</span>}
+          {linkedRisk && <span className="text-xs text-muted-foreground">→ {linkedRisk.risk_title}</span>}
+        </div>
+        <div className="flex items-center gap-2">
+          <select className="h-8 rounded-md border bg-background px-2 text-xs" value={control.implementation_status || ""} onChange={(e) => updateStatus(e.target.value)}>
+            {CONTROL_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={startEdit}><Pencil className="h-3.5 w-3.5" /></Button>
+          <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={del}><Trash2 className="h-3.5 w-3.5" /></Button>
+        </div>
+      </div>
+      {control.control_description && <p className="text-xs text-muted-foreground mt-1">{control.control_description}</p>}
     </div>
   );
 }
