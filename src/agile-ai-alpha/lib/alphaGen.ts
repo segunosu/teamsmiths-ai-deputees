@@ -114,58 +114,23 @@ export async function generateSprintStories(opportunity: any, sprintId: string) 
   return data;
 }
 
-// ---------- Governance risks ----------
-export async function generateGovernanceRisks(client: Client, engagementId?: string | null) {
-  const seeds = [
-    { risk_title: "Personal data used without clear lawful basis", risk_domain: "privacy", four_p_dimension: "protected", l: 3, i: 4 },
-    { risk_title: "No human-in-the-loop on AI-influenced decisions", risk_domain: "human oversight", four_p_dimension: "principled", l: 3, i: 4 },
-    { risk_title: "Model performance not monitored over time", risk_domain: "model performance", four_p_dimension: "practised", l: 3, i: 3 },
-  ];
-  const rows = seeds.map((s) => ({
-    client_id: client.id, engagement_id: engagementId ?? null,
-    risk_title: s.risk_title, risk_description: "Template risk — confirm with evidence.",
-    risk_domain: s.risk_domain, four_p_dimension: s.four_p_dimension,
-    likelihood: s.l, impact: s.i, risk_score: computeRiskScore(s.l, s.i),
-    mitigation: "Define control, assign owner, capture evidence.", owner: "Owner", status: "Open", human_review_required: true,
-  }));
-  const { data } = await supabase.from("aaos_governance_risks").insert(rows).select();
-  await logActivity({ action: "risks generated", summary: `${rows.length} governance risks drafted for ${client.client_name}`, client_id: client.id, entity_type: "risk" });
-  return data;
+// ---------- Governance: AI-proposed, library-grounded structured rows ----------
+// These call the aaos-generate edge function (type "gov_rows"), which reads the
+// vendor's data + signals + the reusable Library (risks/controls mapped to EU AI
+// Act / GDPR / SOC 2 / ISO / NIST) and proposes TAILORED rows for human review —
+// instead of generic boilerplate. The system holds the regulatory knowledge.
+async function invokeGovRows(target: "risks" | "controls" | "evidence", client: Client) {
+  const { data, error } = await supabase.functions.invoke("aaos-generate", {
+    body: { type: "gov_rows", target, client_id: client.id, company_id: client.company_id },
+  });
+  if (error) throw new Error((data as any)?.error || error.message || `Failed to generate ${target}`);
+  if ((data as any)?.error) throw new Error((data as any).error);
+  return (data as any).rows;
 }
 
-// ---------- Controls (one per open risk lacking a control) ----------
-export async function generateControls(client: Client, engagementId?: string | null) {
-  const { data: risks } = await supabase.from("aaos_governance_risks").select("*").eq("client_id", client.id);
-  const rows = (risks || []).map((r: any) => ({
-    client_id: client.id, engagement_id: engagementId ?? null,
-    control_name: `Control for: ${r.risk_title}`,
-    control_description: "Template control — design, implement, and evidence.",
-    control_type: "process", related_risk_id: r.id, related_four_p_dimension: r.four_p_dimension,
-    owner: "Owner", implementation_status: "Not Started", evidence_required: true,
-  }));
-  if (!rows.length) return [];
-  const { data } = await supabase.from("aaos_controls").insert(rows).select();
-  await logActivity({ action: "controls generated", summary: `${rows.length} controls drafted for ${client.client_name}`, client_id: client.id, entity_type: "control" });
-  return data;
-}
-
-// ---------- Evidence checklist (4Ps shells) ----------
-export async function generateEvidenceChecklist(client: Client, engagementId?: string | null) {
-  const items = [
-    { four_p_dimension: "primed", evidence_title: "AI use-case clarity note", evidence_type: "decision log" },
-    { four_p_dimension: "principled", evidence_title: "AI principles & human-in-the-loop policy", evidence_type: "policy" },
-    { four_p_dimension: "practised", evidence_title: "Operating cadence / model lifecycle record", evidence_type: "procedure" },
-    { four_p_dimension: "protected", evidence_title: "Risk register & incident response test", evidence_type: "risk register" },
-  ];
-  const rows = items.map((i) => ({
-    client_id: client.id, engagement_id: engagementId ?? null,
-    four_p_dimension: i.four_p_dimension, evidence_title: i.evidence_title, evidence_type: i.evidence_type,
-    evidence_summary: "Template evidence shell — collect and attach.", evidence_status: "Missing",
-  }));
-  const { data } = await supabase.from("aaos_evidence_items").insert(rows).select();
-  await logActivity({ action: "evidence checklist generated", summary: `${rows.length} evidence shells for ${client.client_name}`, client_id: client.id, entity_type: "evidence" });
-  return data;
-}
+export const generateGovernanceRisks = (client: Client, _engagementId?: string | null) => invokeGovRows("risks", client);
+export const generateControls = (client: Client, _engagementId?: string | null) => invokeGovRows("controls", client);
+export const generateEvidenceChecklist = (client: Client, _engagementId?: string | null) => invokeGovRows("evidence", client);
 
 // ---------- KPI baseline shells ----------
 export async function generateKpiBaseline(client: Client, engagementId?: string | null) {

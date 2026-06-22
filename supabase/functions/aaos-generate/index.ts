@@ -193,6 +193,83 @@ async function handleGovernance(supabase: any, userId: string, body: any) {
   return json({ ok: true, type: "governance", artifact, gov_artifact: inserted, provider, model });
 }
 
+// ===================== GOVERNANCE structured ROWS (AI-proposed, library-grounded) =====================
+const FOUR_PS_SET = ["primed", "principled", "practised", "protected"];
+const RISK_DOMAINS_SET = ["privacy", "security", "bias", "transparency", "explainability", "human oversight", "legal", "operational", "supplier", "data quality", "model performance", "reputation", "financial"];
+const EVIDENCE_TYPES_SET = ["policy", "procedure", "screenshot", "meeting note", "decision log", "risk register", "control record", "model card", "audit trail", "incident response test", "training record", "vendor assessment", "sprint artefact", "KPI report"];
+const pick = (v: any, set: string[], dflt: string) => (set.includes(v) ? v : dflt);
+const clamp15 = (n: any) => { const x = Math.round(Number(n)); return x >= 1 && x <= 5 ? x : 3; };
+
+async function handleGovRows(supabase: any, userId: string, body: any) {
+  const target = body.target;
+  const client_id = body.client_id;
+  if (!client_id) return json({ error: "client_id is required for gov_rows" }, 400);
+  const { data: client } = await supabase.from("aaos_clients").select("*").eq("id", client_id).maybeSingle();
+  if (!client) return json({ error: "Client not found" }, 404);
+  const engagement_id = client.current_engagement_id || null;
+  const company_id = client.company_id || null;
+  let company: any = null;
+  if (company_id) { const { data: c } = await supabase.from("aaos_companies").select("*").eq("id", company_id).maybeSingle(); company = c; }
+  const { data: signals } = company_id
+    ? await supabase.from("aaos_company_signals").select("signal_type,signal_summary").eq("company_id", company_id)
+    : { data: [] };
+
+  const CFG: Record<string, { kinds: string[]; shape: string; instruction: string }> = {
+    risks: { kinds: ["risk"], shape: `[{"risk_title":"...","risk_description":"...","risk_domain":"<one of: ${RISK_DOMAINS_SET.join(", ")}>","four_p_dimension":"<primed|principled|practised|protected>","likelihood":1-5,"impact":1-5,"mitigation":"..."}]`, instruction: "Propose 6-10 AI-governance RISKS specific to this vendor, grounded in the reference risks and the vendor's actual situation/signals. Tailor wording to what they do." },
+    controls: { kinds: ["control"], shape: `[{"control_name":"...","control_description":"...","control_type":"process|technical|policy","related_four_p_dimension":"<primed|principled|practised|protected>"}]`, instruction: "Propose 6-10 CONTROLS that mitigate this vendor's likely AI-governance risks, grounded in the reference controls. Tailor to what they do." },
+    evidence: { kinds: ["control", "questionnaire_qa"], shape: `[{"four_p_dimension":"<primed|principled|practised|protected>","evidence_title":"...","evidence_type":"<one of: ${EVIDENCE_TYPES_SET.join(", ")}>","evidence_summary":"..."}]`, instruction: "Propose the 6-10 EVIDENCE artefacts this vendor needs to clear enterprise security review, grounded in the references and tailored to what they do." },
+  };
+  const cfg = CFG[target];
+  if (!cfg) return json({ error: `Unknown gov_rows target: ${target}` }, 400);
+
+  const { data: lib } = await supabase.from("aaos_library").select("kind,title,framework,question,body").in("kind", cfg.kinds).limit(40);
+  const vendorCtx = company
+    ? `VENDOR: ${company.company_name} — ${company.sector || ""}/${company.subsector || ""}. ${company.notes || ""}\nPublic signals:\n${(signals || []).map((s: any) => `- ${s.signal_type}: ${s.signal_summary}`).join("\n") || "none"}`
+    : `VENDOR: ${client.client_name}`;
+  const libCtx = (lib || []).map((l: any) => `- [${l.framework || l.kind}] ${l.title}: ${l.body || ""}`).join("\n");
+
+  const system = `You are a senior AI-governance consultant. Propose structured, tailored items grounded in the 4Ps and the reference library, specific to THIS vendor. Use readiness language; never claim certification. Return ONLY a valid JSON array, no markdown, no code fences.`;
+  const user = `${cfg.instruction}\nReturn a JSON array of objects with EXACTLY this shape:\n${cfg.shape}\n\n${vendorCtx}\n\nREFERENCE LIBRARY (tailor, do not copy verbatim):\n${libCtx}\n\n${body.context ? "BUYER CONTEXT:\n" + body.context : ""}`;
+
+  const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-flash");
+  let arr: any[] = [];
+  try {
+    const t = (content || "").trim().replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+    const a = t.indexOf("["); const b = t.lastIndexOf("]");
+    arr = JSON.parse(a >= 0 && b > a ? t.slice(a, b + 1) : t);
+  } catch { arr = []; }
+  if (!Array.isArray(arr)) arr = [];
+
+  let rows: any[];
+  if (target === "risks") {
+    rows = arr.slice(0, 12).map((r) => { const l = clamp15(r.likelihood), i = clamp15(r.impact); return {
+      client_id, engagement_id, risk_title: String(r.risk_title || "Untitled risk").slice(0, 200),
+      risk_description: r.risk_description || null, risk_domain: pick(r.risk_domain, RISK_DOMAINS_SET, "operational"),
+      four_p_dimension: pick(r.four_p_dimension, FOUR_PS_SET, "protected"), likelihood: l, impact: i, risk_score: l * i,
+      mitigation: r.mitigation || null, owner: "Owner", status: "Open", human_review_required: true, created_by: userId }; });
+  } else if (target === "controls") {
+    rows = arr.slice(0, 12).map((c) => ({
+      client_id, engagement_id, control_name: String(c.control_name || "Untitled control").slice(0, 200),
+      control_description: c.control_description || null, control_type: c.control_type || "process",
+      related_four_p_dimension: pick(c.related_four_p_dimension, FOUR_PS_SET, "protected"),
+      owner: "Owner", implementation_status: "Not Started", evidence_required: true, created_by: userId }));
+  } else {
+    rows = arr.slice(0, 12).map((e) => ({
+      client_id, engagement_id, four_p_dimension: pick(e.four_p_dimension, FOUR_PS_SET, "protected"),
+      evidence_title: String(e.evidence_title || "Evidence").slice(0, 200), evidence_type: pick(e.evidence_type, EVIDENCE_TYPES_SET, "procedure"),
+      evidence_summary: e.evidence_summary || null, evidence_status: "Missing", created_by: userId }));
+  }
+  if (!rows.length) return json({ error: "AI returned no items — try again." }, 502);
+  const table = target === "risks" ? "aaos_governance_risks" : target === "controls" ? "aaos_controls" : "aaos_evidence_items";
+  const { data: inserted, error } = await supabase.from(table).insert(rows).select();
+  if (error) throw error;
+  await supabase.from("aaos_activity_log").insert({
+    entity_type: target, company_id, client_id, action: `${target} generated (AI)`,
+    summary: `${rows.length} ${target} proposed for ${client.client_name} (${provider}/${model})`, created_by: userId,
+  });
+  return json({ ok: true, target, rows: inserted, provider, model });
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -216,6 +293,7 @@ serve(async (req) => {
     const { type, company_id, route_type } = body;
 
     if (type === "governance") return await handleGovernance(supabase, userData.user.id, body);
+    if (type === "gov_rows") return await handleGovRows(supabase, userData.user.id, body);
 
     if (!type || !company_id) return json({ error: "type and company_id are required" }, 400);
 
