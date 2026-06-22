@@ -134,6 +134,65 @@ AGILE AI MATURITY
 ${agile ? `Total ${agile.agile_ai_maturity_score ?? "?"} (band ${agile.agile_ai_maturity_band || "?"})` : "not yet assessed"}`;
 }
 
+// ===================== GOVERNANCE artefact generation (library-grounded AI) =====================
+const GOV_ARTIFACTS: Record<string, { title: string; kinds: string[]; instruction: string }> = {
+  gap_memo: {
+    title: "Stuck-Deal Review — Gap Memo", kinds: ["questionnaire_qa", "risk", "control"],
+    instruction: "Write a Stuck-Deal Review gap memo for this AI vendor. Using the buyer questionnaire/context (if any) and the vendor's public signals, identify (1) what is most likely blocking the enterprise security/AI-risk review, (2) the specific gaps vs the reference controls, and (3) a prioritised 14-day remediation plan mapped to the Enterprise-Ready Governance Pack (policy, risk register, model cards, questionnaire-response library, incident playbook, attestation). Be specific to this vendor. GitHub-flavoured Markdown with clear headings.",
+  },
+  policy: { title: "AI Governance Policy", kinds: ["policy", "control"], instruction: "Draft an AI Governance Policy for this vendor structured on the 4Ps (Primed, Principled, Practised, Protected), tailored to what they do. Markdown." },
+  risk_register: { title: "AI Risk Register", kinds: ["risk"], instruction: "Draft an AI risk register as a Markdown table (Risk | 4Ps | Likelihood | Impact | Mitigation | Owner) tailored to this vendor, drawing on the reference risks. 8-14 rows." },
+  model_cards: { title: "Model Card(s)", kinds: ["model_card_template"], instruction: "Draft model card(s) for this vendor's AI using the template; infer sensible specifics from what they do and mark assumptions with [placeholders]. Markdown." },
+  questionnaire_answers: { title: "Security Questionnaire Answers", kinds: ["questionnaire_qa"], instruction: "Using the buyer questionnaire in the context, draft tailored vendor answers for THIS vendor, grounded in the reference canonical answers. If no questionnaire is provided, answer the standard reference set. Keep [placeholders] where vendor-specific facts are unknown. Markdown Q&A." },
+  incident_playbook: { title: "AI Incident Response Playbook", kinds: ["incident_playbook"], instruction: "Draft an AI incident-response playbook tailored to this vendor using the template. Markdown." },
+  attestation: { title: "Governance Attestation Summary", kinds: ["attestation_template", "control"], instruction: "Draft a 1-2 page buyer-facing governance attestation summary for this vendor. Preliminary; not a certification. Markdown." },
+};
+
+async function handleGovernance(supabase: any, userId: string, body: any) {
+  const artifact = body.artifact || "gap_memo";
+  const cfg = GOV_ARTIFACTS[artifact];
+  if (!cfg) return json({ error: `Unknown governance artifact: ${artifact}` }, 400);
+
+  let company_id = body.company_id || null;
+  const client_id = body.client_id || null;
+  let companyName = "the vendor";
+  let company: any = null;
+  if (client_id) {
+    const { data: client } = await supabase.from("aaos_clients").select("*").eq("id", client_id).maybeSingle();
+    if (client) { company_id = company_id || client.company_id; companyName = client.client_name; }
+  }
+  if (company_id) {
+    const { data: c } = await supabase.from("aaos_companies").select("*").eq("id", company_id).maybeSingle();
+    if (c) { company = c; companyName = c.company_name; }
+  }
+  const { data: signals } = company_id
+    ? await supabase.from("aaos_company_signals").select("signal_type,signal_summary").eq("company_id", company_id)
+    : { data: [] };
+  const { data: lib } = await supabase.from("aaos_library").select("kind,title,framework,question,body").in("kind", cfg.kinds).limit(40);
+
+  const vendorCtx = company
+    ? `VENDOR: ${company.company_name}\nWhat they do: ${company.sector || ""} / ${company.subsector || ""}. ${company.notes || ""}\nPublic signals:\n${(signals || []).map((s: any) => `- ${s.signal_type}: ${s.signal_summary}`).join("\n") || "none recorded"}`
+    : `VENDOR: ${companyName}`;
+  const libCtx = (lib || []).map((l: any) => `- [${l.framework || l.kind}] ${l.question ? l.question + " -> " : ""}${l.title}: ${l.body || ""}`).join("\n");
+  const buyerCtx = body.context ? `BUYER QUESTIONNAIRE / CONTEXT PROVIDED:\n${body.context}` : "No specific buyer questionnaire provided.";
+
+  const system = `You are a senior AI-governance consultant producing vendor-ready artefacts that help an AI vendor pass enterprise security / AI-risk reviews. Ground everything in the 4Ps (Primed, Principled, Practised, Protected) and the reference library. Be specific and practical. Use readiness language only — never claim certification (SOC 2 / ISO / EU AI Act / GDPR are targets or obligations, not achieved certifications). Always assume human review. Keep [placeholders] where a vendor-specific fact is unknown.`;
+  const user = `${cfg.instruction}\n\n${vendorCtx}\n\n${buyerCtx}\n\nREFERENCE LIBRARY (reuse and tailor — do not copy verbatim):\n${libCtx}`;
+
+  const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-pro");
+  const { data: inserted, error } = await supabase.from("aaos_gov_artifacts").insert({
+    company_id, client_id, artifact_type: artifact, title: `${cfg.title} — ${companyName}`,
+    content, source_context: body.context || null, provider, model,
+    review_status: "needs human review", human_review_required: true, created_by: userId,
+  }).select().single();
+  if (error) throw error;
+  await supabase.from("aaos_activity_log").insert({
+    entity_type: "gov_artifact", entity_id: inserted.id, company_id, client_id,
+    action: "governance generated", summary: `${cfg.title} generated for ${companyName} (${provider}/${model})`, created_by: userId,
+  });
+  return json({ ok: true, type: "governance", artifact, gov_artifact: inserted, provider, model });
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -153,7 +212,11 @@ serve(async (req) => {
     const { data: isAdmin } = await supabase.rpc("is_admin", { _uid: userData.user.id });
     if (!isAdmin) return json({ error: "Admin access required" }, 403);
 
-    const { type, company_id, route_type } = await req.json();
+    const body = await req.json();
+    const { type, company_id, route_type } = body;
+
+    if (type === "governance") return await handleGovernance(supabase, userData.user.id, body);
+
     if (!type || !company_id) return json({ error: "type and company_id are required" }, 400);
 
     // ---- Load company context ----

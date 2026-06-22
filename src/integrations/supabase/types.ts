@@ -1243,6 +1243,72 @@ export type Database = {
           },
         ]
       }
+      aaos_gov_artifacts: {
+        Row: {
+          artifact_type: string
+          client_id: string | null
+          company_id: string | null
+          content: string | null
+          created_at: string
+          created_by: string | null
+          human_review_required: boolean
+          id: string
+          model: string | null
+          provider: string | null
+          review_status: string
+          source_context: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          artifact_type: string
+          client_id?: string | null
+          company_id?: string | null
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          human_review_required?: boolean
+          id?: string
+          model?: string | null
+          provider?: string | null
+          review_status?: string
+          source_context?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          artifact_type?: string
+          client_id?: string | null
+          company_id?: string | null
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          human_review_required?: boolean
+          id?: string
+          model?: string | null
+          provider?: string | null
+          review_status?: string
+          source_context?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aaos_gov_artifacts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aaos_gov_artifacts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "aaos_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aaos_governance_risks: {
         Row: {
           client_id: string | null
@@ -1425,6 +1491,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      aaos_library: {
+        Row: {
+          body: string | null
+          created_at: string
+          created_by: string | null
+          four_p_dimension: string | null
+          framework: string | null
+          id: string
+          kind: string
+          question: string | null
+          source: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          created_by?: string | null
+          four_p_dimension?: string | null
+          framework?: string | null
+          id?: string
+          kind: string
+          question?: string | null
+          source?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          created_by?: string | null
+          four_p_dimension?: string | null
+          framework?: string | null
+          id?: string
+          kind?: string
+          question?: string | null
+          source?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       aaos_monetisation_records: {
         Row: {

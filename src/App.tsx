@@ -80,6 +80,7 @@ import AlphaClients from "./agile-ai-alpha/pages/AlphaClients";
 import AlphaClientWorkspace from "./agile-ai-alpha/pages/AlphaClientWorkspace";
 import AlphaEngagement from "./agile-ai-alpha/pages/AlphaEngagement";
 import AlphaPortfolio from "./agile-ai-alpha/pages/AlphaPortfolio";
+import AlphaGovernance from "./agile-ai-alpha/pages/AlphaGovernance";
 
 // Lazy load components
 const Governance = React.lazy(() => import('./pages/Governance'));
@@ -235,6 +236,7 @@ const App = () => (
                   <Route path="/agile-ai-alpha/clients" element={<AdminOnly><AlphaClients /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/clients/:id" element={<AdminOnly><AlphaClientWorkspace /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/engagements/:id" element={<AdminOnly><AlphaEngagement /></AdminOnly>} />
+                  <Route path="/agile-ai-alpha/governance" element={<AdminOnly><AlphaGovernance /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/portfolio" element={<AdminOnly><AlphaPortfolio /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/value-ledger" element={<AdminOnly><AlphaValueLedger /></AdminOnly>} />
                   <Route path="/agile-ai-alpha/settings" element={<AdminOnly><AlphaSettings /></AdminOnly>} />
