@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Copy, Library as LibraryIcon, Sparkles } from "lucide-react";
+import { Copy, Library as LibraryIcon, Sparkles, Plus, Pencil, Trash2 } from "lucide-react";
+import { LibraryDialog } from "../components/LibraryDialog";
 import { AlphaLayout } from "../components/AlphaLayout";
 import { GenerateButton } from "../components/spineUi";
 import { ReviewStatusBadge, HumanReviewBadge } from "../components/RagBadge";
@@ -175,8 +176,11 @@ function Studio() {
 }
 
 function LibraryBrowser() {
+  const qc = useQueryClient();
   const [q, setQ] = useState("");
   const [arch, setArch] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editing, setEditing] = useState<any | null>(null);
   const { data: items } = useQuery({
     queryKey: ["aaos_library"],
     queryFn: async () => {
@@ -184,6 +188,15 @@ function LibraryBrowser() {
       return data || [];
     },
   });
+
+  const refresh = () => qc.invalidateQueries({ queryKey: ["aaos_library"] });
+  const remove = async (id: string) => {
+    if (!window.confirm("Delete this library item?")) return;
+    const { error } = await supabase.from("aaos_library").delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Deleted");
+    refresh();
+  };
 
   const filtered = (items || []).filter((i: any) => {
     if (q && !`${i.title} ${i.question || ""} ${i.body || ""} ${i.framework || ""}`.toLowerCase().includes(q.toLowerCase())) return false;
@@ -206,6 +219,7 @@ function LibraryBrowser() {
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground">Reusable, framework-mapped building blocks. Generation tailors these per vendor so you assemble, not author.</p>
         <div className="flex gap-2">
+          <Button size="sm" onClick={() => { setEditing(null); setDialogOpen(true); }}><Plus className="h-4 w-4 mr-1" /> Add item</Button>
           <select className="h-10 rounded-md border bg-background px-3 text-sm" value={arch} onChange={(e) => setArch(e.target.value)}>
             <option value="">All archetypes</option>
             {ARCHETYPES.map((a) => <option key={a.key} value={a.key}>{a.label}</option>)}
@@ -220,10 +234,17 @@ function LibraryBrowser() {
           <CardContent className="space-y-2">
             {rows.map((i: any) => (
               <div key={i.id} className="rounded-md border p-3">
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  {i.framework && <span className="text-xs rounded-full border px-2 py-0.5 bg-muted">{i.framework}</span>}
-                  {i.four_p_dimension && <span className="text-xs rounded-full border px-2 py-0.5">{i.four_p_dimension}</span>}
-                  <span className="text-sm font-medium">{i.question || i.title}</span>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    {i.framework && <span className="text-xs rounded-full border px-2 py-0.5 bg-muted">{i.framework}</span>}
+                    {i.four_p_dimension && <span className="text-xs rounded-full border px-2 py-0.5">{i.four_p_dimension}</span>}
+                    {i.source && i.source !== "seed" && i.source !== "ai" && <span className="text-xs rounded-full border border-green-300 bg-green-50 px-2 py-0.5 text-green-800">{i.source}</span>}
+                    <span className="text-sm font-medium">{i.question || i.title}</span>
+                  </div>
+                  <div className="flex gap-1 shrink-0">
+                    <Button size="sm" variant="outline" className="h-7 px-2" onClick={() => { setEditing(i); setDialogOpen(true); }}><Pencil className="h-3.5 w-3.5" /></Button>
+                    <Button size="sm" variant="outline" className="h-7 px-2" onClick={() => remove(i.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
+                  </div>
                 </div>
                 <div className="text-sm text-muted-foreground whitespace-pre-wrap">{i.body}</div>
               </div>
@@ -231,6 +252,7 @@ function LibraryBrowser() {
           </CardContent>
         </Card>
       ))}
+      <LibraryDialog open={dialogOpen} onOpenChange={setDialogOpen} item={editing} onSaved={refresh} />
     </div>
   );
 }
