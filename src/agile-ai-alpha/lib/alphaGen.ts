@@ -79,82 +79,20 @@ export async function generateKpiBaseline(client: Client, engagementId?: string 
   return res.rows;
 }
 
-// ---------- Monetisation review ----------
+// ---------- Monetisation review (AI) ----------
 export async function generateMonetisationReview(client: Client, engagementId?: string | null, valueLedgerId?: string | null) {
-  const { data } = await supabase.from("aaos_monetisation_records").insert({
-    client_id: client.id, engagement_id: engagementId ?? null, value_ledger_id: valueLedgerId ?? null,
-    commercial_model: "Fixed Fee Plus Upside", trigger_condition: "Verified KPI uplift agreed by client over 60-90 days.",
-    trigger_status: "Human Review Required", invoice_status: "Not Required", human_review_required: true,
-  }).select().single();
-  await logActivity({ action: "monetisation review created", summary: `Monetisation review for ${client.client_name}`, client_id: client.id, entity_type: "monetisation", entity_id: data?.id });
-  return data;
+  const res = await invokeSpine("monetisation", { client_id: client.id, engagement_id: engagementId ?? null, value_ledger_id: valueLedgerId ?? null });
+  return res.record;
 }
 
-// ---------- Portfolio pattern ----------
+// ---------- Portfolio pattern (AI) ----------
 export async function generatePortfolioPattern(client: Client) {
-  const { company } = await loadCompanyContext(client);
-  const { data } = await supabase.from("aaos_portfolio_patterns").insert({
-    pattern_title: `${company?.sector || "Sector"} — AI value sprint pattern`,
-    pattern_type: "delivery playbook", sector: company?.sector || null, company_size_band: company?.company_size_band || null,
-    summary: "Reusable, anonymised delivery pattern captured from this engagement.",
-    reusable_playbook: "1) Find the most manual high-volume workflow. 2) Baseline a KPI. 3) Ship an AI-assisted prototype with human review. 4) Measure uplift. 5) Govern with 4Ps evidence.",
-    source_client_id: client.id, anonymised: true, confidence_level: "medium",
-  }).select().single();
-  await logActivity({ action: "portfolio pattern captured", summary: `Pattern captured from ${client.client_name}`, client_id: client.id, entity_type: "pattern", entity_id: data?.id });
-  return data;
+  const res = await invokeSpine("portfolio", { client_id: client.id });
+  return res.pattern;
 }
 
-// ---------- Reports ----------
+// ---------- Reports (AI) ----------
 export async function generateReport(client: Client, engagementId: string | null, reportType: string) {
-  const [{ data: diag }, { data: opps }, { data: kpis }, { data: vledger }, { data: risks }, { data: monet }] = await Promise.all([
-    supabase.from("aaos_diagnostics").select("*").eq("client_id", client.id).order("created_at", { ascending: false }).limit(1),
-    supabase.from("aaos_ai_opportunities").select("*").eq("client_id", client.id),
-    supabase.from("aaos_kpis").select("*").eq("client_id", client.id),
-    supabase.from("aaos_value_ledger").select("*").eq("client_id", client.id),
-    supabase.from("aaos_governance_risks").select("*").eq("client_id", client.id),
-    supabase.from("aaos_monetisation_records").select("*").eq("client_id", client.id),
-  ]);
-  const d = diag?.[0];
-  const oppLines = (opps || []).map((o: any) => `- **${o.opportunity_title}** (priority ${o.priority_score ?? "?"}, £${o.estimated_monthly_value_low ?? "?"}–£${o.estimated_monthly_value_high ?? "?"}/mo)`).join("\n") || "- None yet";
-  const kpiLines = (kpis || []).map((k: any) => `- ${k.kpi_name}: baseline ${k.baseline_value ?? "?"} → target ${k.target_value ?? "?"} ${k.unit || ""} (actual ${k.actual_value ?? "—"})`).join("\n") || "- None yet";
-  const valLines = (vledger || []).map((v: any) => `- ${v.value_title}: uplift ${v.calculated_uplift ?? "?"}, £${v.financial_value_low ?? "?"}–£${v.financial_value_high ?? "?"} (${v.attribution_confidence || "?"} confidence, client ${v.client_agreed || "Pending"})`).join("\n") || "- None yet";
-  const riskLines = (risks || []).map((r: any) => `- [${r.risk_score ?? "?"}] ${r.risk_title} (${r.risk_domain})`).join("\n") || "- None yet";
-  const content = `> ${PRELIM}
-
-# ${reportType} — ${client.client_name}
-
-## What we found
-${d?.key_findings || d?.diagnostic_summary || "Diagnostic pending."}
-
-## Recommended 90-day focus
-${d?.recommended_90_day_focus || "To be confirmed."}
-
-## AI opportunities
-${oppLines}
-
-## KPIs
-${kpiLines}
-
-## Value created (estimated / validated)
-${valLines}
-
-## Governance risks
-${riskLines}
-
-## Commercial
-${(monet || []).length ? `${(monet || []).length} monetisation record(s) under review. Commercial terms require human review before client issue.` : "No monetisation record yet."}
-
-## Decisions needed
-- Approve this report for client sharing (human review required).
-- Confirm KPI baselines and attribution confidence.
-
-*${PRELIM}*`;
-  const { data } = await supabase.from("aaos_reports").insert({
-    client_id: client.id, engagement_id: engagementId, report_type: reportType, title: `${reportType} — ${client.client_name}`,
-    generated_content: content, assumptions: "Template report generated from stored records.", confidence_level: "medium",
-    review_status: "Needs Human Review", approved_for_client: false, generated_at: new Date().toISOString(),
-    input_data_used: { opportunities: (opps || []).length, kpis: (kpis || []).length, risks: (risks || []).length } as never,
-  }).select().single();
-  await logActivity({ action: "report generated", summary: `${reportType} generated for ${client.client_name}`, client_id: client.id, entity_type: "report", entity_id: data?.id });
-  return data;
+  const res = await invokeSpine("report", { client_id: client.id, engagement_id: engagementId ?? null, report_type: reportType });
+  return res.report;
 }

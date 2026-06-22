@@ -415,6 +415,70 @@ async function handleSpine(supabase: any, userId: string, body: any) {
     return json({ ok: true, target, rows: inserted, provider, model });
   }
 
+  if (target === "report") {
+    const reportType = body.report_type || "AI Alpha Diagnostic Report";
+    const [{ data: diag }, { data: opps }, { data: kpis }, { data: vl }, { data: risks }] = await Promise.all([
+      supabase.from("aaos_diagnostics").select("*").eq("client_id", client_id).order("created_at", { ascending: false }).limit(1),
+      supabase.from("aaos_ai_opportunities").select("opportunity_title,priority_score,estimated_monthly_value_low,estimated_monthly_value_high,status").eq("client_id", client_id),
+      supabase.from("aaos_kpis").select("kpi_name,baseline_value,target_value,actual_value,unit").eq("client_id", client_id),
+      supabase.from("aaos_value_ledger").select("value_title,calculated_uplift,financial_value_low,financial_value_high,attribution_confidence,client_agreed").eq("client_id", client_id),
+      supabase.from("aaos_governance_risks").select("risk_title,risk_score,status").eq("client_id", client_id),
+    ]);
+    const d = diag?.[0];
+    const dataCtx = `DIAGNOSTIC: ${d ? `${d.diagnostic_summary || ""} | findings: ${d.key_findings || ""} | 90-day focus: ${d.recommended_90_day_focus || ""}` : "none"}\nOPPORTUNITIES:\n${(opps || []).map((o: any) => `- ${o.opportunity_title} (priority ${o.priority_score ?? "?"}, £${o.estimated_monthly_value_low ?? "?"}-£${o.estimated_monthly_value_high ?? "?"}/mo, ${o.status})`).join("\n") || "none"}\nKPIS:\n${(kpis || []).map((k: any) => `- ${k.kpi_name}: ${k.baseline_value ?? "?"}→${k.target_value ?? "?"} (actual ${k.actual_value ?? "—"}) ${k.unit || ""}`).join("\n") || "none"}\nVALUE:\n${(vl || []).map((v: any) => `- ${v.value_title}: uplift ${v.calculated_uplift ?? "?"}, £${v.financial_value_low ?? "?"}-£${v.financial_value_high ?? "?"} (${v.attribution_confidence || "?"}, client ${v.client_agreed || "Pending"})`).join("\n") || "none"}\nRISKS:\n${(risks || []).map((r: any) => `- [${r.risk_score ?? "?"}] ${r.risk_title} (${r.status})`).join("\n") || "none"}`;
+    const system = `You are a senior consultant writing a board-credible, client-ready ${reportType}. Be specific to the data. Readiness language only; no guarantees, no certification claims. Distinguish estimated vs validated vs client-agreed value. Output GitHub-flavoured Markdown only.`;
+    const user = `Write the ${reportType} for ${client.client_name}. Begin with a blockquote disclaimer ("Preliminary; requires validation; not legal/compliance advice; no certification implied."). Sections: Executive summary; What we found; Recommended 90-day focus; AI opportunities; KPIs & value (label confidence); Governance & risks; Decisions needed; Next steps.\n\n${clientCtx}\n\n${dataCtx}`;
+    const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-pro");
+    const { data: inserted, error } = await supabase.from("aaos_reports").insert({
+      client_id, engagement_id, report_type: reportType, title: `${reportType} — ${client.client_name}`,
+      generated_content: content, assumptions: "AI-drafted from stored records.", confidence_level: "medium",
+      review_status: "Needs Human Review", approved_for_client: false, generated_at: new Date().toISOString(),
+      input_data_used: { opportunities: (opps || []).length, kpis: (kpis || []).length, risks: (risks || []).length } as any,
+      created_by: userId,
+    }).select().single();
+    if (error) throw error;
+    await log("report generated (AI)", `${reportType} for ${client.client_name} (${provider}/${model})`, "report", inserted?.id);
+    return json({ ok: true, target, report: inserted, provider, model });
+  }
+
+  if (target === "monetisation") {
+    const MODELS = ["Fixed Fee", "Subscription", "Fixed Fee Plus Upside", "Gain-Share", "Warrant or Equity Candidate", "No Commercial Trigger"];
+    const { data: vl } = await supabase.from("aaos_value_ledger").select("value_title,financial_value_low,financial_value_high,attribution_confidence,client_agreed").eq("client_id", client_id);
+    const system = `You are a senior consultant proposing an INTERNAL commercial structure (not client-issued, not agreed). Conservative, evidence-led. Human review is mandatory. Return ONLY valid JSON.`;
+    const user = `Return JSON: {"commercial_model":"${MODELS.join("|")}","trigger_condition":"...","fee_amount":number or null,"gain_share_percentage":number or null,"rationale":"..."}.\n\nValue ledger:\n${(vl || []).map((v: any) => `- ${v.value_title}: £${v.financial_value_low ?? "?"}-£${v.financial_value_high ?? "?"} (${v.attribution_confidence || "?"}, client ${v.client_agreed || "Pending"})`).join("\n") || "none yet"}\n${clientCtx}`;
+    const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-flash");
+    let o: any = {}; try { o = extractJson(content); } catch { o = {}; }
+    const { data: inserted, error } = await supabase.from("aaos_monetisation_records").insert({
+      client_id, engagement_id, value_ledger_id: body.value_ledger_id || null,
+      commercial_model: pick(o.commercial_model, MODELS, "Fixed Fee Plus Upside"),
+      fee_amount: Number(o.fee_amount) || null, gain_share_percentage: Number(o.gain_share_percentage) || null,
+      trigger_condition: o.trigger_condition || "Verified, client-agreed KPI uplift over 60-90 days.",
+      warrant_or_equity_notes: o.rationale || null,
+      trigger_status: "Human Review Required", invoice_status: "Not Required", human_review_required: true, created_by: userId,
+    }).select().single();
+    if (error) throw error;
+    await log("monetisation review created (AI)", `Monetisation review for ${client.client_name} (${provider}/${model})`, "monetisation", inserted?.id);
+    return json({ ok: true, target, record: inserted, provider, model });
+  }
+
+  if (target === "portfolio") {
+    const PTYPES = ["AI use case", "sales playbook", "delivery playbook", "governance control", "KPI benchmark", "risk pattern", "proposal pattern", "sprint pattern", "automation pattern", "prompt pattern"];
+    const { data: opps } = await supabase.from("aaos_ai_opportunities").select("opportunity_title,value_type,business_area").eq("client_id", client_id);
+    const system = `You are capturing a REUSABLE, ANONYMISED delivery pattern for a portfolio knowledge base. No client-identifying detail (no names). Return ONLY valid JSON.`;
+    const user = `Return JSON: {"pattern_title":"...","pattern_type":"${PTYPES.join("|")}","summary":"...","reusable_playbook":"step-by-step, reusable","confidence_level":"low|medium|high"}. Keep it anonymous and generalisable.\n\nSECTOR: ${company?.sector || "n/a"} (size ${company?.company_size_band || "n/a"})\nWHAT THEY DID:\n${(opps || []).map((o: any) => `- ${o.opportunity_title} (${o.value_type || ""}, ${o.business_area || ""})`).join("\n") || "general AI value work"}`;
+    const { content, provider, model } = await callAI(system, user, "google/gemini-2.5-flash");
+    let o: any = {}; try { o = extractJson(content); } catch { o = {}; }
+    const { data: inserted, error } = await supabase.from("aaos_portfolio_patterns").insert({
+      pattern_title: String(o.pattern_title || "AI value pattern").slice(0, 200), pattern_type: pick(o.pattern_type, PTYPES, "delivery playbook"),
+      sector: company?.sector || null, company_size_band: company?.company_size_band || null,
+      summary: o.summary || null, reusable_playbook: o.reusable_playbook || null,
+      source_client_id: client_id, anonymised: true, confidence_level: pick(o.confidence_level, CONF_SET, "medium"), created_by: userId,
+    }).select().single();
+    if (error) throw error;
+    await log("portfolio pattern captured (AI)", `Pattern from ${client.client_name} (${provider}/${model})`, "pattern", inserted?.id);
+    return json({ ok: true, target, pattern: inserted, provider, model });
+  }
+
   return json({ error: `Unknown spine target: ${target}` }, 400);
 }
 
