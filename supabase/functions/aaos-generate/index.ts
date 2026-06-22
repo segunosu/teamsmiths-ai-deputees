@@ -134,6 +134,34 @@ AGILE AI MATURITY
 ${agile ? `Total ${agile.agile_ai_maturity_score ?? "?"} (band ${agile.agile_ai_maturity_band || "?"})` : "not yet assessed"}`;
 }
 
+// Classify a vendor into governance archetypes from what they do (the RULE):
+// 80% of governance is universal; the archetype adds the use-case-specific 20%.
+function archetypeTags(text: string): string[] {
+  const t = (text || "").toLowerCase();
+  const tags: string[] = [];
+  if (/agent|autonomous|outbound|\bsdr\b|sales automation/.test(t)) tags.push("arch:agents");
+  if (/vision|cctv|camera|video analytic|surveillance|biometric/.test(t)) tags.push("arch:vision");
+  if (/avatar|twin|generative video|voice clone|deepfake|synthetic media|video creation|video editing/.test(t)) tags.push("arch:genmedia");
+  if (/hiring|recruit|candidate|screening|talent|credit scoring/.test(t)) tags.push("arch:hiring");
+  if (/value selling|value-selling|business case|\bcrm\b|pipeline|\bgtm\b|revenue team/.test(t)) tags.push("arch:gtm");
+  if (/block explorer|infrastructure|provenance|lineage|marketplace|training data|data assurance/.test(t)) tags.push("arch:infra");
+  return tags;
+}
+
+// Load the "most likely useful base": archetype-matched items first, then the
+// universal core, deduped.
+async function loadLibrary(supabase: any, kinds: string[], archTags: string[]) {
+  const base = await supabase.from("aaos_library").select("kind,title,framework,question,body,tags").in("kind", kinds).limit(40);
+  let items: any[] = base.data || [];
+  if (archTags && archTags.length) {
+    const arch = await supabase.from("aaos_library").select("kind,title,framework,question,body,tags").overlaps("tags", archTags).limit(24);
+    const seen = new Set(items.map((i: any) => i.title));
+    const prioritized = (arch.data || []).filter((i: any) => !seen.has(i.title));
+    items = [...prioritized, ...items];
+  }
+  return items;
+}
+
 // ===================== GOVERNANCE artefact generation (library-grounded AI) =====================
 const GOV_ARTIFACTS: Record<string, { title: string; kinds: string[]; instruction: string }> = {
   gap_memo: {
@@ -168,7 +196,8 @@ async function handleGovernance(supabase: any, userId: string, body: any) {
   const { data: signals } = company_id
     ? await supabase.from("aaos_company_signals").select("signal_type,signal_summary").eq("company_id", company_id)
     : { data: [] };
-  const { data: lib } = await supabase.from("aaos_library").select("kind,title,framework,question,body").in("kind", cfg.kinds).limit(40);
+  const archTags = archetypeTags(`${company?.sector || ""} ${company?.subsector || ""} ${company?.notes || ""} ${(signals || []).map((s: any) => s.signal_summary).join(" ")}`);
+  const lib = await loadLibrary(supabase, cfg.kinds, archTags);
 
   const vendorCtx = company
     ? `VENDOR: ${company.company_name}\nWhat they do: ${company.sector || ""} / ${company.subsector || ""}. ${company.notes || ""}\nPublic signals:\n${(signals || []).map((s: any) => `- ${s.signal_type}: ${s.signal_summary}`).join("\n") || "none recorded"}`
@@ -222,7 +251,8 @@ async function handleGovRows(supabase: any, userId: string, body: any) {
   const cfg = CFG[target];
   if (!cfg) return json({ error: `Unknown gov_rows target: ${target}` }, 400);
 
-  const { data: lib } = await supabase.from("aaos_library").select("kind,title,framework,question,body").in("kind", cfg.kinds).limit(40);
+  const archTags = archetypeTags(`${company?.sector || ""} ${company?.subsector || ""} ${company?.notes || ""} ${(signals || []).map((s: any) => s.signal_summary).join(" ")}`);
+  const lib = await loadLibrary(supabase, cfg.kinds, archTags);
   const vendorCtx = company
     ? `VENDOR: ${company.company_name} — ${company.sector || ""}/${company.subsector || ""}. ${company.notes || ""}\nPublic signals:\n${(signals || []).map((s: any) => `- ${s.signal_type}: ${s.signal_summary}`).join("\n") || "none"}`
     : `VENDOR: ${client.client_name}`;

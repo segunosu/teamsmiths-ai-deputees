@@ -15,6 +15,7 @@ import { OpportunitiesSection } from "../components/client/OpportunitiesSection"
 import { SprintsSection } from "../components/client/SprintsSection";
 import { GovernanceSection } from "../components/client/GovernanceSection";
 import { EvidenceSection } from "../components/client/EvidenceSection";
+import { ArtefactsSection } from "../components/client/ArtefactsSection";
 import { KpiValueSection } from "../components/client/KpiValueSection";
 import { MonetisationSection } from "../components/client/MonetisationSection";
 import { ReportsSection } from "../components/client/ReportsSection";
@@ -31,6 +32,7 @@ const TABS = [
   { v: "sprints", label: "Sprint Board" },
   { v: "governance", label: "Governance" },
   { v: "evidence", label: "Evidence" },
+  { v: "artefacts", label: "Gov. Artefacts" },
   { v: "value", label: "KPIs & Value" },
   { v: "monetisation", label: "Monetisation" },
   { v: "reports", label: "Reports" },
@@ -90,6 +92,7 @@ export default function AlphaClientWorkspace() {
           <TabsContent value="sprints"><SprintsSection {...props} /></TabsContent>
           <TabsContent value="governance"><GovernanceSection {...props} /></TabsContent>
           <TabsContent value="evidence"><EvidenceSection {...props} /></TabsContent>
+          <TabsContent value="artefacts"><ArtefactsSection {...props} /></TabsContent>
           <TabsContent value="value"><KpiValueSection {...props} /></TabsContent>
           <TabsContent value="monetisation"><MonetisationSection {...props} /></TabsContent>
           <TabsContent value="reports"><ReportsSection {...props} /></TabsContent>
