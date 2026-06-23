@@ -173,8 +173,8 @@ export function OverviewTab({ companyId, company, refresh }: TabProps) {
             <InfoRow label="Sub-sector" value={company.subsector} />
             <InfoRow label="Country" value={company.country} />
             <InfoRow label="Region" value={company.region} />
-            <InfoRow label="Size band" value={company.size_band} />
-            <InfoRow label="Revenue band" value={company.revenue_band} />
+            <InfoRow label="Size band" value={company.company_size_band} />
+            <InfoRow label="Revenue band" value={company.estimated_revenue_band} />
             <InfoRow label="Ownership type" value={company.ownership_type} />
             <InfoRow label="Funding stage" value={company.funding_stage} />
             <InfoRow label="Owner / CEO" value={company.owner_or_ceo_name} />
