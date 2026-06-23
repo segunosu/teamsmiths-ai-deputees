@@ -70,7 +70,7 @@ export function LibraryDialog({
   useEffect(() => {
     if (open) {
       setForm(item
-        ? { kind: "questionnaire_qa", title: "", question: "", framework: "", category: "", four_p_dimension: "", body: "", tags: "", ...item, tags: (item.tags || []).join(", ") }
+        ? { kind: "questionnaire_qa", title: "", question: "", framework: "", category: "", four_p_dimension: "", body: "", ...item, tags: (item.tags || []).join(", ") }
         : { kind: "questionnaire_qa", title: "", question: "", framework: "", category: "", four_p_dimension: "", body: "", tags: "" });
     }
   }, [open, item]);
@@ -98,7 +98,7 @@ export function LibraryDialog({
         if (error) throw error;
         toast.success("Library item updated");
       } else {
-        const { error } = await supabase.from("aaos_library").insert(payload);
+        const { error } = await supabase.from("aaos_library").insert(payload as any);
         if (error) throw error;
         toast.success("Added to Library");
       }

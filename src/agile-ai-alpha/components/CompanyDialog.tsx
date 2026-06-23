@@ -68,7 +68,7 @@ export function CompanyDialog({
         onSaved?.(data);
       } else {
         const { data, error } = await supabase
-          .from("aaos_companies").insert(payload).select().single();
+          .from("aaos_companies").insert(payload as any).select().single();
         if (error) throw error;
         await logActivity({ action: "company created", summary: `Created ${payload.company_name}`, company_id: data.id, entity_type: "company", entity_id: data.id });
         toast.success("Company added");

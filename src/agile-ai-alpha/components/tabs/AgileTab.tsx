@@ -83,7 +83,7 @@ export function AgileTab({ companyId, company, refresh }: TabProps) {
           .update(payload)
           .eq("id", row.id));
       } else {
-        ({ error } = await supabase.from("aaos_agile_ai_scores").insert(payload));
+        ({ error } = await supabase.from("aaos_agile_ai_scores").insert(payload as any));
       }
       if (error) throw error;
 
