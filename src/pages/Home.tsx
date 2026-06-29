@@ -219,7 +219,7 @@ const Home = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10 sm:mb-14">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4">
-                Two practices, one team
+                Foundations to scale performance
               </h2>
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
                 We build the AI systems that move your numbers — and we govern AI so it earns trust and survives scrutiny.
@@ -228,10 +228,10 @@ const Home = () => {
             <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
               <Card className="border-2 bg-card flex flex-col">
                 <CardHeader>
-                  <span className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Flagship practice</span>
-                  <CardTitle className="text-2xl font-bold">AI Governance — the 4Ps</CardTitle>
+                  <span className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">GOVERNANCE PRACTICE</span>
+                  <CardTitle className="text-2xl font-bold">AI Governance - the 4Ps</CardTitle>
                   <CardDescription className="text-base leading-relaxed mt-2">
-                    Get your AI past the security or board review, fast. The practical 4Ps framework (Primed, Principled, Practised, Protected) for teams deploying AI and for vendors whose deal is stuck on a governance review.
+                    A framework to build on the right foundations and make sure that your AI is secure, trusted and compliant. Our practical 4Ps framework (Primed, Principled, Practised, Protected) signposts immediate value.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="mt-auto flex flex-col sm:flex-row gap-3">
@@ -245,10 +245,10 @@ const Home = () => {
               </Card>
               <Card className="border-2 bg-card flex flex-col">
                 <CardHeader>
-                  <span className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Delivery practice</span>
-                  <CardTitle className="text-2xl font-bold">AI Engines — we build them</CardTitle>
+                  <span className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">CONTINUOUS PERFORMANCE IMPROVEMENT PRACTICE</span>
+                  <CardTitle className="text-2xl font-bold">AI Engines built to compound value</CardTitle>
                   <CardDescription className="text-base leading-relaxed mt-2">
-                    AI + human systems that solve one real business problem, fast. We find the highest-impact opportunity, build the engine in days, and stay to scale it.
+                    We build AI engines and work with your teams to solve real business problem, fast. We find the highest-impact opportunity first, build the engine in days, and stay to scale it.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="mt-auto flex flex-col sm:flex-row gap-3">
