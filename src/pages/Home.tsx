@@ -269,7 +269,7 @@ const Home = () => {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10 sm:mb-16 lg:mb-20">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-6">
-                How we build your engine
+                How we deliver measurable value
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
                 The delivery practice — three steps from finding a high-impact opportunity to scaling the result.
