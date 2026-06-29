@@ -153,13 +153,13 @@ const Home = () => {
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-6 sm:mb-8 leading-[1.15]">
-                Compound business value<br /> with AI.
+                Compounding business value.
               </h1>
               <h2 className="text-xl sm:text-3xl lg:text-[2.75rem] font-semibold text-foreground/[0.87] mb-3 sm:mb-4 leading-[1.2]">
                 We build AI that works - and govern it so it lasts.
               </h2>
               <p className="text-base sm:text-lg lg:text-xl text-muted-foreground font-normal mb-10 sm:mb-14 max-w-3xl mx-auto leading-relaxed px-2">
-                AI engines that deliver business outcomes in days governed by our framework that&nbsp;boosts performance and keeps AI safe, auditable and trusted.
+                AI engines that deliver business outcomes in days governed by our framework that continuously boosts performance and keeps AI safe, auditable and trusted.
               </p>
 
               {/* Proof points: named FTSE outcomes (mirror /results, honestly attributed) */}
