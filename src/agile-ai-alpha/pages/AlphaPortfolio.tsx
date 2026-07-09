@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { AlphaLayout } from "../components/AlphaLayout";
+import { SectionSwitch, PLAYBOOK_TABS } from "../components/SectionSwitch";
 import { PATTERN_TYPES } from "../spineConstants";
 import { logActivity } from "../lib/activity";
 
@@ -131,6 +132,7 @@ export default function AlphaPortfolio() {
   if (isLoading || !data) {
     return (
       <AlphaLayout title="Portfolio">
+      <SectionSwitch items={PLAYBOOK_TABS} />
         <div className="text-muted-foreground">Loading…</div>
       </AlphaLayout>
     );
@@ -140,6 +142,7 @@ export default function AlphaPortfolio() {
 
   return (
     <AlphaLayout title="Portfolio">
+      <SectionSwitch items={PLAYBOOK_TABS} />
       <p className="text-sm text-muted-foreground mb-6">
         Cross-client learning captured anonymously to improve future delivery. Never expose confidential client detail.
       </p>

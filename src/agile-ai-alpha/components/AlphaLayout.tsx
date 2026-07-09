@@ -1,20 +1,29 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { LayoutDashboard, Building2, LineChart, Settings as SettingsIcon, Sparkles, Gauge, Users, Library, ShieldCheck } from "lucide-react";
+import { Building2, LineChart, Settings as SettingsIcon, Sparkles, Gauge, Users, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Journey-first navigation: 6 destinations, each a job — not a database table.
+// Pipeline groups Prospects + Companies; Playbooks groups Artefact studio + Portfolio patterns.
 const NAV = [
-  { to: "/agile-ai-alpha/command-centre", label: "Command Centre", icon: Gauge, end: false },
-  { to: "/agile-ai-alpha", label: "Prospects", icon: LayoutDashboard, end: true },
-  { to: "/agile-ai-alpha/companies", label: "Companies", icon: Building2, end: false },
-  { to: "/agile-ai-alpha/clients", label: "Clients", icon: Users, end: false },
-  { to: "/agile-ai-alpha/governance", label: "Governance", icon: ShieldCheck, end: false },
-  { to: "/agile-ai-alpha/portfolio", label: "Portfolio", icon: Library, end: false },
-  { to: "/agile-ai-alpha/value-ledger", label: "Value Ledger", icon: LineChart, end: false },
-  { to: "/agile-ai-alpha/settings", label: "Settings", icon: SettingsIcon, end: false },
+  { to: "/agile-ai-alpha/command-centre", label: "Today", icon: Gauge, match: ["/agile-ai-alpha/command-centre"] },
+  { to: "/agile-ai-alpha", label: "Pipeline", icon: Building2, match: ["/agile-ai-alpha", "/agile-ai-alpha/companies"], exactRoot: true },
+  { to: "/agile-ai-alpha/clients", label: "Clients", icon: Users, match: ["/agile-ai-alpha/clients", "/agile-ai-alpha/engagements"] },
+  { to: "/agile-ai-alpha/governance", label: "Playbooks", icon: ShieldCheck, match: ["/agile-ai-alpha/governance", "/agile-ai-alpha/portfolio"] },
+  { to: "/agile-ai-alpha/value-ledger", label: "Value", icon: LineChart, match: ["/agile-ai-alpha/value-ledger"] },
+  { to: "/agile-ai-alpha/settings", label: "Settings", icon: SettingsIcon, match: ["/agile-ai-alpha/settings"] },
 ];
 
+function navIsActive(item: (typeof NAV)[number], pathname: string) {
+  return item.match.some((m) =>
+    m === "/agile-ai-alpha"
+      ? pathname === m || pathname.startsWith("/agile-ai-alpha/companies")
+      : pathname === m || pathname.startsWith(m + "/"),
+  );
+}
+
 export function AlphaLayout({ title, children }: { title?: string; children: React.ReactNode }) {
+  const { pathname } = useLocation();
   return (
     <div className="min-h-screen bg-muted/20">
       <Helmet>
@@ -32,24 +41,24 @@ export function AlphaLayout({ title, children }: { title?: string; children: Rea
             </div>
           </div>
           <nav className="flex gap-1 overflow-x-auto">
-            {NAV.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) =>
-                  cn(
+            {NAV.map((item) => {
+              const active = navIsActive(item, pathname);
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={cn(
                     "flex items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-colors",
-                    isActive
+                    active
                       ? "border-primary text-primary"
                       : "border-transparent text-muted-foreground hover:text-foreground",
-                  )
-                }
-              >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </NavLink>
-            ))}
+                  )}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
+                </NavLink>
+              );
+            })}
           </nav>
         </div>
       </div>

@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Copy, Library as LibraryIcon, Sparkles, Plus, Pencil, Trash2 } from "lucide-react";
 import { LibraryDialog } from "../components/LibraryDialog";
 import { AlphaLayout } from "../components/AlphaLayout";
+import { SectionSwitch, PLAYBOOK_TABS } from "../components/SectionSwitch";
 import { GenerateButton } from "../components/spineUi";
 import { ReviewStatusBadge, HumanReviewBadge } from "../components/RagBadge";
 import { generateGovernance } from "../lib/generation";
@@ -260,6 +261,7 @@ function LibraryBrowser() {
 export default function AlphaGovernance() {
   return (
     <AlphaLayout title="Governance">
+      <SectionSwitch items={PLAYBOOK_TABS} />
       <h2 className="text-xl font-semibold mb-1">Governance Studio</h2>
       <p className="text-sm text-muted-foreground mb-4">AI-drafted, library-grounded governance artefacts — the engine behind the £1,500 Stuck-Deal Review and the £9,500 pack.</p>
       <Tabs defaultValue="studio">

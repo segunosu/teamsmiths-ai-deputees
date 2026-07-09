@@ -21,24 +21,43 @@ import { MonetisationSection } from "../components/client/MonetisationSection";
 import { ReportsSection } from "../components/client/ReportsSection";
 import { PatternsSection } from "../components/client/PatternsSection";
 import { ActivitySection } from "../components/client/ActivitySection";
+import { JourneyStepper, NextBestAction, useJourneyProgress } from "../components/client/JourneyRail";
 
 export interface SectionProps { client: Client; refresh: () => void; }
 
-const TABS = [
-  { v: "overview", label: "Overview" },
-  { v: "engagements", label: "Engagements" },
-  { v: "diagnostic", label: "Diagnostic" },
-  { v: "opportunities", label: "Opportunities" },
-  { v: "sprints", label: "Sprint Board" },
-  { v: "governance", label: "Governance" },
-  { v: "evidence", label: "Evidence" },
-  { v: "artefacts", label: "Gov. Artefacts" },
-  { v: "value", label: "KPIs & Value" },
-  { v: "monetisation", label: "Monetisation" },
-  { v: "reports", label: "Reports" },
-  { v: "patterns", label: "Patterns" },
-  { v: "activity", label: "Activity" },
-];
+// Journey-grouped tabs: 5 groups mirror the delivery journey; every old ?tab= value
+// still resolves (backward-compatible deep links). Sections themselves are untouched.
+const GROUPS = [
+  { v: "overview", label: "Overview", subs: [
+    { v: "overview", label: "Snapshot" },
+    { v: "activity", label: "Activity" },
+  ]},
+  { v: "diagnose", label: "Diagnose", subs: [
+    { v: "diagnostic", label: "Diagnostic" },
+    { v: "opportunities", label: "Opportunities" },
+    { v: "patterns", label: "Patterns" },
+  ]},
+  { v: "deliver", label: "Deliver", subs: [
+    { v: "engagements", label: "Engagements" },
+    { v: "sprints", label: "Sprint board" },
+  ]},
+  { v: "governance", label: "Governance", subs: [
+    { v: "governance", label: "Risks & controls" },
+    { v: "evidence", label: "Evidence" },
+    { v: "artefacts", label: "Artefacts" },
+  ]},
+  { v: "value", label: "Value", subs: [
+    { v: "value", label: "KPIs & value" },
+    { v: "monetisation", label: "Monetisation" },
+    { v: "reports", label: "Reports" },
+  ]},
+] as const;
+
+type SubValue = (typeof GROUPS)[number]["subs"][number]["v"];
+
+function groupOf(sub: string) {
+  return GROUPS.find((g) => g.subs.some((s) => s.v === sub)) ?? GROUPS[0];
+}
 
 export default function AlphaClientWorkspace() {
   const { id } = useParams<{ id: string }>();
@@ -57,10 +76,14 @@ export default function AlphaClientWorkspace() {
     enabled: !!id,
   });
 
-  const refresh = () => { refetch(); qc.invalidateQueries({ queryKey: ["aaos_command_centre"] }); };
+  const refresh = () => { refetch(); qc.invalidateQueries({ queryKey: ["aaos_command_centre"] }); qc.invalidateQueries({ queryKey: ["aaos_journey", id] }); };
+
+  const { data: progress } = useJourneyProgress(id);
 
   if (isLoading || !client) return <AlphaLayout title="Client"><div className="text-muted-foreground">Loading…</div></AlphaLayout>;
   const props: SectionProps = { client, refresh };
+  const activeGroup = groupOf(tab);
+  const goTab = (v: string) => setParams({ tab: v });
 
   return (
     <AlphaLayout title={client.client_name}>
@@ -80,10 +103,32 @@ export default function AlphaClientWorkspace() {
         <p className="text-sm text-muted-foreground">{[client.sector, client.region].filter(Boolean).join(" · ")}</p>
       </div>
 
-      <Tabs value={tab} onValueChange={(v) => setParams({ tab: v })}>
+      <JourneyStepper progress={progress} onGo={goTab} />
+      <NextBestAction progress={progress} onGo={goTab} />
+
+      <Tabs value={activeGroup.v} onValueChange={(g) => { const grp = GROUPS.find((x) => x.v === g); if (grp) goTab(grp.subs[0].v); }}>
         <TabsList className="flex flex-wrap h-auto">
-          {TABS.map((t) => <TabsTrigger key={t.v} value={t.v}>{t.label}</TabsTrigger>)}
+          {GROUPS.map((g) => <TabsTrigger key={g.v} value={g.v}>{g.label}</TabsTrigger>)}
         </TabsList>
+      </Tabs>
+      {activeGroup.subs.length > 1 && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {activeGroup.subs.map((sub) => (
+            <button
+              key={sub.v}
+              onClick={() => goTab(sub.v)}
+              className={
+                tab === sub.v
+                  ? "rounded-full border border-primary bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary"
+                  : "rounded-full border px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              }
+            >
+              {sub.label}
+            </button>
+          ))}
+        </div>
+      )}
+      <Tabs value={tab}>
         <div className="mt-4">
           <TabsContent value="overview"><OverviewSection {...props} /></TabsContent>
           <TabsContent value="engagements"><EngagementsSection {...props} /></TabsContent>

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Plus, Download, Search } from "lucide-react";
 import { AlphaLayout } from "../components/AlphaLayout";
+import { SectionSwitch, PIPELINE_TABS } from "../components/SectionSwitch";
 import { CompanyDialog } from "../components/CompanyDialog";
 import { RagBadge } from "../components/RagBadge";
 import { fitBand } from "../lib/scoring";
@@ -71,6 +72,7 @@ export default function AlphaCompanies() {
 
   return (
     <AlphaLayout title="Companies">
+      <SectionSwitch items={PIPELINE_TABS} />
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
         <h2 className="text-xl font-semibold">Companies <span className="text-muted-foreground font-normal">({filtered.length})</span></h2>
         <div className="flex gap-2">

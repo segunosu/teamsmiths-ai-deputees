@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlphaLayout } from "../components/AlphaLayout";
+import { SectionSwitch, PIPELINE_TABS } from "../components/SectionSwitch";
 import { RagBadge, HumanReviewBadge } from "../components/RagBadge";
 import { fitBand } from "../lib/scoring";
 
@@ -64,6 +65,7 @@ export default function AlphaDashboard() {
 
   return (
     <AlphaLayout title="Dashboard">
+      <SectionSwitch items={PIPELINE_TABS} />
       <p className="text-sm text-muted-foreground mb-4">Where to spend the next hour — highest-leverage targets and the decisions waiting on you.</p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">

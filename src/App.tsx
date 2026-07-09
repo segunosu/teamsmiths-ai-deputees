@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/ui/navigation";
 import { Footer } from "@/components/Footer";
@@ -90,6 +90,13 @@ const ProofSprintSuccess = React.lazy(() => import('./pages/ProofSprintSuccess')
 
 const queryClient = new QueryClient();
 
+// Marketing chrome (header/footer) is hidden on AI Alpha OS routes — the app has its own chrome (AlphaLayout).
+function MarketingChrome({ children }: { children: React.ReactNode }) {
+  const { pathname } = useLocation();
+  if (pathname.startsWith("/agile-ai-alpha")) return null;
+  return <>{children}</>;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -101,7 +108,7 @@ const App = () => (
             <div className="min-h-screen flex flex-col">
               <ScrollManager />
               <PWAInstallPrompt />
-              <Navigation />
+              <MarketingChrome><Navigation /></MarketingChrome>
               <main id="main-content" className="flex-1" tabIndex={-1}>
                 <Routes>
                   <Route path="/" element={<Home />} />
@@ -245,7 +252,7 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
-              <Footer />
+              <MarketingChrome><Footer /></MarketingChrome>
             </div>
           </BrowserRouter>
         </HelmetProvider>
