@@ -1,3 +1,7 @@
+# DECISION_LOG.md
+
+Append-only record of architectural and product decisions. Newest at top.
+
 ## 2026-07-09 — Journey-first IA refactor (navigation & naming only)
 **Decision:** Collapse the AI Alpha OS navigation from 8 top-level items + 13 client tabs to 6 + 5,
 grouped by delivery journey. Purely presentational: no schema changes, no section-component changes,
@@ -12,9 +16,6 @@ Stage 0 untouched, all old `?tab=` deep links still resolve.
 **Why:** "Governance" appeared 3–4× on one screen with different meanings; nav mirrored database
 tables, not the consultant's job. Gates run: `npx tsc --noEmit` clean, `npm run build` clean.
 
-# DECISION_LOG.md
-
-Append-only record of architectural and product decisions. Newest at top.
 
 ## 2026-06-21 — AI Alpha OS extension harness + data model
 - Lovable Cloud Supabase (`iyqsbjawaampgcavsgcz`) is the backend; Claude Code is primary builder;
