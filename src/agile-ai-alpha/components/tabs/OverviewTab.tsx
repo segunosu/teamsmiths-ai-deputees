@@ -243,7 +243,7 @@ export function OverviewTab({ companyId, company, refresh }: TabProps) {
               <select
                 id="acceptance-decision"
                 className="h-10 w-full rounded-md border bg-background px-3 text-sm"
-                value={decision}
+                id="acceptance-decision" value={decision}
                 onChange={(e) => {
                   const val = e.target.value;
                   setDecision(val);

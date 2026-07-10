@@ -23,7 +23,24 @@ export function ConvertClientBanner({ company, onConverted }: { company: any; on
     return () => { active = false; };
   }, [company?.id]);
 
-  if (!eligible && !clientId) return null;
+  // Not yet decided: show the next-best-action nudge instead of nothing,
+  // so the path prospect -> decision -> client is always visible.
+  if (!eligible && !clientId) {
+    if (company?.acceptance_decision) return null; // decided Nurture/Reject/Research More — no nudge
+    return (
+      <Card className="mb-4 border-dashed p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Next best action</div>
+            <div className="text-sm">Record the acceptance decision (Accept / Nurture / Reject) — it unlocks conversion to a client workspace.</div>
+          </div>
+          <Button size="sm" variant="outline" onClick={() => document.getElementById("acceptance-decision")?.scrollIntoView({ behavior: "smooth", block: "center" })}>
+            Decide now <ArrowRight className="ml-1 h-3.5 w-3.5" />
+          </Button>
+        </div>
+      </Card>
+    );
+  }
 
   const create = async () => {
     setBusy(true);
