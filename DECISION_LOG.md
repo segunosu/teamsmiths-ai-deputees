@@ -2,6 +2,16 @@
 
 Append-only record of architectural and product decisions. Newest at top.
 
+## 2026-07-10 — "Add prospect" on the Prospects view (workflow audit fix)
+**Decision:** The Prospects page (Pipeline overview) had no create affordance — companies could only be
+added from the Companies register, breaking the "add a prospect" mental model. Added an "Add prospect"
+button on AlphaDashboard reusing the existing CompanyDialog (no new entity, no schema change; a
+prospect IS an aaos_companies row with status "New").
+**Context:** Full workflow audit confirmed UI paths exist for: fit scoring + 4Ps (company tabs),
+outreach drafts, acceptance decision (Overview tab), convert-to-client banner (Accepted/Onboarded),
+diagnostics + opportunities + sprints + governance risks/evidence/artefacts + KPIs/value/monetisation/
+reports/patterns (client sections, each with GenerateButton + manual add). Gates: tsc clean, build clean.
+
 ## 2026-07-09 — Journey-first IA refactor (navigation & naming only)
 **Decision:** Collapse the AI Alpha OS navigation from 8 top-level items + 13 client tabs to 6 + 5,
 grouped by delivery journey. Purely presentational: no schema changes, no section-component changes,

@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlphaLayout } from "../components/AlphaLayout";
 import { SectionSwitch, PIPELINE_TABS } from "../components/SectionSwitch";
+import { CompanyDialog } from "../components/CompanyDialog";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import { RagBadge, HumanReviewBadge } from "../components/RagBadge";
 import { fitBand } from "../lib/scoring";
 
@@ -61,12 +65,17 @@ export default function AlphaDashboard() {
   const needsDecision = companies.filter((c) => c.human_review_required || (!c.acceptance_decision && ["Snapshot Ready", "Proposal Ready", "Interested"].includes(c.status)));
   const today = new Date().toISOString().slice(0, 10);
   const dueTasks = onboarding.filter((t) => t.due_date && t.due_date <= today);
+  const qc = useQueryClient();
+  const [addOpen, setAddOpen] = useState(false);
   const nextActions = companies.filter((c) => c.next_action).sort((a, b) => (a.next_action_due_date || "9999").localeCompare(b.next_action_due_date || "9999")).slice(0, 8);
 
   return (
     <AlphaLayout title="Dashboard">
       <SectionSwitch items={PIPELINE_TABS} />
-      <p className="text-sm text-muted-foreground mb-4">Where to spend the next hour — highest-leverage targets and the decisions waiting on you.</p>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm text-muted-foreground">Where to spend the next hour — highest-leverage targets and the decisions waiting on you.</p>
+        <Button size="sm" onClick={() => setAddOpen(true)}><Plus className="h-4 w-4 mr-1" /> Add prospect</Button>
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <Metric label="Candidate companies" value={companies.length} />
@@ -159,6 +168,7 @@ export default function AlphaDashboard() {
           </CardContent>
         </Card>
       </div>
+      <CompanyDialog open={addOpen} onOpenChange={setAddOpen} onSaved={() => qc.invalidateQueries({ queryKey: ["aaos_dashboard"] })} />
     </AlphaLayout>
   );
 }
