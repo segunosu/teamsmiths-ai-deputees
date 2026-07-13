@@ -12,17 +12,19 @@ select,input{width:100%;padding:10px;border:1px solid var(--line);border-radius:
 <p>We prepared this page for you. Every figure on it comes from public records, and you can check each one yourself.</p>
 <div class="card"><table><tr><th>Item</th><th>Public record</th></tr><tr><td>Property</td><td><b>Gnd Floor, 78 Cromer Street, London, WC1H 8DR</b></td></tr><tr><td>Rateable value (2026 list)</td><td><b>£10,750</b></td></tr><tr><td>2026-27 charge</td><td><b>£4,751.50</b></td></tr><tr><td>Reliefs on the account</td><td><b>£0.00</b></td></tr><tr><td>Small Business Rate Relief if eligible</td><td><b>less £4,751.50</b></td></tr></table></div>
 <p>If this is your only business premises, you would normally qualify. The record shows the same gap in each year since 2024, and backdating may cover all of them.</p>
-<div class="card">
+<div class="card" id="contact">
 <b>What would you like to do?</b>
-<form onsubmit="var c=document.getElementById('ch').value,n=document.getElementById('nm').value,p=document.getElementById('ph').value;location.href='mailto:segun.osu@teamsmiths.com?subject='+encodeURIComponent('TS104 Supporting Care Ltd: '+c)+'&body='+encodeURIComponent('Reference: TS104\nCompany: Supporting Care Ltd\nMy choice: '+c+'\nName: '+n+'\nPhone: '+p);return false;">
-<label>Choose one</label><select id="ch"><option>Verify everything and prepare all the paperwork (£495 audit, paid only after I receive it)</option><option>Prepare the application for me (£199)</option><option>Handle it all for me (£750 fixed, or 25% of what you recover, capped at £5,000)</option><option>Call me for ten minutes first</option><option>Not interested. Please remove my details</option></select>
+<a class="btn" style="margin-top:10px" href="https://calendly.com/osu/business-rates-15-minute-call?a1=Ref%20TS104%20-%20Supporting%20Care%20Ltd">Book a 15 minute call. We phone you</a>
+<button class="btn" style="background:#fff;color:#1d3d8f;border:2px solid #1d3d8f;margin-top:8px" onclick="document.getElementById('enq').style.display='block';this.style.display='none'">Send a quick enquiry</button>
+<div id="enq" style="display:none;margin-top:8px">
+<form onsubmit="var n=document.getElementById('nm').value,p=document.getElementById('ph').value;location.href='mailto:segun.osu@teamsmiths.com?subject=TS104%20Supporting%20Care%20Ltd%3A%20enquiry&body='+encodeURIComponent('Reference: TS104\nCompany: Supporting Care Ltd\nI would like: Verify everything and prepare all the paperwork (£495 audit, paid only after I receive it)\nName: '+n+'\nPhone: '+p);return false;">
 <label>Your name</label><input id="nm" placeholder="Name">
 <label>Best number (optional)</label><input id="ph" placeholder="Phone">
-<button class="btn">Send</button>
-</form>
-<p class="small" style="margin-bottom:0">This opens an email in your own mail app, so you can see exactly what is sent. Prefer to talk? Call <b>020 8050 1044</b>, or Segun directly on <b>07711 067559</b>.</p>
+<button class="btn" style="margin-top:6px">Send</button>
+<p class="small" style="margin:6px 0 0">Opens an email in your own mail app, pre-filled with your reference, so you can see exactly what is sent. Edit it as you like.</p>
+</form></div>
+<a class="btn" style="background:#fff;color:#1d3d8f;border:2px solid #1d3d8f;margin-top:8px" href="tel:+442080501044">Or call 020 8050 1044</a>
+<p class="small" style="margin:8px 0 0">Segun direct: 07711 067559 · segun.osu@teamsmiths.com</p>
 </div>
-<div class="card"><b>Doing it yourself, free.</b>
-<p style="margin:.5em 0 0">Small Business Rate Relief is claimed through Camden Council. Search "Camden small business rate relief" for their form. You will need your rates account number (on your bill), your occupation start date, and to confirm this is your only business premises (or that any others are very small). Ask in the same application for earlier years to be backdated. It costs nothing, and Camden must respond.</p></div>
 <p class="small">Check any figure yourself: the rating list is at <a href="https://www.gov.uk/find-business-rates">gov.uk/find-business-rates</a> and the relief rules at <a href="https://www.gov.uk/business-rates-relief">gov.uk/business-rates-relief</a>. Our prices are published at <a href="https://teamsmiths.com/rates">teamsmiths.com/rates</a>. Teamsmiths is an independent advisory business. We are not the Valuation Office Agency, HMRC or Camden Council, and we are not connected to them. Nothing here is a guarantee of savings, and relief eligibility depends on statutory conditions, including the multiple property condition.</p>
 </div></body></html>
