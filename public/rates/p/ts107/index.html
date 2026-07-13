@@ -12,17 +12,19 @@ select,input{width:100%;padding:10px;border:1px solid var(--line);border-radius:
 <p>We prepared this page for you. Every figure comes from the public rating lists, and you can check each one yourself. Your charge is about £1,497 higher this year than last.</p>
 <div class="card"><table><tr><th>Item</th><th>Public record</th></tr><tr><td>Property</td><td><b>Avoca House Hotel, 46 Belsize Park, London, NW3 4EE</b></td></tr><tr><td>Rateable value, 2023 list</td><td><b>£20,000</b></td></tr><tr><td>Rateable value, 2026 list</td><td><b>£32,250</b></td></tr><tr><td>Your rise</td><td><b>61%</b></td></tr><tr><td>Average rise, hotel/guest-house properties in the borough (n=12)</td><td><b>36%</b></td></tr></table></div>
 <p>Two upward moves in three years, and a rise well beyond comparable hotels, is usually worth a professional look. In the official figures for the last rating list, most completed challenges ended in a reduction and nearly all of the rest ended in no change. An increase is rare, but possible, and checking that risk first is part of the audit.</p>
-<div class="card">
+<div class="card" id="contact">
 <b>What would you like to do?</b>
-<form onsubmit="var c=document.getElementById('ch').value,n=document.getElementById('nm').value,p=document.getElementById('ph').value;location.href='mailto:segun.osu@teamsmiths.com?subject='+encodeURIComponent('TS107 Avoca House Hotel Ltd: '+c)+'&body='+encodeURIComponent('Reference: TS107\nCompany: Avoca House Hotel Ltd\nMy choice: '+c+'\nName: '+n+'\nPhone: '+p);return false;">
-<label>Choose one</label><select id="ch"><option>Verify this and tell me if a challenge is worth it (£495 audit, paid only after I receive it)</option><option>Handle it all for me (20% of savings achieved, no upfront fee)</option><option>Call me for ten minutes first</option><option>Not interested. Please remove my details</option></select>
+<a class="btn" style="margin-top:10px" href="https://calendly.com/osu/business-rates-15-minute-call?a1=Ref%20TS107%20-%20Avoca%20House%20Hotel%20Ltd">Book a 15 minute call. We phone you</a>
+<button class="btn" style="background:#fff;color:#1d3d8f;border:2px solid #1d3d8f;margin-top:8px" onclick="document.getElementById('enq').style.display='block';this.style.display='none'">Send a quick enquiry</button>
+<div id="enq" style="display:none;margin-top:8px">
+<form onsubmit="var n=document.getElementById('nm').value,p=document.getElementById('ph').value;location.href='mailto:segun.osu@teamsmiths.com?subject=TS107%20Avoca%20House%20Hotel%20Ltd%3A%20enquiry&body='+encodeURIComponent('Reference: TS107\nCompany: Avoca House Hotel Ltd\nI would like: Verify this and prepare the challenge paperwork (£495 audit, paid only after I receive it)\nName: '+n+'\nPhone: '+p);return false;">
 <label>Your name</label><input id="nm" placeholder="Name">
 <label>Best number (optional)</label><input id="ph" placeholder="Phone">
-<button class="btn">Send</button>
-</form>
-<p class="small" style="margin-bottom:0">This opens an email in your own mail app, so you can see exactly what is sent. Prefer to talk? Call <b>020 8050 1044</b>, or Segun directly on <b>07711 067559</b>.</p>
+<button class="btn" style="margin-top:6px">Send</button>
+<p class="small" style="margin:6px 0 0">Opens an email in your own mail app, pre-filled with your reference, so you can see exactly what is sent. Edit it as you like.</p>
+</form></div>
+<a class="btn" style="background:#fff;color:#1d3d8f;border:2px solid #1d3d8f;margin-top:8px" href="tel:+442080501044">Or call 020 8050 1044</a>
+<p class="small" style="margin:8px 0 0">Segun direct: 07711 067559 · segun.osu@teamsmiths.com</p>
 </div>
-<div class="card"><b>Challenging it yourself, free.</b>
-<p style="margin:.5em 0 0">You can challenge the valuation through your own account with the Valuation Office. Search "challenge the valuation gov.uk", register, claim your property, and submit a Check first (facts), then a Challenge (the valuation) if needed. It costs nothing. The paperwork and evidence take time, which is exactly the part we prepare in the £495 audit if you would rather not do it.</p></div>
 <p class="small">Check any figure yourself: the rating list is at <a href="https://www.gov.uk/find-business-rates">gov.uk/find-business-rates</a> and the relief rules at <a href="https://www.gov.uk/business-rates-relief">gov.uk/business-rates-relief</a>. Our prices are published at <a href="https://teamsmiths.com/rates">teamsmiths.com/rates</a>. Teamsmiths is an independent advisory business. We are not the Valuation Office Agency, HMRC or Camden Council, and we are not connected to them. Nothing here is a guarantee of savings, and relief eligibility depends on statutory conditions, including the multiple property condition.</p>
 </div></body></html>
